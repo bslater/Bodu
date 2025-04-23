@@ -1,0 +1,125 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Bodu.Collections.Extensions
+{
+	[TestClass]
+	public class FibonacciTests
+	{
+		/// <summary>
+		/// A known ordered list of Fibonacci numbers, starting from 0.
+		/// </summary>
+		public static readonly long[] Values =
+		{
+			0, 1, 1, 2, 3, 5, 8, 13, 21, 34,
+			55, 89, 144, 233, 377, 610, 987,
+			1597, 2584, 4181, 6765, 10946,
+			17711, 28657, 46368, 75025, 121393,
+			196418, 317811, 514229, 832040,
+			1346269, 2178309, 3524578, 5702887
+		};
+
+		/// <summary>
+		/// Verifies that Fibonacci throws ArgumentOutOfRangeException when minimum is negative.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenMinimumIsNegative_ShouldThrow()
+		{
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			{
+				SequenceGenerator.Fibonacci(-1, 10).ToList();
+			});
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci throws ArgumentOutOfRangeException when maximum is negative.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenMaximumIsNegative_ShouldThrow()
+		{
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			{
+				SequenceGenerator.Fibonacci(0, -5).ToList();
+			});
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci throws ArgumentException when minimum is greater than maximum.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenMinimumGreaterThanMaximum_ShouldThrow()
+		{
+			Assert.ThrowsException<ArgumentException>(() =>
+			{
+				SequenceGenerator.Fibonacci(10, 5).ToList();
+			});
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci returns all expected values in the range 0 to 100.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenRangeIsZeroToHundred_ShouldReturnExpectedValues()
+		{
+			var expected = Values.Where(n => n >= 0 && n < 100).ToArray();
+			var result = SequenceGenerator.Fibonacci(0, 100).ToArray();
+			CollectionAssert.AreEqual(expected, result);
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci returns only values between 5 and 15.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenRangeIsFiveToFifteen_ShouldReturnSubset()
+		{
+			var expected = Values.Where(n => n >= 5 && n < 15).ToArray();
+			var result = SequenceGenerator.Fibonacci(5, 15).ToArray();
+			CollectionAssert.AreEqual(expected, result);
+		}
+
+		/// <summary>
+		/// Verifies that values below the minimum threshold are not included in the result.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenMinimumIsTwentyOne_ShouldExcludeLowerValues()
+		{
+			var expected = Values.Where(n => n >= 21 && n < 35).ToArray();
+			var result = SequenceGenerator.Fibonacci(21, 35).ToArray();
+			CollectionAssert.AreEqual(expected, result);
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci returns an empty sequence when the range excludes all values.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenRangeIsOneToOne_ShouldReturnEmpty()
+		{
+			var result = SequenceGenerator.Fibonacci(1, 1).ToArray();
+			Assert.AreEqual(0, result.Length);
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci returns a single matching value when the range bounds exactly one value.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenRangeBoundsSingleValue_ShouldReturnThatValue()
+		{
+			var expected = Values.Where(n => n >= 21 && n < 22).ToArray();
+			var result = SequenceGenerator.Fibonacci(21, 22).ToArray();
+			CollectionAssert.AreEqual(expected, result);
+		}
+
+		/// <summary>
+		/// Verifies that Fibonacci generation stops before overflowing <see cref="long.MaxValue" />.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenMaxIsLongMaxValue_ShouldStopBeforeOverflow()
+		{
+			var values = SequenceGenerator.Fibonacci(0, long.MaxValue).ToList();
+			Assert.IsTrue(values.All(v => v >= 0));
+			Assert.IsTrue(values[^1] < long.MaxValue);
+		}
+	}
+}

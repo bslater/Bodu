@@ -1,0 +1,143 @@
+﻿using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bodu.Buffers
+{
+	/// <summary>
+	/// Provides an efficient way to copy items from a sequence into a pooled buffer, automatically resizing as needed and supporting
+	/// collection fast-paths.
+	/// </summary>
+	/// <typeparam name="T">The type of item.</typeparam>
+	public sealed class PooledBufferBuilder<T>
+	   : System.IDisposable
+	{
+		private T[] buffer;
+		private int count;
+		private bool disposed;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PooledBufferBuilder{T}" /> class.
+		/// </summary>
+		/// <param name="initialCapacity">Optional initial buffer size.</param>
+		public PooledBufferBuilder(int initialCapacity = 256)
+		{
+			buffer = ArrayPool<T>.Shared.Rent(initialCapacity);
+			count = 0;
+		}
+
+		/// <summary>
+		/// Attempts to fast-copy the source if it supports <see cref="ICollection{T}" />.
+		/// </summary>
+		/// <param name="source">The input sequence.</param>
+		/// <returns><c>true</c> if copied using <c>CopyTo</c> otherwise, use <see cref="AppendRange" />.</returns>
+		public bool TryCopyFrom(IReadOnlyCollection<T> source)
+		{
+			this.ThrowIfDisposed();
+			ThrowHelper.ThrowIfNull(source);
+
+			if (source is ICollection<T> col)
+			{
+				ReturnBufferIfNeeded();
+				count = col.Count;
+				buffer = ArrayPool<T>.Shared.Rent(count);
+				col.CopyTo(buffer, 0);
+				return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Appends items from an <see cref="IEnumerable{T}" />, expanding the pooled buffer if needed.
+		/// </summary>
+		/// <param name="source">The input sequence.</param>
+		public void AppendRange(IEnumerable<T> source)
+		{
+			this.ThrowIfDisposed();
+			ThrowHelper.ThrowIfNull(source);
+
+			foreach (T item in source)
+			{
+				if (count >= buffer.Length)
+					Grow();
+
+				buffer[count++] = item;
+			}
+		}
+
+		/// <summary>
+		/// Returns the buffered elements as a span of valid items.
+		/// </summary>
+		public Span<T> AsSpan()
+		{
+			this.ThrowIfDisposed();
+			return this.buffer.AsSpan(0, this.count);
+		}
+
+		/// <summary>
+		/// Returns the buffered elements as a span of valid items.
+		/// </summary>
+		public T[] AsArray()
+		{
+			this.ThrowIfDisposed();
+			return this.buffer;
+		}
+
+		/// <summary>
+		/// The number of valid elements in the buffer.
+		/// </summary>
+		public int Count
+		{
+			get
+			{
+				this.ThrowIfDisposed();
+				return this.count;
+			}
+		}
+
+		/// <summary>
+		/// Returns the underlying buffer to the pool and resets internal state.
+		/// </summary>
+		public void Dispose()
+		{
+			if (!this.disposed)
+			{
+				this.ReturnBufferIfNeeded();
+				this.buffer = Array.Empty<T>();
+				this.count = 0;
+				this.disposed = true;
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfDisposed()
+		{
+			if (this.disposed)
+				throw new ObjectDisposedException(nameof(PooledBufferBuilder<T>), "Cannot access buffer after it has been disposed.");
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void Grow()
+		{
+			T[] newBuffer = ArrayPool<T>.Shared.Rent(buffer.Length * 2);
+			Array.Copy(buffer, 0, newBuffer, 0, count);
+			ReturnBufferIfNeeded();
+			buffer = newBuffer;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ReturnBufferIfNeeded()
+		{
+			if (buffer.Length > 0)
+			{
+				bool clear = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+				ArrayPool<T>.Shared.Return(buffer, clear);
+			}
+		}
+	}
+}

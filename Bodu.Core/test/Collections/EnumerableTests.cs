@@ -1,0 +1,93 @@
+﻿using Bodu.Infrastructure;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bodu.Collections
+{
+	public abstract partial class EnumerableTests
+	{
+		/// <summary>
+		/// Asserts that the extension method defers execution and does not begin enumeration when invoked.
+		/// </summary>
+		/// <typeparam name="TSource">The type of input elements.</typeparam>
+		/// <param name="methodName">The name of the method being tested (used for assertion messaging).</param>
+		/// <param name="invokeExtensionMethod">A delegate that wraps the extension method call.</param>
+		protected static void AssertExecutionIsDeferred<TSource>(
+			string methodName,
+			Func<IEnumerable<TSource>, IEnumerable> invokeExtensionMethod,
+			IEnumerable<TSource> values)
+		{
+			bool wasEnumerated = false;
+
+			var source = new TrackingEnumerable<TSource>(
+				values,
+				onEnumerate: () => wasEnumerated = true
+			);
+
+			var result = invokeExtensionMethod(source);
+
+			Assert.IsFalse(wasEnumerated, $"[{methodName}] should defer execution.");
+		}
+
+		/// <summary>
+		/// Asserts that the extension method triggers enumeration only when the result is actually enumerated.
+		/// </summary>
+		/// <typeparam name="TSource">The type of input elements.</typeparam>
+		/// <param name="methodName">The name of the method being tested (used for assertion messaging).</param>
+		/// <param name="invokeExtensionMethod">A delegate that wraps the extension method call.</param>
+		protected static void AssertExecutionOccursOnEnumeration<TSource>(
+			string methodName,
+			Func<IEnumerable<TSource>, IEnumerable> invokeExtensionMethod,
+			IEnumerable<TSource> values)
+		{
+			bool wasEnumerated = false;
+
+			var source = new TrackingEnumerable<TSource>(
+				values,
+				onEnumerate: () => wasEnumerated = true
+			);
+
+			var result = invokeExtensionMethod(source);
+
+			// Trigger enumeration
+			_ = result.GetEnumerator().MoveNext();
+
+			Assert.IsTrue(wasEnumerated, $"[{methodName}] should begin enumeration when enumerated.");
+		}
+
+		/// <summary>
+		/// Asserts that invoking an extension method on the given source returns the expected results, with optional result transformation.
+		/// </summary>
+		/// <typeparam name="TSource">The type of input elements.</typeparam>
+		/// <typeparam name="TResult">The type of result elements.</typeparam>
+		/// <param name="methodName">The name of the method under test.</param>
+		/// <param name="invokeExtensionMethod">The extension method to invoke on the source.</param>
+		/// <param name="source">The input sequence.</param>
+		/// <param name="expected">The expected result sequence.</param>
+		/// <param name="selector">
+		/// Optional projection to convert elements from the result to <typeparamref name="TResult" />. If not specified, elements are cast
+		/// to <typeparamref name="TResult" />.
+		/// </param>
+		protected static void AssertExecutionReturnsExpectedResults<TSource, TResult>(
+			string methodName,
+			Func<IEnumerable<TSource>, IEnumerable> invokeExtensionMethod,
+			IEnumerable<TSource> source,
+			IEnumerable<TResult> expected,
+			Func<TSource, TResult>? selector = null)
+		{
+			// Evaluate result with optional selector or cast
+			var result = invokeExtensionMethod(source)
+				.Cast<object>()
+				.Select(e => selector != null ? selector((TSource)e) : (TResult)e)
+				.ToList();
+
+			var expectedList = expected.ToList();
+
+			CollectionAssert.AreEqual(expectedList, result);
+		}
+	}
+}

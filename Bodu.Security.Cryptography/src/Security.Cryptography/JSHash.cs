@@ -1,0 +1,117 @@
+using System;
+using System.Buffers.Binary;
+using System.Security.Cryptography;
+
+namespace Bodu.Security.Cryptography
+{
+	/// <summary>
+	/// Computes a non-cryptographic 32-bit hash using the <see cref="JSHash" /> algorithm by Justin Sobel.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// JSHash is a compact and efficient bitwise hash function, originally developed by Justin Sobel. It is suitable for hash
+	/// permutationTable indexing and other non-cryptographic use cases where speed is preferred over security.
+	/// </para>
+	/// <para>The core hash function operates using the expression: <c>hash ^= (hash << 5) + (hash >> 2) + byte</c>.</para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
+	/// password hashing, or integrity verification in security-sensitive contexts.</note>
+	/// </remarks>
+	public sealed class JSHash
+		: System.Security.Cryptography.HashAlgorithm
+	{
+		private const uint DefaultValue = 0x4E67C6A7;
+
+		private uint value;
+		private bool disposed;
+
+#if !NET6_0_OR_GREATER
+
+        // Required for .NET Standard 2.0 or older frameworks
+        private bool finalized;
+#endif
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="JSHash" /> class.
+		/// </summary>
+		/// <remarks>This constructor initializes the hash algorithm to a default 32-bit output with a seed value of <c>0x4E67C6A7</c>.</remarks>
+		public JSHash()
+		{
+			this.HashSizeValue = 32;
+			this.Initialize();
+		}
+
+		/// <inheritdoc />
+		public override void Initialize()
+		{
+#if !NET6_0_OR_GREATER
+            this.State = 0;
+            this.finalized = false;
+#endif
+			ThrowIfDisposed();
+			this.value = DefaultValue;
+		}
+
+		/// <inheritdoc />
+		protected override void HashCore(byte[] array, int ibStart, int cbSize)
+		{
+			ThrowHelper.ThrowIfNull(array);
+			ThrowIfDisposed();
+#if !NET6_0_OR_GREATER
+			ThrowHelper.ThrowIfLessThan(ibStart, 0);
+			ThrowHelper.ThrowIfLessThan(cbSize, 0);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, cbSize);
+			if (this.finalized)
+				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+#endif
+
+			foreach (byte b in array.AsSpan(ibStart, cbSize))
+			{
+				this.value ^= (this.value << 5) + (this.value >> 2) + b;
+			}
+		}
+
+		/// <inheritdoc />
+		protected override byte[] HashFinal()
+		{
+			ThrowIfDisposed();
+#if !NET6_0_OR_GREATER
+            if (this.finalized)
+                throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+            this.finalized = true;
+            this.State = 2;
+#endif
+			byte[] buffer = new byte[4];
+			BinaryPrimitives.WriteUInt32BigEndian(buffer, this.value);
+			return buffer;
+		}
+
+		/// <inheritdoc />
+		protected override void Dispose(bool disposing)
+		{
+			if (this.disposed)
+				return;
+
+			if (disposing)
+			{
+				this.value = 0;
+			}
+
+			this.disposed = true;
+			base.Dispose(disposing);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ObjectDisposedException" /> if the instance has already been disposed.
+		/// </summary>
+		/// <exception cref="ObjectDisposedException">Thrown when the algorithm has been disposed and further access is attempted.</exception>
+		private void ThrowIfDisposed()
+		{
+#if NET8_0_OR_GREATER
+            ObjectDisposedException.ThrowIf(this.disposed, this);
+#else
+			if (this.disposed)
+				throw new ObjectDisposedException(nameof(JSHash));
+#endif
+		}
+	}
+}

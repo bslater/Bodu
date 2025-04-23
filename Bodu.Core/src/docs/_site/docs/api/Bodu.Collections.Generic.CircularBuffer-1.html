@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CircularBuffer&lt;T&gt; | Bodu.CorLib API </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CircularBuffer&lt;T&gt; | Bodu.CorLib API ">
+
+    <meta name="description" content="Represents a first-in, first-out collection (FIFO) of objects using a fixed buffer and automatic overwrite support.">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+</head>
+<body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+        <header>
+
+            <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        <a class="navbar-brand" href="../../index.html">
+                            <img id="logo" class="svg" src="../../logo.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar">
+                        <form class="navbar-form navbar-right" role="search" id="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="subnav navbar navbar-default">
+                <div class="container hide-when-search" id="breadcrumb">
+                    <ul class="breadcrumb">
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <div role="main" class="container body-content hide-when-search">
+
+            <div class="sidenav hide-when-search">
+                <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+                <div class="sidetoggle collapse" id="sidetoggle">
+                    <div id="sidetoc"></div>
+                </div>
+            </div>
+            <div class="article row grid-right">
+                <div class="col-md-10">
+                    <article class="content wrap" id="_content" data-uid="Bodu.Collections.Generic.CircularBuffer`1">
+
+                        <h1 id="Bodu_Collections_Generic_CircularBuffer_1" data-uid="Bodu.Collections.Generic.CircularBuffer`1" class="text-break">Class CircularBuffer&lt;T&gt;</h1>
+                        <div class="markdown level0 summary">
+                            <p>Represents a first-in, first-out collection (FIFO) of objects using a fixed buffer and automatic overwrite support.</p>
+                        </div>
+                        <div class="markdown level0 conceptual"></div>
+                        <div class="inheritance">
+                            <h5>Inheritance</h5>
+                            <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+                            <div class="level1"><span class="xref">CircularBuffer&lt;T&gt;</span></div>
+                        </div>
+                        <div class="implements">
+                            <h5>Implements</h5>
+                            <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a></div>
+                            <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;T&gt;</div>
+                            <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</div>
+                            <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+                        </div>
+                        <div class="inheritedMembers">
+                            <h5>Inherited Members</h5>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+                            </div>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+                            </div>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+                            </div>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+                            </div>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+                            </div>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+                            </div>
+                            <div>
+                                <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+                            </div>
+                        </div>
+                        <h6><strong>Namespace</strong>: <a class="xref" href="Bodu.html">Bodu</a>.<a class="xref" href="Bodu.Collections.html">Collections</a>.<a class="xref" href="Bodu.Collections.Generic.html">Generic</a></h6>
+                        <h6><strong>Assembly</strong>: Bodu.CoreLib.dll</h6>
+                        <h5 id="Bodu_Collections_Generic_CircularBuffer_1_syntax">Syntax</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">[Serializable]
+public class CircularBuffer&lt;T&gt; : ICollection, IReadOnlyCollection&lt;T&gt;, IEnumerable&lt;T&gt;, IEnumerable</code></pre>
+                        </div>
+                        <h5 class="typeParameters">Type Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="parametername">T</span></td>
+                                    <td>
+                                        <p>Specifies the type of elements in the collection.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 id="Bodu_Collections_Generic_CircularBuffer_1_remarks"><strong>Remarks</strong></h5>
+                        <div class="markdown level0 remarks">
+                            <p>This class implements a generic a circular buffer of a fixed capacity. Objects stored in a <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> are inserted at one end and removed from the other. Use <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> if you need to limited the number of elements in the collection and to access the information from oldest to newest in the collection. Use <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.queue-1">Queue&lt;T&gt;</a> if you do not need to restrict the number of elements in the collection.</p>
+                            <p>Three main operations can be performed on a <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> and its elements:</p>
+                            <ul><li><a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Enqueue__0_">Enqueue(T)</a> adds an element to the end of the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a>.</li><li><a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Dequeue">Dequeue()</a> removes the oldest element from the start of the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a>.</li><li><a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Peek">Peek()</a> returns the oldest element that is at the start of the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> but does not remove it from the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a>.</li></ul>
+                            <p>The <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Capacity">Capacity</a> of a <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> is the maximum number of elements the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> can hold. As elements are added to a full <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> the oldest elements are overwritten by default. Setting the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_AllowOverwrite">AllowOverwrite</a> to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> will throw an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> if an attempt is made to add an element to a <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> where the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Count">Count</a> equals <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Capacity">Capacity</a>.</p>
+                            <p><a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> accepts <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> (Nothing in Visual Basic) as a valid value for reference types and allows duplicate elements.</p>
+                        </div>
+                        <h3 id="constructors">
+                            Constructors
+                        </h3>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1__ctor_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1__ctor_System_Collections_Generic_IEnumerable__0__" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor(System.Collections.Generic.IEnumerable{`0})">CircularBuffer(IEnumerable&lt;T&gt;)</h4>
+                        <div class="markdown level1 summary">
+                            <p>
+                                Initializes a new <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> instance by copying elements from the specified collection.
+                                Capacity defaults to the size of the collection. Oldest elements will be overwritten if capacity is exceeded.
+                            </p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public CircularBuffer(IEnumerable&lt;T&gt; collection)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</td>
+                                    <td><span class="parametername">collection</span></td>
+                                    <td>
+                                        <p>The collection from which elements are copied. Must not be null.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">collection</code> is null.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1__ctor_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1__ctor_System_Collections_Generic_IEnumerable__0__System_Int32_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32)">CircularBuffer(IEnumerable&lt;T&gt;, int)</h4>
+                        <div class="markdown level1 summary">
+                            <p>
+                                Initializes a new <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> by copying elements from the specified collection, with a specified capacity.
+                                Oldest elements will be overwritten if the collection size exceeds the capacity.
+                            </p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public CircularBuffer(IEnumerable&lt;T&gt; collection, int capacity)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</td>
+                                    <td><span class="parametername">collection</span></td>
+                                    <td>
+                                        <p>The collection from which elements are copied. Must not be null.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td><span class="parametername">capacity</span></td>
+                                    <td>
+                                        <p>The maximum number of elements the buffer can contain. Must be non-negative.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">collection</code> is null.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">capacity</code> is negative.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1__ctor_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1__ctor_System_Collections_Generic_IEnumerable__0__System_Int32_System_Boolean_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Boolean)">CircularBuffer(IEnumerable&lt;T&gt;, int, bool)</h4>
+                        <div class="markdown level1 summary">
+                            <p>
+                                Initializes a new <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> by copying elements from the specified collection,
+                                with specified capacity and overwrite behavior.
+                            </p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public CircularBuffer(IEnumerable&lt;T&gt; collection, int capacity, bool allowOverwrite)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</td>
+                                    <td><span class="parametername">collection</span></td>
+                                    <td>
+                                        <p>The collection from which elements are copied. Must not be null.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td><span class="parametername">capacity</span></td>
+                                    <td>
+                                        <p>The maximum number of elements the buffer can contain. Must be non-negative.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td><span class="parametername">allowOverwrite</span></td>
+                                    <td>
+                                        <p>
+                                            If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, oldest elements are overwritten when the collection size exceeds capacity.
+                                            Otherwise, an exception is thrown if collection size exceeds capacity.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">collection</code> is null.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">capacity</code> is negative.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+                                    <td>
+                                        <p>Thrown when <code class="paramref">allowOverwrite</code> is false and collection size exceeds the capacity.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1__ctor_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1__ctor_System_Int32_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor(System.Int32)">CircularBuffer(int)</h4>
+                        <div class="markdown level1 summary">
+                            <p>
+                                Initializes an empty <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> with the specified capacity.
+                                Oldest elements are automatically overwritten when capacity is exceeded.
+                            </p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public CircularBuffer(int capacity)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td><span class="parametername">capacity</span></td>
+                                    <td>
+                                        <p>The maximum number of elements the buffer can contain. Must be non-negative.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+                                    <td>
+                                        <p>Thrown when <code class="paramref">capacity</code> is negative.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1__ctor_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1__ctor_System_Int32_System_Boolean_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.#ctor(System.Int32,System.Boolean)">CircularBuffer(int, bool)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Initializes an empty <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> with the specified capacity and overwrite behavior.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public CircularBuffer(int capacity, bool allowOverwrite)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td><span class="parametername">capacity</span></td>
+                                    <td>
+                                        <p>The maximum number of elements the buffer can contain. Must be non-negative.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td><span class="parametername">allowOverwrite</span></td>
+                                    <td>
+                                        <p>
+                                            If <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, oldest elements are overwritten when capacity is reached;
+                                            otherwise, adding elements beyond capacity will throw an exception.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+                                    <td>
+                                        <p>Thrown when <code class="paramref">capacity</code> is negative.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 id="properties">
+                            Properties
+                        </h3>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_AllowOverwrite_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.AllowOverwrite*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_AllowOverwrite" data-uid="Bodu.Collections.Generic.CircularBuffer`1.AllowOverwrite">AllowOverwrite</h4>
+                        <div class="markdown level1 summary">
+                            <p>Gets or sets a value indicating whether the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> will automatically overwrite the oldest element when capacity is reached.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public bool AllowOverwrite { get; set; }</code></pre>
+                        </div>
+                        <h5 class="propertyValue">Property Value</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td>
+                                        <p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> to automatically overwrite the oldest element when adding an element to a <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> where the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Count">Count</a> equals <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Capacity">Capacity</a>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 id="Bodu_Collections_Generic_CircularBuffer_1_AllowOverwrite_remarks">Remarks</h5>
+                        <div class="markdown level1 remarks">
+                            <p>Setting the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_AllowOverwrite">AllowOverwrite</a> to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> will throw an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a> if an attempt is made to add an element to a <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> where the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Count">Count</a> equals <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Capacity">Capacity</a>. Otherwise the oldest element is overwritten.</p>
+                        </div>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Capacity_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Capacity*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Capacity" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Capacity">Capacity</h4>
+                        <div class="markdown level1 summary">
+                            <p>Gets the maximum number of elements that the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> can contain.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public int Capacity { get; }</code></pre>
+                        </div>
+                        <h5 class="propertyValue">Property Value</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td>
+                                        <p>The maximum number of elements that the current <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> can contain.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Count_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Count*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Count" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Count">Count</h4>
+                        <div class="markdown level1 summary">
+                            <p>Gets the number of elements contained in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a>.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+                        </div>
+                        <h5 class="propertyValue">Property Value</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td>
+                                        <p>The number of elements contained in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a>.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Item_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Item*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Item_System_Int32_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Item(System.Int32)">this[int]</h4>
+                        <div class="markdown level1 summary">
+                            <p>Gets the element at the specified zero-based index from the oldest to the newest element.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public T this[int index] { get; }</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td><span class="parametername">index</span></td>
+                                    <td>
+                                        <p>The zero-based index (0 is the oldest element).</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="propertyValue">Property Value</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td>
+                                        <p>The element at the specified position.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+                                    <td>
+                                        <p>Thrown when <code class="paramref">index</code> is negative or greater than or equal to <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html#Bodu_Collections_Generic_CircularBuffer_1_Count">Count</a>.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 id="methods">
+                            Methods
+                        </h3>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Clear_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Clear*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Clear" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Clear">Clear()</h4>
+                        <div class="markdown level1 summary">
+                            <p>Removes all elements from the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a>, resetting its state.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+                        </div>
+                        <h5 id="Bodu_Collections_Generic_CircularBuffer_1_Clear_remarks">Remarks</h5>
+                        <div class="markdown level1 remarks">
+                            <p>The buffer's capacity remains unchanged after clearing.</p>
+                        </div>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Contains_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Contains*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Contains__0_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Contains(`0)">Contains(T)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Determines whether the buffer contains a specific element.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public bool Contains(T item)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td><span class="parametername">item</span></td>
+                                    <td>
+                                        <p>The element to locate in the buffer.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td>
+                                        <p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">item</code> is found; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_CopyTo_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.CopyTo*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_CopyTo__0___System_Int32_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.CopyTo(`0[],System.Int32)">CopyTo(T[], int)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Copies elements from the buffer to an existing array, starting at the specified array index.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public void CopyTo(T[] array, int index)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>T[]</td>
+                                    <td><span class="parametername">array</span></td>
+                                    <td>
+                                        <p>The target array for the copied elements.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+                                    <td><span class="parametername">index</span></td>
+                                    <td>
+                                        <p>The zero-based index at which copying begins.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">array</code> is null.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+                                    <td>
+                                        <p>Thrown if <code class="paramref">index</code> is negative.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+                                    <td>
+                                        <p>Thrown if insufficient space in the target array.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Dequeue_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Dequeue*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Dequeue" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Dequeue">Dequeue()</h4>
+                        <div class="markdown level1 summary">
+                            <p>Removes and returns the oldest element from the buffer.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public T Dequeue()</code></pre>
+                        </div>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td>
+                                        <p>The oldest element in the buffer.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+                                    <td>
+                                        <p>Thrown if the buffer is empty.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Enqueue_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Enqueue*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Enqueue__0_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Enqueue(`0)">Enqueue(T)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Adds an element to the end of the buffer.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public void Enqueue(T item)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td><span class="parametername">item</span></td>
+                                    <td>
+                                        <p>The element to add. Can be null for reference types.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+                                    <td>
+                                        <p>Thrown if the buffer reaches capacity and overwriting is disabled.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_GetEnumerator_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.GetEnumerator*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_GetEnumerator" data-uid="Bodu.Collections.Generic.CircularBuffer`1.GetEnumerator">GetEnumerator()</h4>
+                        <div class="markdown level1 summary">
+                            <p>Returns an enumerator that iterates through the <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a>.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public CircularBuffer&lt;T&gt;.Enumerator GetEnumerator()</code></pre>
+                        </div>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer</a>&lt;T&gt;.<a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html">Enumerator</a></td>
+                                    <td>
+                                        <p>An <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html">CircularBuffer&lt;T&gt;.Enumerator</a> that can be used to iterate through the buffer.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 id="Bodu_Collections_Generic_CircularBuffer_1_GetEnumerator_remarks">Remarks</h5>
+                        <div class="markdown level1 remarks">
+                            <p>The <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/statements/iteration-statements#the-foreach-statement">foreach</a> statement in C# (<code>For Each</code> in Visual Basic) hides the complexity of using enumerators. Therefore, using <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/statements/iteration-statements#the-foreach-statement">foreach</a> is recommended over directly manipulating the enumerator.</p>
+                            <p>The enumerator provides read-only access to the collection. It cannot be used to modify the underlying buffer.</p>
+                            <p>Initially, the enumerator is positioned before the first element. At this position, <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_Current">Current</a> is undefined. You must call <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_MoveNext">MoveNext()</a> to advance to the first element before reading <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_Current">Current</a>.</p>
+                            <p><a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_Current">Current</a> returns the same value until <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_MoveNext">MoveNext()</a> is called. Each call to <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_MoveNext">MoveNext()</a> advances the enumerator to the next element.</p>
+                            <p>If <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_MoveNext">MoveNext()</a> passes the end of the buffer, the enumerator is positioned after the last element and returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>. At this point, <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_Current">Current</a> is undefined, and you must create a new enumerator instance to iterate again.</p>
+                            <p>The enumerator is invalidated if the buffer is modified. Subsequent calls to <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.Enumerator.html#Bodu_Collections_Generic_CircularBuffer_1_Enumerator_MoveNext">MoveNext()</a> or <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.reset">Reset()</a> will throw an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a>.</p>
+                            <p>Enumeration is not thread-safe. To guarantee thread safety, lock the buffer during enumeration. <a class="xref" href="Bodu.Collections.Generic.CircularBuffer-1.html">CircularBuffer&lt;T&gt;</a> is not synchronized by default.</p>
+                        </div>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_GetSegments_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.GetSegments*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_GetSegments" data-uid="Bodu.Collections.Generic.CircularBuffer`1.GetSegments">GetSegments()</h4>
+                        <div class="markdown level1 summary">
+                            <p>
+                                Provides direct read-only access to the internal buffer storage.
+                                Returns two array segments due to potential buffer wrap-around.
+                            </p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public (ArraySegment&lt;T&gt; FirstSegment, ArraySegment&lt;T&gt; SecondSegment) GetSegments()</code></pre>
+                        </div>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.arraysegment-1">ArraySegment</a>&lt;T&gt; <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.arraysegment--0-,system.arraysegment--0--.firstsegment">FirstSegment</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.arraysegment-1">ArraySegment</a>&lt;T&gt; <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.arraysegment--0-,system.arraysegment--0--.secondsegment">SecondSegment</a>)</td>
+                                    <td>
+                                        <p>
+                                            A tuple containing two array segments (FirstSegment, SecondSegment).
+                                            Use both segments sequentially to read all elements.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_Peek_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Peek*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_Peek" data-uid="Bodu.Collections.Generic.CircularBuffer`1.Peek">Peek()</h4>
+                        <div class="markdown level1 summary">
+                            <p>Returns the oldest element without removing it from the buffer.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public T Peek()</code></pre>
+                        </div>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td>
+                                        <p>The oldest element in the buffer.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="exceptions">Exceptions</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+                                    <td>
+                                        <p>Thrown if the buffer is empty.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_ToArray_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.ToArray*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_ToArray" data-uid="Bodu.Collections.Generic.CircularBuffer`1.ToArray">ToArray()</h4>
+                        <div class="markdown level1 summary">
+                            <p>Copies the buffer elements to a new array.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public T[] ToArray()</code></pre>
+                        </div>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>T[]</td>
+                                    <td>
+                                        <p>A new array containing the buffer's elements from oldest to newest.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_TrimExcess_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TrimExcess*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_TrimExcess" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TrimExcess">TrimExcess()</h4>
+                        <div class="markdown level1 summary">
+                            <p>Reduces the buffer capacity to match the current count, freeing unused memory.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public void TrimExcess()</code></pre>
+                        </div>
+                        <h5 id="Bodu_Collections_Generic_CircularBuffer_1_TrimExcess_remarks">Remarks</h5>
+                        <div class="markdown level1 remarks">
+                            <p>Useful if the buffer previously had a large capacity but now requires less memory.</p>
+                        </div>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_TryDequeue_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TryDequeue*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_TryDequeue__0__" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TryDequeue(`0@)">TryDequeue(out T)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Attempts to remove and return the oldest item without throwing exceptions.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public bool TryDequeue(out T item)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td><span class="parametername">item</span></td>
+                                    <td>
+                                        <p>The item removed from the buffer.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td>
+                                        <p>
+                                            <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if an item was dequeued successfully;
+                                            <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if the buffer was empty.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_TryEnqueue_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TryEnqueue*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_TryEnqueue__0_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TryEnqueue(`0)">TryEnqueue(T)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Attempts to add an item to the buffer without throwing exceptions.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public bool TryEnqueue(T item)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td><span class="parametername">item</span></td>
+                                    <td>
+                                        <p>The item to enqueue.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td>
+                                        <p>
+                                            <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the item was enqueued successfully;
+                                            <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if the buffer is full and overwriting is disabled.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <a id="Bodu_Collections_Generic_CircularBuffer_1_TryPeek_" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TryPeek*"></a>
+                        <h4 id="Bodu_Collections_Generic_CircularBuffer_1_TryPeek__0__" data-uid="Bodu.Collections.Generic.CircularBuffer`1.TryPeek(`0@)">TryPeek(out T)</h4>
+                        <div class="markdown level1 summary">
+                            <p>Attempts to retrieve the oldest element without removing it from the buffer.</p>
+                        </div>
+                        <div class="markdown level1 conceptual"></div>
+                        <h5 class="declaration">Declaration</h5>
+                        <div class="codewrapper">
+                            <pre><code class="lang-csharp hljs">public bool TryPeek(out T item)</code></pre>
+                        </div>
+                        <h5 class="parameters">Parameters</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="xref">T</span></td>
+                                    <td><span class="parametername">item</span></td>
+                                    <td>
+                                        <p>The oldest element in the buffer.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="returns">Returns</h5>
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+                                    <td>
+                                        <p>
+                                            <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if an item was retrieved successfully;
+                                            <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if the buffer was empty.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 id="implements">Implements</h3>
+                        <div>
+                            <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a>
+                        </div>
+                        <div>
+                            <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a>
+                        </div>
+                        <div>
+                            <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>
+                        </div>
+                        <div>
+                            <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="hidden-sm col-md-2" role="complementary">
+                    <div class="sideaffix">
+                        <div class="contribution">
+                            <ul class="nav">
+                            </ul>
+                        </div>
+                        <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                            <h5>In this article</h5>
+                            <div></div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="grad-bottom"></div>
+            <div class="footer">
+                <div class="container">
+                    <span class="pull-right">
+                        <a href="#top">Back to top</a>
+                    </span>
+
+                    <span>Generated by <strong>DocFX</strong></span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+</body>
+</html>

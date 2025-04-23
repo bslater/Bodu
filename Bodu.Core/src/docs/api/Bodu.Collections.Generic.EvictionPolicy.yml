@@ -1,0 +1,204 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Collections.Generic.EvictionPolicy
+  commentId: T:Bodu.Collections.Generic.EvictionPolicy
+  id: EvictionPolicy
+  parent: Bodu.Collections.Generic
+  children:
+  - Bodu.Collections.Generic.EvictionPolicy.FIFO
+  - Bodu.Collections.Generic.EvictionPolicy.LFU
+  - Bodu.Collections.Generic.EvictionPolicy.LRU
+  langs:
+  - csharp
+  - vb
+  name: EvictionPolicy
+  nameWithType: EvictionPolicy
+  fullName: Bodu.Collections.Generic.EvictionPolicy
+  type: Enum
+  source:
+    id: EvictionPolicy
+    path: C:\Users\bslater\OneDrive\Code\SharePortfolio\v1.2a\Bodu.CoreLib\Collections.Generic\EvictingDictionary.cs
+    startLine: 27
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Generic
+  summary: Specifies the eviction strategy used by a <xref href="Bodu.Collections.Generic.EvictingDictionary%602" data-throw-if-not-resolved="false"></xref> when its capacity is exceeded.
+  remarks: >-
+    <p>
+
+    The <xref href="Bodu.Collections.Generic.EvictionPolicy" data-throw-if-not-resolved="false"></xref> enumeration defines how items are selected for removal when the dictionary reaches its maximum capacity.
+
+    This allows the dictionary to behave like a queue, cache, or frequency-based store, depending on the selected strategy.
+
+    </p>
+
+    <p>
+
+    The following eviction strategies are available:
+
+    </p>
+
+    <ul><li><xref href="Bodu.Collections.Generic.EvictionPolicy.FIFO" data-throw-if-not-resolved="false"></xref> (First-In-First-Out) removes the oldest inserted item first, regardless of access pattern.</li><li><xref href="Bodu.Collections.Generic.EvictionPolicy.LRU" data-throw-if-not-resolved="false"></xref> (Least Recently Used) removes the item that has not been accessed for the longest period of time.</li><li><xref href="Bodu.Collections.Generic.EvictionPolicy.LFU" data-throw-if-not-resolved="false"></xref> (Least Frequently Used) removes the item with the lowest number of access operations over its lifetime.</li></ul>
+  example: []
+  syntax:
+    content: public enum EvictionPolicy
+    content.vb: Public Enum EvictionPolicy
+- uid: Bodu.Collections.Generic.EvictionPolicy.FIFO
+  commentId: F:Bodu.Collections.Generic.EvictionPolicy.FIFO
+  id: FIFO
+  parent: Bodu.Collections.Generic.EvictionPolicy
+  langs:
+  - csharp
+  - vb
+  name: FIFO
+  nameWithType: EvictionPolicy.FIFO
+  fullName: Bodu.Collections.Generic.EvictionPolicy.FIFO
+  type: Field
+  source:
+    id: FIFO
+    path: C:\Users\bslater\OneDrive\Code\SharePortfolio\v1.2a\Bodu.CoreLib\Collections.Generic\EvictingDictionary.cs
+    startLine: 30
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Generic
+  summary: 'First-In-First-Out: the oldest item added to the dictionary is removed first, regardless of usage.'
+  example: []
+  syntax:
+    content: FIFO = 0
+    return:
+      type: Bodu.Collections.Generic.EvictionPolicy
+- uid: Bodu.Collections.Generic.EvictionPolicy.LRU
+  commentId: F:Bodu.Collections.Generic.EvictionPolicy.LRU
+  id: LRU
+  parent: Bodu.Collections.Generic.EvictionPolicy
+  langs:
+  - csharp
+  - vb
+  name: LRU
+  nameWithType: EvictionPolicy.LRU
+  fullName: Bodu.Collections.Generic.EvictionPolicy.LRU
+  type: Field
+  source:
+    id: LRU
+    path: C:\Users\bslater\OneDrive\Code\SharePortfolio\v1.2a\Bodu.CoreLib\Collections.Generic\EvictingDictionary.cs
+    startLine: 33
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Generic
+  summary: 'Least Recently Used: the item that has not been accessed for the longest time is removed first.'
+  example: []
+  syntax:
+    content: LRU = 1
+    return:
+      type: Bodu.Collections.Generic.EvictionPolicy
+- uid: Bodu.Collections.Generic.EvictionPolicy.LFU
+  commentId: F:Bodu.Collections.Generic.EvictionPolicy.LFU
+  id: LFU
+  parent: Bodu.Collections.Generic.EvictionPolicy
+  langs:
+  - csharp
+  - vb
+  name: LFU
+  nameWithType: EvictionPolicy.LFU
+  fullName: Bodu.Collections.Generic.EvictionPolicy.LFU
+  type: Field
+  source:
+    id: LFU
+    path: C:\Users\bslater\OneDrive\Code\SharePortfolio\v1.2a\Bodu.CoreLib\Collections.Generic\EvictingDictionary.cs
+    startLine: 36
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Generic
+  summary: 'Least Frequently Used: the item with the fewest total accesses is removed first.'
+  example: []
+  syntax:
+    content: LFU = 2
+    return:
+      type: Bodu.Collections.Generic.EvictionPolicy
+references:
+- uid: Bodu.Collections.Generic.EvictingDictionary`2
+  commentId: T:Bodu.Collections.Generic.EvictingDictionary`2
+  href: Bodu.Collections.Generic.EvictingDictionary-2.html
+  name: EvictingDictionary<TKey, TValue>
+  nameWithType: EvictingDictionary<TKey, TValue>
+  fullName: Bodu.Collections.Generic.EvictingDictionary<TKey, TValue>
+  nameWithType.vb: EvictingDictionary(Of TKey, TValue)
+  fullName.vb: Bodu.Collections.Generic.EvictingDictionary(Of TKey, TValue)
+  name.vb: EvictingDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: Bodu.Collections.Generic.EvictingDictionary`2
+    name: EvictingDictionary
+    href: Bodu.Collections.Generic.EvictingDictionary-2.html
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: Bodu.Collections.Generic.EvictingDictionary`2
+    name: EvictingDictionary
+    href: Bodu.Collections.Generic.EvictingDictionary-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: Bodu.Collections.Generic.EvictionPolicy
+  commentId: T:Bodu.Collections.Generic.EvictionPolicy
+  parent: Bodu.Collections.Generic
+  href: Bodu.Collections.Generic.EvictionPolicy.html
+  name: EvictionPolicy
+  nameWithType: EvictionPolicy
+  fullName: Bodu.Collections.Generic.EvictionPolicy
+- uid: Bodu.Collections.Generic.EvictionPolicy.FIFO
+  commentId: F:Bodu.Collections.Generic.EvictionPolicy.FIFO
+  href: Bodu.Collections.Generic.EvictionPolicy.html#Bodu_Collections_Generic_EvictionPolicy_FIFO
+  name: FIFO
+  nameWithType: EvictionPolicy.FIFO
+  fullName: Bodu.Collections.Generic.EvictionPolicy.FIFO
+- uid: Bodu.Collections.Generic.EvictionPolicy.LRU
+  commentId: F:Bodu.Collections.Generic.EvictionPolicy.LRU
+  href: Bodu.Collections.Generic.EvictionPolicy.html#Bodu_Collections_Generic_EvictionPolicy_LRU
+  name: LRU
+  nameWithType: EvictionPolicy.LRU
+  fullName: Bodu.Collections.Generic.EvictionPolicy.LRU
+- uid: Bodu.Collections.Generic.EvictionPolicy.LFU
+  commentId: F:Bodu.Collections.Generic.EvictionPolicy.LFU
+  href: Bodu.Collections.Generic.EvictionPolicy.html#Bodu_Collections_Generic_EvictionPolicy_LFU
+  name: LFU
+  nameWithType: EvictionPolicy.LFU
+  fullName: Bodu.Collections.Generic.EvictionPolicy.LFU
+- uid: Bodu.Collections.Generic
+  commentId: N:Bodu.Collections.Generic
+  href: Bodu.html
+  name: Bodu.Collections.Generic
+  nameWithType: Bodu.Collections.Generic
+  fullName: Bodu.Collections.Generic
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Generic
+    name: Generic
+    href: Bodu.Collections.Generic.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Generic
+    name: Generic
+    href: Bodu.Collections.Generic.html
