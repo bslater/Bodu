@@ -1,4 +1,4 @@
-﻿{
+{
   "metadata": [
     {
       "src": [
@@ -6,16 +6,14 @@
           "files": [ "*.csproj" ]
         }
       ],
-      "dest": "docs/api"
+      "dest": "obj/api"  // this is a temp folder for YAML, not HTML
     }
   ],
   "build": {
     "content": [
       {
-        "files": [ "docs/api/**/*.yml" ]
-      },
-      {
-        "files": [ "docs/index.md" ] // ← use this as the main entry point
+        // YAML files are generated in obj/api and used to generate the site
+        "files": [ "obj/api/**/*.yml", "obj/api/index.md" ]
       },
       {
         "files": [ "docs/articles/*.md", "docs/articles/toc.yml" ]
@@ -26,9 +24,9 @@
         "files": [ "docs/images/**" ]
       }
     ],
-    "dest": "docs/_site",
+    "dest": "docs/_site", // HTML files go directly here
     "globalMetadata": {
-      "_appTitle": "Bodu.CorLib API"
+      "_appTitle": "Bodu API"
     },
     "template": [ "default" ]
   }
