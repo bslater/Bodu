@@ -25,7 +25,7 @@
     ],
     "dest": "docs/_site",
     "globalMetadata": {
-      "_appTitle": "Bodu.Security.Cryprography API"
+      "_appTitle": "Bodu.CorLib API"
     },
     "template": [ "default" ]
   }

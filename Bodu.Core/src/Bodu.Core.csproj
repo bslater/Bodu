@@ -95,4 +95,10 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="docs\api\" />
+    <Folder Include="docs\articles\" />
+    <Folder Include="docs\images\" />
+  </ItemGroup>
+
 </Project>
