@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "files": [ "Bodu.Security.Cryprography.csproj" ]
+          "files": [ "*.csproj" ]
         }
       ],
       "dest": "docs/api"
