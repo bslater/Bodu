@@ -1,0 +1,112 @@
+### YamlMime:TableOfContent
+items:
+- uid: Bodu
+  name: Bodu
+  type: Namespace
+  items:
+  - uid: Bodu.IRandomGenerator
+    name: IRandomGenerator
+    type: Interface
+  - uid: Bodu.ThrowHelper
+    name: ThrowHelper
+    type: Class
+  - uid: Bodu.XorShiftRandom
+    name: XorShiftRandom
+    type: Class
+- uid: Bodu.Buffers
+  name: Bodu.Buffers
+  type: Namespace
+  items:
+  - uid: Bodu.Buffers.PooledBufferBuilder`1
+    name: PooledBufferBuilder<T>
+    type: Class
+- uid: Bodu.Collections.Extensions
+  name: Bodu.Collections.Extensions
+  type: Namespace
+  items:
+  - uid: Bodu.Collections.Extensions.IEnumerableExtensions
+    name: IEnumerableExtensions
+    type: Class
+  - uid: Bodu.Collections.Extensions.RecursiveSelectControl
+    name: RecursiveSelectControl
+    type: Enum
+  - uid: Bodu.Collections.Extensions.SequenceGenerator
+    name: SequenceGenerator
+    type: Class
+- uid: Bodu.Collections.Generic
+  name: Bodu.Collections.Generic
+  type: Namespace
+  items:
+  - uid: Bodu.Collections.Generic.CircularBuffer`1
+    name: CircularBuffer<T>
+    type: Class
+  - uid: Bodu.Collections.Generic.CircularBuffer`1.Enumerator
+    name: CircularBuffer<T>.Enumerator
+    type: Struct
+  - uid: Bodu.Collections.Generic.EvictingDictionary`2
+    name: EvictingDictionary<TKey, TValue>
+    type: Class
+  - uid: Bodu.Collections.Generic.EvictingDictionary`2.DictionaryEnumerator
+    name: EvictingDictionary<TKey, TValue>.DictionaryEnumerator
+    type: Struct
+  - uid: Bodu.Collections.Generic.EvictionPolicy
+    name: EvictionPolicy
+    type: Enum
+  - uid: Bodu.Collections.Generic.SequenceGenerator
+    name: SequenceGenerator
+    type: Class
+  - uid: Bodu.Collections.Generic.ShuffleHelpers
+    name: ShuffleHelpers
+    type: Class
+- uid: Bodu.Collections.Generic.Extensions
+  name: Bodu.Collections.Generic.Extensions
+  type: Namespace
+  items:
+  - uid: Bodu.Collections.Generic.Extensions.IEnumerableExtensions
+    name: IEnumerableExtensions
+    type: Class
+  - uid: Bodu.Collections.Generic.Extensions.RandomizationMode
+    name: RandomizationMode
+    type: Enum
+  - uid: Bodu.Collections.Generic.Extensions.SystemRandomAdapter
+    name: SystemRandomAdapter
+    type: Class
+- uid: Bodu.Extensions
+  name: Bodu.Extensions
+  type: Namespace
+  items:
+  - uid: Bodu.Extensions.ArrayExtensions
+    name: ArrayExtensions
+    type: Class
+  - uid: Bodu.Extensions.DateTimeExtensions
+    name: DateTimeExtensions
+    type: Class
+  - uid: Bodu.Extensions.DateTimeResolution
+    name: DateTimeResolution
+    type: Enum
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    type: Interface
+  - uid: Bodu.Extensions.IWeekendProvider
+    name: IWeekendProvider
+    type: Interface
+  - uid: Bodu.Extensions.NumericExtensions
+    name: NumericExtensions
+    type: Class
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    type: Enum
+  - uid: Bodu.Extensions.StandardWeekend
+    name: StandardWeekend
+    type: Enum
+  - uid: Bodu.Extensions.WeekOfMonthOrdinal
+    name: WeekOfMonthOrdinal
+    type: Enum
+- uid: Bodu.Globalization.Extensions
+  name: Bodu.Globalization.Extensions
+  type: Namespace
+  items:
+  - uid: Bodu.Globalization.Extensions.DateTimeFormatInfoExtensions
+    name: DateTimeFormatInfoExtensions
+    type: Class
+memberLayout: SamePage

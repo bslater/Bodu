@@ -1,0 +1,3093 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.ThrowHelper
+  commentId: T:Bodu.ThrowHelper
+  id: ThrowHelper
+  parent: Bodu
+  children:
+  - Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric(System.Array,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension(System.Array,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased(System.Array,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient(System.Array,System.Int32,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayLengthIsZero(System.Array,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(System.Array,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(System.Array,System.Int32,System.Int32,System.String,System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible``1(System.Array,System.String)
+  - Bodu.ThrowHelper.ThrowIfCollectionTooSmall``1(System.Collections.Generic.ICollection{``0},System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfCountExceedsAvailable(System.Int32,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther``1(``0,``0,System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual``1(``0,``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfGreaterThanOther``1(``0,``0,System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfGreaterThan``1(``0,``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfIndexOutOfRange``1(System.Int32,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfInvalidStringComparison(System.StringComparison,System.String)
+  - Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther``1(``0,``0,System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfLessThanOrEqual``1(``0,``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfLessThanOther``1(``0,``0,System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfLessThan``1(System.Nullable{``0},``0,System.Boolean,System.String)
+  - Bodu.ThrowHelper.ThrowIfLessThan``1(``0,``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfNegative``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfNotBetweenExclusive``1(``0,``0,``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfNotBetweenInclusive``1(``0,``0,``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfNotOfType``1(System.Object,System.String)
+  - Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf(System.Int32,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfNotZero``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfNullOrEmpty(System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfNull``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfNull``1(``0,System.String,System.String)
+  - Bodu.ThrowHelper.ThrowIfPositive``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(System.Int32,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(System.Int64,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient``1(System.Span{``0},System.Int32,System.Int32,System.String)
+  - Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf``1(System.ReadOnlySpan{``0},System.Int32,System.Func{System.String,System.Exception},System.String)
+  - Bodu.ThrowHelper.ThrowIfZeroOrNegative``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfZeroOrPositive``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIfZero``1(``0,System.String)
+  - Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace(System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: ThrowHelper
+  nameWithType: ThrowHelper
+  fullName: Bodu.ThrowHelper
+  type: Class
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowHelper
+    path: ThrowHelper.cs
+    startLine: 12
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Provides centralized guard clause methods for argument validation using resource-based exception messages.
+  example: []
+  syntax:
+    content: public static class ThrowHelper
+    content.vb: Public Module ThrowHelper
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension(System.Array,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension(System.Array,System.String)
+  id: ThrowIfArrayIsNotSingleDimension(System.Array,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayIsNotSingleDimension(Array, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayIsNotSingleDimension(Array, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension(System.Array, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayIsNotSingleDimension
+    path: ThrowHelper.cs
+    startLine: 24
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the specified array is not single-dimensional.
+  remarks: Checks that <code>array.Rank == 1</code>.
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayIsNotSingleDimension(Array array, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter, automatically inferred.
+    content.vb: Public Shared Sub ThrowIfArrayIsNotSingleDimension(array As Array, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when <code class="paramref">array</code> has a rank other than 1.
+
+      Message: "Only single dimension arrays are supported here."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayIsNotSingleDimension(Array, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension(System.Array, String)
+  name.vb: ThrowIfArrayIsNotSingleDimension(Array, String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased(System.Array,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased(System.Array,System.String)
+  id: ThrowIfArrayIsNotZeroBased(System.Array,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayIsNotZeroBased(Array, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayIsNotZeroBased(Array, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased(System.Array, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayIsNotZeroBased
+    path: ThrowHelper.cs
+    startLine: 43
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the array does not have a zero lower bound.
+  remarks: Checks that the array is zero-based (i.e., index starts at 0).
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayIsNotZeroBased(Array array, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the array parameter.
+    content.vb: Public Shared Sub ThrowIfArrayIsNotZeroBased(array As Array, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when <code>array.GetLowerBound(0) != 0</code>.
+
+      Message: "The lower bound of target array must be zero."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayIsNotZeroBased(Array, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased(System.Array, String)
+  name.vb: ThrowIfArrayIsNotZeroBased(Array, String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient(System.Array,System.Int32,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient(System.Array,System.Int32,System.Int32,System.String)
+  id: ThrowIfArrayLengthIsInsufficient(System.Array,System.Int32,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayLengthIsInsufficient(Array, int, int, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayLengthIsInsufficient(Array, int, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient(System.Array, int, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayLengthIsInsufficient
+    path: ThrowHelper.cs
+    startLine: 63
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the array is too short for the given index and required length.
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayLengthIsInsufficient(Array array, int index, int requiredLength, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to check.
+    - id: index
+      type: System.Int32
+      description: The starting index.
+    - id: requiredLength
+      type: System.Int32
+      description: The required length from index onward.
+    - id: paramName
+      type: System.String
+      description: The name of the array parameter.
+    content.vb: Public Shared Sub ThrowIfArrayLengthIsInsufficient(array As Array, index As Integer, requiredLength As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when <code>array.Length - index &lt; requiredLength</code>.
+
+      Message: "Array is too short. Required minimum is {0} from a specified index."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayLengthIsInsufficient(Array, Integer, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient(System.Array, Integer, Integer, String)
+  name.vb: ThrowIfArrayLengthIsInsufficient(Array, Integer, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayLengthIsZero(System.Array,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayLengthIsZero(System.Array,System.String)
+  id: ThrowIfArrayLengthIsZero(System.Array,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayLengthIsZero(Array, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayLengthIsZero(Array, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayLengthIsZero(System.Array, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayLengthIsZero
+    path: ThrowHelper.cs
+    startLine: 81
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the array has zero length.
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayLengthIsZero(Array array, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to check.
+    - id: paramName
+      type: System.String
+      description: The name of the array parameter.
+    content.vb: Public Shared Sub ThrowIfArrayLengthIsZero(array As Array, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayLengthIsZero*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when <code>array.Length == 0</code>.
+
+      Message: "The provided array has zero length. Length must be greater than zero."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayLengthIsZero(Array, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayLengthIsZero(System.Array, String)
+  name.vb: ThrowIfArrayLengthIsZero(Array, String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(System.Array,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(System.Array,System.Int32,System.String)
+  id: ThrowIfArrayLengthNotPositiveMultipleOf(System.Array,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayLengthNotPositiveMultipleOf(Array, int, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(Array, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(System.Array, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayLengthNotPositiveMultipleOf
+    path: ThrowHelper.cs
+    startLine: 100
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the array length is not a positive multiple of a given divisor.
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayLengthNotPositiveMultipleOf(Array array, int divisor, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to check.
+    - id: divisor
+      type: System.Int32
+      description: The required positive divisor.
+    - id: paramName
+      type: System.String
+      description: The name of the array parameter.
+    content.vb: Public Shared Sub ThrowIfArrayLengthNotPositiveMultipleOf(array As Array, divisor As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when the array length is 0 or not divisible by <code class="paramref">divisor</code>.
+
+      Message: "Length of the array must be a multiple of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(Array, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(System.Array, Integer, String)
+  name.vb: ThrowIfArrayLengthNotPositiveMultipleOf(Array, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient``1(System.Span{``0},System.Int32,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient``1(System.Span{``0},System.Int32,System.Int32,System.String)
+  id: ThrowIfSpanLengthIsInsufficient``1(System.Span{``0},System.Int32,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfSpanLengthIsInsufficient<T>(Span<T>, int, int, string?)
+  nameWithType: ThrowHelper.ThrowIfSpanLengthIsInsufficient<T>(Span<T>, int, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient<T>(System.Span<T>, int, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfSpanLengthIsInsufficient
+    path: ThrowHelper.cs
+    startLine: 122
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the remaining length of the span from the given index is less than required.
+  example: []
+  syntax:
+    content: public static void ThrowIfSpanLengthIsInsufficient<T>(Span<T> span, int index, int requiredLength, string? paramName = null)
+    parameters:
+    - id: span
+      type: System.Span{{T}}
+      description: The span to check.
+    - id: index
+      type: System.Int32
+      description: The index from which to measure the remaining length.
+    - id: requiredLength
+      type: System.Int32
+      description: The required number of elements.
+    - id: paramName
+      type: System.String
+      description: The name of the span parameter.
+    typeParameters:
+    - id: T
+      description: The element type of the span.
+    content.vb: Public Shared Sub ThrowIfSpanLengthIsInsufficient(Of T)(span As Span(Of T), index As Integer, requiredLength As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when <code>span.Length - index &lt; requiredLength</code>.
+
+      Message: "Span is too short. Required minimum is {0} from a specified index."
+  nameWithType.vb: ThrowHelper.ThrowIfSpanLengthIsInsufficient(Of T)(Span(Of T), Integer, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient(Of T)(System.Span(Of T), Integer, Integer, String)
+  name.vb: ThrowIfSpanLengthIsInsufficient(Of T)(Span(Of T), Integer, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf``1(System.ReadOnlySpan{``0},System.Int32,System.Func{System.String,System.Exception},System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf``1(System.ReadOnlySpan{``0},System.Int32,System.Func{System.String,System.Exception},System.String)
+  id: ThrowIfSpanLengthNotPositiveMultipleOf``1(System.ReadOnlySpan{``0},System.Int32,System.Func{System.String,System.Exception},System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfSpanLengthNotPositiveMultipleOf<T>(ReadOnlySpan<T>, int, Func<string, Exception>?, string?)
+  nameWithType: ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf<T>(ReadOnlySpan<T>, int, Func<string, Exception>?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf<T>(System.ReadOnlySpan<T>, int, System.Func<string, System.Exception>?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfSpanLengthNotPositiveMultipleOf
+    path: ThrowHelper.cs
+    startLine: 143
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the span length is not a positive multiple of a given divisor.
+  example: []
+  syntax:
+    content: public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(ReadOnlySpan<T> span, int divisor, Func<string, Exception>? func = null, string? paramName = null)
+    parameters:
+    - id: span
+      type: System.ReadOnlySpan{{T}}
+      description: The span to check.
+    - id: divisor
+      type: System.Int32
+      description: The divisor that span length must be a multiple of.
+    - id: func
+      type: System.Func{System.String,System.Exception}
+      description: A factory for a custom exception (unused in default implementation).
+    - id: paramName
+      type: System.String
+      description: The name of the span parameter.
+    typeParameters:
+    - id: T
+      description: The element type of the span.
+    content.vb: Public Shared Sub ThrowIfSpanLengthNotPositiveMultipleOf(Of T)(span As ReadOnlySpan(Of T), divisor As Integer, func As Func(Of String, Exception) = Nothing, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when <code>span.Length == 0 || span.Length % divisor != 0</code>.
+
+      Message: "Length of the Span must be a multiple of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(Of T)(ReadOnlySpan(Of T), Integer, Func(Of String, Exception), String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(Of T)(System.ReadOnlySpan(Of T), Integer, System.Func(Of String, System.Exception), String)
+  name.vb: ThrowIfSpanLengthNotPositiveMultipleOf(Of T)(ReadOnlySpan(Of T), Integer, Func(Of String, Exception), String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(System.Array,System.Int32,System.Int32,System.String,System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(System.Array,System.Int32,System.Int32,System.String,System.String,System.String)
+  id: ThrowIfArrayOffsetOrCountInvalid(System.Array,System.Int32,System.Int32,System.String,System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayOffsetOrCountInvalid(Array, int, int, string?, string?, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(Array, int, int, string?, string?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(System.Array, int, int, string?, string?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayOffsetOrCountInvalid
+    path: ThrowHelper.cs
+    startLine: 177
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: >-
+    Throws an exception if the specified <code class="paramref">index</code> and <code class="paramref">count</code> define a segment that exceeds the
+
+    bounds of the <code class="paramref">array</code>.
+  remarks: >-
+    This method validates that the segment of the array specified by <code class="paramref">index</code> and <code class="paramref">count</code> is
+
+    within valid bounds. It ensures that no out-of-range access occurs when operating on a subrange.
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayOffsetOrCountInvalid(Array array, int index, int count, string? paramArrayName = null, string? paramIndexName = null, string? paramCountName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to validate.
+    - id: index
+      type: System.Int32
+      description: The zero-based starting index within the array.
+    - id: count
+      type: System.Int32
+      description: The number of elements to access from <code class="paramref">index</code>.
+    - id: paramArrayName
+      type: System.String
+      description: The name of the array parameter to include in exception messages.
+    - id: paramIndexName
+      type: System.String
+      description: The name of the index parameter to include in exception messages.
+    - id: paramCountName
+      type: System.String
+      description: The name of the count parameter to include in exception messages.
+    content.vb: Public Shared Sub ThrowIfArrayOffsetOrCountInvalid(array As Array, index As Integer, count As Integer, paramArrayName As String = Nothing, paramIndexName As String = Nothing, paramCountName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown when <code class="paramref">index</code> is negative or greater than <code>array.Length</code>, or when <code class="paramref">count</code> is
+
+      negative or greater than <code>array.Length</code>.
+
+      Message: "The value must zero or positive, and less than the number of elements in the array."
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when the sum of <code class="paramref">index</code> and <code class="paramref">count</code> exceeds <code>array.Length</code>.
+
+      Message: "The sum of index and count exceeds the number of elements in the array."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(Array, Integer, Integer, String, String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(System.Array, Integer, Integer, String, String, String)
+  name.vb: ThrowIfArrayOffsetOrCountInvalid(Array, Integer, Integer, String, String, String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible``1(System.Array,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible``1(System.Array,System.String)
+  id: ThrowIfArrayTypeIsNotCompatible``1(System.Array,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayTypeIsNotCompatible<TExpected>(Array, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayTypeIsNotCompatible<TExpected>(Array, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible<TExpected>(System.Array, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayTypeIsNotCompatible
+    path: ThrowHelper.cs
+    startLine: 208
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the array is not assignable to the specified type <code class="typeparamref">TExpected</code>.
+  remarks: Validates the runtime type of the array using pattern matching and avoids invalid casts.
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayTypeIsNotCompatible<TExpected>(Array array, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to check.
+    - id: paramName
+      type: System.String
+      description: The parameter name of the array.
+    typeParameters:
+    - id: TExpected
+      description: The expected array element type.
+    content.vb: Public Shared Sub ThrowIfArrayTypeIsNotCompatible(Of TExpected)(array As Array, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when the array is not of type <code class="typeparamref">TExpected</code>[].
+
+      Message: "Target array type is not compatible with the type of items in the collection."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayTypeIsNotCompatible(Of TExpected)(Array, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible(Of TExpected)(System.Array, String)
+  name.vb: ThrowIfArrayTypeIsNotCompatible(Of TExpected)(Array, String)
+- uid: Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined``1(``0,System.String)
+  id: ThrowIfEnumValueIsUndefined``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfEnumValueIsUndefined<TEnum>(TEnum, string?)
+  nameWithType: ThrowHelper.ThrowIfEnumValueIsUndefined<TEnum>(TEnum, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined<TEnum>(TEnum, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfEnumValueIsUndefined
+    path: ThrowHelper.cs
+    startLine: 228
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the provided enum value is not defined for <code class="typeparamref">TEnum</code>.
+  remarks: Uses <xref href="System.Enum.IsDefined(System.Type%2cSystem.Object)" data-throw-if-not-resolved="false"></xref> to check that the enum value is valid.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfEnumValueIsUndefined<TEnum>(TEnum value, string? paramName = null) where TEnum : struct, Enum'
+    parameters:
+    - id: value
+      type: '{TEnum}'
+      description: The value to validate.
+    - id: paramName
+      type: System.String
+      description: The parameter name, inferred from the caller.
+    typeParameters:
+    - id: TEnum
+      description: The enum type.
+    content.vb: Public Shared Sub ThrowIfEnumValueIsUndefined(Of TEnum As {Structure, [Enum]})(value As TEnum, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown when <code class="paramref">value</code> is not a defined enum member.
+
+      Message: "The value is not a valid member of the enumeration {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfEnumValueIsUndefined(Of TEnum)(TEnum, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined(Of TEnum)(TEnum, String)
+  name.vb: ThrowIfEnumValueIsUndefined(Of TEnum)(TEnum, String)
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThan``1(``0,``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfGreaterThan``1(``0,``0,System.String)
+  id: ThrowIfGreaterThan``1(``0,``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfGreaterThan<T>(T, T, string?)
+  nameWithType: ThrowHelper.ThrowIfGreaterThan<T>(T, T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThan<T>(T, T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfGreaterThan
+    path: ThrowHelper.cs
+    startLine: 250
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is greater than the specified maximum.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfGreaterThan<T>(T value, T max, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to compare.
+    - id: max
+      type: '{T}'
+      description: The upper bound (inclusive).
+    - id: paramName
+      type: System.String
+      description: The parameter name of the value.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfGreaterThan(Of T As IComparable(Of T))(value As T, max As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfGreaterThan*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt; <code class="paramref">max</code>.
+
+      Message: "The value must be less than or equal to {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfGreaterThan(Of T)(T, T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfGreaterThan(Of T)(T, T, String)
+  name.vb: ThrowIfGreaterThan(Of T)(T, T, String)
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual``1(``0,``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual``1(``0,``0,System.String)
+  id: ThrowIfGreaterThanOrEqual``1(``0,``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfGreaterThanOrEqual<T>(T, T, string?)
+  nameWithType: ThrowHelper.ThrowIfGreaterThanOrEqual<T>(T, T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual<T>(T, T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfGreaterThanOrEqual
+    path: ThrowHelper.cs
+    startLine: 272
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is greater than or equal to the specified maximum.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfGreaterThanOrEqual<T>(T value, T max, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to compare.
+    - id: max
+      type: '{T}'
+      description: The exclusive upper bound.
+    - id: paramName
+      type: System.String
+      description: The parameter name of the value.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfGreaterThanOrEqual(Of T As IComparable(Of T))(value As T, max As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt;= <code class="paramref">max</code>.
+
+      Message: "The value must be less than {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfGreaterThanOrEqual(Of T)(T, T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual(Of T)(T, T, String)
+  name.vb: ThrowIfGreaterThanOrEqual(Of T)(T, T, String)
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThanOther``1(``0,``0,System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfGreaterThanOther``1(``0,``0,System.String,System.String)
+  id: ThrowIfGreaterThanOther``1(``0,``0,System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfGreaterThanOther<T>(T, T, string?, string?)
+  nameWithType: ThrowHelper.ThrowIfGreaterThanOther<T>(T, T, string?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThanOther<T>(T, T, string?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfGreaterThanOther
+    path: ThrowHelper.cs
+    startLine: 295
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the value is greater than another parameter's value.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfGreaterThanOther<T>(T value, T other, string? paramName = null, string? otherName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The current value being validated.
+    - id: other
+      type: '{T}'
+      description: The comparison reference value.
+    - id: paramName
+      type: System.String
+      description: Name of the value parameter.
+    - id: otherName
+      type: System.String
+      description: Name of the comparison parameter.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfGreaterThanOther(Of T As IComparable(Of T))(value As T, other As T, paramName As String = Nothing, otherName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfGreaterThanOther*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt; <code class="paramref">other</code>.
+
+      Message: "The value must not be greater than the value of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfGreaterThanOther(Of T)(T, T, String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfGreaterThanOther(Of T)(T, T, String, String)
+  name.vb: ThrowIfGreaterThanOther(Of T)(T, T, String, String)
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther``1(``0,``0,System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther``1(``0,``0,System.String,System.String)
+  id: ThrowIfGreaterThanOrEqualOther``1(``0,``0,System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfGreaterThanOrEqualOther<T>(T, T, string?, string?)
+  nameWithType: ThrowHelper.ThrowIfGreaterThanOrEqualOther<T>(T, T, string?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther<T>(T, T, string?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfGreaterThanOrEqualOther
+    path: ThrowHelper.cs
+    startLine: 319
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the value is greater than or equal to another parameter's value.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfGreaterThanOrEqualOther<T>(T value, T other, string? paramName = null, string? otherName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value being validated.
+    - id: other
+      type: '{T}'
+      description: The comparison reference value.
+    - id: paramName
+      type: System.String
+      description: Name of the value parameter.
+    - id: otherName
+      type: System.String
+      description: Name of the comparison parameter.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfGreaterThanOrEqualOther(Of T As IComparable(Of T))(value As T, other As T, paramName As String = Nothing, otherName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt;= <code class="paramref">other</code>.
+
+      Message: "The value must not be greater than or equal to the value of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfGreaterThanOrEqualOther(Of T)(T, T, String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther(Of T)(T, T, String, String)
+  name.vb: ThrowIfGreaterThanOrEqualOther(Of T)(T, T, String, String)
+- uid: Bodu.ThrowHelper.ThrowIfIndexOutOfRange``1(System.Int32,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfIndexOutOfRange``1(System.Int32,System.Int32,System.String)
+  id: ThrowIfIndexOutOfRange``1(System.Int32,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfIndexOutOfRange<T>(int, int, string?)
+  nameWithType: ThrowHelper.ThrowIfIndexOutOfRange<T>(int, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfIndexOutOfRange<T>(int, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfIndexOutOfRange
+    path: ThrowHelper.cs
+    startLine: 342
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the index is outside the valid range of a collection.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfIndexOutOfRange<T>(int index, int size, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The index to validate.
+    - id: size
+      type: System.Int32
+      description: The valid size of the collection.
+    - id: paramName
+      type: System.String
+      description: The parameter name for the index.
+    typeParameters:
+    - id: T
+      description: Type of items in the collection (used for annotation).
+    content.vb: Public Shared Sub ThrowIfIndexOutOfRange(Of T As IComparable(Of T))(index As Integer, size As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfIndexOutOfRange*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">index</code> is not in [0, <code class="paramref">size</code>).
+
+      Message: "The index must be non-negative and less than the size of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfIndexOutOfRange(Of T)(Integer, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfIndexOutOfRange(Of T)(Integer, Integer, String)
+  name.vb: ThrowIfIndexOutOfRange(Of T)(Integer, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfLessThan``1(``0,``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfLessThan``1(``0,``0,System.String)
+  id: ThrowIfLessThan``1(``0,``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfLessThan<T>(T, T, string?)
+  nameWithType: ThrowHelper.ThrowIfLessThan<T>(T, T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfLessThan<T>(T, T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfLessThan
+    path: ThrowHelper.cs
+    startLine: 364
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is less than the specified minimum.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfLessThan<T>(T value, T min, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: min
+      type: '{T}'
+      description: The minimum value allowed.
+    - id: paramName
+      type: System.String
+      description: The parameter name for the value.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfLessThan(Of T As IComparable(Of T))(value As T, min As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfLessThan*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &lt; <code class="paramref">min</code>.
+
+      Message: "The value must be greater than or equal to {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfLessThan(Of T)(T, T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfLessThan(Of T)(T, T, String)
+  name.vb: ThrowIfLessThan(Of T)(T, T, String)
+- uid: Bodu.ThrowHelper.ThrowIfLessThan``1(System.Nullable{``0},``0,System.Boolean,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfLessThan``1(System.Nullable{``0},``0,System.Boolean,System.String)
+  id: ThrowIfLessThan``1(System.Nullable{``0},``0,System.Boolean,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfLessThan<T>(T?, T, bool, string?)
+  nameWithType: ThrowHelper.ThrowIfLessThan<T>(T?, T, bool, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfLessThan<T>(T?, T, bool, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfLessThan
+    path: ThrowHelper.cs
+    startLine: 391
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: >-
+    Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is less than the specified minimum. Optionally throws
+
+    <xref href="System.ArgumentNullException" data-throw-if-not-resolved="false"></xref> if the value is null.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfLessThan<T>(T? value, T min, bool throwIfNull = false, string? paramName = null) where T : struct, IComparable<T>'
+    parameters:
+    - id: value
+      type: System.Nullable{{T}}
+      description: The value to validate (nullable).
+    - id: min
+      type: '{T}'
+      description: The minimum value allowed.
+    - id: throwIfNull
+      type: System.Boolean
+      description: Whether to throw if <code class="paramref">value</code> is null. Default is false.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter being validated.
+    typeParameters:
+    - id: T
+      description: A comparable value type.
+    content.vb: Public Shared Sub ThrowIfLessThan(Of T As {Structure, IComparable(Of T)})(value As T?, min As T, throwIfNull As Boolean = False, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfLessThan*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when <code class="paramref">value</code> is null and <code class="paramref">throwIfNull</code> is true.
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> is non-null and less than <code class="paramref">min</code>.
+
+      Message: "The value must be greater than or equal to {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfLessThan(Of T)(T?, T, Boolean, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfLessThan(Of T)(T?, T, Boolean, String)
+  name.vb: ThrowIfLessThan(Of T)(T?, T, Boolean, String)
+- uid: Bodu.ThrowHelper.ThrowIfLessThanOrEqual``1(``0,``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfLessThanOrEqual``1(``0,``0,System.String)
+  id: ThrowIfLessThanOrEqual``1(``0,``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfLessThanOrEqual<T>(T, T, string?)
+  nameWithType: ThrowHelper.ThrowIfLessThanOrEqual<T>(T, T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfLessThanOrEqual<T>(T, T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfLessThanOrEqual
+    path: ThrowHelper.cs
+    startLine: 420
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is less than or equal to the specified minimum.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfLessThanOrEqual<T>(T value, T min, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: min
+      type: '{T}'
+      description: The minimum exclusive bound.
+    - id: paramName
+      type: System.String
+      description: The parameter name for the value.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfLessThanOrEqual(Of T As IComparable(Of T))(value As T, min As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfLessThanOrEqual*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &lt;= <code class="paramref">min</code>.
+
+      Message: "The value must be greater than {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfLessThanOrEqual(Of T)(T, T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfLessThanOrEqual(Of T)(T, T, String)
+  name.vb: ThrowIfLessThanOrEqual(Of T)(T, T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNegative``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNegative``1(``0,System.String)
+  id: ThrowIfNegative``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNegative<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfNegative<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNegative<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNegative
+    path: ThrowHelper.cs
+    startLine: 441
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is less than zero.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfNegative<T>(T value, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A comparable numeric type.
+    content.vb: Public Shared Sub ThrowIfNegative(Of T As IComparable(Of T))(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNegative*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &lt; 0.
+
+      Message: "The value must be zero or positive."
+  nameWithType.vb: ThrowHelper.ThrowIfNegative(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNegative(Of T)(T, String)
+  name.vb: ThrowIfNegative(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfZero``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfZero``1(``0,System.String)
+  id: ThrowIfZero``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfZero<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfZero<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfZero<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfZero
+    path: ThrowHelper.cs
+    startLine: 461
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is zero.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfZero<T>(T value, string? paramName = null) where T : IEquatable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A type that implements <xref href="System.IEquatable%601" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Sub ThrowIfZero(Of T As IEquatable(Of T))(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfZero*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> equals 0.
+
+      Message: "The value must not be zero."
+  nameWithType.vb: ThrowHelper.ThrowIfZero(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfZero(Of T)(T, String)
+  name.vb: ThrowIfZero(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfZeroOrNegative``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfZeroOrNegative``1(``0,System.String)
+  id: ThrowIfZeroOrNegative``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfZeroOrNegative<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfZeroOrNegative<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfZeroOrNegative<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfZeroOrNegative
+    path: ThrowHelper.cs
+    startLine: 481
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is zero or negative.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfZeroOrNegative<T>(T value, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A comparable numeric type.
+    content.vb: Public Shared Sub ThrowIfZeroOrNegative(Of T As IComparable(Of T))(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfZeroOrNegative*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &lt;= 0.
+
+      Message: "The value must be a positive number."
+  nameWithType.vb: ThrowHelper.ThrowIfZeroOrNegative(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfZeroOrNegative(Of T)(T, String)
+  name.vb: ThrowIfZeroOrNegative(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfZeroOrPositive``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfZeroOrPositive``1(``0,System.String)
+  id: ThrowIfZeroOrPositive``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfZeroOrPositive<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfZeroOrPositive<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfZeroOrPositive<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfZeroOrPositive
+    path: ThrowHelper.cs
+    startLine: 501
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is zero or positive.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfZeroOrPositive<T>(T value, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A comparable numeric type.
+    content.vb: Public Shared Sub ThrowIfZeroOrPositive(Of T As IComparable(Of T))(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfZeroOrPositive*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt;= 0.
+
+      Message: "The value must be a negative number."
+  nameWithType.vb: ThrowHelper.ThrowIfZeroOrPositive(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfZeroOrPositive(Of T)(T, String)
+  name.vb: ThrowIfZeroOrPositive(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNotBetweenExclusive``1(``0,``0,``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNotBetweenExclusive``1(``0,``0,``0,System.String)
+  id: ThrowIfNotBetweenExclusive``1(``0,``0,``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNotBetweenExclusive<T>(T, T, T, string?)
+  nameWithType: ThrowHelper.ThrowIfNotBetweenExclusive<T>(T, T, T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNotBetweenExclusive<T>(T, T, T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNotBetweenExclusive
+    path: ThrowHelper.cs
+    startLine: 523
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is not between min and max (exclusive).
+  example: []
+  syntax:
+    content: 'public static void ThrowIfNotBetweenExclusive<T>(T value, T min, T max, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to validate.
+    - id: min
+      type: '{T}'
+      description: The lower exclusive bound.
+    - id: max
+      type: '{T}'
+      description: The upper exclusive bound.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfNotBetweenExclusive(Of T As IComparable(Of T))(value As T, min As T, max As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNotBetweenExclusive*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &lt;= <code class="paramref">min</code> or &gt;= <code class="paramref">max</code>.
+
+      Message: "The value must be greater than {0} and less than {1}."
+  nameWithType.vb: ThrowHelper.ThrowIfNotBetweenExclusive(Of T)(T, T, T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNotBetweenExclusive(Of T)(T, T, T, String)
+  name.vb: ThrowIfNotBetweenExclusive(Of T)(T, T, T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNotBetweenInclusive``1(``0,``0,``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNotBetweenInclusive``1(``0,``0,``0,System.String)
+  id: ThrowIfNotBetweenInclusive``1(``0,``0,``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNotBetweenInclusive<T>(T, T, T, string?)
+  nameWithType: ThrowHelper.ThrowIfNotBetweenInclusive<T>(T, T, T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNotBetweenInclusive<T>(T, T, T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNotBetweenInclusive
+    path: ThrowHelper.cs
+    startLine: 546
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is not between min and max (inclusive).
+  example: []
+  syntax:
+    content: 'public static void ThrowIfNotBetweenInclusive<T>(T value, T min, T max, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to validate.
+    - id: min
+      type: '{T}'
+      description: The lower inclusive bound.
+    - id: max
+      type: '{T}'
+      description: The upper inclusive bound.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfNotBetweenInclusive(Of T As IComparable(Of T))(value As T, min As T, max As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNotBetweenInclusive*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &lt; <code class="paramref">min</code> or &gt; <code class="paramref">max</code>.
+
+      Message: "The value must be between {0} and {1}, inclusive."
+  nameWithType.vb: ThrowHelper.ThrowIfNotBetweenInclusive(Of T)(T, T, T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNotBetweenInclusive(Of T)(T, T, T, String)
+  name.vb: ThrowIfNotBetweenInclusive(Of T)(T, T, T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNotOfType``1(System.Object,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNotOfType``1(System.Object,System.String)
+  id: ThrowIfNotOfType``1(System.Object,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNotOfType<T>(object?, string?)
+  nameWithType: ThrowHelper.ThrowIfNotOfType<T>(object?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNotOfType<T>(object?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNotOfType
+    path: ThrowHelper.cs
+    startLine: 569
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the object is not assignable to type <code class="typeparamref">T</code>.
+  remarks: Null is only allowed if <code class="typeparamref">T</code> is a reference or nullable type.
+  example: []
+  syntax:
+    content: public static void ThrowIfNotOfType<T>(object? value, string? paramName = null)
+    parameters:
+    - id: value
+      type: System.Object
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: The target type to validate against.
+    content.vb: Public Shared Sub ThrowIfNotOfType(Of T)(value As Object, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNotOfType*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> is not null and not of type <code class="typeparamref">T</code>, or if it is null and
+
+      <code class="typeparamref">T</code> is a non-nullable value type.
+
+      Message: "Object must be of type {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfNotOfType(Of T)(Object, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNotOfType(Of T)(Object, String)
+  name.vb: ThrowIfNotOfType(Of T)(Object, String)
+- uid: Bodu.ThrowHelper.ThrowIfNull``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNull``1(``0,System.String)
+  id: ThrowIfNull``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNull<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfNull<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNull<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNull
+    path: ThrowHelper.cs
+    startLine: 599
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentNullException" data-throw-if-not-resolved="false"></xref> if the provided value is <code>null</code>.
+  example: []
+  syntax:
+    content: public static void ThrowIfNull<T>(T value, string? paramName = null)
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter being validated.
+    typeParameters:
+    - id: T
+      description: The type of the object.
+    content.vb: Public Shared Sub ThrowIfNull(Of T)(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNull*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: >-
+      Thrown if <code class="paramref">value</code> is <code>null</code>.
+
+      Message: "Value cannot be null."
+  nameWithType.vb: ThrowHelper.ThrowIfNull(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNull(Of T)(T, String)
+  name.vb: ThrowIfNull(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNull``1(``0,System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNull``1(``0,System.String,System.String)
+  id: ThrowIfNull``1(``0,System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNull<T>(T, string, string?)
+  nameWithType: ThrowHelper.ThrowIfNull<T>(T, string, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNull<T>(T, string, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNull
+    path: ThrowHelper.cs
+    startLine: 616
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentNullException" data-throw-if-not-resolved="false"></xref> if the value is <code>null</code>, with a custom message.
+  example: []
+  syntax:
+    content: public static void ThrowIfNull<T>(T value, string message, string? paramName = null)
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to validate.
+    - id: message
+      type: System.String
+      description: A custom error message for the exception.
+    - id: paramName
+      type: System.String
+      description: The parameter name.
+    typeParameters:
+    - id: T
+      description: The type of the value.
+    content.vb: Public Shared Sub ThrowIfNull(Of T)(value As T, message As String, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNull*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">value</code> is <code>null</code>.
+  nameWithType.vb: ThrowHelper.ThrowIfNull(Of T)(T, String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNull(Of T)(T, String, String)
+  name.vb: ThrowIfNull(Of T)(T, String, String)
+- uid: Bodu.ThrowHelper.ThrowIfNullOrEmpty(System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNullOrEmpty(System.String,System.String)
+  id: ThrowIfNullOrEmpty(System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNullOrEmpty(string, string?)
+  nameWithType: ThrowHelper.ThrowIfNullOrEmpty(string, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNullOrEmpty(string, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNullOrEmpty
+    path: ThrowHelper.cs
+    startLine: 636
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentNullException" data-throw-if-not-resolved="false"></xref> if the string is <code>null</code>, or an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if it is empty.
+  example: []
+  syntax:
+    content: public static void ThrowIfNullOrEmpty(string value, string? paramName = null)
+    parameters:
+    - id: value
+      type: System.String
+      description: The string value to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    content.vb: Public Shared Sub ThrowIfNullOrEmpty(value As String, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNullOrEmpty*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">value</code> is <code>null</code>.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> is an empty string.
+
+      Message: "The string was either null or empty."
+  nameWithType.vb: ThrowHelper.ThrowIfNullOrEmpty(String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNullOrEmpty(String, String)
+  name.vb: ThrowIfNullOrEmpty(String, String)
+- uid: Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace(System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace(System.String,System.String)
+  id: ThrowIsNullOrWhiteSpace(System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIsNullOrWhiteSpace(string, string?)
+  nameWithType: ThrowHelper.ThrowIsNullOrWhiteSpace(string, string?)
+  fullName: Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace(string, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIsNullOrWhiteSpace
+    path: ThrowHelper.cs
+    startLine: 659
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: >-
+    Throws an <xref href="System.ArgumentNullException" data-throw-if-not-resolved="false"></xref> if the value is <code>null</code>, or an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if it is
+
+    empty or whitespace.
+  example: []
+  syntax:
+    content: public static void ThrowIsNullOrWhiteSpace(string value, string? paramName = null)
+    parameters:
+    - id: value
+      type: System.String
+      description: The string value to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    content.vb: Public Shared Sub ThrowIsNullOrWhiteSpace(value As String, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">value</code> is <code>null</code>.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> is empty or contains only whitespace.
+
+      Message: "The string was either empty or contained only whitespace."
+  nameWithType.vb: ThrowHelper.ThrowIsNullOrWhiteSpace(String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace(String, String)
+  name.vb: ThrowIsNullOrWhiteSpace(String, String)
+- uid: Bodu.ThrowHelper.ThrowIfPositive``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfPositive``1(``0,System.String)
+  id: ThrowIfPositive``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfPositive<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfPositive<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfPositive<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfPositive
+    path: ThrowHelper.cs
+    startLine: 681
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is positive.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfPositive<T>(T value, string? paramName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to check.
+    - id: paramName
+      type: System.String
+      description: The name of the value parameter.
+    typeParameters:
+    - id: T
+      description: A comparable numeric type.
+    content.vb: Public Shared Sub ThrowIfPositive(Of T As IComparable(Of T))(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfPositive*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt; 0.
+
+      Message: "The value must be zero or negative."
+  nameWithType.vb: ThrowHelper.ThrowIfPositive(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfPositive(Of T)(T, String)
+  name.vb: ThrowIfPositive(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNotZero``1(``0,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNotZero``1(``0,System.String)
+  id: ThrowIfNotZero``1(``0,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNotZero<T>(T, string?)
+  nameWithType: ThrowHelper.ThrowIfNotZero<T>(T, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNotZero<T>(T, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNotZero
+    path: ThrowHelper.cs
+    startLine: 702
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is not equal to zero.
+  remarks: Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfNotZero<T>(T value, string? paramName = null) where T : IEquatable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    typeParameters:
+    - id: T
+      description: A type that supports equality comparison.
+    content.vb: Public Shared Sub ThrowIfNotZero(Of T As IEquatable(Of T))(value As T, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNotZero*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> is not zero.
+
+      Message: "The value must be zero."
+  nameWithType.vb: ThrowHelper.ThrowIfNotZero(Of T)(T, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNotZero(Of T)(T, String)
+  name.vb: ThrowIfNotZero(Of T)(T, String)
+- uid: Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf(System.Int32,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf(System.Int32,System.Int32,System.String)
+  id: ThrowIfNotPositiveMultipleOf(System.Int32,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfNotPositiveMultipleOf(int, int, string?)
+  nameWithType: ThrowHelper.ThrowIfNotPositiveMultipleOf(int, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf(int, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfNotPositiveMultipleOf
+    path: ThrowHelper.cs
+    startLine: 723
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the value is not a positive multiple of the specified divisor.
+  remarks: Useful for validating aligned buffer sizes, memory boundaries, or block-aligned lengths.
+  example: []
+  syntax:
+    content: public static void ThrowIfNotPositiveMultipleOf(int value, int divisor, string? paramName = null)
+    parameters:
+    - id: value
+      type: System.Int32
+      description: The value to validate.
+    - id: divisor
+      type: System.Int32
+      description: The required positive divisor.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    content.vb: Public Shared Sub ThrowIfNotPositiveMultipleOf(value As Integer, divisor As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown if <code class="paramref">value</code> is not greater than zero or not divisible by <code class="paramref">divisor</code>.
+
+      Message: "The value must be a positive number and a multiple of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfNotPositiveMultipleOf(Integer, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf(Integer, Integer, String)
+  name.vb: ThrowIfNotPositiveMultipleOf(Integer, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric(System.Array,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric(System.Array,System.String)
+  id: ThrowIfArrayContainsNonNumeric(System.Array,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfArrayContainsNonNumeric(Array, string?)
+  nameWithType: ThrowHelper.ThrowIfArrayContainsNonNumeric(Array, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric(System.Array, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfArrayContainsNonNumeric
+    path: ThrowHelper.cs
+    startLine: 744
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the array contains any non-numeric items.
+  remarks: Validates that each element is of a numeric type (e.g., int, double, float, etc.).
+  example: []
+  syntax:
+    content: public static void ThrowIfArrayContainsNonNumeric(Array array, string? paramName = null)
+    parameters:
+    - id: array
+      type: System.Array
+      description: The array to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    content.vb: Public Shared Sub ThrowIfArrayContainsNonNumeric(array As Array, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when any element in the array is not a numeric type.
+
+      Message: "The array contains non-numeric values."
+  nameWithType.vb: ThrowHelper.ThrowIfArrayContainsNonNumeric(Array, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric(System.Array, String)
+  name.vb: ThrowIfArrayContainsNonNumeric(Array, String)
+- uid: Bodu.ThrowHelper.ThrowIfCollectionTooSmall``1(System.Collections.Generic.ICollection{``0},System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfCollectionTooSmall``1(System.Collections.Generic.ICollection{``0},System.Int32,System.String)
+  id: ThrowIfCollectionTooSmall``1(System.Collections.Generic.ICollection{``0},System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfCollectionTooSmall<T>(ICollection<T>, int, string?)
+  nameWithType: ThrowHelper.ThrowIfCollectionTooSmall<T>(ICollection<T>, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfCollectionTooSmall<T>(System.Collections.Generic.ICollection<T>, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfCollectionTooSmall
+    path: ThrowHelper.cs
+    startLine: 770
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the collection has fewer elements than the specified minimum.
+  remarks: Performs a minimum count check on the collection.
+  example: []
+  syntax:
+    content: public static void ThrowIfCollectionTooSmall<T>(ICollection<T> collection, int minCount, string? paramName = null)
+    parameters:
+    - id: collection
+      type: System.Collections.Generic.ICollection{{T}}
+      description: The collection to validate.
+    - id: minCount
+      type: System.Int32
+      description: The minimum number of required elements.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    typeParameters:
+    - id: T
+      description: The element type.
+    content.vb: Public Shared Sub ThrowIfCollectionTooSmall(Of T)(collection As ICollection(Of T), minCount As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfCollectionTooSmall*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">collection</code> has fewer than <code class="paramref">minCount</code> elements.
+
+      Message: "Collection contains insufficient elements."
+  nameWithType.vb: ThrowHelper.ThrowIfCollectionTooSmall(Of T)(ICollection(Of T), Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfCollectionTooSmall(Of T)(System.Collections.Generic.ICollection(Of T), Integer, String)
+  name.vb: ThrowIfCollectionTooSmall(Of T)(ICollection(Of T), Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfInvalidStringComparison(System.StringComparison,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfInvalidStringComparison(System.StringComparison,System.String)
+  id: ThrowIfInvalidStringComparison(System.StringComparison,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfInvalidStringComparison(StringComparison, string?)
+  nameWithType: ThrowHelper.ThrowIfInvalidStringComparison(StringComparison, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfInvalidStringComparison(System.StringComparison, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfInvalidStringComparison
+    path: ThrowHelper.cs
+    startLine: 790
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the string comparison option is invalid or unsupported.
+  remarks: Useful for guarding API input that relies on specific string comparison modes.
+  example: []
+  syntax:
+    content: public static void ThrowIfInvalidStringComparison(StringComparison comparison, string? paramName = null)
+    parameters:
+    - id: comparison
+      type: System.StringComparison
+      description: The <xref href="System.StringComparison" data-throw-if-not-resolved="false"></xref> value to validate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter.
+    content.vb: Public Shared Sub ThrowIfInvalidStringComparison(comparison As StringComparison, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfInvalidStringComparison*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">comparison</code> is not a valid <xref href="System.StringComparison" data-throw-if-not-resolved="false"></xref> enum value.
+
+      Message: "The string comparison type is not supported."
+  nameWithType.vb: ThrowHelper.ThrowIfInvalidStringComparison(StringComparison, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfInvalidStringComparison(System.StringComparison, String)
+  name.vb: ThrowIfInvalidStringComparison(StringComparison, String)
+- uid: Bodu.ThrowHelper.ThrowIfLessThanOther``1(``0,``0,System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfLessThanOther``1(``0,``0,System.String,System.String)
+  id: ThrowIfLessThanOther``1(``0,``0,System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfLessThanOther<T>(T, T, string?, string?)
+  nameWithType: ThrowHelper.ThrowIfLessThanOther<T>(T, T, string?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfLessThanOther<T>(T, T, string?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfLessThanOther
+    path: ThrowHelper.cs
+    startLine: 811
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the value is less than another parameter's value.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfLessThanOther<T>(T value, T other, string? paramName = null, string? otherName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The current value being validated.
+    - id: other
+      type: '{T}'
+      description: The comparison reference value.
+    - id: paramName
+      type: System.String
+      description: Name of the value parameter.
+    - id: otherName
+      type: System.String
+      description: Name of the comparison parameter.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfLessThanOther(Of T As IComparable(Of T))(value As T, other As T, paramName As String = Nothing, otherName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfLessThanOther*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt; <code class="paramref">other</code>.
+
+      Message: "The value must not be less than the value of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfLessThanOther(Of T)(T, T, String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfLessThanOther(Of T)(T, T, String, String)
+  name.vb: ThrowIfLessThanOther(Of T)(T, T, String, String)
+- uid: Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther``1(``0,``0,System.String,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther``1(``0,``0,System.String,System.String)
+  id: ThrowIfLessThanOrEqualOther``1(``0,``0,System.String,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfLessThanOrEqualOther<T>(T, T, string?, string?)
+  nameWithType: ThrowHelper.ThrowIfLessThanOrEqualOther<T>(T, T, string?, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther<T>(T, T, string?, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfLessThanOrEqualOther
+    path: ThrowHelper.cs
+    startLine: 835
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentException" data-throw-if-not-resolved="false"></xref> if the value is less than or equal to another parameter's value.
+  example: []
+  syntax:
+    content: 'public static void ThrowIfLessThanOrEqualOther<T>(T value, T other, string? paramName = null, string? otherName = null) where T : IComparable<T>'
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value being validated.
+    - id: other
+      type: '{T}'
+      description: The comparison reference value.
+    - id: paramName
+      type: System.String
+      description: Name of the value parameter.
+    - id: otherName
+      type: System.String
+      description: Name of the comparison parameter.
+    typeParameters:
+    - id: T
+      description: A comparable type.
+    content.vb: Public Shared Sub ThrowIfLessThanOrEqualOther(Of T As IComparable(Of T))(value As T, other As T, paramName As String = Nothing, otherName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown if <code class="paramref">value</code> &gt;= <code class="paramref">other</code>.
+
+      Message: "The value must not be less than or equal to the value of {0}."
+  nameWithType.vb: ThrowHelper.ThrowIfLessThanOrEqualOther(Of T)(T, T, String, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther(Of T)(T, T, String, String)
+  name.vb: ThrowIfLessThanOrEqualOther(Of T)(T, T, String, String)
+- uid: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(System.Int32,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(System.Int32,System.Int32,System.String)
+  id: ThrowIfSequenceRangeOverflows(System.Int32,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfSequenceRangeOverflows(int, int, string?)
+  nameWithType: ThrowHelper.ThrowIfSequenceRangeOverflows(int, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(int, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfSequenceRangeOverflows
+    path: ThrowHelper.cs
+    startLine: 857
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the calculated sequence would exceed the maximum value for <xref href="System.Int32" data-throw-if-not-resolved="false"></xref>.
+  remarks: This check prevents arithmetic overflow when generating sequences like ranges.
+  example: []
+  syntax:
+    content: public static void ThrowIfSequenceRangeOverflows(int start, int count, string? paramName = null)
+    parameters:
+    - id: start
+      type: System.Int32
+      description: The starting value of the sequence.
+    - id: count
+      type: System.Int32
+      description: The number of values to generate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter representing <code class="paramref">count</code>.
+    content.vb: Public Shared Sub ThrowIfSequenceRangeOverflows(start As Integer, count As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <code class="paramref">start</code> + <code class="paramref">count</code> - 1 would exceed <xref href="System.Int32.MaxValue" data-throw-if-not-resolved="false"></xref>.
+  nameWithType.vb: ThrowHelper.ThrowIfSequenceRangeOverflows(Integer, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(Integer, Integer, String)
+  name.vb: ThrowIfSequenceRangeOverflows(Integer, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(System.Int64,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(System.Int64,System.Int32,System.String)
+  id: ThrowIfSequenceRangeOverflows(System.Int64,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfSequenceRangeOverflows(long, int, string?)
+  nameWithType: ThrowHelper.ThrowIfSequenceRangeOverflows(long, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(long, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfSequenceRangeOverflows
+    path: ThrowHelper.cs
+    startLine: 877
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the calculated sequence would exceed the maximum value for <xref href="System.Int64" data-throw-if-not-resolved="false"></xref>.
+  remarks: This check prevents arithmetic overflow when generating long-based numeric sequences.
+  example: []
+  syntax:
+    content: public static void ThrowIfSequenceRangeOverflows(long start, int count, string? paramName = null)
+    parameters:
+    - id: start
+      type: System.Int64
+      description: The starting value of the sequence.
+    - id: count
+      type: System.Int32
+      description: The number of values to generate.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter representing <code class="paramref">count</code>.
+    content.vb: Public Shared Sub ThrowIfSequenceRangeOverflows(start As Long, count As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <code class="paramref">start</code> + <code class="paramref">count</code> - 1 would exceed <xref href="System.Int64.MaxValue" data-throw-if-not-resolved="false"></xref>.
+  nameWithType.vb: ThrowHelper.ThrowIfSequenceRangeOverflows(Long, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows(Long, Integer, String)
+  name.vb: ThrowIfSequenceRangeOverflows(Long, Integer, String)
+- uid: Bodu.ThrowHelper.ThrowIfCountExceedsAvailable(System.Int32,System.Int32,System.String)
+  commentId: M:Bodu.ThrowHelper.ThrowIfCountExceedsAvailable(System.Int32,System.Int32,System.String)
+  id: ThrowIfCountExceedsAvailable(System.Int32,System.Int32,System.String)
+  parent: Bodu.ThrowHelper
+  langs:
+  - csharp
+  - vb
+  name: ThrowIfCountExceedsAvailable(int, int, string?)
+  nameWithType: ThrowHelper.ThrowIfCountExceedsAvailable(int, int, string?)
+  fullName: Bodu.ThrowHelper.ThrowIfCountExceedsAvailable(int, int, string?)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/ThrowHelper.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThrowIfCountExceedsAvailable
+    path: ThrowHelper.cs
+    startLine: 900
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu
+  summary: >-
+    Throws an <xref href="System.ArgumentOutOfRangeException" data-throw-if-not-resolved="false"></xref> if the specified <code class="paramref">count</code> is less than zero or greater
+
+    than the number of <code class="paramref">available</code> items.
+  remarks: Use this method when validating that a subset operation will not exceed the size of the source.
+  example: []
+  syntax:
+    content: public static void ThrowIfCountExceedsAvailable(int count, int available, string? paramName = null)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: The count value to validate.
+    - id: available
+      type: System.Int32
+      description: The number of available items.
+    - id: paramName
+      type: System.String
+      description: The name of the parameter being validated (usually "count").
+    content.vb: Public Shared Sub ThrowIfCountExceedsAvailable(count As Integer, available As Integer, paramName As String = Nothing)
+  overload: Bodu.ThrowHelper.ThrowIfCountExceedsAvailable*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: >-
+      Thrown when <code class="paramref">count</code> is negative or greater than <code class="paramref">available</code>.
+
+      Message: "Count must be non-negative and not exceed the number of available items."
+  nameWithType.vb: ThrowHelper.ThrowIfCountExceedsAvailable(Integer, Integer, String)
+  fullName.vb: Bodu.ThrowHelper.ThrowIfCountExceedsAvailable(Integer, Integer, String)
+  name.vb: ThrowIfCountExceedsAvailable(Integer, Integer, String)
+references:
+- uid: Bodu
+  commentId: N:Bodu
+  href: Bodu.html
+  name: Bodu
+  nameWithType: Bodu
+  fullName: Bodu
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayIsNotSingleDimension_System_Array_System_String_
+  name: ThrowIfArrayIsNotSingleDimension
+  nameWithType: ThrowHelper.ThrowIfArrayIsNotSingleDimension
+  fullName: Bodu.ThrowHelper.ThrowIfArrayIsNotSingleDimension
+- uid: System.Array
+  commentId: T:System.Array
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.array
+  name: Array
+  nameWithType: Array
+  fullName: System.Array
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayIsNotZeroBased_System_Array_System_String_
+  name: ThrowIfArrayIsNotZeroBased
+  nameWithType: ThrowHelper.ThrowIfArrayIsNotZeroBased
+  fullName: Bodu.ThrowHelper.ThrowIfArrayIsNotZeroBased
+- uid: Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayLengthIsInsufficient_System_Array_System_Int32_System_Int32_System_String_
+  name: ThrowIfArrayLengthIsInsufficient
+  nameWithType: ThrowHelper.ThrowIfArrayLengthIsInsufficient
+  fullName: Bodu.ThrowHelper.ThrowIfArrayLengthIsInsufficient
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Bodu.ThrowHelper.ThrowIfArrayLengthIsZero*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayLengthIsZero
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayLengthIsZero_System_Array_System_String_
+  name: ThrowIfArrayLengthIsZero
+  nameWithType: ThrowHelper.ThrowIfArrayLengthIsZero
+  fullName: Bodu.ThrowHelper.ThrowIfArrayLengthIsZero
+- uid: Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayLengthNotPositiveMultipleOf_System_Array_System_Int32_System_String_
+  name: ThrowIfArrayLengthNotPositiveMultipleOf
+  nameWithType: ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf
+  fullName: Bodu.ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf
+- uid: Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfSpanLengthIsInsufficient__1_System_Span___0__System_Int32_System_Int32_System_String_
+  name: ThrowIfSpanLengthIsInsufficient
+  nameWithType: ThrowHelper.ThrowIfSpanLengthIsInsufficient
+  fullName: Bodu.ThrowHelper.ThrowIfSpanLengthIsInsufficient
+- uid: System.Span{{T}}
+  commentId: T:System.Span{``0}
+  parent: System
+  definition: System.Span`1
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<T>
+  nameWithType: Span<T>
+  fullName: System.Span<T>
+  nameWithType.vb: Span(Of T)
+  fullName.vb: System.Span(Of T)
+  name.vb: Span(Of T)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Span`1
+  commentId: T:System.Span`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.span-1
+  name: Span<T>
+  nameWithType: Span<T>
+  fullName: System.Span<T>
+  nameWithType.vb: Span(Of T)
+  fullName.vb: System.Span(Of T)
+  name.vb: Span(Of T)
+  spec.csharp:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Span`1
+    name: Span
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.span-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfSpanLengthNotPositiveMultipleOf__1_System_ReadOnlySpan___0__System_Int32_System_Func_System_String_System_Exception__System_String_
+  name: ThrowIfSpanLengthNotPositiveMultipleOf
+  nameWithType: ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf
+  fullName: Bodu.ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf
+- uid: System.ReadOnlySpan{{T}}
+  commentId: T:System.ReadOnlySpan{``0}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func{System.String,System.Exception}
+  commentId: T:System.Func{System.String,System.Exception}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<string, Exception>
+  nameWithType: Func<string, Exception>
+  fullName: System.Func<string, System.Exception>
+  nameWithType.vb: Func(Of String, Exception)
+  fullName.vb: System.Func(Of String, System.Exception)
+  name.vb: Func(Of String, Exception)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayOffsetOrCountInvalid_System_Array_System_Int32_System_Int32_System_String_System_String_System_String_
+  name: ThrowIfArrayOffsetOrCountInvalid
+  nameWithType: ThrowHelper.ThrowIfArrayOffsetOrCountInvalid
+  fullName: Bodu.ThrowHelper.ThrowIfArrayOffsetOrCountInvalid
+- uid: Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayTypeIsNotCompatible__1_System_Array_System_String_
+  name: ThrowIfArrayTypeIsNotCompatible
+  nameWithType: ThrowHelper.ThrowIfArrayTypeIsNotCompatible
+  fullName: Bodu.ThrowHelper.ThrowIfArrayTypeIsNotCompatible
+- uid: System.Enum.IsDefined(System.Type,System.Object)
+  commentId: M:System.Enum.IsDefined(System.Type,System.Object)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.enum.isdefined#system-enum-isdefined(system-type-system-object)
+  name: IsDefined(Type, object)
+  nameWithType: Enum.IsDefined(Type, object)
+  fullName: System.Enum.IsDefined(System.Type, object)
+  nameWithType.vb: Enum.IsDefined(Type, Object)
+  fullName.vb: System.Enum.IsDefined(System.Type, Object)
+  name.vb: IsDefined(Type, Object)
+  spec.csharp:
+  - uid: System.Enum.IsDefined(System.Type,System.Object)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.enum.isdefined#system-enum-isdefined(system-type-system-object)
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Enum.IsDefined(System.Type,System.Object)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.enum.isdefined#system-enum-isdefined(system-type-system-object)
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfEnumValueIsUndefined__1___0_System_String_
+  name: ThrowIfEnumValueIsUndefined
+  nameWithType: ThrowHelper.ThrowIfEnumValueIsUndefined
+  fullName: Bodu.ThrowHelper.ThrowIfEnumValueIsUndefined
+- uid: '{TEnum}'
+  commentId: '!:TEnum'
+  definition: TEnum
+  name: TEnum
+  nameWithType: TEnum
+  fullName: TEnum
+- uid: TEnum
+  commentId: '!:TEnum'
+  name: TEnum
+  nameWithType: TEnum
+  fullName: TEnum
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThan*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfGreaterThan
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfGreaterThan__1___0___0_System_String_
+  name: ThrowIfGreaterThan
+  nameWithType: ThrowHelper.ThrowIfGreaterThan
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThan
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfGreaterThanOrEqual__1___0___0_System_String_
+  name: ThrowIfGreaterThanOrEqual
+  nameWithType: ThrowHelper.ThrowIfGreaterThanOrEqual
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqual
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThanOther*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfGreaterThanOther
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfGreaterThanOther__1___0___0_System_String_System_String_
+  name: ThrowIfGreaterThanOther
+  nameWithType: ThrowHelper.ThrowIfGreaterThanOther
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThanOther
+- uid: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfGreaterThanOrEqualOther__1___0___0_System_String_System_String_
+  name: ThrowIfGreaterThanOrEqualOther
+  nameWithType: ThrowHelper.ThrowIfGreaterThanOrEqualOther
+  fullName: Bodu.ThrowHelper.ThrowIfGreaterThanOrEqualOther
+- uid: Bodu.ThrowHelper.ThrowIfIndexOutOfRange*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfIndexOutOfRange
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfIndexOutOfRange__1_System_Int32_System_Int32_System_String_
+  name: ThrowIfIndexOutOfRange
+  nameWithType: ThrowHelper.ThrowIfIndexOutOfRange
+  fullName: Bodu.ThrowHelper.ThrowIfIndexOutOfRange
+- uid: Bodu.ThrowHelper.ThrowIfLessThan*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfLessThan
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfLessThan__1___0___0_System_String_
+  name: ThrowIfLessThan
+  nameWithType: ThrowHelper.ThrowIfLessThan
+  fullName: Bodu.ThrowHelper.ThrowIfLessThan
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: System.Nullable{{T}}
+  commentId: T:System.Nullable{``0}
+  parent: System
+  definition: System.Nullable`1
+  name: T?
+  nameWithType: T?
+  fullName: T?
+  spec.csharp:
+  - name: T
+  - name: '?'
+  spec.vb:
+  - name: T
+  - name: '?'
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Bodu.ThrowHelper.ThrowIfLessThanOrEqual*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfLessThanOrEqual
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfLessThanOrEqual__1___0___0_System_String_
+  name: ThrowIfLessThanOrEqual
+  nameWithType: ThrowHelper.ThrowIfLessThanOrEqual
+  fullName: Bodu.ThrowHelper.ThrowIfLessThanOrEqual
+- uid: Bodu.ThrowHelper.ThrowIfNegative*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNegative
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNegative__1___0_System_String_
+  name: ThrowIfNegative
+  nameWithType: ThrowHelper.ThrowIfNegative
+  fullName: Bodu.ThrowHelper.ThrowIfNegative
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Bodu.ThrowHelper.ThrowIfZero*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfZero
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfZero__1___0_System_String_
+  name: ThrowIfZero
+  nameWithType: ThrowHelper.ThrowIfZero
+  fullName: Bodu.ThrowHelper.ThrowIfZero
+- uid: Bodu.ThrowHelper.ThrowIfZeroOrNegative*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfZeroOrNegative
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfZeroOrNegative__1___0_System_String_
+  name: ThrowIfZeroOrNegative
+  nameWithType: ThrowHelper.ThrowIfZeroOrNegative
+  fullName: Bodu.ThrowHelper.ThrowIfZeroOrNegative
+- uid: Bodu.ThrowHelper.ThrowIfZeroOrPositive*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfZeroOrPositive
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfZeroOrPositive__1___0_System_String_
+  name: ThrowIfZeroOrPositive
+  nameWithType: ThrowHelper.ThrowIfZeroOrPositive
+  fullName: Bodu.ThrowHelper.ThrowIfZeroOrPositive
+- uid: Bodu.ThrowHelper.ThrowIfNotBetweenExclusive*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNotBetweenExclusive
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNotBetweenExclusive__1___0___0___0_System_String_
+  name: ThrowIfNotBetweenExclusive
+  nameWithType: ThrowHelper.ThrowIfNotBetweenExclusive
+  fullName: Bodu.ThrowHelper.ThrowIfNotBetweenExclusive
+- uid: Bodu.ThrowHelper.ThrowIfNotBetweenInclusive*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNotBetweenInclusive
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNotBetweenInclusive__1___0___0___0_System_String_
+  name: ThrowIfNotBetweenInclusive
+  nameWithType: ThrowHelper.ThrowIfNotBetweenInclusive
+  fullName: Bodu.ThrowHelper.ThrowIfNotBetweenInclusive
+- uid: Bodu.ThrowHelper.ThrowIfNotOfType*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNotOfType
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNotOfType__1_System_Object_System_String_
+  name: ThrowIfNotOfType
+  nameWithType: ThrowHelper.ThrowIfNotOfType
+  fullName: Bodu.ThrowHelper.ThrowIfNotOfType
+- uid: Bodu.ThrowHelper.ThrowIfNull*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNull
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNull__1___0_System_String_
+  name: ThrowIfNull
+  nameWithType: ThrowHelper.ThrowIfNull
+  fullName: Bodu.ThrowHelper.ThrowIfNull
+- uid: Bodu.ThrowHelper.ThrowIfNullOrEmpty*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNullOrEmpty
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNullOrEmpty_System_String_System_String_
+  name: ThrowIfNullOrEmpty
+  nameWithType: ThrowHelper.ThrowIfNullOrEmpty
+  fullName: Bodu.ThrowHelper.ThrowIfNullOrEmpty
+- uid: Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIsNullOrWhiteSpace_System_String_System_String_
+  name: ThrowIsNullOrWhiteSpace
+  nameWithType: ThrowHelper.ThrowIsNullOrWhiteSpace
+  fullName: Bodu.ThrowHelper.ThrowIsNullOrWhiteSpace
+- uid: Bodu.ThrowHelper.ThrowIfPositive*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfPositive
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfPositive__1___0_System_String_
+  name: ThrowIfPositive
+  nameWithType: ThrowHelper.ThrowIfPositive
+  fullName: Bodu.ThrowHelper.ThrowIfPositive
+- uid: Bodu.ThrowHelper.ThrowIfNotZero*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNotZero
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNotZero__1___0_System_String_
+  name: ThrowIfNotZero
+  nameWithType: ThrowHelper.ThrowIfNotZero
+  fullName: Bodu.ThrowHelper.ThrowIfNotZero
+- uid: Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfNotPositiveMultipleOf_System_Int32_System_Int32_System_String_
+  name: ThrowIfNotPositiveMultipleOf
+  nameWithType: ThrowHelper.ThrowIfNotPositiveMultipleOf
+  fullName: Bodu.ThrowHelper.ThrowIfNotPositiveMultipleOf
+- uid: Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfArrayContainsNonNumeric_System_Array_System_String_
+  name: ThrowIfArrayContainsNonNumeric
+  nameWithType: ThrowHelper.ThrowIfArrayContainsNonNumeric
+  fullName: Bodu.ThrowHelper.ThrowIfArrayContainsNonNumeric
+- uid: Bodu.ThrowHelper.ThrowIfCollectionTooSmall*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfCollectionTooSmall
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfCollectionTooSmall__1_System_Collections_Generic_ICollection___0__System_Int32_System_String_
+  name: ThrowIfCollectionTooSmall
+  nameWithType: ThrowHelper.ThrowIfCollectionTooSmall
+  fullName: Bodu.ThrowHelper.ThrowIfCollectionTooSmall
+- uid: System.Collections.Generic.ICollection{{T}}
+  commentId: T:System.Collections.Generic.ICollection{``0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.StringComparison
+  commentId: T:System.StringComparison
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.stringcomparison
+  name: StringComparison
+  nameWithType: StringComparison
+  fullName: System.StringComparison
+- uid: Bodu.ThrowHelper.ThrowIfInvalidStringComparison*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfInvalidStringComparison
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfInvalidStringComparison_System_StringComparison_System_String_
+  name: ThrowIfInvalidStringComparison
+  nameWithType: ThrowHelper.ThrowIfInvalidStringComparison
+  fullName: Bodu.ThrowHelper.ThrowIfInvalidStringComparison
+- uid: Bodu.ThrowHelper.ThrowIfLessThanOther*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfLessThanOther
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfLessThanOther__1___0___0_System_String_System_String_
+  name: ThrowIfLessThanOther
+  nameWithType: ThrowHelper.ThrowIfLessThanOther
+  fullName: Bodu.ThrowHelper.ThrowIfLessThanOther
+- uid: Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfLessThanOrEqualOther__1___0___0_System_String_System_String_
+  name: ThrowIfLessThanOrEqualOther
+  nameWithType: ThrowHelper.ThrowIfLessThanOrEqualOther
+  fullName: Bodu.ThrowHelper.ThrowIfLessThanOrEqualOther
+- uid: System.Int32.MaxValue
+  commentId: F:System.Int32.MaxValue
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32.maxvalue
+  name: MaxValue
+  nameWithType: int.MaxValue
+  fullName: int.MaxValue
+  nameWithType.vb: Integer.MaxValue
+  fullName.vb: Integer.MaxValue
+- uid: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfSequenceRangeOverflows_System_Int32_System_Int32_System_String_
+  name: ThrowIfSequenceRangeOverflows
+  nameWithType: ThrowHelper.ThrowIfSequenceRangeOverflows
+  fullName: Bodu.ThrowHelper.ThrowIfSequenceRangeOverflows
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Int64.MaxValue
+  commentId: F:System.Int64.MaxValue
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64.maxvalue
+  name: MaxValue
+  nameWithType: long.MaxValue
+  fullName: long.MaxValue
+  nameWithType.vb: Long.MaxValue
+  fullName.vb: Long.MaxValue
+- uid: Bodu.ThrowHelper.ThrowIfCountExceedsAvailable*
+  commentId: Overload:Bodu.ThrowHelper.ThrowIfCountExceedsAvailable
+  href: Bodu.ThrowHelper.html#Bodu_ThrowHelper_ThrowIfCountExceedsAvailable_System_Int32_System_Int32_System_String_
+  name: ThrowIfCountExceedsAvailable
+  nameWithType: ThrowHelper.ThrowIfCountExceedsAvailable
+  fullName: Bodu.ThrowHelper.ThrowIfCountExceedsAvailable

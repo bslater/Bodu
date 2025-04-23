@@ -1,0 +1,389 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Extensions.IQuarterProvider
+  commentId: T:Bodu.Extensions.IQuarterProvider
+  id: IQuarterProvider
+  parent: Bodu.Extensions
+  children:
+  - Bodu.Extensions.IQuarterProvider.GetQuarter(System.DateTime)
+  - Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter(System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: IQuarterProvider
+  nameWithType: IQuarterProvider
+  fullName: Bodu.Extensions.IQuarterProvider
+  type: Interface
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/IQuarterDefinitionProvider.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: IQuarterProvider
+    path: Extensions/IQuarterDefinitionProvider.cs
+    startLine: 13
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Provides custom quarter calculation logic for a <xref href="System.DateTime" data-throw-if-not-resolved="false"></xref>.
+  remarks: >-
+    Implement this interface to support <xref href="Bodu.Extensions.QuarterDefinition.Custom" data-throw-if-not-resolved="false"></xref> in
+
+    <xref href="Bodu.Extensions.DateTimeExtensions.Quarter(System.DateTime%2cBodu.Extensions.QuarterDefinition)" data-throw-if-not-resolved="false"></xref> and related methods like
+
+    <xref href="Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(System.DateTime%2cBodu.Extensions.IQuarterProvider)" data-throw-if-not-resolved="false"></xref>. This allows support for non-standard or
+
+    domain-specific quarterly definitions such as 4-4-5 calendars or region-specific fiscal models.
+  example: []
+  syntax:
+    content: public interface IQuarterProvider
+    content.vb: Public Interface IQuarterProvider
+  extensionMethods:
+  - Bodu.Extensions.IQuarterProvider.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+- uid: Bodu.Extensions.IQuarterProvider.GetQuarter(System.DateTime)
+  commentId: M:Bodu.Extensions.IQuarterProvider.GetQuarter(System.DateTime)
+  id: GetQuarter(System.DateTime)
+  parent: Bodu.Extensions.IQuarterProvider
+  langs:
+  - csharp
+  - vb
+  name: GetQuarter(DateTime)
+  nameWithType: IQuarterProvider.GetQuarter(DateTime)
+  fullName: Bodu.Extensions.IQuarterProvider.GetQuarter(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/IQuarterDefinitionProvider.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: GetQuarter
+    path: Extensions/IQuarterDefinitionProvider.cs
+    startLine: 24
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Gets the quarter number (1–4) for the specified <code class="paramref">dateTime</code>.
+  remarks: The returned value must be in the range 1 to 4. Implementations should throw an exception for unsupported values or ambiguous ranges.
+  example: []
+  syntax:
+    content: int GetQuarter(DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The input <xref href="System.DateTime" data-throw-if-not-resolved="false"></xref> for which the quarter is to be determined.
+    return:
+      type: System.Int32
+      description: An integer in the range 1 to 4 representing the quarter that contains the given dateTime.
+    content.vb: Function GetQuarter(dateTime As Date) As Integer
+  overload: Bodu.Extensions.IQuarterProvider.GetQuarter*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if the input dateTime cannot be mapped to a valid quarter.
+  nameWithType.vb: IQuarterProvider.GetQuarter(Date)
+  fullName.vb: Bodu.Extensions.IQuarterProvider.GetQuarter(Date)
+  name.vb: GetQuarter(Date)
+- uid: Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter(System.Int32)
+  commentId: M:Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter(System.Int32)
+  id: GetStartMonthFromQuarter(System.Int32)
+  parent: Bodu.Extensions.IQuarterProvider
+  langs:
+  - csharp
+  - vb
+  name: GetStartMonthFromQuarter(int)
+  nameWithType: IQuarterProvider.GetStartMonthFromQuarter(int)
+  fullName: Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter(int)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/IQuarterDefinitionProvider.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: GetStartMonthFromQuarter
+    path: Extensions/IQuarterDefinitionProvider.cs
+    startLine: 35
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Gets the starting month number (1–12) corresponding to the specified <code class="paramref">quarter</code>.
+  remarks: This method is used to compute the start of a quarter and must always return a valid month in the range 1–12.
+  example: []
+  syntax:
+    content: int GetStartMonthFromQuarter(int quarter)
+    parameters:
+    - id: quarter
+      type: System.Int32
+      description: The quarter number for which to retrieve the first month (must be 1–4).
+    return:
+      type: System.Int32
+      description: An integer representing the first month of the specified quarter. For example, a return value of 4 corresponds to April.
+    content.vb: Function GetStartMonthFromQuarter(quarter As Integer) As Integer
+  overload: Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if <code class="paramref">quarter</code> is not between 1 and 4.
+  nameWithType.vb: IQuarterProvider.GetStartMonthFromQuarter(Integer)
+  fullName.vb: Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter(Integer)
+  name.vb: GetStartMonthFromQuarter(Integer)
+references:
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Bodu.Extensions.QuarterDefinition.Custom
+  commentId: F:Bodu.Extensions.QuarterDefinition.Custom
+  href: Bodu.Extensions.QuarterDefinition.html#Bodu_Extensions_QuarterDefinition_Custom
+  name: Custom
+  nameWithType: QuarterDefinition.Custom
+  fullName: Bodu.Extensions.QuarterDefinition.Custom
+- uid: Bodu.Extensions.DateTimeExtensions.Quarter(System.DateTime,Bodu.Extensions.QuarterDefinition)
+  commentId: M:Bodu.Extensions.DateTimeExtensions.Quarter(System.DateTime,Bodu.Extensions.QuarterDefinition)
+  isExternal: true
+  href: Bodu.Extensions.DateTimeExtensions.html#Bodu_Extensions_DateTimeExtensions_Quarter_System_DateTime_Bodu_Extensions_QuarterDefinition_
+  name: Quarter(DateTime, QuarterDefinition)
+  nameWithType: DateTimeExtensions.Quarter(DateTime, QuarterDefinition)
+  fullName: Bodu.Extensions.DateTimeExtensions.Quarter(System.DateTime, Bodu.Extensions.QuarterDefinition)
+  nameWithType.vb: DateTimeExtensions.Quarter(Date, QuarterDefinition)
+  fullName.vb: Bodu.Extensions.DateTimeExtensions.Quarter(Date, Bodu.Extensions.QuarterDefinition)
+  name.vb: Quarter(Date, QuarterDefinition)
+  spec.csharp:
+  - uid: Bodu.Extensions.DateTimeExtensions.Quarter(System.DateTime,Bodu.Extensions.QuarterDefinition)
+    name: Quarter
+    href: Bodu.Extensions.DateTimeExtensions.html#Bodu_Extensions_DateTimeExtensions_Quarter_System_DateTime_Bodu_Extensions_QuarterDefinition_
+  - name: (
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: ','
+  - name: " "
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    href: Bodu.Extensions.QuarterDefinition.html
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.DateTimeExtensions.Quarter(System.DateTime,Bodu.Extensions.QuarterDefinition)
+    name: Quarter
+    href: Bodu.Extensions.DateTimeExtensions.html#Bodu_Extensions_DateTimeExtensions_Quarter_System_DateTime_Bodu_Extensions_QuarterDefinition_
+  - name: (
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: ','
+  - name: " "
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    href: Bodu.Extensions.QuarterDefinition.html
+  - name: )
+- uid: Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(System.DateTime,Bodu.Extensions.IQuarterProvider)
+  commentId: M:Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(System.DateTime,Bodu.Extensions.IQuarterProvider)
+  isExternal: true
+  href: Bodu.Extensions.DateTimeExtensions.html#Bodu_Extensions_DateTimeExtensions_FirstDayOfQuarter_System_DateTime_Bodu_Extensions_IQuarterProvider_
+  name: FirstDayOfQuarter(DateTime, IQuarterProvider)
+  nameWithType: DateTimeExtensions.FirstDayOfQuarter(DateTime, IQuarterProvider)
+  fullName: Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(System.DateTime, Bodu.Extensions.IQuarterProvider)
+  nameWithType.vb: DateTimeExtensions.FirstDayOfQuarter(Date, IQuarterProvider)
+  fullName.vb: Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(Date, Bodu.Extensions.IQuarterProvider)
+  name.vb: FirstDayOfQuarter(Date, IQuarterProvider)
+  spec.csharp:
+  - uid: Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(System.DateTime,Bodu.Extensions.IQuarterProvider)
+    name: FirstDayOfQuarter
+    href: Bodu.Extensions.DateTimeExtensions.html#Bodu_Extensions_DateTimeExtensions_FirstDayOfQuarter_System_DateTime_Bodu_Extensions_IQuarterProvider_
+  - name: (
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: ','
+  - name: " "
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    href: Bodu.Extensions.IQuarterProvider.html
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.DateTimeExtensions.FirstDayOfQuarter(System.DateTime,Bodu.Extensions.IQuarterProvider)
+    name: FirstDayOfQuarter
+    href: Bodu.Extensions.DateTimeExtensions.html#Bodu_Extensions_DateTimeExtensions_FirstDayOfQuarter_System_DateTime_Bodu_Extensions_IQuarterProvider_
+  - name: (
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: ','
+  - name: " "
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    href: Bodu.Extensions.IQuarterProvider.html
+  - name: )
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  href: Bodu.html
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+- uid: Bodu.Extensions.IQuarterProvider.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  parent: Bodu.Extensions.NumericExtensions
+  definition: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<IQuarterProvider>(IQuarterProvider, bool)
+  nameWithType: NumericExtensions.GetBytes<IQuarterProvider>(IQuarterProvider, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<Bodu.Extensions.IQuarterProvider>(Bodu.Extensions.IQuarterProvider, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of IQuarterProvider)(IQuarterProvider, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of Bodu.Extensions.IQuarterProvider)(Bodu.Extensions.IQuarterProvider, Boolean)
+  name.vb: GetBytes(Of IQuarterProvider)(IQuarterProvider, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.IQuarterProvider,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    href: Bodu.Extensions.IQuarterProvider.html
+  - name: '>'
+  - name: (
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    href: Bodu.Extensions.IQuarterProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.IQuarterProvider,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    href: Bodu.Extensions.IQuarterProvider.html
+  - name: )
+  - name: (
+  - uid: Bodu.Extensions.IQuarterProvider
+    name: IQuarterProvider
+    href: Bodu.Extensions.IQuarterProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  isExternal: true
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<T>(T, bool)
+  nameWithType: NumericExtensions.GetBytes<T>(T, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<T>(T, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of T)(T, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of T)(T, Boolean)
+  name.vb: GetBytes(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions
+  commentId: T:Bodu.Extensions.NumericExtensions
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.NumericExtensions.html
+  name: NumericExtensions
+  nameWithType: NumericExtensions
+  fullName: Bodu.Extensions.NumericExtensions
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Bodu.Extensions.IQuarterProvider.GetQuarter*
+  commentId: Overload:Bodu.Extensions.IQuarterProvider.GetQuarter
+  href: Bodu.Extensions.IQuarterProvider.html#Bodu_Extensions_IQuarterProvider_GetQuarter_System_DateTime_
+  name: GetQuarter
+  nameWithType: IQuarterProvider.GetQuarter
+  fullName: Bodu.Extensions.IQuarterProvider.GetQuarter
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter*
+  commentId: Overload:Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter
+  href: Bodu.Extensions.IQuarterProvider.html#Bodu_Extensions_IQuarterProvider_GetStartMonthFromQuarter_System_Int32_
+  name: GetStartMonthFromQuarter
+  nameWithType: IQuarterProvider.GetStartMonthFromQuarter
+  fullName: Bodu.Extensions.IQuarterProvider.GetStartMonthFromQuarter

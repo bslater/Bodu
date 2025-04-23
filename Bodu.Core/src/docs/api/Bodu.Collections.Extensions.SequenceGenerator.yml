@@ -1,0 +1,913 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Collections.Extensions.SequenceGenerator
+  commentId: T:Bodu.Collections.Extensions.SequenceGenerator
+  id: SequenceGenerator
+  parent: Bodu.Collections.Extensions
+  children:
+  - Bodu.Collections.Extensions.SequenceGenerator.FareySequence(System.Int32)
+  - Bodu.Collections.Extensions.SequenceGenerator.Fibonacci(System.Int64,System.Int64)
+  - Bodu.Collections.Extensions.SequenceGenerator.Leibniz(System.Double,System.Double)
+  - Bodu.Collections.Extensions.SequenceGenerator.LookAndSay(System.Int32)
+  - Bodu.Collections.Extensions.SequenceGenerator.ThueMorse(System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: SequenceGenerator
+  nameWithType: SequenceGenerator
+  fullName: Bodu.Collections.Extensions.SequenceGenerator
+  type: Class
+  source:
+    remote:
+      path: Bodu.Core/src/Collections.Extensions/SequenceGenerator.ThueMorse.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: SequenceGenerator
+    path: Collections.Extensions/SequenceGenerator.ThueMorse.cs
+    startLine: 8
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Extensions
+  summary: Provides a collection of static helper methods for generating sequences of values.
+  remarks: This partial class is intended to contain reusable sequence generators such as numeric ranges, repeated patterns, and combinatoric sequences.
+  example: []
+  syntax:
+    content: public static class SequenceGenerator
+    content.vb: Public Module SequenceGenerator
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Bodu.Collections.Extensions.SequenceGenerator.FareySequence(System.Int32)
+  commentId: M:Bodu.Collections.Extensions.SequenceGenerator.FareySequence(System.Int32)
+  id: FareySequence(System.Int32)
+  parent: Bodu.Collections.Extensions.SequenceGenerator
+  langs:
+  - csharp
+  - vb
+  name: FareySequence(int)
+  nameWithType: SequenceGenerator.FareySequence(int)
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.FareySequence(int)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Collections.Extensions/SequenceGenerator.FareySequence.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FareySequence
+    path: Collections.Extensions/SequenceGenerator.FareySequence.cs
+    startLine: 17
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Extensions
+  summary: Generates the Farey sequence of a given order n, consisting of reduced fractions between 0 and 1 inclusive.
+  remarks: 'The Farey sequence of order n includes all unique fractions a/b such that: 0 ≤ a ≤ b ≤ n, GCD(a, b) = 1.'
+  example: []
+  syntax:
+    content: public static IEnumerable<(int Numerator, int Denominator)> FareySequence(int order)
+    parameters:
+    - id: order
+      type: System.Int32
+      description: The order of the Farey sequence. Must be positive.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32}}
+      description: A sequence of tuples representing simplified fractions (numerator, denominator) in ascending order.
+    content.vb: Public Shared Function FareySequence(order As Integer) As IEnumerable(Of (Numerator As Integer, Denominator As Integer))
+  overload: Bodu.Collections.Extensions.SequenceGenerator.FareySequence*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if <code class="paramref">order</code> is less than 1.
+  nameWithType.vb: SequenceGenerator.FareySequence(Integer)
+  fullName.vb: Bodu.Collections.Extensions.SequenceGenerator.FareySequence(Integer)
+  name.vb: FareySequence(Integer)
+- uid: Bodu.Collections.Extensions.SequenceGenerator.Fibonacci(System.Int64,System.Int64)
+  commentId: M:Bodu.Collections.Extensions.SequenceGenerator.Fibonacci(System.Int64,System.Int64)
+  id: Fibonacci(System.Int64,System.Int64)
+  parent: Bodu.Collections.Extensions.SequenceGenerator
+  langs:
+  - csharp
+  - vb
+  name: Fibonacci(long, long)
+  nameWithType: SequenceGenerator.Fibonacci(long, long)
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.Fibonacci(long, long)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Collections.Extensions/SequenceGenerator.Fibonacci.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: Fibonacci
+    path: Collections.Extensions/SequenceGenerator.Fibonacci.cs
+    startLine: 18
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Extensions
+  summary: Generates the Fibonacci sequence values within the specified inclusive range.
+  example: []
+  syntax:
+    content: public static IEnumerable<long> Fibonacci(long min, long max)
+    parameters:
+    - id: min
+      type: System.Int64
+      description: The inclusive minimum value for the sequence.
+    - id: max
+      type: System.Int64
+      description: The exclusive maximum value for the sequence.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Int64}
+      description: An enumerable of Fibonacci numbers between <code class="paramref">min</code> and <code class="paramref">max</code>.
+    content.vb: Public Shared Function Fibonacci(min As Long, max As Long) As IEnumerable(Of Long)
+  overload: Bodu.Collections.Extensions.SequenceGenerator.Fibonacci*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if either <code class="paramref">min</code> or <code class="paramref">max</code> is negative.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown if <code class="paramref">min</code> is greater than <code class="paramref">max</code>.
+  nameWithType.vb: SequenceGenerator.Fibonacci(Long, Long)
+  fullName.vb: Bodu.Collections.Extensions.SequenceGenerator.Fibonacci(Long, Long)
+  name.vb: Fibonacci(Long, Long)
+- uid: Bodu.Collections.Extensions.SequenceGenerator.Leibniz(System.Double,System.Double)
+  commentId: M:Bodu.Collections.Extensions.SequenceGenerator.Leibniz(System.Double,System.Double)
+  id: Leibniz(System.Double,System.Double)
+  parent: Bodu.Collections.Extensions.SequenceGenerator
+  langs:
+  - csharp
+  - vb
+  name: Leibniz(double, double)
+  nameWithType: SequenceGenerator.Leibniz(double, double)
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.Leibniz(double, double)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Collections.Extensions/SequenceGenerator.Leibniz.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: Leibniz
+    path: Collections.Extensions/SequenceGenerator.Leibniz.cs
+    startLine: 42
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Extensions
+  summary: 'Generates terms from the <b>Leibniz series</b>: <code>F(n) = (-1) <sup>n</sup> / (2n + 1)</code>, which converges to π/4 as n → ∞.'
+  remarks: >-
+    <p>The Leibniz series is an infinite alternating series defined as:
+
+    <pre><code class="lang-csharp">F(n) = (-1)^n / (2n + 1)</code></pre>
+
+    It converges to π/4 as n approaches infinity.
+
+    </p>
+
+    <p>This generator emits only terms where <code>abs(term) ≥ min</code> and <code>abs(term) &lt; max</code>.</p>
+
+    <p>
+
+    This method is suitable for illustrating convergence, alternating series behavior, or computing partial approximations of π via
+
+    summation and multiplying the result by 4.
+
+    </p>
+  example: []
+  syntax:
+    content: public static IEnumerable<double> Leibniz(double min, double max)
+    parameters:
+    - id: min
+      type: System.Double
+      description: The minimum absolute value (inclusive) a term must have to be included in the output. Must be greater than or equal to 0.
+    - id: max
+      type: System.Double
+      description: >-
+        The maximum absolute value (exclusive) a term may have before generation stops. Must be greater than or equal to 0 and not less
+
+        than <code class="paramref">min</code>.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Double}
+      description: A lazily-evaluated sequence of <xref href="System.Double" data-throw-if-not-resolved="false"></xref> values from the Leibniz series, each within the specified range of absolute values.
+    content.vb: Public Shared Function Leibniz(min As Double, max As Double) As IEnumerable(Of Double)
+  overload: Bodu.Collections.Extensions.SequenceGenerator.Leibniz*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when <code class="paramref">min</code> or <code class="paramref">max</code> is less than 0.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">min</code> is greater than <code class="paramref">max</code>.
+  nameWithType.vb: SequenceGenerator.Leibniz(Double, Double)
+  fullName.vb: Bodu.Collections.Extensions.SequenceGenerator.Leibniz(Double, Double)
+  name.vb: Leibniz(Double, Double)
+- uid: Bodu.Collections.Extensions.SequenceGenerator.LookAndSay(System.Int32)
+  commentId: M:Bodu.Collections.Extensions.SequenceGenerator.LookAndSay(System.Int32)
+  id: LookAndSay(System.Int32)
+  parent: Bodu.Collections.Extensions.SequenceGenerator
+  langs:
+  - csharp
+  - vb
+  name: LookAndSay(int)
+  nameWithType: SequenceGenerator.LookAndSay(int)
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.LookAndSay(int)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Collections.Extensions/SequenceGenerator.LookAndSay.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: LookAndSay
+    path: Collections.Extensions/SequenceGenerator.LookAndSay.cs
+    startLine: 19
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Extensions
+  summary: Generates terms in the Look-and-Say sequence starting from "1".
+  remarks: 'Each term describes the digits of the previous one, e.g.: 1, 11, 21, 1211, 111221, ...'
+  example: []
+  syntax:
+    content: public static IEnumerable<string> LookAndSay(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: The number of terms to generate. Must be positive.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: A sequence of strings, each representing a term in the Look-and-Say sequence.
+    content.vb: Public Shared Function LookAndSay(count As Integer) As IEnumerable(Of String)
+  overload: Bodu.Collections.Extensions.SequenceGenerator.LookAndSay*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if <code class="paramref">count</code> is less than 1.
+  nameWithType.vb: SequenceGenerator.LookAndSay(Integer)
+  fullName.vb: Bodu.Collections.Extensions.SequenceGenerator.LookAndSay(Integer)
+  name.vb: LookAndSay(Integer)
+- uid: Bodu.Collections.Extensions.SequenceGenerator.ThueMorse(System.Int32)
+  commentId: M:Bodu.Collections.Extensions.SequenceGenerator.ThueMorse(System.Int32)
+  id: ThueMorse(System.Int32)
+  parent: Bodu.Collections.Extensions.SequenceGenerator
+  langs:
+  - csharp
+  - vb
+  name: ThueMorse(int)
+  nameWithType: SequenceGenerator.ThueMorse(int)
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.ThueMorse(int)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Collections.Extensions/SequenceGenerator.ThueMorse.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThueMorse
+    path: Collections.Extensions/SequenceGenerator.ThueMorse.cs
+    startLine: 17
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Collections.Extensions
+  summary: Generates the Thue–Morse sequence as a binary sequence of 0s and 1s.
+  remarks: 'The n-th value is the parity of the number of 1s in the binary representation of n: T(n) = bitcount(n) % 2'
+  example: []
+  syntax:
+    content: public static IEnumerable<int> ThueMorse(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+      description: The number of terms to generate. Must be non-negative.
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Int32}
+      description: A sequence of <xref href="System.Int32" data-throw-if-not-resolved="false"></xref> values where each term is 0 or 1, representing the Thue–Morse sequence.
+    content.vb: Public Shared Function ThueMorse(count As Integer) As IEnumerable(Of Integer)
+  overload: Bodu.Collections.Extensions.SequenceGenerator.ThueMorse*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown if <code class="paramref">count</code> is negative.
+  nameWithType.vb: SequenceGenerator.ThueMorse(Integer)
+  fullName.vb: Bodu.Collections.Extensions.SequenceGenerator.ThueMorse(Integer)
+  name.vb: ThueMorse(Integer)
+references:
+- uid: Bodu.Collections.Extensions
+  commentId: N:Bodu.Collections.Extensions
+  href: Bodu.html
+  name: Bodu.Collections.Extensions
+  nameWithType: Bodu.Collections.Extensions
+  fullName: Bodu.Collections.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Extensions
+    name: Extensions
+    href: Bodu.Collections.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Extensions
+    name: Extensions
+    href: Bodu.Collections.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Bodu.Collections.Extensions.SequenceGenerator.FareySequence*
+  commentId: Overload:Bodu.Collections.Extensions.SequenceGenerator.FareySequence
+  href: Bodu.Collections.Extensions.SequenceGenerator.html#Bodu_Collections_Extensions_SequenceGenerator_FareySequence_System_Int32_
+  name: FareySequence
+  nameWithType: SequenceGenerator.FareySequence
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.FareySequence
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{System.Int32,System.Int32}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(int Numerator, int Denominator)>
+  nameWithType: IEnumerable<(int Numerator, int Denominator)>
+  fullName: System.Collections.Generic.IEnumerable<(int Numerator, int Denominator)>
+  nameWithType.vb: IEnumerable(Of (Numerator As Integer, Denominator As Integer))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (Numerator As Integer, Denominator As Integer))
+  name.vb: IEnumerable(Of (Numerator As Integer, Denominator As Integer))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Numerator
+    name: Numerator
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.numerator
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Denominator
+    name: Denominator
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.denominator
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Numerator
+    name: Numerator
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.numerator
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.Denominator
+    name: Denominator
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.denominator
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: Bodu.Collections.Extensions.SequenceGenerator.Fibonacci*
+  commentId: Overload:Bodu.Collections.Extensions.SequenceGenerator.Fibonacci
+  href: Bodu.Collections.Extensions.SequenceGenerator.html#Bodu_Collections_Extensions_SequenceGenerator_Fibonacci_System_Int64_System_Int64_
+  name: Fibonacci
+  nameWithType: SequenceGenerator.Fibonacci
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.Fibonacci
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Collections.Generic.IEnumerable{System.Int64}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Int64}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<long>
+  nameWithType: IEnumerable<long>
+  fullName: System.Collections.Generic.IEnumerable<long>
+  nameWithType.vb: IEnumerable(Of Long)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Long)
+  name.vb: IEnumerable(Of Long)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: Bodu.Collections.Extensions.SequenceGenerator.Leibniz*
+  commentId: Overload:Bodu.Collections.Extensions.SequenceGenerator.Leibniz
+  href: Bodu.Collections.Extensions.SequenceGenerator.html#Bodu_Collections_Extensions_SequenceGenerator_Leibniz_System_Double_System_Double_
+  name: Leibniz
+  nameWithType: SequenceGenerator.Leibniz
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.Leibniz
+- uid: System.Collections.Generic.IEnumerable{System.Double}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Double}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<double>
+  nameWithType: IEnumerable<double>
+  fullName: System.Collections.Generic.IEnumerable<double>
+  nameWithType.vb: IEnumerable(Of Double)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Double)
+  name.vb: IEnumerable(Of Double)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Bodu.Collections.Extensions.SequenceGenerator.LookAndSay*
+  commentId: Overload:Bodu.Collections.Extensions.SequenceGenerator.LookAndSay
+  href: Bodu.Collections.Extensions.SequenceGenerator.html#Bodu_Collections_Extensions_SequenceGenerator_LookAndSay_System_Int32_
+  name: LookAndSay
+  nameWithType: SequenceGenerator.LookAndSay
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.LookAndSay
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Bodu.Collections.Extensions.SequenceGenerator.ThueMorse*
+  commentId: Overload:Bodu.Collections.Extensions.SequenceGenerator.ThueMorse
+  href: Bodu.Collections.Extensions.SequenceGenerator.html#Bodu_Collections_Extensions_SequenceGenerator_ThueMorse_System_Int32_
+  name: ThueMorse
+  nameWithType: SequenceGenerator.ThueMorse
+  fullName: Bodu.Collections.Extensions.SequenceGenerator.ThueMorse
+- uid: System.Collections.Generic.IEnumerable{System.Int32}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Int32}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<int>
+  nameWithType: IEnumerable<int>
+  fullName: System.Collections.Generic.IEnumerable<int>
+  nameWithType.vb: IEnumerable(Of Integer)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Integer)
+  name.vb: IEnumerable(Of Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )

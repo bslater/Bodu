@@ -1,0 +1,42 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Buffers
+  commentId: N:Bodu.Buffers
+  id: Bodu.Buffers
+  children:
+  - Bodu.Buffers.PooledBufferBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Bodu.Buffers
+  nameWithType: Bodu.Buffers
+  fullName: Bodu.Buffers
+  type: Namespace
+  assemblies:
+  - Bodu.CoreLib
+references:
+- uid: Bodu.Buffers.PooledBufferBuilder`1
+  commentId: T:Bodu.Buffers.PooledBufferBuilder`1
+  href: Bodu.Buffers.PooledBufferBuilder-1.html
+  name: PooledBufferBuilder<T>
+  nameWithType: PooledBufferBuilder<T>
+  fullName: Bodu.Buffers.PooledBufferBuilder<T>
+  nameWithType.vb: PooledBufferBuilder(Of T)
+  fullName.vb: Bodu.Buffers.PooledBufferBuilder(Of T)
+  name.vb: PooledBufferBuilder(Of T)
+  spec.csharp:
+  - uid: Bodu.Buffers.PooledBufferBuilder`1
+    name: PooledBufferBuilder
+    href: Bodu.Buffers.PooledBufferBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Bodu.Buffers.PooledBufferBuilder`1
+    name: PooledBufferBuilder
+    href: Bodu.Buffers.PooledBufferBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

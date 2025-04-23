@@ -1,0 +1,108 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  id: Bodu.Extensions
+  children:
+  - Bodu.Extensions.ArrayExtensions
+  - Bodu.Extensions.DateTimeExtensions
+  - Bodu.Extensions.DateTimeResolution
+  - Bodu.Extensions.IQuarterProvider
+  - Bodu.Extensions.IWeekendProvider
+  - Bodu.Extensions.NumericExtensions
+  - Bodu.Extensions.QuarterDefinition
+  - Bodu.Extensions.StandardWeekend
+  - Bodu.Extensions.WeekOfMonthOrdinal
+  langs:
+  - csharp
+  - vb
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  type: Namespace
+  assemblies:
+  - Bodu.CoreLib
+references:
+- uid: Bodu.Extensions.ArrayExtensions
+  commentId: T:Bodu.Extensions.ArrayExtensions
+  href: Bodu.Extensions.ArrayExtensions.html
+  name: ArrayExtensions
+  nameWithType: ArrayExtensions
+  fullName: Bodu.Extensions.ArrayExtensions
+- uid: Bodu.Extensions.DateTimeExtensions
+  commentId: T:Bodu.Extensions.DateTimeExtensions
+  href: Bodu.Extensions.DateTimeExtensions.html
+  name: DateTimeExtensions
+  nameWithType: DateTimeExtensions
+  fullName: Bodu.Extensions.DateTimeExtensions
+- uid: Bodu.Extensions.DateTimeResolution
+  commentId: T:Bodu.Extensions.DateTimeResolution
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.DateTimeResolution.html
+  name: DateTimeResolution
+  nameWithType: DateTimeResolution
+  fullName: Bodu.Extensions.DateTimeResolution
+- uid: Bodu.Extensions.IQuarterProvider
+  commentId: T:Bodu.Extensions.IQuarterProvider
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.IQuarterProvider.html
+  name: IQuarterProvider
+  nameWithType: IQuarterProvider
+  fullName: Bodu.Extensions.IQuarterProvider
+- uid: Bodu.Extensions.IWeekendProvider
+  commentId: T:Bodu.Extensions.IWeekendProvider
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.IWeekendProvider.html
+  name: IWeekendProvider
+  nameWithType: IWeekendProvider
+  fullName: Bodu.Extensions.IWeekendProvider
+- uid: Bodu.Extensions.NumericExtensions
+  commentId: T:Bodu.Extensions.NumericExtensions
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.NumericExtensions.html
+  name: NumericExtensions
+  nameWithType: NumericExtensions
+  fullName: Bodu.Extensions.NumericExtensions
+- uid: Bodu.Extensions.QuarterDefinition
+  commentId: T:Bodu.Extensions.QuarterDefinition
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.QuarterDefinition.html
+  name: QuarterDefinition
+  nameWithType: QuarterDefinition
+  fullName: Bodu.Extensions.QuarterDefinition
+- uid: Bodu.Extensions.StandardWeekend
+  commentId: T:Bodu.Extensions.StandardWeekend
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.StandardWeekend.html
+  name: StandardWeekend
+  nameWithType: StandardWeekend
+  fullName: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.WeekOfMonthOrdinal
+  commentId: T:Bodu.Extensions.WeekOfMonthOrdinal
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.WeekOfMonthOrdinal.html
+  name: WeekOfMonthOrdinal
+  nameWithType: WeekOfMonthOrdinal
+  fullName: Bodu.Extensions.WeekOfMonthOrdinal
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  href: Bodu.html
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html

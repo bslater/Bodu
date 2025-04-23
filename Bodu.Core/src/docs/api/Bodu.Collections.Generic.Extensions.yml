@@ -1,0 +1,77 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Collections.Generic.Extensions
+  commentId: N:Bodu.Collections.Generic.Extensions
+  id: Bodu.Collections.Generic.Extensions
+  children:
+  - Bodu.Collections.Generic.Extensions.IEnumerableExtensions
+  - Bodu.Collections.Generic.Extensions.RandomizationMode
+  - Bodu.Collections.Generic.Extensions.SystemRandomAdapter
+  langs:
+  - csharp
+  - vb
+  name: Bodu.Collections.Generic.Extensions
+  nameWithType: Bodu.Collections.Generic.Extensions
+  fullName: Bodu.Collections.Generic.Extensions
+  type: Namespace
+  assemblies:
+  - Bodu.CoreLib
+references:
+- uid: Bodu.Collections.Generic.Extensions.IEnumerableExtensions
+  commentId: T:Bodu.Collections.Generic.Extensions.IEnumerableExtensions
+  parent: Bodu.Collections.Generic.Extensions
+  href: Bodu.Collections.Generic.Extensions.IEnumerableExtensions.html
+  name: IEnumerableExtensions
+  nameWithType: IEnumerableExtensions
+  fullName: Bodu.Collections.Generic.Extensions.IEnumerableExtensions
+- uid: Bodu.Collections.Generic.Extensions.RandomizationMode
+  commentId: T:Bodu.Collections.Generic.Extensions.RandomizationMode
+  parent: Bodu.Collections.Generic.Extensions
+  href: Bodu.Collections.Generic.Extensions.RandomizationMode.html
+  name: RandomizationMode
+  nameWithType: RandomizationMode
+  fullName: Bodu.Collections.Generic.Extensions.RandomizationMode
+- uid: Bodu.Collections.Generic.Extensions.SystemRandomAdapter
+  commentId: T:Bodu.Collections.Generic.Extensions.SystemRandomAdapter
+  href: Bodu.Collections.Generic.Extensions.SystemRandomAdapter.html
+  name: SystemRandomAdapter
+  nameWithType: SystemRandomAdapter
+  fullName: Bodu.Collections.Generic.Extensions.SystemRandomAdapter
+- uid: Bodu.Collections.Generic.Extensions
+  commentId: N:Bodu.Collections.Generic.Extensions
+  href: Bodu.html
+  name: Bodu.Collections.Generic.Extensions
+  nameWithType: Bodu.Collections.Generic.Extensions
+  fullName: Bodu.Collections.Generic.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Generic
+    name: Generic
+    href: Bodu.Collections.Generic.html
+  - name: .
+  - uid: Bodu.Collections.Generic.Extensions
+    name: Extensions
+    href: Bodu.Collections.Generic.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Generic
+    name: Generic
+    href: Bodu.Collections.Generic.html
+  - name: .
+  - uid: Bodu.Collections.Generic.Extensions
+    name: Extensions
+    href: Bodu.Collections.Generic.Extensions.html
