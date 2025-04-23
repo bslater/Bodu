@@ -3,7 +3,9 @@ name: Build and Publish DocFX Sites
 on:
   push:
     branches: [ master ]
-
+  pull_request:
+    branches: [ master ]
+    
 jobs:
   build-docfx:
     runs-on: windows-latest
@@ -20,6 +22,9 @@ jobs:
       - name: Install DocFX globally
         run: dotnet tool install -g docfx
 
+      - name: Install dependencies
+        run: dotnet restore
+        
       - name: Build Bodu.Core docs
         run: docfx Bodu.Core/src/docfx.json
 
@@ -41,6 +46,7 @@ jobs:
           echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bodu Docs</title></head><body><h1>Bodu Documentation</h1><ul><li><a href='Bodu.Core/'>Bodu.Core API Docs</a></li><li><a href='Bodu.Security.Cryptography/'>Bodu.Security.Cryptography API Docs</a></li></ul></body></html>" > _site/index.html
 
       - name: Publish to GitHub Pages
+        if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
