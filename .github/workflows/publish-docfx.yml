@@ -31,9 +31,12 @@ jobs:
           if (-not (Test-Path _site)) { mkdir _site }
           mkdir _site/Bodu.Core
           mkdir _site/Bodu.Security.Cryptography
-          cp -r Bodu.Core/src/docs/* _site/Bodu.Core/
-          cp -r Bodu.Security.Cryptography/src/docs/* _site/Bodu.Security.Cryptography/
-
+          cp -r Bodu.Core/src/docs/_site/* _site/Bodu.Core/
+          cp -r Bodu.Security.Cryptography/src/docs/_site/* _site/Bodu.Security.Cryptography/
+          
+      - name: Add root index page
+        run: |
+          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bodu Docs</title></head><body><h1>Bodu Documentation</h1><ul><li><a href='Bodu.Core/'>Bodu.Core API Docs</a></li><li><a href='Bodu.Security.Cryptography/'>Bodu.Security.Cryptography API Docs</a></li></ul></body></html>" > _site/index.html
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
