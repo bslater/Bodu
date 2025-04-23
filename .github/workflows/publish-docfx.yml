@@ -2,7 +2,7 @@ name: Build and Publish DocFX Sites
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build-docfx:
