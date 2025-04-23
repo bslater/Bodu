@@ -1,0 +1,32 @@
+﻿{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "Bodu.Security.Cryprography.csproj" ]
+        }
+      ],
+      "dest": "docs/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "docs/api/**/*.yml", "docs/api/index.md" ]
+      },
+      {
+        "files": [ "docs/articles/*.md", "docs/articles/toc.yml" ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [ "docs/images/**" ]
+      }
+    ],
+    "dest": "docs/_site",
+    "globalMetadata": {
+      "_appTitle": "Bodu.Security.Cryprography API"
+    },
+    "template": [ "default" ]
+  }
+}
