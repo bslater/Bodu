@@ -1,0 +1,41 @@
+name: Build and Publish DocFX Sites
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-docfx:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x'
+
+      - name: Install DocFX globally
+        run: dotnet tool install -g docfx
+
+      - name: Build Bodu.Core docs
+        run: docfx Bodu.Core/src/docfx.json
+
+      - name: Build Bodu.Security.Cryptography docs
+        run: docfx Bodu.Security.Cryptography/src/docfx.json
+
+      - name: Prepare site output structure
+        run: |
+          mkdir _site
+          mkdir _site/Bodu.Core
+          mkdir _site/Bodu.Security.Cryptography
+          cp -r Bodu.Core/src/docs/* _site/Bodu.Core/
+          cp -r Bodu.Security.Cryptography/src/docs/* _site/Bodu.Security.Cryptography/
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
