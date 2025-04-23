@@ -884,5 +884,31 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(paramName,
 					string.Format(ResourceStrings.Arg_OutOfRange_SequenceRangeOverflow, nameof(Int64)));
 		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the specified <paramref name="count" /> is less than zero or greater
+		/// than the number of <paramref name="available" /> items.
+		/// </summary>
+		/// <typeparam name="T">The collection or buffer type used to infer context (optional).</typeparam>
+		/// <param name="count">The count value to validate.</param>
+		/// <param name="available">The number of available items.</param>
+		/// <param name="paramName">The name of the parameter being validated (usually "count").</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown when <paramref name="count" /> is negative or greater than <paramref name="available" />.
+		/// Message: "Count must be non-negative and not exceed the number of available items."
+		/// </exception>
+		/// <remarks>Use this method when validating that a subset operation will not exceed the size of the source.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfCountExceedsAvailable(
+			int count,
+			int available,
+			[CallerArgumentExpression(nameof(count))] string? paramName = null)
+		{
+			if (count < 0 || count > available)
+			{
+				throw new ArgumentOutOfRangeException(paramName,
+					string.Format(ResourceStrings.Arg_OutOfRange_CountExceedsAvailable, available));
+			}
+		}
 	}
 }

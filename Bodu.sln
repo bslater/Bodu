@@ -3,19 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonSubTypes", "JsonSubTypes\JsonSubTypes.csproj", "{818C16EE-30C9-4CF7-88BD-A800F5B74FEB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{9BC5254D-21B7-4151-9AE1-7E3FDDCE6532}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.StockPrice", "Portfolio.StockPrice\Portfolio.StockPrice.csproj", "{8C9A0C0D-BB81-4BA7-B6A8-B9D17C2DA009}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Core", "Portfolio.Core\Portfolio.Core.csproj", "{8AFF0CB6-C546-48CB-90D4-BAF7C27FCEF2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Data", "Portfolio.Data\Portfolio.Data.csproj", "{C88A4CE7-CB54-4104-8D3A-F5412AB14024}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Data.Json", "Portfolio.Data.Json\Portfolio.Data.Json.csproj", "{2D710BAD-DD02-4192-B6D8-9878A6BDE77F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{241E91E9-0C45-44C2-AE5C-ED404003A3C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Core", "Bodu.Core\src\Bodu.Core.csproj", "{F136F92E-234A-4378-AA7C-D392DD080865}"
 EndProject
@@ -27,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Security.Cryptography"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Security.Cryptography.Test", "Bodu.Security.Cryptography\test\Bodu.Security.Cryptography.Test.csproj", "{960C5F9E-A46E-482E-891F-C6252D0923C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{E76ADB4A-C954-415C-A17F-81787C876381}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{E76ADB4A-C954-415C-A17F-81787C876381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,30 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{818C16EE-30C9-4CF7-88BD-A800F5B74FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{818C16EE-30C9-4CF7-88BD-A800F5B74FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{818C16EE-30C9-4CF7-88BD-A800F5B74FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{818C16EE-30C9-4CF7-88BD-A800F5B74FEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C9A0C0D-BB81-4BA7-B6A8-B9D17C2DA009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C9A0C0D-BB81-4BA7-B6A8-B9D17C2DA009}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C9A0C0D-BB81-4BA7-B6A8-B9D17C2DA009}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C9A0C0D-BB81-4BA7-B6A8-B9D17C2DA009}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AFF0CB6-C546-48CB-90D4-BAF7C27FCEF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AFF0CB6-C546-48CB-90D4-BAF7C27FCEF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AFF0CB6-C546-48CB-90D4-BAF7C27FCEF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AFF0CB6-C546-48CB-90D4-BAF7C27FCEF2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C88A4CE7-CB54-4104-8D3A-F5412AB14024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C88A4CE7-CB54-4104-8D3A-F5412AB14024}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C88A4CE7-CB54-4104-8D3A-F5412AB14024}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C88A4CE7-CB54-4104-8D3A-F5412AB14024}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D710BAD-DD02-4192-B6D8-9878A6BDE77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D710BAD-DD02-4192-B6D8-9878A6BDE77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D710BAD-DD02-4192-B6D8-9878A6BDE77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D710BAD-DD02-4192-B6D8-9878A6BDE77F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{241E91E9-0C45-44C2-AE5C-ED404003A3C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{241E91E9-0C45-44C2-AE5C-ED404003A3C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{241E91E9-0C45-44C2-AE5C-ED404003A3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{241E91E9-0C45-44C2-AE5C-ED404003A3C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Release|Any CPU.ActiveCfg = Release|Any CPU

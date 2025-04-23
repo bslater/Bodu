@@ -376,6 +376,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Count must be non-negative and not exceed the number of available items ({0})..
+        /// </summary>
+        internal static string Arg_OutOfRange_CountExceedsAvailable {
+            get {
+                return ResourceManager.GetString("Arg_OutOfRange_CountExceedsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source has fewer elements than requested..
         /// </summary>
         internal static string Arg_OutOfRange_CountGreaterThanSource {

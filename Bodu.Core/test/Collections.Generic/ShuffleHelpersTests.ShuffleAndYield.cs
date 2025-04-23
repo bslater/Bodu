@@ -1,368 +1,310 @@
 ﻿using Bodu.Collections.Generic.Extensions;
 using Bodu.Infrastructure;
+using System;
 
 namespace Bodu.Collections.Generic
 {
 	public partial class ShuffleHelpersTests
 	{
 		/// <summary>
-		/// Verifies that ShuffleAndYield works correctly with buffers containing duplicate values using span input.
+		/// Verifies that ShuffleAndYield for an array returns a subset of the specified count, and all returned elements are from the
+		/// original array.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenBufferHasDuplicates_ShouldNotThrow_UsingSpan()
+		public void ShuffleAndYield_Array_ShouldReturnExpectedSubset()
 		{
-			int[] buffer = new[] { 5, 5, 5, 5, 5 };
-			var results = ShuffleHelpers.ShuffleAndYield<int>(buffer.AsSpan(), new XorShiftRandom(), 3).ToArray();
+			var buffer = Enumerable.Range(1, 10).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 5).ToArray();
 
-			Assert.AreEqual(3, results.Length);
-			CollectionAssert.AreEqual(results, new[] { 5, 5, 5 });
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, buffer);
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when the count exceeds the size of an empty array.
+		/// Verifies that ShuffleAndYield for a span returns a subset of the specified count, and all returned elements are from the
+		/// original span.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenBufferIsEmptyAndCountIsOne_ShouldThrow_UsingArray()
+		public void ShuffleAndYield_Span_ShouldReturnExpectedSubset()
 		{
-			int[] buffer = Array.Empty<int>();
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
-				ShuffleHelpers.ShuffleAndYield(buffer, new SystemRandomAdapter(), 1).ToArray());
+			var span = Enumerable.Range(1, 10).ToArray().AsSpan();
+			var result = ShuffleHelpers.ShuffleAndYield<int>(span, new XorShiftRandom(), 4).ToArray();
+
+			Assert.AreEqual(4, result.Length);
+			CollectionAssert.IsSubsetOf(result, span.ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield returns an empty result when the span is empty and the count is zero.
+		/// Verifies that ShuffleAndYield for a memory block returns a subset of the specified count, and all returned elements are from the
+		/// original memory block.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenBufferIsEmptyAndCountIsZero_ShouldReturnNothing_UsingSpan()
+		public void ShuffleAndYield_Memory_ShouldReturnExpectedSubset()
 		{
-			Span<int> span = Span<int>.Empty;
-			var results = ShuffleHelpers.ShuffleAndYield<int>(span, new SystemRandomAdapter(), 0).ToArray();
-			Assert.AreEqual(0, results.Length);
+			var memory = Enumerable.Range(1, 8).ToArray().AsMemory();
+			var result = ShuffleHelpers.ShuffleAndYield(memory, new XorShiftRandom(), 3).ToArray();
+
+			Assert.AreEqual(3, result.Length);
+			CollectionAssert.IsSubsetOf(result, memory.ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield does not mutate the original array passed into the method.
+		/// Verifies that ShuffleAndYield for IEnumerable returns a subset of the specified count, and all returned elements are from the
+		/// original source.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenCalled_ShouldNotModifySourceArray()
+		public void ShuffleAndYield_IEnumerable_ShouldReturnExpectedSubset()
 		{
-			int[] original = Enumerable.Range(1, 100).ToArray();
-			int[] snapshot = (int[])original.Clone();
+			var source = Enumerable.Range(1, 10);
+			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 3).ToArray();
 
-			_ = ShuffleHelpers.ShuffleAndYield(original.ToArray(), new SystemRandomAdapter(), 50).ToArray();
-
-			CollectionAssert.AreEqual(snapshot, original, "The source array was modified by ShuffleAndYield.");
+			Assert.AreEqual(3, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield returns all items in randomized order when count equals span length.
+		/// Verifies that ShuffleAndYield returns an empty array when the input is empty or the count is zero.
 		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenCountEqualsLength_ShouldReturnAll_UsingSpan()
+		[DataTestMethod]
+		[DataRow(0, 0)]
+		[DataRow(3, 0)]
+		public void ShuffleAndYield_WhenEmptyOrZeroCount_ShouldReturnEmpty(int bufferSize, int count)
 		{
-			int[] buffer = Enumerable.Range(1, 5).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield<int>(buffer.AsSpan(), new XorShiftRandom(), buffer.Length).ToArray();
+			var buffer = Enumerable.Range(1, bufferSize).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), count).ToArray();
 
-			CollectionAssert.AreEquivalent(buffer, results);
-			Assert.AreEqual(buffer.Length, results.Length);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when the requested count exceeds the buffer length.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenCountExceedsLength_ShouldThrowArgumentOutOfRange_UsingArray()
-		{
-			int[] buffer = Enumerable.Range(1, 10).ToArray();
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
-				ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 11).ToArray());
+			if (count == 0 || bufferSize == 0)
+				Assert.AreEqual(0, result.Length);
 		}
 
 		/// <summary>
 		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when count is negative.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenCountNegative_ShouldThrow_UsingArray()
+		public void ShuffleAndYield_WhenCountNegative_ShouldThrow()
 		{
-			int[] buffer = new[] { 1, 2, 3 };
+			var buffer = new[] { 1, 2, 3 };
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
-				ShuffleHelpers.ShuffleAndYield(buffer, new SystemRandomAdapter(), -1).ToArray());
+				ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), -1).ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield returns an empty sequence when count is zero.
+		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when count exceeds the number of elements in the input.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenCountZero_ShouldReturnEmpty_UsingArray()
+		public void ShuffleAndYield_WhenCountExceedsLength_ShouldThrow()
 		{
-			int[] buffer = new[] { 1, 2, 3 };
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, new SystemRandomAdapter(), 0).ToArray();
-
-			Assert.AreEqual(0, results.Length);
-		}
-
-		/// <summary> Verifies that ShuffleAndYield returns the expected number of items when tested via DataRow using Span<T>. </summary>
-		[DataTestMethod]
-		[DataRow(0)]
-		[DataRow(1)]
-		[DataRow(5)]
-		[DataRow(10)]
-		public void ShuffleAndYield_WhenDataRowProvided_ShouldReturnExpectedCount_UsingSpan(int count)
-		{
-			int[] buffer = Enumerable.Range(1, 10).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield<int>(buffer.AsSpan(), new SystemRandomAdapter(), count).ToArray();
-
-			Assert.AreEqual(count, results.Length);
+			var buffer = new[] { 1, 2, 3 };
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+				ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 4).ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield on a large array returns only items from the original buffer.
+		/// Verifies that ShuffleAndYield for IEnumerable defers execution and does not enumerate the source until iterated.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenLargeBufferUsed_ShouldNot_UsingArray()
+		public void ShuffleAndYield_IEnumerable_ShouldDeferExecution()
 		{
-			int[] buffer = Enumerable.Range(1, 10_000).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, new SystemRandomAdapter(), 5000).ToArray();
-
-			Assert.AreEqual(5000, results.Length);
-			CollectionAssert.IsSubsetOf(results, buffer);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns the correct number of items from a large input array.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenLargeBufferUsed_ShouldReturnCorrectCount_UsingArray()
-		{
-			int[] buffer = Enumerable.Range(1, 10_000).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, new SystemRandomAdapter(), 5000).ToArray();
-
-			Assert.AreEqual(5000, results.Length);
-			CollectionAssert.IsSubsetOf(results, buffer);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns a randomized subset when a partial count is requested using an array.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenRequestedCountIsLessThanLength_ShouldReturnExpectedSubset_UsingArray()
-		{
-			int[] buffer = Enumerable.Range(1, 20).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 10).ToArray();
-
-			Assert.AreEqual(10, results.Length);
-			CollectionAssert.AllItemsAreUnique(results);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns a subset when the count is less than the span length.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenRequestedCountIsPartial_ShouldReturnSubset_UsingSpan()
-		{
-			int[] buffer = Enumerable.Range(1, 20).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield<int>(buffer.AsSpan(), new XorShiftRandom(), 15).ToArray();
-
-			Assert.AreEqual(15, results.Length);
-			CollectionAssert.AllItemsAreUnique(results);
-		}
-
-		/*
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield produces a randomized subset using a cryptographic random generator.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenUsingCryptoRandom_ShouldReturnShuffledSubset_UsingArray()
-		{
-			using var rng = new CryptoRandom();
-			int[] buffer = Enumerable.NextWhile(1, 20).ToArray();
-
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, rng, 10).ToArray();
-
-			Assert.AreEqual(10, results.Length);
-			CollectionAssert.AllItemsAreUnique(results);
-		}
-		*/
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns a subset of string values from a buffer containing duplicates.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenUsingStringBuffer_ShouldReturnSubset_UsingArray()
-		{
-			string[] buffer = new[] { "apple", "banana", "cherry", "apple", "date" };
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, new SystemRandomAdapter(), 3).ToArray();
-
-			Assert.AreEqual(3, results.Length);
-			CollectionAssert.IsSubsetOf(results, buffer);
-		}
-
-		/// <summary> Verifies that ShuffleAndYield correctly returns a randomized subset when used with Memory<T> and SystemRandom. </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenUsingSystemRandomAndPartialCount_ShouldReturnExpectedResult_UsingMemory()
-		{
-			int[] buffer = Enumerable.Range(1, 10).ToArray();
-			var results = ShuffleHelpers.ShuffleAndYield(buffer.AsMemory(), new SystemRandomAdapter(), 5).ToArray();
-
-			Assert.AreEqual(5, results.Length);
-			CollectionAssert.AllItemsAreUnique(results);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns a randomized, unique subset of the specified count using an array input.
-		/// </summary>
-		[DataTestMethod]
-		[DynamicData(nameof(ValidCounts), DynamicDataSourceType.Method)]
-		public void ShuffleAndYield_WhenValidCount_ShouldReturnSubset_UsingArray(int[] buffer, int count)
-		{
-			var results = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), count).ToArray();
-
-			Assert.AreEqual(count, results.Length);
-			CollectionAssert.AllItemsAreUnique(results);
-			CollectionAssert.IsSubsetOf(results, buffer);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield does not enumerate the source until iteration begins.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenUsingArrayInput_ShouldDeferExecution()
-		{
-			var input = new[] { 1, 2, 3 };
 			AssertExecutionIsDeferred(
 				methodName: "ShuffleAndYield",
-				invokeExtensionMethod: source => ShuffleHelpers.ShuffleAndYield<int>(input, new XorShiftRandom(), 2),
-				values: input);
+				invokeExtensionMethod: src => ShuffleHelpers.ShuffleAndYield(src, new XorShiftRandom(), 2),
+				values: new[] { 1, 2, 3 });
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield does not enumerate the source until iteration begins.
+		/// Verifies that ShuffleAndYield correctly handles input with duplicate values.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenUsingEnumerableInput_ShouldDeferExecution()
+		public void ShuffleAndYield_ShouldWorkWithDuplicates()
 		{
-			IEnumerable<int> source = new[] { 1, 2, 3 };
-			AssertExecutionIsDeferred(
-				methodName: "ShuffleAndYield",
-				invokeExtensionMethod: source => ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 2),
-				values: source);
-		}
+			var buffer = new[] { 5, 5, 5, 5, 5 };
+			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 3).ToArray();
 
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns a subset from an enumerable with duplicate values.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenSourceHasDuplicates_ShouldReturnExpected_UsingEnumerable()
-		{
-			IEnumerable<int> source = new[] { 5, 5, 5, 5, 5 };
-			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 3).ToArray();
-
-			Assert.AreEqual(3, result.Length);
 			CollectionAssert.AreEqual(new[] { 5, 5, 5 }, result);
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when the count exceeds the available items in an empty enumerable.
+		/// Verifies that ShuffleAndYield does not modify the contents of the original array.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenSourceIsEmptyAndCountIsOne_ShouldThrow_UsingEnumerable()
+		public void ShuffleAndYield_ShouldNotMutateOriginalArray()
 		{
-			IEnumerable<int> source = Enumerable.Empty<int>();
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
-				ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 1).ToArray());
+			var original = Enumerable.Range(1, 10).ToArray();
+			var copy = original.ToArray();
+			Assert.AreNotSame(original, copy);
+
+			_ = ShuffleHelpers.ShuffleAndYield(original, new XorShiftRandom(), 5).ToArray();
+			CollectionAssert.AreEqual(copy, original);
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield returns an empty result when source is empty and count is zero.
+		/// Verifies that ShuffleAndYield using a span does not mutate the underlying original array.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenSourceIsEmptyAndCountIsZero_ShouldReturnEmpty_UsingEnumerable()
+		public void ShuffleAndYield_Span_ShouldNotModifyOriginalSpan()
 		{
-			IEnumerable<int> source = Enumerable.Empty<int>();
-			var result = ShuffleHelpers.ShuffleAndYield(source, new SystemRandomAdapter(), 0).ToArray();
-			Assert.AreEqual(0, result.Length);
+			var original = Enumerable.Range(1, 10).ToArray();
+			var copy = original.ToArray();
+
+			_ = ShuffleHelpers.ShuffleAndYield<int>(original.AsSpan(), new XorShiftRandom(), 5).ToArray();
+
+			CollectionAssert.AreEqual(copy, original, "Span-based shuffle should not mutate the original array.");
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield returns all items in randomized order when count equals source length.
+		/// Verifies that when count equals array length, all unique items are returned in a different order.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenCountEqualsLength_ShouldReturnAll_UsingEnumerable()
+		public void ShuffleAndYield_Array_WhenCountEqualsLength_ShouldReturnAllUniqueItems()
 		{
-			IEnumerable<int> source = Enumerable.Range(1, 5);
-			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
+			var buffer = Enumerable.Range(1, 10).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), buffer.Length).ToArray();
 
-			CollectionAssert.AreEquivalent(source.ToArray(), result);
-			Assert.AreEqual(5, result.Length);
+			CollectionAssert.AreEquivalent(buffer, result);
+			CollectionAssert.AllItemsAreUnique(result);
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield throws when count exceeds the number of items.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenCountExceedsLength_ShouldThrow_UsingEnumerable()
-		{
-			IEnumerable<int> source = Enumerable.Range(1, 5);
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
-				ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 6).ToArray());
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield throws when count is negative.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenCountIsNegative_ShouldThrow_UsingEnumerable()
-		{
-			IEnumerable<int> source = Enumerable.Range(1, 3);
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
-				ShuffleHelpers.ShuffleAndYield(source, new SystemRandomAdapter(), -1).ToArray());
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns an empty sequence when count is zero.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WhenCountIsZero_ShouldReturnEmpty_UsingEnumerable()
-		{
-			IEnumerable<int> source = Enumerable.Range(1, 3);
-			var result = ShuffleHelpers.ShuffleAndYield(source, new SystemRandomAdapter(), 0).ToArray();
-			Assert.AreEqual(0, result.Length);
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield returns the correct number of items for multiple valid counts.
+		/// Verifies that ShuffleAndYield for IEnumerable returns the expected count and all elements belong to the source.
 		/// </summary>
 		[DataTestMethod]
 		[DataRow(0)]
 		[DataRow(1)]
 		[DataRow(5)]
 		[DataRow(10)]
-		public void ShuffleAndYield_WhenValidCountsProvided_ShouldReturnCorrectCount_UsingEnumerable(int count)
+		public void ShuffleAndYield_IEnumerable_ShouldReturnExpectedCount(int count)
 		{
-			IEnumerable<int> source = Enumerable.Range(1, 10);
-			var result = ShuffleHelpers.ShuffleAndYield(source, new SystemRandomAdapter(), count).ToArray();
+			var source = Enumerable.Range(1, 10);
+			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), count).ToArray();
+
 			Assert.AreEqual(count, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield does not enumerate the source until iteration begins.
+		/// Verifies that ShuffleAndYield only begins enumeration when the result is iterated.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenUsingEnumerable_ShouldDeferExecution()
+		public void ShuffleAndYield_IEnumerable_ShouldEnumerateOnIteration()
 		{
-			bool hasEnumerated = false;
+			bool enumerated = false;
 
-			var tracked = new TrackingEnumerable<int>(
+			var tracking = new TrackingEnumerable<int>(
 				source: new[] { 1, 2, 3 },
-				onEnumerate: () => hasEnumerated = true
+				onEnumerate: () => enumerated = true
 			);
 
-			var result = ShuffleHelpers.ShuffleAndYield((IEnumerable<int>)tracked, new XorShiftRandom(), 2);
+			_ = ShuffleHelpers.ShuffleAndYield(tracking, new XorShiftRandom(), 2).ToArray();
+			Assert.IsTrue(enumerated, "Source should be enumerated upon iteration.");
+		}
 
-			Assert.IsFalse(hasEnumerated, "ShuffleAndYield should defer enumeration until iterated.");
-			_ = result.First();
-			Assert.IsTrue(hasEnumerated, "ShuffleAndYield should enumerate only on iteration.");
+		/// <summary>
+		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingArray()
+		{
+			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
+
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, source);
+
+			// Ensure the references point to the original objects
+			foreach (var person in result)
+			{
+				Assert.IsTrue(source.Contains(person));
+			}
+		}
+
+		/// <summary>
+		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingEnumerable()
+		{
+			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).AsEnumerable();
+			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
+
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
+
+			// Ensure the references point to the original objects
+			foreach (var person in result)
+			{
+				Assert.IsTrue(source.Contains(person));
+			}
+		}
+
+		/// <summary>
+		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingSpan()
+		{
+			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsSpan(), new XorShiftRandom(), 5).ToArray();
+
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
+
+			// Ensure the references point to the original objects
+			foreach (var person in result)
+			{
+				Assert.IsTrue(source.Contains(person));
+			}
+		}
+
+		/// <summary>
+		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingMemory()
+		{
+			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsMemory(), new XorShiftRandom(), 5).ToArray();
+
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
+
+			// Ensure the references point to the original objects
+			foreach (var person in result)
+			{
+				Assert.IsTrue(source.Contains(person));
+			}
+		}
+
+		/// <summary>
+		/// Runs 20,000 shuffles using ShuffleAndYield of a 10-element array to validate statistical uniformity of output positions. Each
+		/// value should appear roughly equally in each position, with no more than 2 statistically significant outliers.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WhenRepeated_ShouldDistributeItemsStatistically()
+		{
+			const int runs = 20000;
+			const int size = 10;
+			var tracker = new int[size, size];
+			var original = Enumerable.Range(0, size).ToArray();
+
+			for (int r = 0; r < runs; r++)
+			{
+				var shuffled = ShuffleHelpers.ShuffleAndYield(original, new SystemRandomAdapter(), size).ToArray();
+				for (int i = 0; i < size; i++)
+					tracker[i, shuffled[i]]++;
+			}
+
+			AssertStatisticalUniformity(tracker, size, label: nameof(ShuffleHelpers.ShuffleAndYield));
+		}
+
+		public class Person
+		{
+			public int Id { get; set; }
+
+			public string Name { get; set; }
+
+			public override bool Equals(object obj) => obj is Person other && Id == other.Id;
+
+			public override int GetHashCode() => Id.GetHashCode();
 		}
 	}
 }

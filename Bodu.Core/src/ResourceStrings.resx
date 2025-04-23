@@ -417,4 +417,7 @@
   <data name="Arg_OutOfRange_SequenceRangeOverflow" xml:space="preserve">
     <value>The specified sequence range would exceed the allowable value for {0}.</value>
   </data>
+  <data name="Arg_OutOfRange_CountExceedsAvailable" xml:space="preserve">
+    <value>Count must be non-negative and not exceed the number of available items ({0}).</value>
+  </data>
 </root>

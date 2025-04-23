@@ -8,79 +8,125 @@ namespace Bodu.Collections.Generic
 	public static partial class ShuffleHelpers
 	{
 		/// <summary>
-		/// Yields a randomized subset of an enumerable source using an in-place shuffle of a temporary buffer.
+		/// Lazily yields a randomized subset of an <see cref="IEnumerable{T}" /> using a partial Fisher–Yates shuffle.
 		/// </summary>
-		/// <typeparam name="T">The element type.</typeparam>
-		/// <param name="source">The source enumerable.</param>
-		/// <param name="rng">The random number generator.</param>
-		/// <param name="count">The number of elements to yield.</param>
-		/// <returns>A randomized sequence of elements from the source.</returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="source" /> or <paramref name="rng" /> is null.</exception>
+		/// <typeparam name="T">The type of elements in the source sequence.</typeparam>
+		/// <param name="source">The source sequence to shuffle.</param>
+		/// <param name="rng">The random number generator used to select shuffled items.</param>
+		/// <param name="count">The number of elements to yield from the shuffled source.</param>
+		/// <returns>A lazily-evaluated sequence of randomly selected items from the source.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="rng" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown immediately if <paramref name="count" /> is negative.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="count" /> is negative or exceeds the number of available elements.
+		/// May be thrown upon first enumeration if <paramref name="count" /> exceeds the total number of elements in <paramref name="source" />.
 		/// </exception>
+		/// <remarks>
+		/// Enumeration of <paramref name="source" /> and shuffling are deferred until the result is first iterated. The entire source is
+		/// buffered in memory before shuffling begins. The original sequence is not modified.
+		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> ShuffleAndYield<T>(IEnumerable<T> source, IRandomGenerator rng, int count)
 		{
-			if (source == null)
-				throw new ArgumentNullException(nameof(source));
+			ThrowHelper.ThrowIfNull(source);
+			ThrowHelper.ThrowIfNull(rng);
+			ThrowHelper.ThrowIfLessThan(count, 0);
 
-			if (rng == null)
-				throw new ArgumentNullException(nameof(rng));
+			return LazyIterator();
 
-			T[] buffer = source.ToArray();
-			return ShuffleAndYield(buffer, rng, count); // calls array overload
+			IEnumerable<T> LazyIterator()
+			{
+				T[] buffer = source.ToArray(); // Copy the source array to avoid modifying it
+				ThrowHelper.ThrowIfCountExceedsAvailable(count, buffer.Length);
+
+				int available = buffer.Length;
+
+				while (count-- > 0)
+				{
+					int i = rng.Next(available);
+					yield return buffer[i];
+					buffer[i] = buffer[--available]; // Replace used item with the last unselected one
+				}
+			}
 		}
 
 		/// <summary>
-		/// Yields a randomized subset of the given array using an in-place partial Fisher–Yates shuffle.
+		/// Yields a randomized subset of the specified array by copying and shuffling it using a partial Fisher–Yates algorithm.
 		/// </summary>
-		/// <typeparam name="T">The type of element.</typeparam>
-		/// <param name="array">The array to shuffle.</param>
-		/// <param name="rng">The random number generator to use.</param>
+		/// <typeparam name="T">The type of elements in the array.</typeparam>
+		/// <param name="array">The source array to shuffle. The original array is not modified.</param>
+		/// <param name="rng">The random number generator used for shuffling.</param>
 		/// <param name="count">The number of elements to yield.</param>
-		/// <returns>A randomized sequence of elements.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count" /> is less than 0 or exceeds the array length.</exception>
+		/// <returns>A sequence of randomly selected elements from the array.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> or <paramref name="rng" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count" /> is negative or exceeds the array length.</exception>
+		/// <remarks>
+		/// The input array is copied before shuffling to ensure immutability of the original. Use this method when working with arrays and
+		/// requiring source preservation.
+		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> ShuffleAndYield<T>(T[] array, IRandomGenerator rng, int count)
 		{
-			int available = array.Length;
-			T[] buffer = array.ToArray(); // copy the buffer
+			ThrowHelper.ThrowIfNull(array);
+			ThrowHelper.ThrowIfNull(rng);
+			ThrowHelper.ThrowIfCountExceedsAvailable(count, array.Length);
 
-			if (count < 0 || count > available)
-				throw new ArgumentOutOfRangeException(nameof(count), "Count exceeds available items in array.");
+			T[] buffer = array.ToArray(); // Copy the source array to avoid modifying it
+			int available = buffer.Length;
 
 			while (count-- > 0)
 			{
 				int i = rng.Next(available);
 				yield return buffer[i];
-				buffer[i] = buffer[--available];
+				buffer[i] = buffer[--available]; // Replace used item with the last unselected one
 			}
 		}
 
 		/// <summary>
-		/// Yields a randomized subset of a span using in-place shuffle logic.
+		/// Yields a randomized subset of a <see cref="ReadOnlySpan{T}" /> using a copied buffer and array shuffle.
 		/// </summary>
-		/// <typeparam name="T">The type of element.</typeparam>
+		/// <typeparam name="T">The type of elements in the span.</typeparam>
 		/// <param name="span">The span to shuffle.</param>
 		/// <param name="rng">The random number generator to use.</param>
-		/// <param name="count">The number of items to return.</param>
-		/// <returns>A randomized sequence of elements from the span.</returns>
-		/// <remarks>This method shuffles the span in-place and yields the first <paramref name="count" /> results.</remarks>
+		/// <param name="count">The number of elements to yield.</param>
+		/// <returns>A sequence of shuffled items from the span.</returns>
+		/// <remarks>This method eagerly copies <paramref name="span" /> into a new array, which is then shuffled.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> ShuffleAndYield<T>(ReadOnlySpan<T> span, IRandomGenerator rng, int count)
 			=> ShuffleAndYield(span.ToArray(), rng, count);
 
 		/// <summary>
-		/// Yields a randomized subset of a memory array using in-place shuffle logic.
+		/// Yields a randomized subset of a <see cref="Memory{T}" /> block using a copied buffer and array shuffle.
 		/// </summary>
-		/// <typeparam name="T">The type of element.</typeparam>
-		/// <param name="memory">The memory to shuffle.</param>
-		/// <param name="rng">The random number generator.</param>
-		/// <param name="count">The number of items to yield.</param>
-		/// <returns>A randomized sequence of elements from memory.</returns>
+		/// <typeparam name="T">The type of elements in memory.</typeparam>
+		/// <param name="memory">The memory block to shuffle.</param>
+		/// <param name="rng">The random number generator to use.</param>
+		/// <param name="count">The number of elements to yield.</param>
+		/// <returns>A sequence of shuffled items from the memory block.</returns>
+		/// <remarks>This method eagerly copies <paramref name="memory" /> into a new array, which is then shuffled.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> ShuffleAndYield<T>(Memory<T> memory, IRandomGenerator rng, int count)
 			=> ShuffleAndYield(memory.ToArray(), rng, count);
+
+		/// <summary>
+		/// Yields a randomized subset of the specified array using an in-place partial Fisher–Yates shuffle.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the array.</typeparam>
+		/// <param name="array">The buffer to shuffle. The contents are modified during shuffling.</param>
+		/// <param name="rng">The random number generator used to shuffle elements.</param>
+		/// <param name="count">The number of elements to yield.</param>
+		/// <returns>A sequence of shuffled items from the input array.</returns>
+		/// <remarks>This method assumes that <paramref name="array" /> is safe to mutate. It does not perform validation.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static IEnumerable<T> ShuffleAndYieldInternal<T>(T[] array, IRandomGenerator rng, int count)
+		{
+			int available = array.Length;
+
+			while (count-- > 0)
+			{
+				int i = rng.Next(available);
+				yield return array[i];
+				array[i] = array[--available]; // Replace used item with the last unselected one
+			}
+		}
 	}
 }
