@@ -31,8 +31,9 @@ jobs:
           if (-not (Test-Path _site)) { mkdir _site }
           mkdir _site/Bodu.Core
           mkdir _site/Bodu.Security.Cryptography
-          cp -r Bodu.Core/src/docs/api/* _site/Bodu.Core/
-          cp -r Bodu.Security.Cryptography/src/docs/api/* _site/Bodu.Security.Cryptography/
+          cp -r Bodu.Core/src/docs/_site/* _site/Bodu.Core/
+          cp -r Bodu.Security.Cryptography/src/docs/_site/* _site/Bodu.Security.Cryptography/
+
 
           
       - name: Add root index page
