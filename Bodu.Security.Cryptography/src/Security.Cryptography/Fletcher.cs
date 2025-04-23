@@ -23,6 +23,8 @@ namespace Bodu.Security.Cryptography
 	/// This implementation handles Fletcher hash sizes of 16, 32, and 64 bits. Derived classes (e.g., Fletcher16, Fletcher32, Fletcher64)
 	/// can implement specific hash sizes.
 	/// </para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
+	/// password hashing, or integrity verification in security-sensitive contexts.</note>
 	/// </remarks>
 	public abstract class Fletcher
 		: System.Security.Cryptography.HashAlgorithm

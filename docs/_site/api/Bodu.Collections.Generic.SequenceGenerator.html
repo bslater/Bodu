@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class SequenceGenerator </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class SequenceGenerator ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/bslater/Bodu/new/master/apiSpec/new?filename=Bodu_Collections_Generic_SequenceGenerator.md&amp;value=---%0Auid%3A%20Bodu.Collections.Generic.SequenceGenerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Bodu.Collections.Generic.SequenceGenerator">
+
+
+
+  <h1 id="Bodu_Collections_Generic_SequenceGenerator" data-uid="Bodu.Collections.Generic.SequenceGenerator" class="text-break">
+Class SequenceGenerator  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Repeat.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Bodu.html">Bodu</a>.<a class="xref" href="Bodu.Collections.html">Collections</a>.<a class="xref" href="Bodu.Collections.Generic.html">Generic</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Bodu.CoreLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class SequenceGenerator</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">SequenceGenerator</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_Factory_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Factory*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_Factory__1_System_Func_System_Collections_Generic_IEnumerator___0___" data-uid="Bodu.Collections.Generic.SequenceGenerator.Factory``1(System.Func{System.Collections.Generic.IEnumerator{``0}})">
+  Factory&lt;TResult&gt;(Func&lt;IEnumerator&lt;TResult&gt;&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Factory.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a sequence from a custom enumerator factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TResult&gt; Factory&lt;TResult&gt;(Func&lt;IEnumerator&lt;TResult&gt;&gt; enumeratorFactory)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>enumeratorFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;TResult&gt;&gt;</dt>
+    <dd><p>A delegate that produces a new <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator&lt;T&gt;</a> each time the sequence is iterated.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TResult&gt;</dt>
+    <dd><p>An enumerable sequence generated from the custom enumerator.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TResult</code></dt>
+    <dd><p>The type of elements in the generated sequence.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_Factory__1_System_Func_System_Collections_Generic_IEnumerator___0____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method is useful when integrating external or imperative enumerators into a deferred LINQ-style pipeline.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown if <code class="paramref">enumeratorFactory</code> is <code>null</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_NextWhile_" data-uid="Bodu.Collections.Generic.SequenceGenerator.NextWhile*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_NextWhile__1___0_System_Func___0_System_Boolean__System_Func___0_System_Int32___0__" data-uid="Bodu.Collections.Generic.SequenceGenerator.NextWhile``1(``0,System.Func{``0,System.Boolean},System.Func{``0,System.Int32,``0})">
+  NextWhile&lt;TResult&gt;(TResult, Func&lt;TResult, bool&gt;, Func&lt;TResult, int, TResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.NextWhile.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a sequence by repeatedly transforming a value while a condition remains true, providing the current index to each transformation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TResult&gt; NextWhile&lt;TResult&gt;(TResult initialValue, Func&lt;TResult, bool&gt; conditionHandler, Func&lt;TResult, int, TResult&gt; resultSelector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>initialValue</code> <span class="xref">TResult</span></dt>
+    <dd><p>The initial value of the sequence.</p>
+</dd>
+    <dt><code>conditionHandler</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TResult, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>A function that determines whether the sequence should continue based on the current value.</p>
+</dd>
+    <dt><code>resultSelector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;TResult, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>, TResult&gt;</dt>
+    <dd><p>A function that computes the next value based on the current value and its zero-based index in the sequence.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TResult&gt;</dt>
+    <dd><p>An enumerable sequence generated by applying the transformation while the condition is met.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TResult</code></dt>
+    <dd><p>The type of elements in the generated sequence.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_NextWhile__1___0_System_Func___0_System_Boolean__System_Func___0_System_Int32___0___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This overload allows the transformation to depend on the iteration index.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown if <code class="paramref">conditionHandler</code> or <code class="paramref">resultSelector</code> is <code>null</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_NextWhile_" data-uid="Bodu.Collections.Generic.SequenceGenerator.NextWhile*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_NextWhile__1___0_System_Func___0_System_Boolean__System_Func___0___0__" data-uid="Bodu.Collections.Generic.SequenceGenerator.NextWhile``1(``0,System.Func{``0,System.Boolean},System.Func{``0,``0})">
+  NextWhile&lt;TResult&gt;(TResult, Func&lt;TResult, bool&gt;, Func&lt;TResult, TResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.NextWhile.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a sequence by repeatedly transforming a value while a condition remains true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TResult&gt; NextWhile&lt;TResult&gt;(TResult initialValue, Func&lt;TResult, bool&gt; conditionHandler, Func&lt;TResult, TResult&gt; resultSelector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>initialValue</code> <span class="xref">TResult</span></dt>
+    <dd><p>The starting value of the sequence.</p>
+</dd>
+    <dt><code>conditionHandler</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TResult, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>A function that determines whether the sequence should continue, based on the current value.</p>
+</dd>
+    <dt><code>resultSelector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TResult, TResult&gt;</dt>
+    <dd><p>A function that computes the next value in the sequence from the current value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TResult&gt;</dt>
+    <dd><p>An enumerable sequence generated by applying the transformation while the condition is met.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TResult</code></dt>
+    <dd><p>The type of elements in the generated sequence.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_NextWhile__1___0_System_Func___0_System_Boolean__System_Func___0___0___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method yields a lazy sequence where the next value is generated by applying <code class="paramref">resultSelector</code> to the
+current one, provided that <code class="paramref">conditionHandler</code> evaluates to true.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown if <code class="paramref">conditionHandler</code> or <code class="paramref">resultSelector</code> is <code>null</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_NextWhile_" data-uid="Bodu.Collections.Generic.SequenceGenerator.NextWhile*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_NextWhile__2___0_System_Func___0_System_Boolean__System_Func___0___0__System_Func___0___1__" data-uid="Bodu.Collections.Generic.SequenceGenerator.NextWhile``2(``0,System.Func{``0,System.Boolean},System.Func{``0,``0},System.Func{``0,``1})">
+  NextWhile&lt;TState, TResult&gt;(TState, Func&lt;TState, bool&gt;, Func&lt;TState, TState&gt;, Func&lt;TState, TResult&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.NextWhile.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a sequence by transforming a custom state object while a condition remains true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;TResult&gt; NextWhile&lt;TState, TResult&gt;(TState initialState, Func&lt;TState, bool&gt; conditionHandler, Func&lt;TState, TState&gt; iterateFunction, Func&lt;TState, TResult&gt; resultSelector)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>initialState</code> <span class="xref">TState</span></dt>
+    <dd><p>The initial state used to generate the sequence.</p>
+</dd>
+    <dt><code>conditionHandler</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TState, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>A predicate that determines whether the sequence should continue based on the current state.</p>
+</dd>
+    <dt><code>iterateFunction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TState, TState&gt;</dt>
+    <dd><p>A function that computes the next state from the current state.</p>
+</dd>
+    <dt><code>resultSelector</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TState, TResult&gt;</dt>
+    <dd><p>A function that projects the current state into a sequence value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TResult&gt;</dt>
+    <dd><p>An enumerable sequence generated by iterating the state transformation while the condition is met.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TState</code></dt>
+    <dd><p>The type of the internal state object.</p>
+</dd>
+    <dt><code>TResult</code></dt>
+    <dd><p>The type of the elements in the generated sequence.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_NextWhile__2___0_System_Func___0_System_Boolean__System_Func___0___0__System_Func___0___1___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Use this overload to generate sequences where multiple values must be tracked (e.g., multiple counters, accumulators, etc.).</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown if <code class="paramref">conditionHandler</code>, <code class="paramref">iterateFunction</code>, or <code class="paramref">resultSelector</code> is <code>null</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_Range_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Range*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_Range_System_Int32_System_Int32_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Range(System.Int32,System.Int32)">
+  Range(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Range.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a sequence of integers from <code class="paramref">start</code> to <code class="paramref">stop</code>, inclusive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;int&gt; Range(int start, int stop)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The first value in the sequence.</p>
+</dd>
+    <dt><code>stop</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The final value in the sequence, included in the result.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd><p>A sequence of consecutive integers.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_Range_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If <code class="paramref">start</code> is greater than <code class="paramref">stop</code>, the sequence will decrement.</p>
+</div>
+
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_Range_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Range*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_Range_System_Int32_System_Int32_System_Int32_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Range(System.Int32,System.Int32,System.Int32)">
+  Range(int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Range.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a sequence of integers from <code class="paramref">start</code> to <code class="paramref">stop</code> using a specified step value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;int&gt; Range(int start, int stop, int step)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The initial value in the sequence.</p>
+</dd>
+    <dt><code>stop</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The endpoint of the sequence, included if reached by stepping.</p>
+</dd>
+    <dt><code>step</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The amount to increment or decrement per step. If zero, an infinite sequence of <code class="paramref">start</code> is returned.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd><p>A sequence of integers spaced by <code class="paramref">step</code> units.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_Range_System_Int32_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method supports ascending, descending, and constant sequences depending on the sign of <code class="paramref">step</code>. If
+<code class="paramref">step</code> is zero, the sequence yields <code class="paramref">start</code> indefinitely. The method safely handles edge
+cases near <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32.maxvalue">MaxValue</a> and <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32.minvalue">MinValue</a> by terminating if overflow would occur.</p>
+</div>
+
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_Range_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Range*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_Range_System_Int64_System_Int32_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Range(System.Int64,System.Int32)">
+  Range(long, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Range.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a fixed-length sequence of 64-bit integers starting at <code class="paramref">start</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;long&gt; Range(long start, int count)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The initial value in the sequence.</p>
+</dd>
+    <dt><code>count</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The number of elements to produce.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a>&gt;</dt>
+    <dd><p>A sequence of <code class="paramref">count</code> long values beginning at <code class="paramref">start</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_Range_System_Int64_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method avoids producing values beyond the limits of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> to prevent overflow.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">count</code> is negative, or when the range would overflow a 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_Repeat_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Repeat*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_Repeat__1___0_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Repeat``1(``0)">
+  Repeat&lt;T&gt;(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Repeat.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates an infinite sequence repeating the specified value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; Repeat&lt;T&gt;(T value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p>The value to repeat in the sequence.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>An infinite sequence of <code class="paramref">value</code>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the repeated value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Collections_Generic_SequenceGenerator_Repeat__1___0__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method yields the same value forever and is lazily evaluated.</p>
+</div>
+
+
+
+
+  <a id="Bodu_Collections_Generic_SequenceGenerator_Repeat_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Repeat*"></a>
+
+  <h3 id="Bodu_Collections_Generic_SequenceGenerator_Repeat__1___0_System_Int32_" data-uid="Bodu.Collections.Generic.SequenceGenerator.Repeat``1(``0,System.Int32)">
+  Repeat&lt;T&gt;(T, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Repeat.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a finite sequence repeating the specified value a given number of times.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;T&gt; Repeat&lt;T&gt;(T value, int count)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p>The value to repeat.</p>
+</dd>
+    <dt><code>count</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The number of repetitions.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>A sequence of <code class="paramref">value</code> repeated <code class="paramref">count</code> times.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the repeated value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></dt>
+    <dd><p>Thrown when <code class="paramref">count</code> is negative.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/bslater/Bodu/blob/master/Bodu.Core/src/Collections.Generic/SequenceGenerator.Repeat.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -12,7 +12,7 @@ namespace Bodu.Security.Cryptography
 	/// JSHash is a compact and efficient bitwise hash function, originally developed by Justin Sobel. It is suitable for hash
 	/// permutationTable indexing and other non-cryptographic use cases where speed is preferred over security.
 	/// </para>
-	/// <para>The core hash function operates using the expression: <c>hash ^= (hash << 5) + (hash >> 2) + byte</c>.</para>
+	/// <para>The core hash function operates using the expression: <c><![CDATA[hash ^= (hash << 5) + (hash >> 2) + byte]]></c>.</para>
 	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
 	/// password hashing, or integrity verification in security-sensitive contexts.</note>
 	/// </remarks>

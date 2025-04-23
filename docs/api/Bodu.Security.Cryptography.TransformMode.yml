@@ -1,0 +1,255 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Security.Cryptography.TransformMode
+  commentId: T:Bodu.Security.Cryptography.TransformMode
+  id: TransformMode
+  parent: Bodu.Security.Cryptography
+  children:
+  - Bodu.Security.Cryptography.TransformMode.Decrypt
+  - Bodu.Security.Cryptography.TransformMode.Encrypt
+  langs:
+  - csharp
+  - vb
+  name: TransformMode
+  nameWithType: TransformMode
+  fullName: Bodu.Security.Cryptography.TransformMode
+  type: Enum
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography/TransformMode.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TransformMode
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography/TransformMode.cs
+    startLine: 12
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography
+  summary: Defines the direction of a cryptographic transformation.
+  remarks: This enumeration is used to distinguish between encryption and decryption operations in cryptographic transform implementations.
+  example: []
+  syntax:
+    content: public enum TransformMode
+    content.vb: Public Enum TransformMode
+  extensionMethods:
+  - Bodu.Security.Cryptography.TransformMode.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+- uid: Bodu.Security.Cryptography.TransformMode.Encrypt
+  commentId: F:Bodu.Security.Cryptography.TransformMode.Encrypt
+  id: Encrypt
+  parent: Bodu.Security.Cryptography.TransformMode
+  langs:
+  - csharp
+  - vb
+  name: Encrypt
+  nameWithType: TransformMode.Encrypt
+  fullName: Bodu.Security.Cryptography.TransformMode.Encrypt
+  type: Field
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography/TransformMode.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: Encrypt
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography/TransformMode.cs
+    startLine: 17
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography
+  summary: Indicates that the transform should encrypt plaintext into ciphertext.
+  example: []
+  syntax:
+    content: Encrypt = 0
+    return:
+      type: Bodu.Security.Cryptography.TransformMode
+- uid: Bodu.Security.Cryptography.TransformMode.Decrypt
+  commentId: F:Bodu.Security.Cryptography.TransformMode.Decrypt
+  id: Decrypt
+  parent: Bodu.Security.Cryptography.TransformMode
+  langs:
+  - csharp
+  - vb
+  name: Decrypt
+  nameWithType: TransformMode.Decrypt
+  fullName: Bodu.Security.Cryptography.TransformMode.Decrypt
+  type: Field
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography/TransformMode.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: Decrypt
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography/TransformMode.cs
+    startLine: 22
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography
+  summary: Indicates that the transform should decrypt ciphertext into plaintext.
+  example: []
+  syntax:
+    content: Decrypt = 1
+    return:
+      type: Bodu.Security.Cryptography.TransformMode
+references:
+- uid: Bodu.Security.Cryptography
+  commentId: N:Bodu.Security.Cryptography
+  href: Bodu.html
+  name: Bodu.Security.Cryptography
+  nameWithType: Bodu.Security.Cryptography
+  fullName: Bodu.Security.Cryptography
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Security
+    name: Security
+    href: Bodu.Security.html
+  - name: .
+  - uid: Bodu.Security.Cryptography
+    name: Cryptography
+    href: Bodu.Security.Cryptography.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Security
+    name: Security
+    href: Bodu.Security.html
+  - name: .
+  - uid: Bodu.Security.Cryptography
+    name: Cryptography
+    href: Bodu.Security.Cryptography.html
+- uid: Bodu.Security.Cryptography.TransformMode.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  parent: Bodu.Extensions.NumericExtensions
+  definition: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<TransformMode>(TransformMode, bool)
+  nameWithType: NumericExtensions.GetBytes<TransformMode>(TransformMode, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<Bodu.Security.Cryptography.TransformMode>(Bodu.Security.Cryptography.TransformMode, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of TransformMode)(TransformMode, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of Bodu.Security.Cryptography.TransformMode)(Bodu.Security.Cryptography.TransformMode, Boolean)
+  name.vb: GetBytes(Of TransformMode)(TransformMode, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Security.Cryptography.TransformMode,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - uid: Bodu.Security.Cryptography.TransformMode
+    name: TransformMode
+    href: Bodu.Security.Cryptography.TransformMode.html
+  - name: '>'
+  - name: (
+  - uid: Bodu.Security.Cryptography.TransformMode
+    name: TransformMode
+    href: Bodu.Security.Cryptography.TransformMode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Security.Cryptography.TransformMode,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bodu.Security.Cryptography.TransformMode
+    name: TransformMode
+    href: Bodu.Security.Cryptography.TransformMode.html
+  - name: )
+  - name: (
+  - uid: Bodu.Security.Cryptography.TransformMode
+    name: TransformMode
+    href: Bodu.Security.Cryptography.TransformMode.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  isExternal: true
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<T>(T, bool)
+  nameWithType: NumericExtensions.GetBytes<T>(T, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<T>(T, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of T)(T, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of T)(T, Boolean)
+  name.vb: GetBytes(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions
+  commentId: T:Bodu.Extensions.NumericExtensions
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.NumericExtensions.html
+  name: NumericExtensions
+  nameWithType: NumericExtensions
+  fullName: Bodu.Extensions.NumericExtensions
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  href: Bodu.html
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+- uid: Bodu.Security.Cryptography.TransformMode
+  commentId: T:Bodu.Security.Cryptography.TransformMode
+  parent: Bodu.Security.Cryptography
+  href: Bodu.Security.Cryptography.TransformMode.html
+  name: TransformMode
+  nameWithType: TransformMode
+  fullName: Bodu.Security.Cryptography.TransformMode

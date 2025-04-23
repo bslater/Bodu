@@ -1,0 +1,235 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Extensions.IWeekendProvider
+  commentId: T:Bodu.Extensions.IWeekendProvider
+  id: IWeekendProvider
+  parent: Bodu.Extensions
+  children:
+  - Bodu.Extensions.IWeekendProvider.IsWeekend(System.DayOfWeek)
+  langs:
+  - csharp
+  - vb
+  name: IWeekendProvider
+  nameWithType: IWeekendProvider
+  fullName: Bodu.Extensions.IWeekendProvider
+  type: Interface
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/IWeekendProvider.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: IWeekendProvider
+    path: ../Bodu.Core/src/Extensions/IWeekendProvider.cs
+    startLine: 14
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Defines a provider interface for determining whether a given <xref href="System.DayOfWeek" data-throw-if-not-resolved="false"></xref> is considered a weekend day.
+  remarks: Implement this interface to supply custom weekend definitions that are not covered by built-in <xref href="Bodu.Extensions.StandardWeekend" data-throw-if-not-resolved="false"></xref> options.
+  example: []
+  syntax:
+    content: public interface IWeekendProvider
+    content.vb: Public Interface IWeekendProvider
+  extensionMethods:
+  - Bodu.Extensions.IWeekendProvider.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+- uid: Bodu.Extensions.IWeekendProvider.IsWeekend(System.DayOfWeek)
+  commentId: M:Bodu.Extensions.IWeekendProvider.IsWeekend(System.DayOfWeek)
+  id: IsWeekend(System.DayOfWeek)
+  parent: Bodu.Extensions.IWeekendProvider
+  langs:
+  - csharp
+  - vb
+  name: IsWeekend(DayOfWeek)
+  nameWithType: IWeekendProvider.IsWeekend(DayOfWeek)
+  fullName: Bodu.Extensions.IWeekendProvider.IsWeekend(System.DayOfWeek)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/IWeekendProvider.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: IsWeekend
+    path: ../Bodu.Core/src/Extensions/IWeekendProvider.cs
+    startLine: 21
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Determines whether the specified <xref href="System.DayOfWeek" data-throw-if-not-resolved="false"></xref> is considered a weekend day.
+  example: []
+  syntax:
+    content: bool IsWeekend(DayOfWeek dayOfWeek)
+    parameters:
+    - id: dayOfWeek
+      type: System.DayOfWeek
+      description: The day of the week to evaluate.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the day is considered part of the weekend; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function IsWeekend(dayOfWeek As DayOfWeek) As Boolean
+  overload: Bodu.Extensions.IWeekendProvider.IsWeekend*
+references:
+- uid: System.DayOfWeek
+  commentId: T:System.DayOfWeek
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.dayofweek
+  name: DayOfWeek
+  nameWithType: DayOfWeek
+  fullName: System.DayOfWeek
+- uid: Bodu.Extensions.StandardWeekend
+  commentId: T:Bodu.Extensions.StandardWeekend
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.StandardWeekend.html
+  name: StandardWeekend
+  nameWithType: StandardWeekend
+  fullName: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  href: Bodu.html
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+- uid: Bodu.Extensions.IWeekendProvider.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  parent: Bodu.Extensions.NumericExtensions
+  definition: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<IWeekendProvider>(IWeekendProvider, bool)
+  nameWithType: NumericExtensions.GetBytes<IWeekendProvider>(IWeekendProvider, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<Bodu.Extensions.IWeekendProvider>(Bodu.Extensions.IWeekendProvider, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of IWeekendProvider)(IWeekendProvider, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of Bodu.Extensions.IWeekendProvider)(Bodu.Extensions.IWeekendProvider, Boolean)
+  name.vb: GetBytes(Of IWeekendProvider)(IWeekendProvider, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.IWeekendProvider,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - uid: Bodu.Extensions.IWeekendProvider
+    name: IWeekendProvider
+    href: Bodu.Extensions.IWeekendProvider.html
+  - name: '>'
+  - name: (
+  - uid: Bodu.Extensions.IWeekendProvider
+    name: IWeekendProvider
+    href: Bodu.Extensions.IWeekendProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.IWeekendProvider,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bodu.Extensions.IWeekendProvider
+    name: IWeekendProvider
+    href: Bodu.Extensions.IWeekendProvider.html
+  - name: )
+  - name: (
+  - uid: Bodu.Extensions.IWeekendProvider
+    name: IWeekendProvider
+    href: Bodu.Extensions.IWeekendProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  isExternal: true
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<T>(T, bool)
+  nameWithType: NumericExtensions.GetBytes<T>(T, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<T>(T, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of T)(T, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of T)(T, Boolean)
+  name.vb: GetBytes(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions
+  commentId: T:Bodu.Extensions.NumericExtensions
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.NumericExtensions.html
+  name: NumericExtensions
+  nameWithType: NumericExtensions
+  fullName: Bodu.Extensions.NumericExtensions
+- uid: Bodu.Extensions.IWeekendProvider.IsWeekend*
+  commentId: Overload:Bodu.Extensions.IWeekendProvider.IsWeekend
+  href: Bodu.Extensions.IWeekendProvider.html#Bodu_Extensions_IWeekendProvider_IsWeekend_System_DayOfWeek_
+  name: IsWeekend
+  nameWithType: IWeekendProvider.IsWeekend
+  fullName: Bodu.Extensions.IWeekendProvider.IsWeekend
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

@@ -18,9 +18,13 @@ namespace Bodu.Security.Cryptography
 	/// Implementation of the cyclic redundancy check (CRC) error-detecting algorithm. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
+	/// <para>
 	/// The <see cref="Crc" /> class computes CRC hashes based on various CRC standards, including CRC32. This class uses CRC parameters
 	/// defined in the <see cref="CrcStandard" /> class, such as the polynomial, initial value, reflection settings, and XOR out value. It
 	/// provides methods for CRC calculation and updates using byte arrays.
+	/// </para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
+	/// password hashing, or integrity verification in security-sensitive contexts.</note>
 	/// </remarks>
 	public sealed class Crc
 		: System.Security.Cryptography.HashAlgorithm
@@ -264,25 +268,7 @@ namespace Bodu.Security.Cryptography
 			return buffer;
 		}
 
-#if !NET6_0_OR_GREATER
-
-		/// <summary>
-		/// Processes a block of data by feeding it into the CRC algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
-#else
-
-		/// <summary>
-		/// Processes a block of data by feeding it into the CRC algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-#endif
-
+		/// <inheritdoc />
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);
@@ -299,21 +285,7 @@ namespace Bodu.Security.Cryptography
 			ProcessBlocks(span);
 		}
 
-#if !NET6_0_OR_GREATER
-
-		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
-		/// <exception cref="CryptographicUnexpectedOperationException">This method was called more than once without reinitializing.</exception>
-#else
-
-		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
-#endif
-
+		/// <inheritdoc />
 		protected override byte[] HashFinal()
 		{
 #if !NET6_0_OR_GREATER

@@ -13,6 +13,30 @@ namespace Bodu
 	public static class ThrowHelper
 	{
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the array contains any non-numeric items.
+		/// </summary>
+		/// <param name="array">The array to validate.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when any element in the array is not a numeric type.
+		/// Message: "The array contains non-numeric values."
+		/// </exception>
+		/// <remarks>Validates that each element is of a numeric type (e.g., int, double, float, etc.).</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayContainsNonNumeric(
+			Array array,
+			[CallerArgumentExpression(nameof(array))] string? paramName = null)
+		{
+			foreach (var item in array)
+			{
+				if (item == null) continue;
+				TypeCode code = Type.GetTypeCode(item.GetType());
+				if (code < TypeCode.SByte || code > TypeCode.Decimal)
+					throw new ArgumentException(ResourceStrings.Arg_Invalid_Array_NumericOnly, paramName);
+			}
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentException" /> if the specified array is not single-dimensional.
 		/// </summary>
 		/// <param name="array">The array to validate.</param>
@@ -109,50 +133,6 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
-		/// </summary>
-		/// <typeparam name="T">The element type of the span.</typeparam>
-		/// <param name="span">The span to check.</param>
-		/// <param name="index">The index from which to measure the remaining length.</param>
-		/// <param name="requiredLength">The required number of elements.</param>
-		/// <param name="paramName">The name of the span parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
-		/// Message: "Span is too short. Required minimum is {0} from a specified index."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfSpanLengthIsInsufficient<T>(
-			Span<T> span, int index, int requiredLength,
-			[CallerArgumentExpression(nameof(span))] string? paramName = null)
-		{
-			if (span.Length - index < requiredLength)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), paramName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
-		/// </summary>
-		/// <typeparam name="T">The element type of the span.</typeparam>
-		/// <param name="span">The span to check.</param>
-		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
-		/// <param name="paramName">The name of the span parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
-		/// Message: "Length of the Span must be a multiple of {0}."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
-			ReadOnlySpan<T> span,
-			int divisor,
-			Func<string, Exception>? func = null,
-			[CallerArgumentExpression(nameof(span))] string? paramName = null)
-		{
-			if (span.Length == 0 || span.Length % divisor != 0)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), paramName);
-		}
-
-		/// <summary>
 		/// Throws an exception if the specified <paramref name="index" /> and <paramref name="count" /> define a segment that exceeds the
 		/// bounds of the <paramref name="array" />.
 		/// </summary>
@@ -213,6 +193,53 @@ namespace Bodu
 		{
 			if (array is not TExpected[])
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_ArrayType, paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the collection has fewer elements than the specified minimum.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="collection">The collection to validate.</param>
+		/// <param name="minCount">The minimum number of required elements.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="collection" /> has fewer than <paramref name="minCount" /> elements.
+		/// Message: "Collection contains insufficient elements."
+		/// </exception>
+		/// <remarks>Performs a minimum count check on the collection.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfCollectionTooSmall<T>(
+			ICollection<T> collection,
+			int minCount,
+			[CallerArgumentExpression(nameof(collection))] string? paramName = null)
+		{
+			if (collection.Count < minCount)
+				throw new ArgumentException(ResourceStrings.Arg_Invalid_CollectionTooSmall, paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the specified <paramref name="count" /> is less than zero or greater
+		/// than the number of <paramref name="available" /> items.
+		/// </summary>
+		/// <param name="count">The count value to validate.</param>
+		/// <param name="available">The number of available items.</param>
+		/// <param name="paramName">The name of the parameter being validated (usually "count").</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown when <paramref name="count" /> is negative or greater than <paramref name="available" />.
+		/// Message: "Count must be non-negative and not exceed the number of available items."
+		/// </exception>
+		/// <remarks>Use this method when validating that a subset operation will not exceed the size of the source.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfCountExceedsAvailable(
+			int count,
+			int available,
+			[CallerArgumentExpression(nameof(count))] string? paramName = null)
+		{
+			if (count < 0 || count > available)
+			{
+				throw new ArgumentOutOfRangeException(paramName,
+					string.Format(ResourceStrings.Arg_OutOfRange_CountExceedsAvailable, available));
+			}
 		}
 
 		/// <summary>
@@ -282,30 +309,6 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the value is greater than another parameter's value.
-		/// </summary>
-		/// <typeparam name="T">A comparable type.</typeparam>
-		/// <param name="value">The current value being validated.</param>
-		/// <param name="other">The comparison reference value.</param>
-		/// <param name="paramName">Name of the value parameter.</param>
-		/// <param name="otherName">Name of the comparison parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> &gt; <paramref name="other" />.
-		/// Message: "The value must not be greater than the value of {0}."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfGreaterThanOther<T>(
-			T value, T other,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null,
-			[CallerArgumentExpression(nameof(other))] string? otherName = null)
-			where T : IComparable<T>
-		{
-			if (value.CompareTo(other) > 0)
-				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Invalid_GreaterThanOtherParameter, otherName), paramName);
-		}
-
-		/// <summary>
 		/// Throws an <see cref="ArgumentException" /> if the value is greater than or equal to another parameter's value.
 		/// </summary>
 		/// <typeparam name="T">A comparable type.</typeparam>
@@ -330,6 +333,30 @@ namespace Bodu
 		}
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the value is greater than another parameter's value.
+		/// </summary>
+		/// <typeparam name="T">A comparable type.</typeparam>
+		/// <param name="value">The current value being validated.</param>
+		/// <param name="other">The comparison reference value.</param>
+		/// <param name="paramName">Name of the value parameter.</param>
+		/// <param name="otherName">Name of the comparison parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="value" /> &gt; <paramref name="other" />.
+		/// Message: "The value must not be greater than the value of {0}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfGreaterThanOther<T>(
+			T value, T other,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null,
+			[CallerArgumentExpression(nameof(other))] string? otherName = null)
+			where T : IComparable<T>
+		{
+			if (value.CompareTo(other) > 0)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_GreaterThanOtherParameter, otherName), paramName);
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the index is outside the valid range of a collection.
 		/// </summary>
 		/// <typeparam name="T">Type of items in the collection (used for annotation).</typeparam>
@@ -349,6 +376,25 @@ namespace Bodu
 			if (index >= size)
 				throw new ArgumentOutOfRangeException(paramName,
 					string.Format(ResourceStrings.Arg_OutOfRange_IndexValidRange, size));
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the string comparison option is invalid or unsupported.
+		/// </summary>
+		/// <param name="comparison">The <see cref="StringComparison" /> value to validate.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="comparison" /> is not a valid <see cref="StringComparison" /> enum value.
+		/// Message: "The string comparison type is not supported."
+		/// </exception>
+		/// <remarks>Useful for guarding API input that relies on specific string comparison modes.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfInvalidStringComparison(
+			StringComparison comparison,
+			[CallerArgumentExpression(nameof(comparison))] string? paramName = null)
+		{
+			if (!Enum.IsDefined(typeof(StringComparison), comparison))
+				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringComparison, paramName);
 		}
 
 		/// <summary>
@@ -430,6 +476,54 @@ namespace Bodu
 		}
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the value is less than or equal to another parameter's value.
+		/// </summary>
+		/// <typeparam name="T">A comparable type.</typeparam>
+		/// <param name="value">The value being validated.</param>
+		/// <param name="other">The comparison reference value.</param>
+		/// <param name="paramName">Name of the value parameter.</param>
+		/// <param name="otherName">Name of the comparison parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="value" /> &gt;= <paramref name="other" />.
+		/// Message: "The value must not be less than or equal to the value of {0}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfLessThanOrEqualOther<T>(
+			T value, T other,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null,
+			[CallerArgumentExpression(nameof(other))] string? otherName = null)
+			where T : IComparable<T>
+		{
+			if (value.CompareTo(other) <= 0)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_LessThanOrEqualOtherParameter, otherName), paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the value is less than another parameter's value.
+		/// </summary>
+		/// <typeparam name="T">A comparable type.</typeparam>
+		/// <param name="value">The current value being validated.</param>
+		/// <param name="other">The comparison reference value.</param>
+		/// <param name="paramName">Name of the value parameter.</param>
+		/// <param name="otherName">Name of the comparison parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="value" /> &gt; <paramref name="other" />.
+		/// Message: "The value must not be less than the value of {0}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfLessThanOther<T>(
+			T value, T other,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null,
+			[CallerArgumentExpression(nameof(other))] string? otherName = null)
+			where T : IComparable<T>
+		{
+			if (value.CompareTo(other) < 0)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_LessThanOtherParameter, otherName), paramName);
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is less than zero.
 		/// </summary>
 		/// <typeparam name="T">A comparable numeric type.</typeparam>
@@ -447,66 +541,6 @@ namespace Bodu
 		{
 			if (value.CompareTo(default!) < 0)
 				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireNonNegative);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is zero.
-		/// </summary>
-		/// <typeparam name="T">A type that implements <see cref="IEquatable{T}" />.</typeparam>
-		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> equals 0.
-		/// Message: "The value must not be zero."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfZero<T>(
-			T value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-			where T : IEquatable<T>
-		{
-			if (value.Equals(default!))
-				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireNonZero);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is zero or negative.
-		/// </summary>
-		/// <typeparam name="T">A comparable numeric type.</typeparam>
-		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> &lt;= 0.
-		/// Message: "The value must be a positive number."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfZeroOrNegative<T>(
-			T value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-			where T : IComparable<T>
-		{
-			if (value.CompareTo(default!) <= 0)
-				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequirePositive);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is zero or positive.
-		/// </summary>
-		/// <typeparam name="T">A comparable numeric type.</typeparam>
-		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> &gt;= 0.
-		/// Message: "The value must be a negative number."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfZeroOrPositive<T>(
-			T value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-			where T : IComparable<T>
-		{
-			if (value.CompareTo(default!) >= 0)
-				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireNegative);
 		}
 
 		/// <summary>
@@ -588,6 +622,49 @@ namespace Bodu
 		}
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not a positive multiple of the specified divisor.
+		/// </summary>
+		/// <param name="value">The value to validate.</param>
+		/// <param name="divisor">The required positive divisor.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> is not greater than zero or not divisible by <paramref name="divisor" />.
+		/// Message: "The value must be a positive number and a multiple of {0}."
+		/// </exception>
+		/// <remarks>Useful for validating aligned buffer sizes, memory boundaries, or block-aligned lengths.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNotPositiveMultipleOf(
+			int value,
+			int divisor,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value <= 0 || value % divisor != 0)
+				throw new ArgumentOutOfRangeException(paramName,
+					string.Format(ResourceStrings.Arg_Invalid_PositiveMultipleOf, divisor));
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not equal to zero.
+		/// </summary>
+		/// <typeparam name="T">A type that supports equality comparison.</typeparam>
+		/// <param name="value">The value to validate.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> is not zero.
+		/// Message: "The value must be zero."
+		/// </exception>
+		/// <remarks>Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNotZero<T>(
+			T value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+			where T : IEquatable<T>
+		{
+			if (!value.Equals(default!))
+				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireZero);
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <c>null</c>.
 		/// </summary>
 		/// <typeparam name="T">The type of the object.</typeparam>
@@ -647,29 +724,6 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, or an <see cref="ArgumentException" /> if it is
-		/// empty or whitespace.
-		/// </summary>
-		/// <param name="value">The string value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> is empty or contains only whitespace.
-		/// Message: "The string was either empty or contained only whitespace."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIsNullOrWhiteSpace(
-			string value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value is null)
-				throw new ArgumentNullException(paramName);
-
-			if (string.IsNullOrWhiteSpace(value))
-				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringEmptyOrWhitespace, paramName);
-		}
-
-		/// <summary>
 		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is positive.
 		/// </summary>
 		/// <typeparam name="T">A comparable numeric type.</typeparam>
@@ -687,162 +741,6 @@ namespace Bodu
 		{
 			if (value.CompareTo(default!) > 0)
 				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireNonPositive);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not equal to zero.
-		/// </summary>
-		/// <typeparam name="T">A type that supports equality comparison.</typeparam>
-		/// <param name="value">The value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> is not zero.
-		/// Message: "The value must be zero."
-		/// </exception>
-		/// <remarks>Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotZero<T>(
-			T value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-			where T : IEquatable<T>
-		{
-			if (!value.Equals(default!))
-				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireZero);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not a positive multiple of the specified divisor.
-		/// </summary>
-		/// <param name="value">The value to validate.</param>
-		/// <param name="divisor">The required positive divisor.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> is not greater than zero or not divisible by <paramref name="divisor" />.
-		/// Message: "The value must be a positive number and a multiple of {0}."
-		/// </exception>
-		/// <remarks>Useful for validating aligned buffer sizes, memory boundaries, or block-aligned lengths.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotPositiveMultipleOf(
-			int value,
-			int divisor,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value <= 0 || value % divisor != 0)
-				throw new ArgumentOutOfRangeException(paramName,
-					string.Format(ResourceStrings.Arg_Invalid_PositiveMultipleOf, divisor));
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the array contains any non-numeric items.
-		/// </summary>
-		/// <param name="array">The array to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when any element in the array is not a numeric type.
-		/// Message: "The array contains non-numeric values."
-		/// </exception>
-		/// <remarks>Validates that each element is of a numeric type (e.g., int, double, float, etc.).</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfArrayContainsNonNumeric(
-			Array array,
-			[CallerArgumentExpression(nameof(array))] string? paramName = null)
-		{
-			foreach (var item in array)
-			{
-				if (item == null) continue;
-				TypeCode code = Type.GetTypeCode(item.GetType());
-				if (code < TypeCode.SByte || code > TypeCode.Decimal)
-					throw new ArgumentException(ResourceStrings.Arg_Invalid_Array_NumericOnly, paramName);
-			}
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the collection has fewer elements than the specified minimum.
-		/// </summary>
-		/// <typeparam name="T">The element type.</typeparam>
-		/// <param name="collection">The collection to validate.</param>
-		/// <param name="minCount">The minimum number of required elements.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="collection" /> has fewer than <paramref name="minCount" /> elements.
-		/// Message: "Collection contains insufficient elements."
-		/// </exception>
-		/// <remarks>Performs a minimum count check on the collection.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfCollectionTooSmall<T>(
-			ICollection<T> collection,
-			int minCount,
-			[CallerArgumentExpression(nameof(collection))] string? paramName = null)
-		{
-			if (collection.Count < minCount)
-				throw new ArgumentException(ResourceStrings.Arg_Invalid_CollectionTooSmall, paramName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the string comparison option is invalid or unsupported.
-		/// </summary>
-		/// <param name="comparison">The <see cref="StringComparison" /> value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="comparison" /> is not a valid <see cref="StringComparison" /> enum value.
-		/// Message: "The string comparison type is not supported."
-		/// </exception>
-		/// <remarks>Useful for guarding API input that relies on specific string comparison modes.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfInvalidStringComparison(
-			StringComparison comparison,
-			[CallerArgumentExpression(nameof(comparison))] string? paramName = null)
-		{
-			if (!Enum.IsDefined(typeof(StringComparison), comparison))
-				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringComparison, paramName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the value is less than another parameter's value.
-		/// </summary>
-		/// <typeparam name="T">A comparable type.</typeparam>
-		/// <param name="value">The current value being validated.</param>
-		/// <param name="other">The comparison reference value.</param>
-		/// <param name="paramName">Name of the value parameter.</param>
-		/// <param name="otherName">Name of the comparison parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> &gt; <paramref name="other" />.
-		/// Message: "The value must not be less than the value of {0}."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfLessThanOther<T>(
-			T value, T other,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null,
-			[CallerArgumentExpression(nameof(other))] string? otherName = null)
-			where T : IComparable<T>
-		{
-			if (value.CompareTo(other) < 0)
-				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Invalid_LessThanOtherParameter, otherName), paramName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the value is less than or equal to another parameter's value.
-		/// </summary>
-		/// <typeparam name="T">A comparable type.</typeparam>
-		/// <param name="value">The value being validated.</param>
-		/// <param name="other">The comparison reference value.</param>
-		/// <param name="paramName">Name of the value parameter.</param>
-		/// <param name="otherName">Name of the comparison parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> &gt;= <paramref name="other" />.
-		/// Message: "The value must not be less than or equal to the value of {0}."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfLessThanOrEqualOther<T>(
-			T value, T other,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null,
-			[CallerArgumentExpression(nameof(other))] string? otherName = null)
-			where T : IComparable<T>
-		{
-			if (value.CompareTo(other) <= 0)
-				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Invalid_LessThanOrEqualOtherParameter, otherName), paramName);
 		}
 
 		/// <summary>
@@ -886,29 +784,130 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the specified <paramref name="count" /> is less than zero or greater
-		/// than the number of <paramref name="available" /> items.
+		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
 		/// </summary>
-		/// <typeparam name="T">The collection or buffer type used to infer context (optional).</typeparam>
-		/// <param name="count">The count value to validate.</param>
-		/// <param name="available">The number of available items.</param>
-		/// <param name="paramName">The name of the parameter being validated (usually "count").</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown when <paramref name="count" /> is negative or greater than <paramref name="available" />.
-		/// Message: "Count must be non-negative and not exceed the number of available items."
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="index">The index from which to measure the remaining length.</param>
+		/// <param name="requiredLength">The required number of elements.</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
+		/// Message: "Span is too short. Required minimum is {0} from a specified index."
 		/// </exception>
-		/// <remarks>Use this method when validating that a subset operation will not exceed the size of the source.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfCountExceedsAvailable(
-			int count,
-			int available,
-			[CallerArgumentExpression(nameof(count))] string? paramName = null)
+		public static void ThrowIfSpanLengthIsInsufficient<T>(
+			Span<T> span, int index, int requiredLength,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
-			if (count < 0 || count > available)
-			{
-				throw new ArgumentOutOfRangeException(paramName,
-					string.Format(ResourceStrings.Arg_OutOfRange_CountExceedsAvailable, available));
-			}
+			if (span.Length - index < requiredLength)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// </summary>
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
+		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Message: "Length of the Span must be a multiple of {0}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
+			ReadOnlySpan<T> span,
+			int divisor,
+			Func<string, Exception>? func = null,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
+		{
+			if (span.Length == 0 || span.Length % divisor != 0)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is zero.
+		/// </summary>
+		/// <typeparam name="T">A type that implements <see cref="IEquatable{T}" />.</typeparam>
+		/// <param name="value">The value to check.</param>
+		/// <param name="paramName">The name of the value parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> equals 0.
+		/// Message: "The value must not be zero."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfZero<T>(
+			T value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+			where T : IEquatable<T>
+		{
+			if (value.Equals(default!))
+				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireNonZero);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is zero or negative.
+		/// </summary>
+		/// <typeparam name="T">A comparable numeric type.</typeparam>
+		/// <param name="value">The value to check.</param>
+		/// <param name="paramName">The name of the value parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> &lt;= 0.
+		/// Message: "The value must be a positive number."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfZeroOrNegative<T>(
+			T value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+			where T : IComparable<T>
+		{
+			if (value.CompareTo(default!) <= 0)
+				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequirePositive);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is zero or positive.
+		/// </summary>
+		/// <typeparam name="T">A comparable numeric type.</typeparam>
+		/// <param name="value">The value to check.</param>
+		/// <param name="paramName">The name of the value parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> &gt;= 0.
+		/// Message: "The value must be a negative number."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfZeroOrPositive<T>(
+			T value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+			where T : IComparable<T>
+		{
+			if (value.CompareTo(default!) >= 0)
+				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireNegative);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, or an <see cref="ArgumentException" /> if it is
+		/// empty or whitespace.
+		/// </summary>
+		/// <param name="value">The string value to validate.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="value" /> is empty or contains only whitespace.
+		/// Message: "The string was either empty or contained only whitespace."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIsNullOrWhiteSpace(
+			string value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value is null)
+				throw new ArgumentNullException(paramName);
+
+			if (string.IsNullOrWhiteSpace(value))
+				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringEmptyOrWhitespace, paramName);
 		}
 	}
 }

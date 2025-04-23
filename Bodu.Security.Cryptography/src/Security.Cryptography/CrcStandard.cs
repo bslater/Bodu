@@ -124,28 +124,15 @@ namespace Bodu.Security.Cryptography
 			   this.ReflectOut == other.ReflectOut &&
 			   this.XOrOut == other.XOrOut;
 
-		/// <summary>
-		/// Determines whether the current <see cref="CrcStandard" /> object is equal to another object.
-		/// </summary>
-		/// <param name="obj">The object to compare.</param>
-		/// <returns>
-		/// <see langword="true" /> if the object is a <see cref="CrcStandard" /> and is equal to this instance; otherwise, <see langword="false" />.
-		/// </returns>
+		/// <inheritdoc />
 		public override bool Equals(object obj)
 			=> obj is CrcStandard other && this.Equals(other);
 
-		/// <summary>
-		/// Gets the hash code for this <see cref="CrcStandard" /> instance.
-		/// </summary>
-		/// <returns>A hash code representing this object.</returns>
+		/// <inheritdoc />
 		public override int GetHashCode()
 			=> HashCode.Combine(this.Size, this.Polynomial, this.InitialValue, this.ReflectIn, this.ReflectOut, this.XOrOut);
 
-		/// <summary>
-		/// Populates a <see cref="SerializationInfo" /> object with the data needed to serialize this instance.
-		/// </summary>
-		/// <param name="info">The <see cref="SerializationInfo" /> object to populate.</param>
-		/// <param name="context">The streaming context for serialization.</param>
+		/// <inheritdoc />
 		void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			if (info == null) throw new ArgumentNullException(nameof(info));

@@ -12,19 +12,44 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Implements the SipHash cryptographic hash algorithm, a fast and secure keyed hash function designed for short messages.
+	/// Provides the base implementation of the <see cref="SipHash" /> cryptographic hash algorithm—a fast, secure, and keyed pseudorandom
+	/// function optimized for short input messages. See the <see href="https://131002.net/siphash/">official SipHash specification</see>
+	/// for details.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// SipHash is a family of pseudorandom functions optimized for speed on short messages. It provides protection against hash-flooding
-	/// attacks in hash tables.
+	/// <see cref="SipHash" /> is a keyed hash function that requires a 128-bit (16-byte) secret key. It operates on short messages using a
+	/// sequence of Add-Rotate-XOR (ARX) mixing steps across four 64-bit state variables ( <c>v0</c> through <c>v3</c>). The algorithm is
+	/// resistant to hash-flooding attacks and is particularly effective for securing hash tables.
 	/// </para>
 	/// <para>
-	/// This implementation supports 64-bit and 128-bit hash outputs. Configuration options include the number of compression and
-	/// finalization rounds. By default, the algorithm uses 2 compression and 4 finalization rounds ( <c>SipHash-2-4</c>).
+	/// This abstract base class defines the core SipHash logic and exposes configuration options such as the number of compression and
+	/// finalization rounds. It is extended by:
 	/// </para>
-	/// <note type="important">This implementation is not intended for use in password hashing or encryption. Use only for authentication or
-	/// DoS-resistant hash tables.</note>
+	/// <list type="bullet">
+	/// <item>
+	/// <description><see cref="SipHash64" /> — Produces a 64-bit hash output suitable for compact keyed checksums.</description>
+	/// </item>
+	/// <item>
+	/// <description><see cref="SipHash128" /> — Produces a 128-bit hash output offering increased collision resistance.</description>
+	/// </item>
+	/// </list>
+	/// <para>The algorithm proceeds in two primary phases:</para>
+	/// <list type="number">
+	/// <item>
+	/// <description>
+	/// <b>Compression:</b> Each 64-bit block of the input is mixed into the internal state using a configurable number of rounds ( <see cref="CompressionRounds" />).
+	/// </description>
+	/// </item>
+	/// <item>
+	/// <description>
+	/// <b>Finalization:</b> After processing all input, additional rounds ( <see cref="FinalizationRounds" />) are applied to produce the
+	/// final hash output.
+	/// </description>
+	/// </item>
+	/// </list>
+	/// <note type="important"> This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
+	/// signatures, or secure data integrity checks. </note>
 	/// </remarks>
 	public abstract class SipHash
 		: System.Security.Cryptography.KeyedHashAlgorithm

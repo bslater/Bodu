@@ -1,0 +1,2227 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  commentId: T:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  id: HashAlgorithmExtensions
+  parent: Bodu.Security.Cryptography.Extensions
+  children:
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Boolean@)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String,System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[],System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: HashAlgorithmExtensions
+  nameWithType: HashAlgorithmExtensions
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  type: Class
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: HashAlgorithmExtensions
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+    startLine: 10
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: >-
+    Provides a set of <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/static">static</a> ( <code>Shared</code> in Visual Basic) methods that extend the
+
+    <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public static class HashAlgorithmExtensions
+    content.vb: Public Module HashAlgorithmExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Boolean@)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Boolean@)
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Boolean@)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, byte[], byte[], out bool)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, byte[], byte[], out bool)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, byte[], byte[], out bool)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 25
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to compute the hash of the specified input and compare it against the expected hash.
+  remarks: >-
+    This method is useful for defensive validation when inputs may be malformed or optional. Unlike <code>VerifyHash</code>, it avoids
+
+    exceptions during failure.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, byte[] input, byte[] expectedHash, out bool result)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used for computing the hash.
+    - id: input
+      type: System.Byte[]
+      description: The byte array input to hash.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value for comparison.
+    - id: result
+      type: System.Boolean
+      description: Outputs <code>true</code> if the computed hash matches <code class="paramref">expectedHash</code>; otherwise, <code>false</code>.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if hashing and comparison completed without exception; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, input As Byte(), expectedHash As Byte(), result As Boolean) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Byte(), Byte(), Boolean)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, Byte(), Byte(), Boolean)
+  name.vb: TryVerifyHash(HashAlgorithm, Byte(), Byte(), Boolean)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, byte[], byte[])
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, byte[], byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, byte[], byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 54
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to compute and verify the hash of a byte array against an expected hash value.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, byte[] input, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used for hashing.
+    - id: input
+      type: System.Byte[]
+      description: The input data as a byte array.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the hash matches; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, input As Byte(), expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Byte(), Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, Byte(), Byte())
+  name.vb: TryVerifyHash(HashAlgorithm, Byte(), Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, byte[], string)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, byte[], string)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, byte[], string)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 78
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to verify the computed hash of the byte array input against a hexadecimal hash string.
+  remarks: This is useful for verifying known test vectors stored in hexadecimal format.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, byte[] input, string expectedHex)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The hashing algorithm.
+    - id: input
+      type: System.Byte[]
+      description: The data to hash.
+    - id: expectedHex
+      type: System.String
+      description: The expected hexadecimal hash string.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the computed hash matches the expected hex string; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, input As Byte(), expectedHex As String) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHex</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Byte(), String)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, Byte(), String)
+  name.vb: TryVerifyHash(HashAlgorithm, Byte(), String)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, string, Encoding, byte[])
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, string, Encoding, byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, string, System.Text.Encoding, byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 105
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to verify that the computed hash of a UTF-encoded string matches the expected hash.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, string input, Encoding encoding, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The hash algorithm instance.
+    - id: input
+      type: System.String
+      description: The plain text input string.
+    - id: encoding
+      type: System.Text.Encoding
+      description: The encoding used to convert the string into bytes.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash byte array.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the hash matches the expected value; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, input As String, encoding As Encoding, expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: >-
+      Thrown if <code class="paramref">algorithm</code>, <code class="paramref">input</code>, <code class="paramref">encoding</code>, or
+
+      <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, String, Encoding, Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, String, System.Text.Encoding, Byte())
+  name.vb: TryVerifyHash(HashAlgorithm, String, Encoding, Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlySpan<byte>, System.ReadOnlySpan<byte>)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 130
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to verify that the hash computed from a span of bytes matches the expected span value.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, ReadOnlySpan<byte> input, ReadOnlySpan<byte> expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The algorithm used for hashing.
+    - id: input
+      type: System.ReadOnlySpan{System.Byte}
+      description: The span of input bytes.
+    - id: expectedHash
+      type: System.ReadOnlySpan{System.Byte}
+      description: The expected hash as a span.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the spans match; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, input As ReadOnlySpan(Of Byte), expectedHash As ReadOnlySpan(Of Byte)) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlySpan(Of Byte), System.ReadOnlySpan(Of Byte))
+  name.vb: TryVerifyHash(HashAlgorithm, ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, ReadOnlyMemory<byte>, byte[])
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, ReadOnlyMemory<byte>, byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlyMemory<byte>, byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 154
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to verify that the hash of a memory buffer matches the expected byte array value.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, ReadOnlyMemory<byte> input, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The hashing algorithm instance.
+    - id: input
+      type: System.ReadOnlyMemory{System.Byte}
+      description: The memory buffer containing input data.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash result.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the memory contents produce a matching hash; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, input As ReadOnlyMemory(Of Byte), expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, ReadOnlyMemory(Of Byte), Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlyMemory(Of Byte), Byte())
+  name.vb: TryVerifyHash(HashAlgorithm, ReadOnlyMemory(Of Byte), Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, Stream, byte[])
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Stream, byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 179
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to verify that the hash of a stream matches the expected byte array.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, Stream stream, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The hashing algorithm used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The input stream to hash. The stream must be readable and ideally seekable.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the stream produces a matching hash; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, stream As Stream, expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Stream, Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, Byte())
+  name.vb: TryVerifyHash(HashAlgorithm, Stream, Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  id: TryVerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHash(HashAlgorithm, Stream, string)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Stream, string)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, string)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHash.cs
+    startLine: 202
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to verify that the hash of a stream matches the expected hexadecimal hash value.
+  example: []
+  syntax:
+    content: public static bool TryVerifyHash(this HashAlgorithm algorithm, Stream stream, string expectedHex)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The hashing algorithm used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The input stream to hash. The stream must be readable and ideally seekable.
+    - id: expectedHex
+      type: System.String
+      description: The expected hash value in hexadecimal format.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the stream hash matches the expected hex; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHash(algorithm As HashAlgorithm, stream As Stream, expectedHex As String) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHex</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHash(HashAlgorithm, Stream, String)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, String)
+  name.vb: TryVerifyHash(HashAlgorithm, Stream, String)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  id: TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHashAsync(HashAlgorithm, Stream, byte[], CancellationToken)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Stream, byte[], CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, byte[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+    startLine: 22
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to asynchronously verify that the computed hash of a stream matches the expected hash value.
+  remarks: This method safely validates a stream against a known hash, handling any internal errors gracefully.
+  example: []
+  syntax:
+    content: public static Task<bool> TryVerifyHashAsync(this HashAlgorithm algorithm, Stream stream, byte[] expectedHash, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The stream to read and hash. Must be readable.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value as a byte array.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token used to cancel the operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> if the computed hash matches; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHashAsync(algorithm As HashAlgorithm, stream As Stream, expectedHash As Byte(), cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Stream, Byte(), CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, Byte(), System.Threading.CancellationToken)
+  name.vb: TryVerifyHashAsync(HashAlgorithm, Stream, Byte(), CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  id: TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHashAsync(HashAlgorithm, Stream, string, CancellationToken)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Stream, string, CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+    startLine: 48
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to asynchronously verify that the computed hash of a stream matches the expected hexadecimal string.
+  remarks: Used for verifying hashes from test vectors or external sources represented as hex strings.
+  example: []
+  syntax:
+    content: public static Task<bool> TryVerifyHashAsync(this HashAlgorithm algorithm, Stream stream, string expectedHex, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The readable stream to hash.
+    - id: expectedHex
+      type: System.String
+      description: The expected hash as a hexadecimal string.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token used to cancel the operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> if the computed hash matches the expected hex; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHashAsync(algorithm As HashAlgorithm, stream As Stream, expectedHex As String, cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHex</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Stream, String, CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, String, System.Threading.CancellationToken)
+  name.vb: TryVerifyHashAsync(HashAlgorithm, Stream, String, CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  id: TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory<byte>, CancellationToken)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory<byte>, CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, System.ReadOnlyMemory<byte>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+    startLine: 73
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to asynchronously verify that the computed hash of a stream matches the expected memory buffer.
+  remarks: This overload supports memory-friendly comparison of hashes from stream input.
+  example: []
+  syntax:
+    content: public static Task<bool> TryVerifyHashAsync(this HashAlgorithm algorithm, Stream stream, ReadOnlyMemory<byte> expectedHash, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The stream to read and hash asynchronously.
+    - id: expectedHash
+      type: System.ReadOnlyMemory{System.Byte}
+      description: The expected hash value as a memory buffer.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Token to cancel the operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> if the computed hash matches; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHashAsync(algorithm As HashAlgorithm, stream As Stream, expectedHash As ReadOnlyMemory(Of Byte), cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory(Of Byte), CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, System.ReadOnlyMemory(Of Byte), System.Threading.CancellationToken)
+  name.vb: TryVerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory(Of Byte), CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Threading.CancellationToken)
+  id: TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[],System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHashAsync(HashAlgorithm, byte[], byte[], CancellationToken)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, byte[], byte[], CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, byte[], byte[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+    startLine: 97
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to asynchronously verify that the computed hash of a byte array matches the expected hash.
+  remarks: Converts the input to a stream internally for compatibility with async hash APIs.
+  example: []
+  syntax:
+    content: public static Task<bool> TryVerifyHashAsync(this HashAlgorithm algorithm, byte[] input, byte[] expectedHash, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> used to compute the hash.
+    - id: input
+      type: System.Byte[]
+      description: The input data as a byte array.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash to compare against.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A token to cancel the asynchronous operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> if the computed hash matches the expected value; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHashAsync(algorithm As HashAlgorithm, input As Byte(), expectedHash As Byte(), cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if any argument is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Byte(), Byte(), CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, Byte(), Byte(), System.Threading.CancellationToken)
+  name.vb: TryVerifyHashAsync(HashAlgorithm, Byte(), Byte(), CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String,System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String,System.Threading.CancellationToken)
+  id: TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHashAsync(HashAlgorithm, byte[], string, CancellationToken)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, byte[], string, CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, byte[], string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+    startLine: 124
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to asynchronously verify that the computed hash of a byte array matches the expected hexadecimal hash.
+  remarks: This method enables secure comparison against external sources or stored hashes in hex format.
+  example: []
+  syntax:
+    content: public static Task<bool> TryVerifyHashAsync(this HashAlgorithm algorithm, byte[] input, string expectedHex, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> used for hashing.
+    - id: input
+      type: System.Byte[]
+      description: The input data to hash.
+    - id: expectedHex
+      type: System.String
+      description: The expected hash in hexadecimal format.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Optional cancellation token.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> if the hash matches the hex string; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHashAsync(algorithm As HashAlgorithm, input As Byte(), expectedHex As String, cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if any argument is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, Byte(), String, CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, Byte(), String, System.Threading.CancellationToken)
+  name.vb: TryVerifyHashAsync(HashAlgorithm, Byte(), String, CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[],System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[],System.Threading.CancellationToken)
+  id: TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[],System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: TryVerifyHashAsync(HashAlgorithm, string, Encoding, byte[], CancellationToken)
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, string, Encoding, byte[], CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, string, System.Text.Encoding, byte[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: TryVerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.TryVerifyHashAsync.cs
+    startLine: 152
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Attempts to asynchronously verify that the computed hash of a string (after encoding) matches the expected value.
+  remarks: Used when comparing user-entered or stored strings after encoding to binary form for hashing.
+  example: []
+  syntax:
+    content: public static Task<bool> TryVerifyHashAsync(this HashAlgorithm algorithm, string input, Encoding encoding, byte[] expectedHash, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance.
+    - id: input
+      type: System.String
+      description: The input string to encode and hash.
+    - id: encoding
+      type: System.Text.Encoding
+      description: The character encoding used to convert the string to bytes.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash byte array.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A token to cancel the asynchronous operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <code>true</code> if the computed hash matches <code class="paramref">expectedHash</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function TryVerifyHashAsync(algorithm As HashAlgorithm, input As String, encoding As Encoding, expectedHash As Byte(), cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if any argument is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.TryVerifyHashAsync(HashAlgorithm, String, Encoding, Byte(), CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync(System.Security.Cryptography.HashAlgorithm, String, System.Text.Encoding, Byte(), System.Threading.CancellationToken)
+  name.vb: TryVerifyHashAsync(HashAlgorithm, String, Encoding, Byte(), CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, byte[], byte[])
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, byte[], byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, byte[], byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 23
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the computed hash of the input data matches the expected hash value.
+  remarks: Computes a hash from the input and compares it to <code class="paramref">expectedHash</code> using byte-wise equality.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, byte[] input, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: input
+      type: System.Byte[]
+      description: The input byte array whose hash will be computed.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value as a byte array.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the computed hash is equal to <code class="paramref">expectedHash</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, input As Byte(), expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, Byte(), Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, Byte(), Byte())
+  name.vb: VerifyHash(HashAlgorithm, Byte(), Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.Byte[],System.String)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, byte[], string)
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, byte[], string)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, byte[], string)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 41
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the computed hash of the input data matches the expected hash value as a hexadecimal string.
+  remarks: Converts the computed hash to a hexadecimal string and performs a case-insensitive comparison to <code class="paramref">expectedHex</code>.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, byte[] input, string expectedHex)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: input
+      type: System.Byte[]
+      description: The input byte array whose hash will be computed.
+    - id: expectedHex
+      type: System.String
+      description: The expected hash value as a hexadecimal string.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the computed hash matches <code class="paramref">expectedHex</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, input As Byte(), expectedHex As String) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHex</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, Byte(), String)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, Byte(), String)
+  name.vb: VerifyHash(HashAlgorithm, Byte(), String)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, Stream, byte[])
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, Stream, byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 62
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the computed hash of the stream matches the expected hash value.
+  remarks: Computes the hash of the stream and compares it to <code class="paramref">expectedHash</code> byte-by-byte.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, Stream stream, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The input stream to read and hash. The stream must be readable.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value as a byte array.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the hash matches <code class="paramref">expectedHash</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, stream As Stream, expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, Stream, Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, Byte())
+  name.vb: VerifyHash(HashAlgorithm, Stream, Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, Stream, string)
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, Stream, string)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, string)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 80
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the computed hash of the stream matches the expected hash value as a hexadecimal string.
+  remarks: Converts the computed hash of the stream to a hex string and compares it to <code class="paramref">expectedHex</code>.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, Stream stream, string expectedHex)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The stream to hash. Must be readable.
+    - id: expectedHex
+      type: System.String
+      description: The expected hash value as a hexadecimal string.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the hash matches <code class="paramref">expectedHex</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, stream As Stream, expectedHex As String) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHex</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, Stream, String)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, String)
+  name.vb: VerifyHash(HashAlgorithm, Stream, String)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, ReadOnlySpan<byte>, ReadOnlySpan<byte>)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlySpan<byte>, System.ReadOnlySpan<byte>)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 99
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the computed hash of the input span matches the expected span.
+  remarks: Converts the span to a buffer and computes its hash using <xref href="System.Security.Cryptography.HashAlgorithm.ComputeHash(System.Byte%5b%5d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, ReadOnlySpan<byte> input, ReadOnlySpan<byte> expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> used to compute the hash.
+    - id: input
+      type: System.ReadOnlySpan{System.Byte}
+      description: The input span of bytes to hash.
+    - id: expectedHash
+      type: System.ReadOnlySpan{System.Byte}
+      description: The expected hash as a byte span.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the computed hash matches the expected hash; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, input As ReadOnlySpan(Of Byte), expectedHash As ReadOnlySpan(Of Byte)) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlySpan(Of Byte), System.ReadOnlySpan(Of Byte))
+  name.vb: VerifyHash(HashAlgorithm, ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.ReadOnlyMemory{System.Byte},System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, ReadOnlyMemory<byte>, byte[])
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, ReadOnlyMemory<byte>, byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlyMemory<byte>, byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 118
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the computed hash of the input memory block matches the expected hash.
+  remarks: This overload supports memory-friendly verification against a byte array.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, ReadOnlyMemory<byte> input, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> used to compute the hash.
+    - id: input
+      type: System.ReadOnlyMemory{System.Byte}
+      description: The memory buffer to hash.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the hash matches; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, input As ReadOnlyMemory(Of Byte), expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, ReadOnlyMemory(Of Byte), Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, System.ReadOnlyMemory(Of Byte), Byte())
+  name.vb: VerifyHash(HashAlgorithm, ReadOnlyMemory(Of Byte), Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  id: VerifyHash(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding,System.Byte[])
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHash(HashAlgorithm, string, Encoding, byte[])
+  nameWithType: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, string, Encoding, byte[])
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, string, System.Text.Encoding, byte[])
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHash
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHash.cs
+    startLine: 138
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Verifies that the hash of the specified string (after encoding) matches the expected value.
+  remarks: This overload allows direct verification of encoded strings against known hash values.
+  example: []
+  syntax:
+    content: public static bool VerifyHash(this HashAlgorithm algorithm, string text, Encoding encoding, byte[] expectedHash)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The hashing algorithm.
+    - id: text
+      type: System.String
+      description: The input string to encode.
+    - id: encoding
+      type: System.Text.Encoding
+      description: The encoding used to convert the string to bytes.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash as a byte array.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the computed hash matches; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHash(algorithm As HashAlgorithm, text As String, encoding As Encoding, expectedHash As Byte()) As Boolean
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: >-
+      Thrown if <code class="paramref">algorithm</code>, <code class="paramref">text</code>, <code class="paramref">encoding</code>, or
+
+      <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHash(HashAlgorithm, String, Encoding, Byte())
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash(System.Security.Cryptography.HashAlgorithm, String, System.Text.Encoding, Byte())
+  name.vb: VerifyHash(HashAlgorithm, String, Encoding, Byte())
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  id: VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.Byte[],System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHashAsync(HashAlgorithm, Stream, byte[], CancellationToken)
+  nameWithType: HashAlgorithmExtensions.VerifyHashAsync(HashAlgorithm, Stream, byte[], CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, byte[], System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+    startLine: 27
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Asynchronously verifies that the computed hash of a stream matches the expected hash value.
+  remarks: >-
+    This method uses <xref href="System.Security.Cryptography.HashAlgorithm.TransformBlock(System.Byte%5b%5d%2cSystem.Int32%2cSystem.Int32%2cSystem.Byte%5b%5d%2cSystem.Int32)" data-throw-if-not-resolved="false"></xref> and <xref href="System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(System.Byte%5b%5d%2cSystem.Int32%2cSystem.Int32)" data-throw-if-not-resolved="false"></xref> to compute the
+
+    hash in buffered blocks and compare it to <code class="paramref">expectedHash</code>.
+  example: []
+  syntax:
+    content: public static Task<bool> VerifyHashAsync(this HashAlgorithm algorithm, Stream stream, byte[] expectedHash, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The stream to read and hash asynchronously. The stream must be readable.
+    - id: expectedHash
+      type: System.Byte[]
+      description: The expected hash value as a byte array.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A token to cancel the asynchronous operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: A task that evaluates to <code>true</code> if the computed hash matches <code class="paramref">expectedHash</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHashAsync(algorithm As HashAlgorithm, stream As Stream, expectedHash As Byte(), cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHash</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHashAsync(HashAlgorithm, Stream, Byte(), CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, Byte(), System.Threading.CancellationToken)
+  name.vb: VerifyHashAsync(HashAlgorithm, Stream, Byte(), CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  id: VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHashAsync(HashAlgorithm, Stream, string, CancellationToken)
+  nameWithType: HashAlgorithmExtensions.VerifyHashAsync(HashAlgorithm, Stream, string, CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+    startLine: 56
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Asynchronously verifies that the computed hash of a stream matches the expected hexadecimal hash string.
+  remarks: This method computes the hash, converts it to a hexadecimal string, and compares it using case-insensitive ordinal comparison.
+  example: []
+  syntax:
+    content: public static Task<bool> VerifyHashAsync(this HashAlgorithm algorithm, Stream stream, string expectedHex, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The readable stream to hash asynchronously.
+    - id: expectedHex
+      type: System.String
+      description: The expected hash as a hexadecimal string.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A token to cancel the asynchronous operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: A task that evaluates to <code>true</code> if the computed hash matches <code class="paramref">expectedHex</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHashAsync(algorithm As HashAlgorithm, stream As Stream, expectedHex As String, cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> or <code class="paramref">expectedHex</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHashAsync(HashAlgorithm, Stream, String, CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, String, System.Threading.CancellationToken)
+  name.vb: VerifyHashAsync(HashAlgorithm, Stream, String, CancellationToken)
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  commentId: M:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  id: VerifyHashAsync(System.Security.Cryptography.HashAlgorithm,System.IO.Stream,System.ReadOnlyMemory{System.Byte},System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: VerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory<byte>, CancellationToken)
+  nameWithType: HashAlgorithmExtensions.VerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory<byte>, CancellationToken)
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, System.ReadOnlyMemory<byte>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: VerifyHashAsync
+    path: ../Bodu.Security.Cryptography/src/Security.Cryptography.Extensions/HashAlgorithmExtensions.VerifyHashAsync.cs
+    startLine: 76
+  assemblies:
+  - Bodu.Security.Cryptography
+  namespace: Bodu.Security.Cryptography.Extensions
+  summary: Asynchronously verifies that the computed hash of a stream matches the expected hash value in memory.
+  remarks: This overload enables hash verification using memory buffers to reduce allocations in memory-sensitive scenarios.
+  example: []
+  syntax:
+    content: public static Task<bool> VerifyHashAsync(this HashAlgorithm algorithm, Stream stream, ReadOnlyMemory<byte> expectedHash, CancellationToken cancellationToken = default)
+    parameters:
+    - id: algorithm
+      type: System.Security.Cryptography.HashAlgorithm
+      description: The <xref href="System.Security.Cryptography.HashAlgorithm" data-throw-if-not-resolved="false"></xref> instance used to compute the hash.
+    - id: stream
+      type: System.IO.Stream
+      description: The readable stream to hash asynchronously.
+    - id: expectedHash
+      type: System.ReadOnlyMemory{System.Byte}
+      description: The expected hash value as a <xref href="System.ReadOnlyMemory%601" data-throw-if-not-resolved="false"></xref>.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: A token to cancel the asynchronous operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: A task that evaluates to <code>true</code> if the computed hash matches <code class="paramref">expectedHash</code>; otherwise, <code>false</code>.
+    content.vb: Public Shared Function VerifyHashAsync(algorithm As HashAlgorithm, stream As Stream, expectedHash As ReadOnlyMemory(Of Byte), cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown if <code class="paramref">algorithm</code> is <code>null</code>.
+  nameWithType.vb: HashAlgorithmExtensions.VerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory(Of Byte), CancellationToken)
+  fullName.vb: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync(System.Security.Cryptography.HashAlgorithm, System.IO.Stream, System.ReadOnlyMemory(Of Byte), System.Threading.CancellationToken)
+  name.vb: VerifyHashAsync(HashAlgorithm, Stream, ReadOnlyMemory(Of Byte), CancellationToken)
+references:
+- uid: System.Security.Cryptography.HashAlgorithm
+  commentId: T:System.Security.Cryptography.HashAlgorithm
+  parent: System.Security.Cryptography
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm
+  name: HashAlgorithm
+  nameWithType: HashAlgorithm
+  fullName: System.Security.Cryptography.HashAlgorithm
+- uid: Bodu.Security.Cryptography.Extensions
+  commentId: N:Bodu.Security.Cryptography.Extensions
+  href: Bodu.html
+  name: Bodu.Security.Cryptography.Extensions
+  nameWithType: Bodu.Security.Cryptography.Extensions
+  fullName: Bodu.Security.Cryptography.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Security
+    name: Security
+    href: Bodu.Security.html
+  - name: .
+  - uid: Bodu.Security.Cryptography
+    name: Cryptography
+    href: Bodu.Security.Cryptography.html
+  - name: .
+  - uid: Bodu.Security.Cryptography.Extensions
+    name: Extensions
+    href: Bodu.Security.Cryptography.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Security
+    name: Security
+    href: Bodu.Security.html
+  - name: .
+  - uid: Bodu.Security.Cryptography
+    name: Cryptography
+    href: Bodu.Security.Cryptography.html
+  - name: .
+  - uid: Bodu.Security.Cryptography.Extensions
+    name: Extensions
+    href: Bodu.Security.Cryptography.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Security.Cryptography
+  commentId: N:System.Security.Cryptography
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Security.Cryptography
+  nameWithType: System.Security.Cryptography
+  fullName: System.Security.Cryptography
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Security
+    name: Security
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security
+  - name: .
+  - uid: System.Security.Cryptography
+    name: Cryptography
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Security
+    name: Security
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security
+  - name: .
+  - uid: System.Security.Cryptography
+    name: Cryptography
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash*
+  commentId: Overload:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash
+  href: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.html#Bodu_Security_Cryptography_Extensions_HashAlgorithmExtensions_TryVerifyHash_System_Security_Cryptography_HashAlgorithm_System_Byte___System_Byte___System_Boolean__
+  name: TryVerifyHash
+  nameWithType: HashAlgorithmExtensions.TryVerifyHash
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHash
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Text.Encoding
+  commentId: T:System.Text.Encoding
+  parent: System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.encoding
+  name: Encoding
+  nameWithType: Encoding
+  fullName: System.Text.Encoding
+- uid: System.Text
+  commentId: N:System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text
+  nameWithType: System.Text
+  fullName: System.Text
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+- uid: System.ReadOnlySpan{System.Byte}
+  commentId: T:System.ReadOnlySpan{System.Byte}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<byte>
+  nameWithType: ReadOnlySpan<byte>
+  fullName: System.ReadOnlySpan<byte>
+  nameWithType.vb: ReadOnlySpan(Of Byte)
+  fullName.vb: System.ReadOnlySpan(Of Byte)
+  name.vb: ReadOnlySpan(Of Byte)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ReadOnlyMemory{System.Byte}
+  commentId: T:System.ReadOnlyMemory{System.Byte}
+  parent: System
+  definition: System.ReadOnlyMemory`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<byte>
+  nameWithType: ReadOnlyMemory<byte>
+  fullName: System.ReadOnlyMemory<byte>
+  nameWithType.vb: ReadOnlyMemory(Of Byte)
+  fullName.vb: System.ReadOnlyMemory(Of Byte)
+  name.vb: ReadOnlyMemory(Of Byte)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.ReadOnlyMemory`1
+  commentId: T:System.ReadOnlyMemory`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  name: ReadOnlyMemory<T>
+  nameWithType: ReadOnlyMemory<T>
+  fullName: System.ReadOnlyMemory<T>
+  nameWithType.vb: ReadOnlyMemory(Of T)
+  fullName.vb: System.ReadOnlyMemory(Of T)
+  name.vb: ReadOnlyMemory(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlyMemory`1
+    name: ReadOnlyMemory
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlymemory-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync*
+  commentId: Overload:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync
+  href: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.html#Bodu_Security_Cryptography_Extensions_HashAlgorithmExtensions_TryVerifyHashAsync_System_Security_Cryptography_HashAlgorithm_System_IO_Stream_System_Byte___System_Threading_CancellationToken_
+  name: TryVerifyHashAsync
+  nameWithType: HashAlgorithmExtensions.TryVerifyHashAsync
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.TryVerifyHashAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash*
+  commentId: Overload:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash
+  href: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.html#Bodu_Security_Cryptography_Extensions_HashAlgorithmExtensions_VerifyHash_System_Security_Cryptography_HashAlgorithm_System_Byte___System_Byte___
+  name: VerifyHash
+  nameWithType: HashAlgorithmExtensions.VerifyHash
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHash
+- uid: System.Security.Cryptography.HashAlgorithm.ComputeHash(System.Byte[])
+  commentId: M:System.Security.Cryptography.HashAlgorithm.ComputeHash(System.Byte[])
+  parent: System.Security.Cryptography.HashAlgorithm
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.computehash#system-security-cryptography-hashalgorithm-computehash(system-byte())
+  name: ComputeHash(byte[])
+  nameWithType: HashAlgorithm.ComputeHash(byte[])
+  fullName: System.Security.Cryptography.HashAlgorithm.ComputeHash(byte[])
+  nameWithType.vb: HashAlgorithm.ComputeHash(Byte())
+  fullName.vb: System.Security.Cryptography.HashAlgorithm.ComputeHash(Byte())
+  name.vb: ComputeHash(Byte())
+  spec.csharp:
+  - uid: System.Security.Cryptography.HashAlgorithm.ComputeHash(System.Byte[])
+    name: ComputeHash
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.computehash#system-security-cryptography-hashalgorithm-computehash(system-byte())
+  - name: (
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: System.Security.Cryptography.HashAlgorithm.ComputeHash(System.Byte[])
+    name: ComputeHash
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.computehash#system-security-cryptography-hashalgorithm-computehash(system-byte())
+  - name: (
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Security.Cryptography.HashAlgorithm.TransformBlock(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Int32)
+  commentId: M:System.Security.Cryptography.HashAlgorithm.TransformBlock(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Int32)
+  parent: System.Security.Cryptography.HashAlgorithm
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.transformblock
+  name: TransformBlock(byte[], int, int, byte[], int)
+  nameWithType: HashAlgorithm.TransformBlock(byte[], int, int, byte[], int)
+  fullName: System.Security.Cryptography.HashAlgorithm.TransformBlock(byte[], int, int, byte[], int)
+  nameWithType.vb: HashAlgorithm.TransformBlock(Byte(), Integer, Integer, Byte(), Integer)
+  fullName.vb: System.Security.Cryptography.HashAlgorithm.TransformBlock(Byte(), Integer, Integer, Byte(), Integer)
+  name.vb: TransformBlock(Byte(), Integer, Integer, Byte(), Integer)
+  spec.csharp:
+  - uid: System.Security.Cryptography.HashAlgorithm.TransformBlock(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Int32)
+    name: TransformBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.transformblock
+  - name: (
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Security.Cryptography.HashAlgorithm.TransformBlock(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Int32)
+    name: TransformBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.transformblock
+  - name: (
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(System.Byte[],System.Int32,System.Int32)
+  commentId: M:System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(System.Byte[],System.Int32,System.Int32)
+  parent: System.Security.Cryptography.HashAlgorithm
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.transformfinalblock
+  name: TransformFinalBlock(byte[], int, int)
+  nameWithType: HashAlgorithm.TransformFinalBlock(byte[], int, int)
+  fullName: System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(byte[], int, int)
+  nameWithType.vb: HashAlgorithm.TransformFinalBlock(Byte(), Integer, Integer)
+  fullName.vb: System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(Byte(), Integer, Integer)
+  name.vb: TransformFinalBlock(Byte(), Integer, Integer)
+  spec.csharp:
+  - uid: System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(System.Byte[],System.Int32,System.Int32)
+    name: TransformFinalBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.transformfinalblock
+  - name: (
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: System.Security.Cryptography.HashAlgorithm.TransformFinalBlock(System.Byte[],System.Int32,System.Int32)
+    name: TransformFinalBlock
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm.transformfinalblock
+  - name: (
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync*
+  commentId: Overload:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync
+  href: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.html#Bodu_Security_Cryptography_Extensions_HashAlgorithmExtensions_VerifyHashAsync_System_Security_Cryptography_HashAlgorithm_System_IO_Stream_System_Byte___System_Threading_CancellationToken_
+  name: VerifyHashAsync
+  nameWithType: HashAlgorithmExtensions.VerifyHashAsync
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.VerifyHashAsync

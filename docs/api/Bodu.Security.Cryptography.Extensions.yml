@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Security.Cryptography.Extensions
+  commentId: N:Bodu.Security.Cryptography.Extensions
+  id: Bodu.Security.Cryptography.Extensions
+  children:
+  - Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  langs:
+  - csharp
+  - vb
+  name: Bodu.Security.Cryptography.Extensions
+  nameWithType: Bodu.Security.Cryptography.Extensions
+  fullName: Bodu.Security.Cryptography.Extensions
+  type: Namespace
+  assemblies:
+  - Bodu.Security.Cryptography
+references:
+- uid: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  commentId: T:Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+  parent: Bodu.Security.Cryptography.Extensions
+  href: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions.html
+  name: HashAlgorithmExtensions
+  nameWithType: HashAlgorithmExtensions
+  fullName: Bodu.Security.Cryptography.Extensions.HashAlgorithmExtensions
+- uid: Bodu.Security.Cryptography.Extensions
+  commentId: N:Bodu.Security.Cryptography.Extensions
+  href: Bodu.html
+  name: Bodu.Security.Cryptography.Extensions
+  nameWithType: Bodu.Security.Cryptography.Extensions
+  fullName: Bodu.Security.Cryptography.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Security
+    name: Security
+    href: Bodu.Security.html
+  - name: .
+  - uid: Bodu.Security.Cryptography
+    name: Cryptography
+    href: Bodu.Security.Cryptography.html
+  - name: .
+  - uid: Bodu.Security.Cryptography.Extensions
+    name: Extensions
+    href: Bodu.Security.Cryptography.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Security
+    name: Security
+    href: Bodu.Security.html
+  - name: .
+  - uid: Bodu.Security.Cryptography
+    name: Cryptography
+    href: Bodu.Security.Cryptography.html
+  - name: .
+  - uid: Bodu.Security.Cryptography.Extensions
+    name: Extensions
+    href: Bodu.Security.Cryptography.Extensions.html

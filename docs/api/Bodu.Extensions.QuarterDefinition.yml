@@ -1,0 +1,373 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Extensions.QuarterDefinition
+  commentId: T:Bodu.Extensions.QuarterDefinition
+  id: QuarterDefinition
+  parent: Bodu.Extensions
+  children:
+  - Bodu.Extensions.QuarterDefinition.CalendarYear
+  - Bodu.Extensions.QuarterDefinition.Custom
+  - Bodu.Extensions.QuarterDefinition.FinancialApril
+  - Bodu.Extensions.QuarterDefinition.FinancialFebruary
+  - Bodu.Extensions.QuarterDefinition.FinancialJuly
+  - Bodu.Extensions.QuarterDefinition.FinancialOctober
+  langs:
+  - csharp
+  - vb
+  name: QuarterDefinition
+  nameWithType: QuarterDefinition
+  fullName: Bodu.Extensions.QuarterDefinition
+  type: Enum
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: QuarterDefinition
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 15
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Specifies how quarters (Q1–Q4) are defined for a given calendar or financial year system.
+  remarks: >-
+    This enumeration supports both standard calendar-based and regional fiscal year definitions, such as the Australian, US Federal, and
+
+    ISO calendar conventions. Use <xref href="Bodu.Extensions.QuarterDefinition.Custom" data-throw-if-not-resolved="false"></xref> to define a custom quarterly system (e.g., 5–4–4 or 13-week accounting periods).
+  example: []
+  syntax:
+    content: public enum QuarterDefinition
+    content.vb: Public Enum QuarterDefinition
+  extensionMethods:
+  - Bodu.Extensions.QuarterDefinition.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+- uid: Bodu.Extensions.QuarterDefinition.CalendarYear
+  commentId: F:Bodu.Extensions.QuarterDefinition.CalendarYear
+  id: CalendarYear
+  parent: Bodu.Extensions.QuarterDefinition
+  langs:
+  - csharp
+  - vb
+  name: CalendarYear
+  nameWithType: QuarterDefinition.CalendarYear
+  fullName: Bodu.Extensions.QuarterDefinition.CalendarYear
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: CalendarYear
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 21
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: >-
+    Indicates that the year is divided into four quarters beginning in January.
+
+    <p>Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 = Jul–Sep, Q4 = Oct–Dec.</p>
+  example: []
+  syntax:
+    content: CalendarYear = 0
+    return:
+      type: Bodu.Extensions.QuarterDefinition
+- uid: Bodu.Extensions.QuarterDefinition.FinancialJuly
+  commentId: F:Bodu.Extensions.QuarterDefinition.FinancialJuly
+  id: FinancialJuly
+  parent: Bodu.Extensions.QuarterDefinition
+  langs:
+  - csharp
+  - vb
+  name: FinancialJuly
+  nameWithType: QuarterDefinition.FinancialJuly
+  fullName: Bodu.Extensions.QuarterDefinition.FinancialJuly
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FinancialJuly
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 28
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: >-
+    Indicates that the fiscal year begins in July.
+
+    <p>Q1 = Jul–Sep, Q2 = Oct–Dec, Q3 = Jan–Mar, Q4 = Apr–Jun.</p>
+
+    Common in Australia and New Zealand.
+  example: []
+  syntax:
+    content: FinancialJuly = 6
+    return:
+      type: Bodu.Extensions.QuarterDefinition
+- uid: Bodu.Extensions.QuarterDefinition.FinancialApril
+  commentId: F:Bodu.Extensions.QuarterDefinition.FinancialApril
+  id: FinancialApril
+  parent: Bodu.Extensions.QuarterDefinition
+  langs:
+  - csharp
+  - vb
+  name: FinancialApril
+  nameWithType: QuarterDefinition.FinancialApril
+  fullName: Bodu.Extensions.QuarterDefinition.FinancialApril
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FinancialApril
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 35
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: >-
+    Indicates that the fiscal year begins in April.
+
+    <p>Q1 = Apr–Jun, Q2 = Jul–Sep, Q3 = Oct–Dec, Q4 = Jan–Mar.</p>
+
+    Common in India, the UK, and parts of Japan and Canada.
+  example: []
+  syntax:
+    content: FinancialApril = 9
+    return:
+      type: Bodu.Extensions.QuarterDefinition
+- uid: Bodu.Extensions.QuarterDefinition.FinancialOctober
+  commentId: F:Bodu.Extensions.QuarterDefinition.FinancialOctober
+  id: FinancialOctober
+  parent: Bodu.Extensions.QuarterDefinition
+  langs:
+  - csharp
+  - vb
+  name: FinancialOctober
+  nameWithType: QuarterDefinition.FinancialOctober
+  fullName: Bodu.Extensions.QuarterDefinition.FinancialOctober
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FinancialOctober
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 42
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: >-
+    Indicates that the fiscal year begins in October.
+
+    <p>Q1 = Oct–Dec, Q2 = Jan–Mar, Q3 = Apr–Jun, Q4 = Jul–Sep.</p>
+
+    Used by the US Federal Government.
+  example: []
+  syntax:
+    content: FinancialOctober = 3
+    return:
+      type: Bodu.Extensions.QuarterDefinition
+- uid: Bodu.Extensions.QuarterDefinition.FinancialFebruary
+  commentId: F:Bodu.Extensions.QuarterDefinition.FinancialFebruary
+  id: FinancialFebruary
+  parent: Bodu.Extensions.QuarterDefinition
+  langs:
+  - csharp
+  - vb
+  name: FinancialFebruary
+  nameWithType: QuarterDefinition.FinancialFebruary
+  fullName: Bodu.Extensions.QuarterDefinition.FinancialFebruary
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FinancialFebruary
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 49
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: >-
+    Indicates that the fiscal year begins in February.
+
+    <p>Q1 = Feb–Apr, Q2 = May–Jul, Q3 = Aug–Oct, Q4 = Nov–Jan.</p>
+
+    Common in retail and some fiscal 4-4-5 accounting practices.
+  example: []
+  syntax:
+    content: FinancialFebruary = 11
+    return:
+      type: Bodu.Extensions.QuarterDefinition
+- uid: Bodu.Extensions.QuarterDefinition.Custom
+  commentId: F:Bodu.Extensions.QuarterDefinition.Custom
+  id: Custom
+  parent: Bodu.Extensions.QuarterDefinition
+  langs:
+  - csharp
+  - vb
+  name: Custom
+  nameWithType: QuarterDefinition.Custom
+  fullName: Bodu.Extensions.QuarterDefinition.Custom
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/QuarterDefinition.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: Custom
+    path: ../Bodu.Core/src/Extensions/QuarterDefinition.cs
+    startLine: 54
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Indicates that the quarter system is defined by a custom rule. Requires external logic to determine quarter boundaries.
+  example: []
+  syntax:
+    content: Custom = 99
+    return:
+      type: Bodu.Extensions.QuarterDefinition
+references:
+- uid: Bodu.Extensions.QuarterDefinition.Custom
+  commentId: F:Bodu.Extensions.QuarterDefinition.Custom
+  href: Bodu.Extensions.QuarterDefinition.html#Bodu_Extensions_QuarterDefinition_Custom
+  name: Custom
+  nameWithType: QuarterDefinition.Custom
+  fullName: Bodu.Extensions.QuarterDefinition.Custom
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  href: Bodu.html
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+- uid: Bodu.Extensions.QuarterDefinition.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  parent: Bodu.Extensions.NumericExtensions
+  definition: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<QuarterDefinition>(QuarterDefinition, bool)
+  nameWithType: NumericExtensions.GetBytes<QuarterDefinition>(QuarterDefinition, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<Bodu.Extensions.QuarterDefinition>(Bodu.Extensions.QuarterDefinition, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of QuarterDefinition)(QuarterDefinition, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of Bodu.Extensions.QuarterDefinition)(Bodu.Extensions.QuarterDefinition, Boolean)
+  name.vb: GetBytes(Of QuarterDefinition)(QuarterDefinition, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.QuarterDefinition,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    href: Bodu.Extensions.QuarterDefinition.html
+  - name: '>'
+  - name: (
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    href: Bodu.Extensions.QuarterDefinition.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.QuarterDefinition,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    href: Bodu.Extensions.QuarterDefinition.html
+  - name: )
+  - name: (
+  - uid: Bodu.Extensions.QuarterDefinition
+    name: QuarterDefinition
+    href: Bodu.Extensions.QuarterDefinition.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  isExternal: true
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<T>(T, bool)
+  nameWithType: NumericExtensions.GetBytes<T>(T, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<T>(T, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of T)(T, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of T)(T, Boolean)
+  name.vb: GetBytes(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions
+  commentId: T:Bodu.Extensions.NumericExtensions
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.NumericExtensions.html
+  name: NumericExtensions
+  nameWithType: NumericExtensions
+  fullName: Bodu.Extensions.NumericExtensions
+- uid: Bodu.Extensions.QuarterDefinition
+  commentId: T:Bodu.Extensions.QuarterDefinition
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.QuarterDefinition.html
+  name: QuarterDefinition
+  nameWithType: QuarterDefinition
+  fullName: Bodu.Extensions.QuarterDefinition

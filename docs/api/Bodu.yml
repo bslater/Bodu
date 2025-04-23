@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu
+  commentId: N:Bodu
+  id: Bodu
+  children:
+  - Bodu.IRandomGenerator
+  - Bodu.ThrowHelper
+  - Bodu.XorShiftRandom
+  langs:
+  - csharp
+  - vb
+  name: Bodu
+  nameWithType: Bodu
+  fullName: Bodu
+  type: Namespace
+  assemblies:
+  - Bodu.CoreLib
+references:
+- uid: Bodu.IRandomGenerator
+  commentId: T:Bodu.IRandomGenerator
+  parent: Bodu
+  href: Bodu.IRandomGenerator.html
+  name: IRandomGenerator
+  nameWithType: IRandomGenerator
+  fullName: Bodu.IRandomGenerator
+- uid: Bodu.ThrowHelper
+  commentId: T:Bodu.ThrowHelper
+  href: Bodu.ThrowHelper.html
+  name: ThrowHelper
+  nameWithType: ThrowHelper
+  fullName: Bodu.ThrowHelper
+- uid: Bodu.XorShiftRandom
+  commentId: T:Bodu.XorShiftRandom
+  href: Bodu.XorShiftRandom.html
+  name: XorShiftRandom
+  nameWithType: XorShiftRandom
+  fullName: Bodu.XorShiftRandom
+- uid: Bodu
+  commentId: N:Bodu
+  href: Bodu.html
+  name: Bodu
+  nameWithType: Bodu
+  fullName: Bodu

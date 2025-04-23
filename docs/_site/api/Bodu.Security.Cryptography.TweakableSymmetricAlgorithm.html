@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TweakableSymmetricAlgorithm </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TweakableSymmetricAlgorithm ">
+      
+      <meta name="description" content="Represents a symmetric encryption algorithm that supports an additional tweak value in addition to the encryption key and initialization vector (IV).">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/bslater/Bodu/new/master/apiSpec/new?filename=Bodu_Security_Cryptography_TweakableSymmetricAlgorithm.md&amp;value=---%0Auid%3A%20Bodu.Security.Cryptography.TweakableSymmetricAlgorithm%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm">
+
+
+
+  <h1 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm" class="text-break">
+Class TweakableSymmetricAlgorithm  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Bodu.html">Bodu</a>.<a class="xref" href="Bodu.Security.html">Security</a>.<a class="xref" href="Bodu.Security.Cryptography.html">Cryptography</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Bodu.Security.Cryptography.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Represents a symmetric encryption algorithm that supports an additional tweak value in addition to the encryption key and
+initialization vector (IV).</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class TweakableSymmetricAlgorithm : SymmetricAlgorithm, IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm">SymmetricAlgorithm</a></div>
+      <div><span class="xref">TweakableSymmetricAlgorithm</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.blocksizevalue">SymmetricAlgorithm.BlockSizeValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.feedbacksizevalue">SymmetricAlgorithm.FeedbackSizeValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.ivvalue">SymmetricAlgorithm.IVValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.keysizevalue">SymmetricAlgorithm.KeySizeValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.keyvalue">SymmetricAlgorithm.KeyValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.legalblocksizesvalue">SymmetricAlgorithm.LegalBlockSizesValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.legalkeysizesvalue">SymmetricAlgorithm.LegalKeySizesValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.modevalue">SymmetricAlgorithm.ModeValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.paddingvalue">SymmetricAlgorithm.PaddingValue</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.clear">SymmetricAlgorithm.Clear()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.create#system-security-cryptography-symmetricalgorithm-create">SymmetricAlgorithm.Create()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.create#system-security-cryptography-symmetricalgorithm-create(system-string)">SymmetricAlgorithm.Create(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.createdecryptor#system-security-cryptography-symmetricalgorithm-createdecryptor(system-byte()-system-byte())">SymmetricAlgorithm.CreateDecryptor(byte[], byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.createencryptor#system-security-cryptography-symmetricalgorithm-createencryptor(system-byte()-system-byte())">SymmetricAlgorithm.CreateEncryptor(byte[], byte[])</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcbc#system-security-cryptography-symmetricalgorithm-decryptcbc(system-byte()-system-byte()-system-security-cryptography-paddingmode)">SymmetricAlgorithm.DecryptCbc(byte[], byte[], PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcbc#system-security-cryptography-symmetricalgorithm-decryptcbc(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.DecryptCbc(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcbc#system-security-cryptography-symmetricalgorithm-decryptcbc(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-span((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.DecryptCbc(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcfb#system-security-cryptography-symmetricalgorithm-decryptcfb(system-byte()-system-byte()-system-security-cryptography-paddingmode-system-int32)">SymmetricAlgorithm.DecryptCfb(byte[], byte[], PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcfb#system-security-cryptography-symmetricalgorithm-decryptcfb(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-security-cryptography-paddingmode-system-int32)">SymmetricAlgorithm.DecryptCfb(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptcfb#system-security-cryptography-symmetricalgorithm-decryptcfb(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-span((system-byte))-system-security-cryptography-paddingmode-system-int32)">SymmetricAlgorithm.DecryptCfb(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptecb#system-security-cryptography-symmetricalgorithm-decryptecb(system-byte()-system-security-cryptography-paddingmode)">SymmetricAlgorithm.DecryptEcb(byte[], PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptecb#system-security-cryptography-symmetricalgorithm-decryptecb(system-readonlyspan((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.DecryptEcb(ReadOnlySpan&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.decryptecb#system-security-cryptography-symmetricalgorithm-decryptecb(system-readonlyspan((system-byte))-system-span((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.DecryptEcb(ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.dispose#system-security-cryptography-symmetricalgorithm-dispose">SymmetricAlgorithm.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcbc#system-security-cryptography-symmetricalgorithm-encryptcbc(system-byte()-system-byte()-system-security-cryptography-paddingmode)">SymmetricAlgorithm.EncryptCbc(byte[], byte[], PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcbc#system-security-cryptography-symmetricalgorithm-encryptcbc(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.EncryptCbc(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcbc#system-security-cryptography-symmetricalgorithm-encryptcbc(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-span((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.EncryptCbc(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcfb#system-security-cryptography-symmetricalgorithm-encryptcfb(system-byte()-system-byte()-system-security-cryptography-paddingmode-system-int32)">SymmetricAlgorithm.EncryptCfb(byte[], byte[], PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcfb#system-security-cryptography-symmetricalgorithm-encryptcfb(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-security-cryptography-paddingmode-system-int32)">SymmetricAlgorithm.EncryptCfb(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptcfb#system-security-cryptography-symmetricalgorithm-encryptcfb(system-readonlyspan((system-byte))-system-readonlyspan((system-byte))-system-span((system-byte))-system-security-cryptography-paddingmode-system-int32)">SymmetricAlgorithm.EncryptCfb(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptecb#system-security-cryptography-symmetricalgorithm-encryptecb(system-byte()-system-security-cryptography-paddingmode)">SymmetricAlgorithm.EncryptEcb(byte[], PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptecb#system-security-cryptography-symmetricalgorithm-encryptecb(system-readonlyspan((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.EncryptEcb(ReadOnlySpan&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.encryptecb#system-security-cryptography-symmetricalgorithm-encryptecb(system-readonlyspan((system-byte))-system-span((system-byte))-system-security-cryptography-paddingmode)">SymmetricAlgorithm.EncryptEcb(ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.generateiv">SymmetricAlgorithm.GenerateIV()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.generatekey">SymmetricAlgorithm.GenerateKey()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.getciphertextlengthcbc">SymmetricAlgorithm.GetCiphertextLengthCbc(int, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.getciphertextlengthcfb">SymmetricAlgorithm.GetCiphertextLengthCfb(int, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.getciphertextlengthecb">SymmetricAlgorithm.GetCiphertextLengthEcb(int, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.trydecryptcbc">SymmetricAlgorithm.TryDecryptCbc(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, out int, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.trydecryptcbccore">SymmetricAlgorithm.TryDecryptCbcCore(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.trydecryptcfb">SymmetricAlgorithm.TryDecryptCfb(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, out int, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.trydecryptcfbcore">SymmetricAlgorithm.TryDecryptCfbCore(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, int, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.trydecryptecb">SymmetricAlgorithm.TryDecryptEcb(ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.trydecryptecbcore">SymmetricAlgorithm.TryDecryptEcbCore(ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.tryencryptcbc">SymmetricAlgorithm.TryEncryptCbc(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, out int, PaddingMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.tryencryptcbccore">SymmetricAlgorithm.TryEncryptCbcCore(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.tryencryptcfb">SymmetricAlgorithm.TryEncryptCfb(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, out int, PaddingMode, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.tryencryptcfbcore">SymmetricAlgorithm.TryEncryptCfbCore(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, int, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.tryencryptecb">SymmetricAlgorithm.TryEncryptEcb(ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.tryencryptecbcore">SymmetricAlgorithm.TryEncryptEcbCore(ReadOnlySpan&lt;byte&gt;, Span&lt;byte&gt;, PaddingMode, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.validkeysize">SymmetricAlgorithm.ValidKeySize(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.blocksize">SymmetricAlgorithm.BlockSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.feedbacksize">SymmetricAlgorithm.FeedbackSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.iv">SymmetricAlgorithm.IV</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.key">SymmetricAlgorithm.Key</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.keysize">SymmetricAlgorithm.KeySize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.legalblocksizes">SymmetricAlgorithm.LegalBlockSizes</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.legalkeysizes">SymmetricAlgorithm.LegalKeySizes</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.mode">SymmetricAlgorithm.Mode</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.padding">SymmetricAlgorithm.Padding</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_">NumericExtensions.GetBytes&lt;T&gt;(T, bool)</a>
+  </div>
+  </dd></dl>
+
+
+
+  <h2 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>
+This abstract class extends the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm">SymmetricAlgorithm</a> base class to support tweakable ciphers, such as Threefish, which
+use an additional tweak input to influence encryption.
+</p>
+<p>
+The tweak is provided as a byte array and may vary in size depending on the algorithm implementation. Valid tweak sizes are
+specified via the <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes">LegalTweakSizes</a> property.
+</p>
+<p>
+Derived classes must override the encryptor and decryptor creation methods to incorporate the tweak into the encryption or
+decryption process.
+</p>
+</div>
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizesValue" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.LegalTweakSizesValue">
+  LegalTweakSizesValue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Specifies the tweak sizes, in bits, that are supported by the algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected KeySizes[] LegalTweakSizesValue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.keysizes">KeySizes</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSizeValue" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TweakSizeValue">
+  TweakSizeValue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stores the currently configured tweak size in bits.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int TweakSizeValue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakValue" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TweakValue">
+  TweakValue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stores the current tweak value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected byte[] TweakValue</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.LegalTweakSizes*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.LegalTweakSizes">
+  LegalTweakSizes
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the tweak sizes, in bits, that are supported by the symmetric algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual KeySizes[] LegalTweakSizes { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.keysizes">KeySizes</a>[]</dt>
+    <dd><p>An array of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.keysizes">KeySizes</a> values indicating valid tweak sizes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Tweak_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.Tweak*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Tweak" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.Tweak">
+  Tweak
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the tweak value for the algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual byte[] Tweak { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The tweak value as a byte array.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Tweak_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The provided value must conform to one of the allowed sizes defined in <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes">LegalTweakSizes</a>. A defensive copy is made
+during assignment and retrieval.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown if the value is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.cryptographicexception">CryptographicException</a></dt>
+    <dd><p>Thrown if the specified tweak size is not valid.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSize_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TweakSize*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSize" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TweakSize">
+  TweakSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the size, in bits, of the tweak used by the algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int TweakSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The configured tweak size, in bits.</p>
+</dd>
+  </dl>
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.cryptographicexception">CryptographicException</a></dt>
+    <dd><p>Thrown if the provided tweak size is not supported.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSpan_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TweakSpan*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSpan" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TweakSpan">
+  TweakSpan
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets a read-only span view of the current tweak value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ReadOnlySpan&lt;byte&gt; TweakSpan { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSpan_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This property exposes the current tweak as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> for efficient access in span-based cryptographic
+operations. If no tweak has been set, this span is empty.</p>
+</div>
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateDecryptor_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateDecryptor*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateDecryptor" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateDecryptor">
+  CreateDecryptor()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a symmetric decryptor object with the current <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.key">Key</a> property and initialization vector (<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.iv">IV</a>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ICryptoTransform CreateDecryptor()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a></dt>
+    <dd><p>A symmetric decryptor object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateDecryptor_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateDecryptor*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateDecryptor_System_Byte___System_Byte___System_Byte___" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateDecryptor(System.Byte[],System.Byte[],System.Byte[])">
+  CreateDecryptor(byte[], byte[], byte[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a symmetric decryptor object using the specified key, IV, and tweak.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV, byte[] tweak)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rgbKey</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The encryption key.</p>
+</dd>
+    <dt><code>rgbIV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The initialization vector.</p>
+</dd>
+    <dt><code>tweak</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The tweak value to use.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a> instance for decryption.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateEncryptor_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateEncryptor*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateEncryptor" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateEncryptor">
+  CreateEncryptor()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a symmetric encryptor object with the current <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.key">Key</a> property and initialization vector (<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm.iv">IV</a>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ICryptoTransform CreateEncryptor()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a></dt>
+    <dd><p>A symmetric encryptor object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateEncryptor_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateEncryptor*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateEncryptor_System_Byte___System_Byte___System_Byte___" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.CreateEncryptor(System.Byte[],System.Byte[],System.Byte[])">
+  CreateEncryptor(byte[], byte[], byte[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a symmetric encryptor object using the specified key, IV, and tweak.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV, byte[] tweak)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rgbKey</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The encryption key.</p>
+</dd>
+    <dt><code>rgbIV</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The initialization vector.</p>
+</dd>
+    <dt><code>tweak</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The tweak value to use.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a> instance for encryption.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Dispose_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.Dispose*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Dispose_System_Boolean_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Releases the unmanaged resources used by the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.symmetricalgorithm">SymmetricAlgorithm</a> and optionally releases the managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> to release both managed and unmanaged resources; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> to release only unmanaged resources.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_GenerateTweak_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.GenerateTweak*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_GenerateTweak" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.GenerateTweak">
+  GenerateTweak()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Generates a new tweak value for use by the algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void GenerateTweak()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_GenerateTweak_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method should populate the <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Tweak">Tweak</a> property with a valid value based on the current <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TweakSize">TweakSize</a>.
+Implementations must ensure the generated tweak conforms to <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes">LegalTweakSizes</a>.</p>
+</div>
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfInvalidTweakSize_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ThrowIfInvalidTweakSize*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfInvalidTweakSize_System_Byte___System_String_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ThrowIfInvalidTweakSize(System.Byte[],System.String)">
+  ThrowIfInvalidTweakSize(byte[], string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Throws if the specified <code class="paramref">tweak</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or its size is not valid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void ThrowIfInvalidTweakSize(byte[] tweak, string? paramName = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>tweak</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The tweak value to validate.</p>
+</dd>
+    <dt><code>paramName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the parameter, automatically inferred if not specified.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p>Thrown when <code class="paramref">tweak</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.cryptographicexception">CryptographicException</a></dt>
+    <dd><p>Thrown when <code class="paramref">tweak</code> is not supported by <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes">LegalTweakSizes</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfInvalidTweakSize_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ThrowIfInvalidTweakSize*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfInvalidTweakSize_System_Int32_System_String_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ThrowIfInvalidTweakSize(System.Int32,System.String)">
+  ThrowIfInvalidTweakSize(int, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Throws if the specified bit length is not a valid tweak size for this algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void ThrowIfInvalidTweakSize(int bitLength, string? paramName = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bitLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The tweak size in bits.</p>
+</dd>
+    <dt><code>paramName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the parameter, automatically inferred if not specified.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.cryptographicexception">CryptographicException</a></dt>
+    <dd><p>Thrown when <code class="paramref">bitLength</code> is not supported by <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_LegalTweakSizes">LegalTweakSizes</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfTweakNotSet_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ThrowIfTweakNotSet*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfTweakNotSet" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ThrowIfTweakNotSet">
+  ThrowIfTweakNotSet()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.cryptographicexception">CryptographicException</a> if the tweak has not been set or generated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void ThrowIfTweakNotSet()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ThrowIfTweakNotSet_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method ensures that the <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Tweak">Tweak</a> property is not accessed in an uninitialized state. It is recommended to call
+<a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_GenerateTweak">GenerateTweak()</a> or assign a value to <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_Tweak">Tweak</a> before use.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.cryptographicexception">CryptographicException</a></dt>
+    <dd><p>Thrown when the tweak value is empty, indicating it has not been initialized or generated.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TryCreateDecryptor_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TryCreateDecryptor*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TryCreateDecryptor_System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_Security_Cryptography_ICryptoTransform__" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TryCreateDecryptor(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte},System.Security.Cryptography.ICryptoTransform@)">
+  TryCreateDecryptor(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, out ICryptoTransform)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to create a symmetric decryptor using span-based key, IV, and tweak values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool TryCreateDecryptor(ReadOnlySpan&lt;byte&gt; key, ReadOnlySpan&lt;byte&gt; iv, ReadOnlySpan&lt;byte&gt; tweak, out ICryptoTransform transform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>The encryption key as a read-only span.</p>
+</dd>
+    <dt><code>iv</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>The initialization vector as a read-only span.</p>
+</dd>
+    <dt><code>tweak</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>The tweak value as a read-only span.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a></dt>
+    <dd><p>The resulting <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a> instance if successful.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the decryptor was created successfully; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TryCreateDecryptor_System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_Security_Cryptography_ICryptoTransform___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method provides a span-based alternative to <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateDecryptor_System_Byte___System_Byte___System_Byte___">CreateDecryptor(byte[], byte[], byte[])</a>. The default
+implementation converts the inputs to arrays. Override for custom span handling.</p>
+</div>
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TryCreateEncryptor_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TryCreateEncryptor*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TryCreateEncryptor_System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_Security_Cryptography_ICryptoTransform__" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.TryCreateEncryptor(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte},System.Security.Cryptography.ICryptoTransform@)">
+  TryCreateEncryptor(ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, ReadOnlySpan&lt;byte&gt;, out ICryptoTransform)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to create a symmetric encryptor using span-based key, IV, and tweak values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool TryCreateEncryptor(ReadOnlySpan&lt;byte&gt; key, ReadOnlySpan&lt;byte&gt; iv, ReadOnlySpan&lt;byte&gt; tweak, out ICryptoTransform transform)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>The encryption key as a read-only span.</p>
+</dd>
+    <dt><code>iv</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>The initialization vector as a read-only span.</p>
+</dd>
+    <dt><code>tweak</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>&gt;</dt>
+    <dd><p>The tweak value as a read-only span.</p>
+</dd>
+    <dt><code>transform</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a></dt>
+    <dd><p>The resulting <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.cryptography.icryptotransform">ICryptoTransform</a> instance if successful.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the encryptor was created successfully; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_TryCreateEncryptor_System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_ReadOnlySpan_System_Byte__System_Security_Cryptography_ICryptoTransform___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method provides a span-based alternative to <a class="xref" href="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.html#Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_CreateEncryptor_System_Byte___System_Byte___System_Byte___">CreateEncryptor(byte[], byte[], byte[])</a>. The default
+implementation converts the inputs to arrays. Override for custom span handling.</p>
+</div>
+
+
+
+
+  <a id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ValidTweakSize_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ValidTweakSize*"></a>
+
+  <h3 id="Bodu_Security_Cryptography_TweakableSymmetricAlgorithm_ValidTweakSize_System_Int32_" data-uid="Bodu.Security.Cryptography.TweakableSymmetricAlgorithm.ValidTweakSize(System.Int32)">
+  ValidTweakSize(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether the specified tweak size, in bits, is valid for this algorithm.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ValidTweakSize(int length)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>length</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The tweak size in bits.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the size is valid; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/bslater/Bodu/blob/master/Bodu.Security.Cryptography/src/Security.Cryptography/TweakableSymmetricAlgorithm.cs/#L25" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -6,6 +6,7 @@
 
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Xml;
 
 namespace Bodu.Extensions
 {
@@ -38,7 +39,7 @@ namespace Bodu.Extensions
 		/// </param>
 		/// <returns>The 1-based week number of the month for the specified date.</returns>
 		/// <remarks>
-		/// This method uses the specified culture's <see cref="CalendarWeekRule" /> and <see cref="DateTimeFormat.FirstDayOfWeek" /> to
+		/// This method uses the specified culture's <see cref="CalendarWeekRule" /> and <see cref="DateTimeFormatInfo.FirstDayOfWeek" /> to
 		/// compute the week number of the date relative to the first day of the same month.
 		/// </remarks>
 		public static int WeekOfMonth(this DateTime date, CultureInfo culture)
@@ -70,7 +71,7 @@ namespace Bodu.Extensions
 
 			var calendar = CultureInfo.InvariantCulture.Calendar; // Use invariant for consistent week computation
 			var weekOfYear = calendar.GetWeekOfYear(date, weekRule, weekStart);
-			var firstOfMonth = new DateTime(date.Year, date.Month, 1);
+			var firstOfMonth = new DateTime(DateTimeExtensions.GetTicksForDate(date.Year, date.Month, 1), date.Kind);
 			var firstWeek = calendar.GetWeekOfYear(firstOfMonth, weekRule, weekStart);
 
 			return weekOfYear - firstWeek + 1;

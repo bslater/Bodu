@@ -34,37 +34,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extensions\DateOnlyExtensions.Add.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.Age.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.DayOfWeekInTheMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.DayOfWeekOrdinalOfMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.DaysInMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.DaysInYear.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.Elapsed.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.FirstDayOfTheMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.FirstDayOfTheWeek.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.FirstDayOfTheYear.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.FirstDayOfWeekInTheMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.FirstDayOfWeekInTheYear.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.IsLeapYear.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.LastDayOfTheMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.LastDayOfTheWeek.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.LastDayOfTheYear.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.LastDayOfWeekInTheMonth.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.LastDayOfWeekInTheYear.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.MonthName.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.NextDayOfWeek.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.PreviousDayOfWeek.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.ToDateTimeOffset.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.Truncate.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.UnixTime%28Epoch%29.cs" />
-    <Compile Remove="Extensions\DateOnlyExtensions.WeekOfYear.cs" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />
   </ItemGroup>
-  
-  <ItemGroup>
-  <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />
-</ItemGroup>
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
@@ -94,5 +65,9 @@
       <DependentUpon>ResourceStrings.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cd $(SolutionDir)docs&#xD;&#xA;docfx build" />
+  </Target>
 
 </Project>

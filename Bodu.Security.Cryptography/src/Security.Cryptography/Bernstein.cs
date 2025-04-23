@@ -18,8 +18,6 @@ namespace Bodu.Security.Cryptography
 	/// The <see cref="Bernstein" /> class implements the non-cryptographic hash function known as djb2, created by Daniel J. Bernstein. It
 	/// is widely used in hash tables, data indexing, and similar scenarios where speed and simplicity are preferred over cryptographic guarantees.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
-	/// digital signatures, or any use case that requires secure integrity or confidentiality.</note>
 	/// <para>
 	/// This implementation includes an optional variant of the algorithm that uses an XOR instead of addition when combining characters
 	/// into the hash. You can control this behavior with the <see cref="UseModifiedAlgorithm" /> property:
@@ -39,6 +37,8 @@ namespace Bodu.Security.Cryptography
 	/// </item>
 	/// </list>
 	/// <para>Both versions produce a 32-bit integer hash from the input stream of bytes.</para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or any use case that requires secure integrity or confidentiality.</note>
 	/// </remarks>
 	public sealed class Bernstein
 			: System.Security.Cryptography.HashAlgorithm
@@ -95,7 +95,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating whether to use the XOR-modified variant of the Bernstein hash algorithm.
+		/// Gets or sets a value indicating whether to use the XOR-modified variant of the <see cref="Bernstein" /> hash algorithm.
 		/// </summary>
 		/// <value>
 		/// <see langword="true" /> to use the modified algorithm ( <c>hash = (hash * 33) ^ c</c>); <see langword="false" /> to use the
@@ -153,25 +153,6 @@ namespace Bodu.Security.Cryptography
 			this.value = this.initialValue;
 		}
 
-#if !NET6_0_OR_GREATER
-
-		/// <summary>
-		/// Processes a block of data by feeding it into the Fletcher algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
-#else
-
-		/// <summary>
-		/// Processes a block of data by feeding it into the Fletcher algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-#endif
-
 		/// <inheritdoc />
 		public override bool Equals(object obj)
 		{
@@ -186,6 +167,7 @@ namespace Bodu.Security.Cryptography
 			return HashCode.Combine(this.useModified, this.initialValue);
 		}
 
+		/// <inheritdoc />
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);

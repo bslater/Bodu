@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Collections.Extensions
+  commentId: N:Bodu.Collections.Extensions
+  id: Bodu.Collections.Extensions
+  children:
+  - Bodu.Collections.Extensions.IEnumerableExtensions
+  - Bodu.Collections.Extensions.RecursiveSelectControl
+  - Bodu.Collections.Extensions.SequenceGenerator
+  langs:
+  - csharp
+  - vb
+  name: Bodu.Collections.Extensions
+  nameWithType: Bodu.Collections.Extensions
+  fullName: Bodu.Collections.Extensions
+  type: Namespace
+  assemblies:
+  - Bodu.CoreLib
+references:
+- uid: Bodu.Collections.Extensions.IEnumerableExtensions
+  commentId: T:Bodu.Collections.Extensions.IEnumerableExtensions
+  parent: Bodu.Collections.Extensions
+  href: Bodu.Collections.Extensions.IEnumerableExtensions.html
+  name: IEnumerableExtensions
+  nameWithType: IEnumerableExtensions
+  fullName: Bodu.Collections.Extensions.IEnumerableExtensions
+- uid: Bodu.Collections.Extensions.RecursiveSelectControl
+  commentId: T:Bodu.Collections.Extensions.RecursiveSelectControl
+  parent: Bodu.Collections.Extensions
+  href: Bodu.Collections.Extensions.RecursiveSelectControl.html
+  name: RecursiveSelectControl
+  nameWithType: RecursiveSelectControl
+  fullName: Bodu.Collections.Extensions.RecursiveSelectControl
+- uid: Bodu.Collections.Extensions.SequenceGenerator
+  commentId: T:Bodu.Collections.Extensions.SequenceGenerator
+  href: Bodu.Collections.Extensions.SequenceGenerator.html
+  name: SequenceGenerator
+  nameWithType: SequenceGenerator
+  fullName: Bodu.Collections.Extensions.SequenceGenerator
+- uid: Bodu.Collections.Extensions
+  commentId: N:Bodu.Collections.Extensions
+  href: Bodu.html
+  name: Bodu.Collections.Extensions
+  nameWithType: Bodu.Collections.Extensions
+  fullName: Bodu.Collections.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Extensions
+    name: Extensions
+    href: Bodu.Collections.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Collections
+    name: Collections
+    href: Bodu.Collections.html
+  - name: .
+  - uid: Bodu.Collections.Extensions
+    name: Extensions
+    href: Bodu.Collections.Extensions.html

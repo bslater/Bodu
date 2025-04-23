@@ -10,10 +10,32 @@ using System.Threading.Tasks;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes a hash using the Pearson algorithm, a fast and simple non-cryptographic hash function.
+	/// Computes a hash value using the Pearson hashing algorithm—a fast, lightweight, and non-cryptographic hash function suitable for
+	/// basic checksums and hash-based lookups.
 	/// </summary>
 	/// <remarks>
-	/// The Pearson hashing algorithm, invented by Peter K. Pearson, uses a 256-byte permutation permutationTable to compute a compact hash.
+	/// <para>
+	/// The <see href="https://en.wikipedia.org/wiki/Pearson_hashing">Pearson hashing algorithm</see>, introduced by Peter K. Pearson in
+	/// 1990, computes a fixed-size hash (typically 8-bit or 16-bit) by transforming each byte of the input using a 256-element permutation table.
+	/// </para>
+	/// <para>The algorithm operates as follows:</para>
+	/// <list type="number">
+	/// <item>
+	/// <description>Initialize the hash result to 0 (or a seed value).</description>
+	/// </item>
+	/// <item>
+	/// <description>For each byte in the input, use the current hash value and the input byte as an index into the permutation table.</description>
+	/// </item>
+	/// <item>
+	/// <description>The output from the table becomes the new hash value.</description>
+	/// </item>
+	/// </list>
+	/// <para>
+	/// When computing multi-byte hashes (e.g., 64-bit), the algorithm is repeated for each byte of the result, often using different
+	/// initialization or byte offsets to reduce collisions.
+	/// </para>
+	/// <note type="important"> This algorithm is <b>not</b> cryptographically secure. It must <b>not</b> be used for digital signatures,
+	/// password hashing, or data integrity checks in security-critical applications. </note>
 	/// </remarks>
 	public sealed class Pearson
 		: System.Security.Cryptography.HashAlgorithm

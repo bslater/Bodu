@@ -1,0 +1,376 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Extensions.StandardWeekend
+  commentId: T:Bodu.Extensions.StandardWeekend
+  id: StandardWeekend
+  parent: Bodu.Extensions
+  children:
+  - Bodu.Extensions.StandardWeekend.Custom
+  - Bodu.Extensions.StandardWeekend.FridayOnly
+  - Bodu.Extensions.StandardWeekend.FridaySaturday
+  - Bodu.Extensions.StandardWeekend.None
+  - Bodu.Extensions.StandardWeekend.SaturdaySunday
+  - Bodu.Extensions.StandardWeekend.SundayOnly
+  - Bodu.Extensions.StandardWeekend.ThursdayFriday
+  langs:
+  - csharp
+  - vb
+  name: StandardWeekend
+  nameWithType: StandardWeekend
+  fullName: Bodu.Extensions.StandardWeekend
+  type: Enum
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: StandardWeekend
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 11
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Represents common weekend configurations used across global regions and cultures.
+  example: []
+  syntax:
+    content: public enum StandardWeekend
+    content.vb: Public Enum StandardWeekend
+  extensionMethods:
+  - Bodu.Extensions.StandardWeekend.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+- uid: Bodu.Extensions.StandardWeekend.SaturdaySunday
+  commentId: F:Bodu.Extensions.StandardWeekend.SaturdaySunday
+  id: SaturdaySunday
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: SaturdaySunday
+  nameWithType: StandardWeekend.SaturdaySunday
+  fullName: Bodu.Extensions.StandardWeekend.SaturdaySunday
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: SaturdaySunday
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 16
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Saturday and Sunday are considered weekends (used in most Western countries).
+  example: []
+  syntax:
+    content: SaturdaySunday = 0
+    return:
+      type: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.StandardWeekend.FridaySaturday
+  commentId: F:Bodu.Extensions.StandardWeekend.FridaySaturday
+  id: FridaySaturday
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: FridaySaturday
+  nameWithType: StandardWeekend.FridaySaturday
+  fullName: Bodu.Extensions.StandardWeekend.FridaySaturday
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FridaySaturday
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 21
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Friday and Saturday are weekends (used in many Middle Eastern countries).
+  example: []
+  syntax:
+    content: FridaySaturday = 1
+    return:
+      type: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.StandardWeekend.ThursdayFriday
+  commentId: F:Bodu.Extensions.StandardWeekend.ThursdayFriday
+  id: ThursdayFriday
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: ThursdayFriday
+  nameWithType: StandardWeekend.ThursdayFriday
+  fullName: Bodu.Extensions.StandardWeekend.ThursdayFriday
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: ThursdayFriday
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 26
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Thursday and Friday are weekends (used in some Middle Eastern academic/institutional contexts).
+  example: []
+  syntax:
+    content: ThursdayFriday = 2
+    return:
+      type: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.StandardWeekend.FridayOnly
+  commentId: F:Bodu.Extensions.StandardWeekend.FridayOnly
+  id: FridayOnly
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: FridayOnly
+  nameWithType: StandardWeekend.FridayOnly
+  fullName: Bodu.Extensions.StandardWeekend.FridayOnly
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: FridayOnly
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 31
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Friday only is considered the weekend (e.g., traditional Islamic week).
+  example: []
+  syntax:
+    content: FridayOnly = 3
+    return:
+      type: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.StandardWeekend.SundayOnly
+  commentId: F:Bodu.Extensions.StandardWeekend.SundayOnly
+  id: SundayOnly
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: SundayOnly
+  nameWithType: StandardWeekend.SundayOnly
+  fullName: Bodu.Extensions.StandardWeekend.SundayOnly
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: SundayOnly
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 36
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Sunday only is considered the weekend (used historically and in some religious institutions).
+  example: []
+  syntax:
+    content: SundayOnly = 4
+    return:
+      type: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.StandardWeekend.None
+  commentId: F:Bodu.Extensions.StandardWeekend.None
+  id: None
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: StandardWeekend.None
+  fullName: Bodu.Extensions.StandardWeekend.None
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: None
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 41
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: No standard weekend is defined (all days may be working or off depending on context).
+  example: []
+  syntax:
+    content: None = 5
+    return:
+      type: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.StandardWeekend.Custom
+  commentId: F:Bodu.Extensions.StandardWeekend.Custom
+  id: Custom
+  parent: Bodu.Extensions.StandardWeekend
+  langs:
+  - csharp
+  - vb
+  name: Custom
+  nameWithType: StandardWeekend.Custom
+  fullName: Bodu.Extensions.StandardWeekend.Custom
+  type: Field
+  source:
+    remote:
+      path: Bodu.Core/src/Extensions/StandardWeekend.cs
+      branch: master
+      repo: https://github.com/bslater/Bodu.git
+    id: Custom
+    path: ../Bodu.Core/src/Extensions/StandardWeekend.cs
+    startLine: 46
+  assemblies:
+  - Bodu.CoreLib
+  namespace: Bodu.Extensions
+  summary: Custom definition provided via an <xref href="Bodu.Extensions.IWeekendProvider" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: Custom = 6
+    return:
+      type: Bodu.Extensions.StandardWeekend
+references:
+- uid: Bodu.Extensions
+  commentId: N:Bodu.Extensions
+  href: Bodu.html
+  name: Bodu.Extensions
+  nameWithType: Bodu.Extensions
+  fullName: Bodu.Extensions
+  spec.csharp:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+  spec.vb:
+  - uid: Bodu
+    name: Bodu
+    href: Bodu.html
+  - name: .
+  - uid: Bodu.Extensions
+    name: Extensions
+    href: Bodu.Extensions.html
+- uid: Bodu.Extensions.StandardWeekend.Bodu.Extensions.NumericExtensions.GetBytes``1(System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  parent: Bodu.Extensions.NumericExtensions
+  definition: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<StandardWeekend>(StandardWeekend, bool)
+  nameWithType: NumericExtensions.GetBytes<StandardWeekend>(StandardWeekend, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<Bodu.Extensions.StandardWeekend>(Bodu.Extensions.StandardWeekend, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of StandardWeekend)(StandardWeekend, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of Bodu.Extensions.StandardWeekend)(Bodu.Extensions.StandardWeekend, Boolean)
+  name.vb: GetBytes(Of StandardWeekend)(StandardWeekend, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.StandardWeekend,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - uid: Bodu.Extensions.StandardWeekend
+    name: StandardWeekend
+    href: Bodu.Extensions.StandardWeekend.html
+  - name: '>'
+  - name: (
+  - uid: Bodu.Extensions.StandardWeekend
+    name: StandardWeekend
+    href: Bodu.Extensions.StandardWeekend.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(Bodu.Extensions.StandardWeekend,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Bodu.Extensions.StandardWeekend
+    name: StandardWeekend
+    href: Bodu.Extensions.StandardWeekend.html
+  - name: )
+  - name: (
+  - uid: Bodu.Extensions.StandardWeekend
+    name: StandardWeekend
+    href: Bodu.Extensions.StandardWeekend.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  commentId: M:Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+  isExternal: true
+  href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  name: GetBytes<T>(T, bool)
+  nameWithType: NumericExtensions.GetBytes<T>(T, bool)
+  fullName: Bodu.Extensions.NumericExtensions.GetBytes<T>(T, bool)
+  nameWithType.vb: NumericExtensions.GetBytes(Of T)(T, Boolean)
+  fullName.vb: Bodu.Extensions.NumericExtensions.GetBytes(Of T)(T, Boolean)
+  name.vb: GetBytes(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Bodu.Extensions.NumericExtensions.GetBytes``1(``0,System.Boolean)
+    name: GetBytes
+    href: Bodu.Extensions.NumericExtensions.html#Bodu_Extensions_NumericExtensions_GetBytes__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Bodu.Extensions.NumericExtensions
+  commentId: T:Bodu.Extensions.NumericExtensions
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.NumericExtensions.html
+  name: NumericExtensions
+  nameWithType: NumericExtensions
+  fullName: Bodu.Extensions.NumericExtensions
+- uid: Bodu.Extensions.StandardWeekend
+  commentId: T:Bodu.Extensions.StandardWeekend
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.StandardWeekend.html
+  name: StandardWeekend
+  nameWithType: StandardWeekend
+  fullName: Bodu.Extensions.StandardWeekend
+- uid: Bodu.Extensions.IWeekendProvider
+  commentId: T:Bodu.Extensions.IWeekendProvider
+  parent: Bodu.Extensions
+  href: Bodu.Extensions.IWeekendProvider.html
+  name: IWeekendProvider
+  nameWithType: IWeekendProvider
+  fullName: Bodu.Extensions.IWeekendProvider

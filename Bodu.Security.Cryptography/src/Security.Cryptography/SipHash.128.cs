@@ -9,19 +9,27 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Implementation of the <see cref="SipHash" /> that uses an Add-Rotate-XOR (ARX) based family of pseudo-random functions to generate a
-	/// 128-bit hash code, created by Jean-Philippe Aumasson and Daniel J. Bernstein. This class cannot be inherited.
+	/// Provides a sealed implementation of the <see cref="SipHash" /> cryptographic hash algorithm that produces a 128-bit hash output.
+	/// This implementation uses a keyed Add-Rotate-XOR (ARX) construction optimized for short messages. See the
+	/// <see href="https://131002.net/siphash/siphash.pdf">official SipHash specification</see> for details.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// SipHash uses the family pseudo-random functions along with the specified the number of compression rounds and the number of
-	/// finalization rounds to generates a 128-bit hash code.
+	/// <see cref="SipHash128" /> computes a 128-bit keyed hash using a configurable number of compression and finalization rounds. The
+	/// algorithm is parameterized as <c>SipHash-c-d</c>, where <c>c</c> is the number of compression rounds and <c>d</c> is the number of
+	/// finalization rounds.
 	/// </para>
 	/// <para>
-	/// A compression round is identical to a finalization round and consists of four additions, four bitwise XOR, and six rotations,
-	/// interleaved additional bitwise XOR operations of message blocks.
+	/// Each round consists of a sequence of ARX operations—four additions, four XORs, and six bitwise rotations—performed on four 64-bit
+	/// state variables. The same round structure is used during both the compression and finalization phases to fully mix message input
+	/// into the internal state.
 	/// </para>
-	/// <para>See <a href="https://131002.net/siphash/siphash.pdf">https://131002.net/siphash/siphash.pdf</a>.</para>
+	/// <para>
+	/// This implementation is suitable for scenarios requiring a higher degree of collision resistance or extended output length, such as
+	/// key-based message authentication over variable-length data.
+	/// </para>
+	/// <note type="important"> This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
+	/// signatures, or secure data integrity checks. </note>
 	/// </remarks>
 	public sealed class SipHash128
 		: SipHash

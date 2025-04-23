@@ -26,6 +26,8 @@ namespace Bodu.Security.Cryptography
 	/// <para>
 	/// An optional <see cref="Seed" /> value may be specified to alter the initial state. The seed cannot be changed once hashing begins.
 	/// </para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
+	/// password hashing, or integrity verification in security-sensitive contexts.</note>
 	/// </remarks>
 	public sealed class Elf64
 		: System.Security.Cryptography.HashAlgorithm
@@ -106,6 +108,7 @@ namespace Bodu.Security.Cryptography
 			return seedValue.GetHashCode();
 		}
 
+		/// <inheritdoc />
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);
@@ -121,21 +124,7 @@ namespace Bodu.Security.Cryptography
 			this.ProcessBlocks(array, ibStart, cbSize);
 		}
 
-#if !NET6_0_OR_GREATER
-
-		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
-		/// <exception cref="CryptographicUnexpectedOperationException">This method was called more than once without reinitializing.</exception>
-#else
-
-		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
-#endif
-
+		/// <inheritdoc />
 		protected override byte[] HashFinal()
 		{
 			ThrowIfDisposed();

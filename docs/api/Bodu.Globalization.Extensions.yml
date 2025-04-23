@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Bodu.Globalization.Extensions
+  commentId: N:Bodu.Globalization.Extensions
+  id: Bodu.Globalization.Extensions
+  children:
+  - Bodu.Globalization.Extensions.DateTimeFormatInfoExtensions
+  langs:
+  - csharp
+  - vb
+  name: Bodu.Globalization.Extensions
+  nameWithType: Bodu.Globalization.Extensions
+  fullName: Bodu.Globalization.Extensions
+  type: Namespace
+  assemblies:
+  - Bodu.CoreLib
+references:
+- uid: Bodu.Globalization.Extensions.DateTimeFormatInfoExtensions
+  commentId: T:Bodu.Globalization.Extensions.DateTimeFormatInfoExtensions
+  href: Bodu.Globalization.Extensions.DateTimeFormatInfoExtensions.html
+  name: DateTimeFormatInfoExtensions
+  nameWithType: DateTimeFormatInfoExtensions
+  fullName: Bodu.Globalization.Extensions.DateTimeFormatInfoExtensions
