@@ -1,1 +1,5 @@
-
+# ./<Project Root Dir>/docs/toc.yml
+- name: Docs
+  href: docs/
+- name: API
+  href: api/
