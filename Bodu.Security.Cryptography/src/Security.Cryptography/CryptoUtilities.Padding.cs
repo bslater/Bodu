@@ -1,14 +1,16 @@
 ﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="CryptoFunctions.cs" company="PlaceholderCompany">
+// <copyright file="CryptoUtilities.cs" company="PlaceholderCompany">
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
+	/// <summary>
+	/// Provides cryptographic utility functions for applying and removing block padding.
+	/// </summary>
 	public static partial class CryptoUtilities
 	{
 		/// <summary>
@@ -70,6 +72,12 @@ namespace Bodu.Security.Cryptography
 		/// <summary>
 		/// Applies padding to a block and returns a newly allocated array.
 		/// </summary>
+		/// <param name="padding">The padding mode to apply.</param>
+		/// <param name="blockSizeBytes">The block size in bytes.</param>
+		/// <param name="block">The input buffer to pad.</param>
+		/// <param name="offset">The offset within the buffer to start reading.</param>
+		/// <param name="count">The number of bytes to read from the buffer.</param>
+		/// <returns>A new padded byte array.</returns>
 		public static byte[] PadBlock(PaddingMode padding, int blockSizeBytes, byte[] block, int offset, int count)
 		{
 			ThrowHelper.ThrowIfLessThan(blockSizeBytes, 1);
@@ -88,14 +96,13 @@ namespace Bodu.Security.Cryptography
 		/// <param name="destination">Destination span for the padded result.</param>
 		/// <returns>Total bytes written to the destination span.</returns>
 		/// <exception cref="ArgumentException">Thrown when the destination span is too small.</exception>
-		/// <exception cref="CryptographicException">Thrown if the padding mode is invalid.</exception>
+		/// <exception cref="CryptographicException">Thrown if the padding mode is invalid or the input is not aligned.</exception>
 		public static int PadBlock(
 			PaddingMode padding,
 			int blockSizeBytes,
 			ReadOnlySpan<byte> source,
 			Span<byte> destination)
 		{
-			// Validate padding mode
 			switch (padding)
 			{
 				case PaddingMode.PKCS7:
@@ -112,7 +119,6 @@ namespace Bodu.Security.Cryptography
 
 			ThrowHelper.ThrowIfLessThan(blockSizeBytes, 1);
 
-			// Special case for PaddingMode.None — must be block-aligned
 			if (padding == PaddingMode.None && source.Length % blockSizeBytes != 0)
 				throw new CryptographicException(ResourceStrings.CryptographicException_PaddingModeNone_InputNotAligned);
 
@@ -124,12 +130,11 @@ namespace Bodu.Security.Cryptography
 			ThrowHelper.ThrowIfSpanLengthIsInsufficient(destination, source.Length, padCount);
 
 			source.CopyTo(destination);
-
 			Span<byte> padSpan = destination.Slice(source.Length, padCount);
 
 			switch (padding)
 			{
-				case PaddingMode.None: // No action required (already validated alignment)
+				case PaddingMode.None:
 				case PaddingMode.Zeros:
 					padSpan.Clear();
 					break;
@@ -144,7 +149,7 @@ namespace Bodu.Security.Cryptography
 					break;
 
 				case PaddingMode.ISO10126:
-					CryptoUtilities.FillWithRandomNonZeroBytes(padSpan.Slice(0, padCount - 1));
+					FillWithRandomNonZeroBytes(padSpan[..^1]);
 					padSpan[^1] = (byte)padCount;
 					break;
 			}
@@ -155,6 +160,12 @@ namespace Bodu.Security.Cryptography
 		/// <summary>
 		/// Removes padding from a block and returns a newly allocated array.
 		/// </summary>
+		/// <param name="padding">The padding mode used in the block.</param>
+		/// <param name="blockSizeBytes">The block size in bytes.</param>
+		/// <param name="block">The input padded block.</param>
+		/// <param name="offset">Offset in the input buffer.</param>
+		/// <param name="count">Number of bytes to process.</param>
+		/// <returns>A new byte array with padding removed.</returns>
 		public static byte[] DepadBlock(PaddingMode padding, int blockSizeBytes, byte[] block, int offset, int count)
 		{
 			byte[] temp = new byte[count];
@@ -164,15 +175,6 @@ namespace Bodu.Security.Cryptography
 			return result;
 		}
 
-		/// <summary>
-		/// Removes padding from a block and writes the depadded data into the destination span.
-		/// </summary>
-		/// <param name="padding">The padding mode applied to the input data.</param>
-		/// <param name="blockSizeBytes">The block size in bytes for validation.</param>
-		/// <param name="source">The padded input data.</param>
-		/// <param name="destination">The destination span to receive depadded data.</param>
-		/// <returns>The number of unpadded bytes written to <paramref name="destination" />.</returns>
-		/// <exception cref="CryptographicException">Thrown if the padding is invalid or unsupported.</exception>
 		/// <summary>
 		/// Removes padding from a block and writes the depadded data into the destination span.
 		/// </summary>
@@ -197,7 +199,6 @@ namespace Bodu.Security.Cryptography
 
 			switch (padding)
 			{
-				// Return the whole block where PaddingMode is None or Zeros
 				case PaddingMode.None:
 				case PaddingMode.Zeros:
 					source.CopyTo(destination);
@@ -231,8 +232,11 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Validates whether the span contains only the expected value.
+		/// Checks whether a span consists entirely of a single repeated value.
 		/// </summary>
+		/// <param name="span">The span to validate.</param>
+		/// <param name="expected">The expected uniform byte value.</param>
+		/// <returns><c>true</c> if all bytes match the expected value; otherwise, <c>false</c>.</returns>
 		private static bool IsUniformPadding(ReadOnlySpan<byte> span, byte expected)
 		{
 			foreach (byte b in span)

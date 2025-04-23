@@ -43,7 +43,7 @@ namespace Bodu.Extensions
 		/// Thrown if the resulting <see cref="DateTime" /> exceeds the supported <see cref="DateTime" /> range.
 		/// </exception>
 		/// <remarks>
-		/// The last day of the week is determined by calling <see cref="DateTimeFormatInfo.LastDayOfWeek" /> from the provided or current
+		/// The last day of the week is determined by calling <see cref="DateTimeFormatInfo.FirstDayOfWeek" /> from the provided or current
 		/// culture. If <paramref name="dateTime" /> already falls on the last day, it is returned at midnight. Otherwise, the next
 		/// occurrence is calculated.
 		/// </remarks>

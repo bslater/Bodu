@@ -15,7 +15,10 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> whose month value is used to retrieve the name.</param>
 		/// <returns>A localized <see cref="string" /> representing the full month name, based on <see cref="CultureInfo.CurrentCulture" />.</returns>
-		/// <remarks>This method uses the <see cref="CultureInfo.CurrentCulture.DateTimeFormat" /> to retrieve the localized month name.</remarks>
+		/// <remarks>
+		/// This method uses the <see cref="DateTimeFormatInfo.MonthNames" /> or the <see cref="CultureInfo.CurrentCulture" /> to retrieve
+		/// the localized month name.
+		/// </remarks>
 		public static string MonthName(this DateTime dateTime)
 			=> dateTime.MonthName(null!);
 

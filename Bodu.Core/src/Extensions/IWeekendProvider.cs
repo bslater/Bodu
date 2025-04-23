@@ -10,7 +10,7 @@ namespace Bodu.Extensions
 	/// Defines a provider interface for determining whether a given <see cref="DayOfWeek" /> is considered a weekend day.
 	/// </summary>
 	/// <remarks>
-	/// Implement this interface to supply custom weekend definitions that are not covered by built-in <see cref="WeekendRule" /> options.
+	/// Implement this interface to supply custom weekend definitions that are not covered by built-in <see cref="StandardWeekend" /> options.
 	/// </remarks>
 	public interface IWeekendProvider
 	{

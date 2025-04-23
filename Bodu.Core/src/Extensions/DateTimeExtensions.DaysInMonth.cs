@@ -4,6 +4,8 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
+using System.Globalization;
+
 namespace Bodu.Extensions
 {
 	public static partial class DateTimeExtensions

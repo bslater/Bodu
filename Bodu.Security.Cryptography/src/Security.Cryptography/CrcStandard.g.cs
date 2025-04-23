@@ -11,7 +11,7 @@
 namespace Bodu.Security.Cryptography
 {
     /// <content>
-    /// Represents the configuration settings used when creating a <see cref="Bodu.Security.Cryptography.Crc"/> object.
+    /// Represents the configuration settings used when creating a <see cref="Crc"/> object.
     /// </content>
     public sealed partial class CrcStandard
     {
@@ -4110,7 +4110,7 @@ namespace Bodu.Security.Cryptography
 		/// <param name="name">The name of the CRC Standard to use. See Remarks.</param>
 		/// <returns>The <see cref="CrcStandard"/> associated with the specified cyclic redundancy check algorithm standard.</returns>
         /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/> (Nothing in Visual Basic).</exception>
-        /// <exception cref="Bodu.Security.Cryptography.CrcStandardNotFoundException"><paramref name="name"/> is a an unknown cyclic redundancy check standard.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is a an unknown cyclic redundancy check standard.</exception>
         /// <remarks>
 		/// <para>The properties for the CRC Standards were taken from <a href="http://reveng.sourceforge.net/crc-catalogue/">http://reveng.sourceforge.net/crc-catalogue/</a>.</para>
         /// <para>The following permutationTable shows the valid values for the <paramref name="name"/> parameter and the CRC Standard it maps to.</para>
