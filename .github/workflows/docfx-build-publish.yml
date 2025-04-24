@@ -25,29 +25,22 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
         
-      - name: Build Bodu.Core docs
-        run: docfx Bodu.Core/src/docfx.json
-
-      - name: Build Bodu.Security.Cryptography docs
-        run: docfx Bodu.Security.Cryptography/src/docfx.json
-
-      - name: Prepare site output structure
-        run: |
-          if (-not (Test-Path _site)) { mkdir _site }
-          mkdir _site/Bodu.Core
-          mkdir _site/Bodu.Security.Cryptography
-          cp -r Bodu.Core/src/docs/_site/* _site/Bodu.Core/
-          cp -r Bodu.Security.Cryptography/src/docs/_site/* _site/Bodu.Security.Cryptography/
-
-
+      - name: Build documentation site
+        working-directory: docs
+        run: docfx docfx.json
           
-      - name: Add root index page
-        run: |
-          echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bodu Docs</title></head><body><h1>Bodu Documentation</h1><ul><li><a href='Bodu.Core/'>Bodu.Core API Docs</a></li><li><a href='Bodu.Security.Cryptography/'>Bodu.Security.Cryptography API Docs</a></li></ul></body></html>" > _site/index.html
+      #- name: Add root index page
+      #  run: |
+      #    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bodu Docs</title></head><body><h1>Bodu Documentation</h1><ul><li><a href='Bodu.Core/'>Bodu.Core API Docs</a></li><li><a href='Bodu.Security.Cryptography/'>Bodu.Security.Cryptography API Docs</a></li></ul></body></html>" > _site/index.html
 
+      - name: List generated output
+        run: dir docs/_site
+  
       - name: Publish to GitHub Pages
         if: github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+          publish_dir: ./docs/_site
+          keep_files: false
+          force_orphan: true
