@@ -33,6 +33,9 @@ jobs:
       #  run: |
       #    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bodu Docs</title></head><body><h1>Bodu Documentation</h1><ul><li><a href='Bodu.Core/'>Bodu.Core API Docs</a></li><li><a href='Bodu.Security.Cryptography/'>Bodu.Security.Cryptography API Docs</a></li></ul></body></html>" > _site/index.html
 
+      - name: List generated output
+        run: dir docs/_site
+  
       - name: Publish to GitHub Pages
         if: github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v3
