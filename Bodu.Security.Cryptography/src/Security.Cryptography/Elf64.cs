@@ -103,12 +103,6 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		public override int GetHashCode()
-		{
-			return seedValue.GetHashCode();
-		}
-
-		/// <inheritdoc />
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);

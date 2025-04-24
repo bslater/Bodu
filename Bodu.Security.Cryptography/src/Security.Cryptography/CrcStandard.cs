@@ -115,7 +115,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		/// <param name="other">The other <see cref="CrcStandard" /> object to compare.</param>
 		/// <returns><see langword="true" /> if the two objects are equal; otherwise, <see langword="false" />.</returns>
-		public bool Equals(CrcStandard other)
+		public bool Equals(CrcStandard? other)
 			=> other is not null &&
 			   this.Size == other.Size &&
 			   this.Polynomial == other.Polynomial &&
@@ -125,7 +125,7 @@ namespace Bodu.Security.Cryptography
 			   this.XOrOut == other.XOrOut;
 
 		/// <inheritdoc />
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 			=> obj is CrcStandard other && this.Equals(other);
 
 		/// <inheritdoc />

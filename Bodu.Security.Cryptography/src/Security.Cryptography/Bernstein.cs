@@ -154,17 +154,11 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			return obj is Bernstein other &&
 				   this.useModified == other.useModified &&
 				   this.initialValue == other.initialValue;
-		}
-
-		/// <inheritdoc />
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(this.useModified, this.initialValue);
 		}
 
 		/// <inheritdoc />

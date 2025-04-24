@@ -184,7 +184,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			return obj is Crc other &&
 				   string.Equals(this.Name, other.Name, StringComparison.Ordinal) &&
