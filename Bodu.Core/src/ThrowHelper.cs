@@ -95,6 +95,37 @@ namespace Bodu
 		}
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <c>null</c> when the
+		/// <paramref name="conditionalParam" /> equals the specified <paramref name="conditionalValue" />.
+		/// </summary>
+		/// <typeparam name="TValue">The type of the parameter being validated.</typeparam>
+		/// <typeparam name="TCondition">The type of the conditional parameter value.</typeparam>
+		/// <param name="value">The parameter value to validate.</param>
+		/// <param name="conditionalParam">The current value of the conditional parameter.</param>
+		/// <param name="conditionalValue">The value of the conditional parameter that requires <paramref name="value" /> to be non-null.</param>
+		/// <param name="paramName">The name of the <paramref name="value" /> parameter. Automatically captured.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="conditionalParam" /> equals <paramref name="conditionalValue" /> and <paramref name="value" /> is <c>null</c>.
+		/// Message: "Parameter '{0}' is required when '{1}' is '{2}'."
+		/// </exception>
+		/// <remarks>Use this method when a parameter is required based on the value of another conditional parameter.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfConditionallyRequiredParameterIsNull<TValue, TCondition>(
+			TValue? value,
+			TCondition conditionalParam,
+			TCondition conditionalValue,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null,
+			[CallerArgumentExpression(nameof(conditionalParam))] string? conditionalParamName = null)
+		{
+			if (EqualityComparer<TCondition>.Default.Equals(conditionalParam, conditionalValue) && value is null)
+			{
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Exception_ParameterRequiredIf, paramName, conditionalParamName, conditionalValue),
+					paramName);
+			}
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentException" /> if the array has zero length.
 		/// </summary>
 		/// <param name="array">The array to check.</param>
