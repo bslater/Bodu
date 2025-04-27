@@ -20,8 +20,8 @@ namespace Bodu.Extensions
 			yield return new object[] { new DateTime(2024, 01, 07), "ar-SA", CalendarWeekRule.FirstDay, DayOfWeek.Saturday, 2 };
 
 			// Culture-agnostic (null means use current)
-			yield return new object[] { new DateTime(2024, 01, 01), null, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday, 1 };
-			yield return new object[] { new DateTime(2024, 01, 10), null, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday, 2 };
+			yield return new object[] { new DateTime(2024, 01, 01), null!, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday, 1 };
+			yield return new object[] { new DateTime(2024, 01, 10), null!, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday, 2 };
 		}
 
 		[DataTestMethod]
@@ -35,7 +35,7 @@ namespace Bodu.Extensions
 		{
 			CultureInfo culture = cultureName != null
 				? new CultureInfo(cultureName)
-				: CultureInfo.CurrentCulture;
+				: (CultureInfo)CultureInfo.CurrentCulture.Clone();
 
 			culture.DateTimeFormat.FirstDayOfWeek = firstDay;
 			culture.DateTimeFormat.CalendarWeekRule = rule;

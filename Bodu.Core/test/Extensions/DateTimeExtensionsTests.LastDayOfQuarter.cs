@@ -14,7 +14,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(QuarterDefinitionTestData), typeof(DateTimeExtensionsTests))]
-		public void LastDayOfQuarter_WhenUsingQuarterDefinition_ShouldReturnExpectedDate(DateTime input, QuarterDefinition definition, int _, DateTime ___, DateTime expected)
+		public void LastDayOfQuarter_WhenUsingQuarterDefinition_ShouldReturnExpectedDate(DateTime input, CalendarQuarterDefinition definition, int _, DateTime ___, DateTime expected)
 		{
 			var result = input.LastDayOfQuarter(definition);
 
@@ -23,7 +23,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(CalendarQuarterDefinitionTestData), typeof(DateTimeExtensionsTests))]
-		public void LastDayOfQuarter_WhenOnlyDateTime_ShouldReturnExpectedQuarter(DateTime input, QuarterDefinition _, int __, DateTime ___, DateTime expected)
+		public void LastDayOfQuarter_WhenOnlyDateTime_ShouldReturnExpectedQuarter(DateTime input, CalendarQuarterDefinition _, int __, DateTime ___, DateTime expected)
 		{
 			var result = input.LastDayOfQuarter();
 
@@ -49,7 +49,7 @@ namespace Bodu.Extensions
 
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{
-				_ = input.LastDayOfQuarter(QuarterDefinition.Custom);
+				_ = input.LastDayOfQuarter(CalendarQuarterDefinition.Custom);
 			});
 		}
 

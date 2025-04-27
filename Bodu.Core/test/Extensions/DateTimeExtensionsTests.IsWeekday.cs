@@ -15,9 +15,9 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(WeekendTestData), typeof(DateTimeExtensionsTests))]
-		public void IsWeekday_WhenUsingStandardWeekend_ShouldReturnExpected(DateTime input, StandardWeekend weekend, Type? providerType, bool expected)
+		public void IsWeekday_WhenUsingStandardWeekend_ShouldReturnExpected(DateTime input, CalendarWeekendDefinition weekend, Type? providerType, bool expected)
 		{
-			IWeekendProvider? provider = providerType is null ? null : (IWeekendProvider)Activator.CreateInstance(providerType)!;
+			ICalendarWeekendProvider? provider = providerType is null ? null : (ICalendarWeekendProvider)Activator.CreateInstance(providerType)!;
 
 			bool result = input.IsWeekday(weekend, provider);
 			Assert.AreEqual(!expected, result, $"Failed for {input} with weekend {weekend}");
@@ -29,7 +29,7 @@ namespace Bodu.Extensions
 			DateTime date = new DateTime(2024, 4, 19);
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{
-				_ = date.IsWeekday(StandardWeekend.Custom, null!);
+				_ = date.IsWeekday(CalendarWeekendDefinition.Custom, null!);
 			});
 		}
 

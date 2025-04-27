@@ -4,6 +4,8 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Bodu.Extensions
 {
 	/// <summary>
@@ -17,6 +19,16 @@ namespace Bodu.Extensions
 		/// precision. This field is constant.
 		/// </summary>
 		internal const double Epsilon = 1e-10;
+
+		/// <summary>
+		/// The minimum year supported by <see cref="DateTime" />.
+		/// </summary>
+		internal const int MinYear = 1;
+
+		/// <summary>
+		/// The maximum year supported by <see cref="DateTime" />.
+		/// </summary>
+		internal const int MaxYear = 9999;
 
 		/// <summary>
 		/// Represents the number of milliseconds in 1 day. This field is constant.
@@ -301,6 +313,16 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
+		/// Returns the tick count that represents the first day of week in the current month of the <see cref="System.DateTime" />.
+		/// </summary>
+		private static long GetFirstDayOfWeekInMonthTicks(int year, int month, DayOfWeek dayOfWeek)
+		{
+			long ticks = DateTimeExtensions.GetTicksForDate(year, month, 1);
+			ticks += ((dayOfWeek - DateTimeExtensions.GetDayOfWeekFromTicks(ticks) + 7) % 7) * DateTimeExtensions.TicksPerDay;
+			return ticks;
+		}
+
+		/// <summary>
 		/// Returns the tick count that represent the last day of the month for the specified <paramref name="dateTime" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="System.DateTime" /> to which to get the last day of the month.</param>
@@ -317,6 +339,16 @@ namespace Bodu.Extensions
 		private static long GetLastDayOfWeekInMonthAsTicks(DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			long ticks = DateTimeExtensions.GetLastDayOfMonthTicks(dateTime);
+			ticks += ((dayOfWeek - DateTimeExtensions.GetDayOfWeekFromTicks(ticks) - 7) % 7) * DateTimeExtensions.TicksPerDay;
+			return ticks;
+		}
+
+		/// <summary>
+		/// Returns the tick count that represents the last day of week in the current month of the <see cref="System.DateTime" />.
+		/// </summary>
+		private static long GetLastDayOfWeekInMonthAsTicks(int year, int month, DayOfWeek dayOfWeek)
+		{
+			long ticks = DateTimeExtensions.GetTicksForDate(year, month, DateTime.DaysInMonth(year, month));
 			ticks += ((dayOfWeek - DateTimeExtensions.GetDayOfWeekFromTicks(ticks) - 7) % 7) * DateTimeExtensions.TicksPerDay;
 			return ticks;
 		}

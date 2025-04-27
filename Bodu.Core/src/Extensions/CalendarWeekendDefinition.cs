@@ -9,7 +9,7 @@ namespace Bodu.Extensions
 	/// <summary>
 	/// Represents common weekend configurations used across global regions and cultures.
 	/// </summary>
-	public enum StandardWeekend
+	public enum CalendarWeekendDefinition
 	{
 		/// <summary>
 		/// Saturday and Sunday are considered weekends (used in most Western countries).
@@ -42,7 +42,7 @@ namespace Bodu.Extensions
 		None = 5,
 
 		/// <summary>
-		/// Custom definition provided via an <see cref="IWeekendProvider" />.
+		/// Custom definition provided via an <see cref="ICalendarWeekendProvider" />.
 		/// </summary>
 		Custom = 6
 	}

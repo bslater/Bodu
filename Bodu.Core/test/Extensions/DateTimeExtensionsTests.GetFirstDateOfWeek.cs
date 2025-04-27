@@ -12,7 +12,7 @@ namespace Bodu.Extensions
 	public partial class DateTimeExtensionsTests
 	{
 
-		public static object[] IsoWeekTestCases => new object[]
+		public static IEnumerable<object[]> IsoWeekTestCases => new[]
 		{
 			new object[] { 2024, 1, new DateTime(2024, 1, 1) },  // Monday
 			new object[] { 2024, 2, new DateTime(2024, 1, 8) },
@@ -32,17 +32,17 @@ namespace Bodu.Extensions
 			Assert.AreEqual(expected, result);
 		}
 
-		public static object[] WeekendBasedTestCases => new object[]
+		public static IEnumerable<object[]> WeekendBasedTestCases => new[]
 		{
-			new object[] { 2024, 1, StandardWeekend.SaturdaySunday, new DateTime(2024, 1, 1) },  // Mon-start
-			new object[] { 2024, 1, StandardWeekend.FridaySaturday, new DateTime(2023, 12, 31) }, // Sun-start
-			new object[] { 2024, 1, StandardWeekend.SundayOnly, new DateTime(2024, 1, 1) },       // Mon-start
-			new object[] { 2024, 1, StandardWeekend.FridayOnly, new DateTime(2023, 12, 30) }      // Sat-start
+			new object[] { 2024, 1, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1) },  // Mon-start
+			new object[] { 2024, 1, CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31) }, // Sun-start
+			new object[] { 2024, 1, CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1) },       // Mon-start
+			new object[] { 2024, 1, CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30) }      // Sat-start
 		};
 
 		[TestMethod]
 		[DynamicData(nameof(WeekendBasedTestCases))]
-		public void GetFirstDateOfWeek_WithStandardWeekend_ShouldReturnExpectedDate(int year, int week, StandardWeekend weekend, DateTime expected)
+		public void GetFirstDateOfWeek_WithStandardWeekend_ShouldReturnExpectedDate(int year, int week, CalendarWeekendDefinition weekend, DateTime expected)
 		{
 			DateTime result = DateTimeExtensions.GetFirstDateOfWeek(year, week, weekend);
 
@@ -64,7 +64,7 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void GetFirstDateOfWeek_WithInvalidWeekendEnum_ShouldThrow()
 		{
-			StandardWeekend invalid = (StandardWeekend)999;
+			CalendarWeekendDefinition invalid = (CalendarWeekendDefinition)999;
 
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{

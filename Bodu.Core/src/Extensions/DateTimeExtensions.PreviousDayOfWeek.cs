@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTime.PreviousWeekday.cs" company="PlaceholderCompany">
+// <copyright file="DateTime.PreviousDayOfWeek.cs" company="PlaceholderCompany">
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>The returned <see cref="DateTime" /> preserves the original time-of-day and <see cref="DateTime.Kind" /> values.</para>
 		/// </remarks>
-		public static DateTime PreviousWeekday(this DateTime dateTime, DayOfWeek dayOfWeek)
+		public static DateTime PreviousDayOfWeek(this DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 

@@ -6,12 +6,12 @@ namespace Bodu.Extensions
 	/// Provides custom quarter calculation logic for a <see cref="DateTime" />.
 	/// </summary>
 	/// <remarks>
-	/// Implement this interface to support <see cref="QuarterDefinition.Custom" /> in
-	/// <see cref="DateTimeExtensions.Quarter(DateTime, QuarterDefinition)" /> and related methods like
-	/// <see cref="DateTimeExtensions.FirstDayOfQuarter(DateTime, IQuarterProvider)" />. This allows support for non-standard or
+	/// Implement this interface to support <see cref="CalendarQuarterDefinition.Custom" /> in
+	/// <see cref="DateTimeExtensions.Quarter(DateTime, CalendarQuarterDefinition)" /> and related methods like
+	/// <see cref="DateTimeExtensions.FirstDayOfQuarter(DateTime, ICalendarQuarterProvider)" />. This allows support for non-standard or
 	/// domain-specific quarterly definitions such as 4-4-5 calendars or region-specific fiscal models.
 	/// </remarks>
-	public interface IQuarterProvider
+	public interface ICalendarQuarterProvider
 	{
 		/// <summary>
 		/// Gets the quarter number (1–4) for the specified <paramref name="dateTime" />.

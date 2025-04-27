@@ -13,7 +13,7 @@ namespace Bodu.Extensions
 	/// This enumeration supports both standard calendar-based and regional fiscal year definitions, such as the Australian, US Federal, and
 	/// ISO calendar conventions. Use <see cref="Custom" /> to define a custom quarterly system (e.g., 5–4–4 or 13-week accounting periods).
 	/// </remarks>
-	public enum QuarterDefinition
+	public enum CalendarQuarterDefinition
 	{
 		/// <summary>
 		/// Indicates that the year is divided into four quarters beginning in January.

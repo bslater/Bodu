@@ -43,22 +43,22 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the first day of the specified week in a given year, using the <see cref="StandardWeekend" /> definition to infer the
+		/// Returns the first day of the specified week in a given year, using the <see cref="CalendarWeekendDefinition" /> definition to infer the
 		/// start of the week.
 		/// </summary>
 		/// <param name="year">The target year (e.g., 2024).</param>
 		/// <param name="week">The 1-based week number (e.g., 1–53).</param>
-		/// <param name="weekend">The <see cref="StandardWeekend" /> that determines how the week is structured.</param>
+		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that determines how the week is structured.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> value representing the first day of the specified week, with the time component set to 00:00:00.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="weekend" /> is not a defined <see cref="StandardWeekend" /> value.
+		/// Thrown if <paramref name="weekend" /> is not a defined <see cref="CalendarWeekendDefinition" /> value.
 		/// </exception>
 		/// <remarks>
 		/// This method does not validate ISO 8601 compliance or locale-specific week rules. It is intended for systems using custom week logic.
 		/// </remarks>
-		public static DateTime GetFirstDateOfWeek(int year, int week, StandardWeekend weekend)
+		public static DateTime GetFirstDateOfWeek(int year, int week, CalendarWeekendDefinition weekend)
 		{
 			DayOfWeek firstDay = GetWeekStartDay(weekend);
 			Calendar calendar = CultureInfo.InvariantCulture.Calendar;
@@ -72,19 +72,19 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the day of the week considered the start of the week for a given <see cref="StandardWeekend" /> definition.
+		/// Returns the day of the week considered the start of the week for a given <see cref="CalendarWeekendDefinition" /> definition.
 		/// </summary>
 		/// <param name="weekend">The weekend configuration to evaluate.</param>
 		/// <returns>The inferred <see cref="DayOfWeek" /> that begins the week.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown if the provided <paramref name="weekend" /> is not supported.</exception>
-		private static DayOfWeek GetWeekStartDay(StandardWeekend weekend) => weekend switch
+		private static DayOfWeek GetWeekStartDay(CalendarWeekendDefinition weekend) => weekend switch
 		{
-			StandardWeekend.SaturdaySunday => DayOfWeek.Monday,     // ISO-8601
-			StandardWeekend.FridaySaturday => DayOfWeek.Sunday,     // Workweek = Sun–Thu
-			StandardWeekend.SundayOnly => DayOfWeek.Monday,
-			StandardWeekend.FridayOnly => DayOfWeek.Saturday,
+			CalendarWeekendDefinition.SaturdaySunday => DayOfWeek.Monday,     // ISO-8601
+			CalendarWeekendDefinition.FridaySaturday => DayOfWeek.Sunday,     // Workweek = Sun–Thu
+			CalendarWeekendDefinition.SundayOnly => DayOfWeek.Monday,
+			CalendarWeekendDefinition.FridayOnly => DayOfWeek.Saturday,
 			_ => throw new ArgumentOutOfRangeException(nameof(weekend),
-				$"Unsupported {nameof(StandardWeekend)} value: {weekend}")
+				$"Unsupported {nameof(CalendarWeekendDefinition)} value: {weekend}")
 		};
 	}
 }

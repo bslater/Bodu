@@ -24,7 +24,7 @@ namespace Bodu.Extensions
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			DateTime expected = DateTime.Parse(expectedDate);
-			DateTime result = input.PreviousWeekday(targetDay);
+			DateTime result = input.PreviousDayOfWeek(targetDay);
 
 			Assert.AreEqual(expected, result, "Expected date mismatch.");
 		}
@@ -36,7 +36,7 @@ namespace Bodu.Extensions
 
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{
-				_ = input.PreviousWeekday((DayOfWeek)999);
+				_ = input.PreviousDayOfWeek((DayOfWeek)999);
 			});
 		}
 
@@ -44,7 +44,7 @@ namespace Bodu.Extensions
 		public void PreviousWeekday_WhenKindIsUtc_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 20, 11, 30, 0, DateTimeKind.Utc);
-			DateTime result = input.PreviousWeekday(DayOfWeek.Tuesday);
+			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Tuesday);
 
 			Assert.AreEqual(DateTimeKind.Utc, result.Kind);
 		}
@@ -53,7 +53,7 @@ namespace Bodu.Extensions
 		public void PreviousWeekday_WhenKindIsLocal_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 20, 11, 30, 0, DateTimeKind.Local);
-			DateTime result = input.PreviousWeekday(DayOfWeek.Sunday);
+			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Sunday);
 
 			Assert.AreEqual(DateTimeKind.Local, result.Kind);
 		}
@@ -62,7 +62,7 @@ namespace Bodu.Extensions
 		public void PreviousWeekday_WhenKindIsUnspecified_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 20, 11, 30, 0, DateTimeKind.Unspecified);
-			DateTime result = input.PreviousWeekday(DayOfWeek.Monday);
+			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Monday);
 
 			Assert.AreEqual(DateTimeKind.Unspecified, result.Kind);
 		}
@@ -70,7 +70,7 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void PreviousWeekday_WhenUsingMinValue_ShouldReturnSameOrGreater()
 		{
-			DateTime result = DateTime.MinValue.AddDays(7).PreviousWeekday(DayOfWeek.Monday);
+			DateTime result = DateTime.MinValue.AddDays(7).PreviousDayOfWeek(DayOfWeek.Monday);
 
 			Assert.IsTrue(result >= DateTime.MinValue);
 		}
@@ -79,7 +79,7 @@ namespace Bodu.Extensions
 		public void PreviousWeekday_WhenUsingMaxValue_ShouldSucceed()
 		{
 			DateTime input = DateTime.MaxValue;
-			DateTime result = input.PreviousWeekday(DayOfWeek.Saturday);
+			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Saturday);
 
 			Assert.IsTrue(result <= DateTime.MaxValue);
 		}

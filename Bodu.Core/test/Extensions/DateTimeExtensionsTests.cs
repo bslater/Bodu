@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bodu.Extensions
 {
+	/// <summary>
+	/// Contains unit tests for the <see cref="DateTimeExtensions" /> extension methods.
+	/// </summary>
 	[TestClass]
 	public partial class DateTimeExtensionsTests
 	{
@@ -23,12 +26,12 @@ namespace Bodu.Extensions
 			}
 		}
 
-		private sealed class FridayOnlyWeekendProvider : IWeekendProvider
+		private sealed class FridayOnlyWeekendProvider : ICalendarWeekendProvider
 		{
 			public bool IsWeekend(DayOfWeek dayOfWeek) => dayOfWeek == DayOfWeek.Friday;
 		}
 
-		private sealed class InValidQuarterProvider : IQuarterProvider
+		private sealed class InValidQuarterProvider : ICalendarQuarterProvider
 		{
 			/// <summary>
 			/// Returns an invalid month number (outside the 1–12 range) for each valid quarter.
@@ -65,7 +68,7 @@ namespace Bodu.Extensions
 			}
 		}
 
-		private sealed class ValidQuarterProvider : IQuarterProvider
+		private sealed class ValidQuarterProvider : ICalendarQuarterProvider
 		{
 			public static IEnumerable<object[]> QuarterDefinitionTestData
 			{

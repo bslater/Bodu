@@ -38,25 +38,25 @@ namespace Bodu.Extensions
 		/// </list>
 		/// </remarks>
 		public static DateTime LastDayOfQuarter(this DateTime dateTime)
-			=> LastDayOfQuarter(dateTime, QuarterDefinition.CalendarYear);
+			=> LastDayOfQuarter(dateTime, CalendarQuarterDefinition.CalendarYear);
 
 		/// <summary>
-		/// Returns the last day of the quarter for the given <paramref name="dateTime" />, using the specified <see cref="QuarterDefinition" />.
+		/// Returns the last day of the quarter for the given <paramref name="dateTime" />, using the specified <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> whose quarter is evaluated.</param>
-		/// <param name="definition">The <see cref="QuarterDefinition" /> that defines the quarter structure to use.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines the quarter structure to use.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the last calendar day of the identified quarter, with the time component set to 00:00:00
 		/// and the original <see cref="DateTime.Kind" /> retained.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="definition" /> is not a defined value of the <see cref="QuarterDefinition" /> enumeration.
+		/// Thrown if <paramref name="definition" /> is not a defined value of the <see cref="CalendarQuarterDefinition" /> enumeration.
 		/// </exception>
 		/// <remarks>
 		/// This overload supports different quarter definitions such as the Calendar Year and various Financial Year systems, as defined by
-		/// the <see cref="QuarterDefinition" /> enumeration.
+		/// the <see cref="CalendarQuarterDefinition" /> enumeration.
 		/// </remarks>
-		public static DateTime LastDayOfQuarter(this DateTime dateTime, QuarterDefinition definition)
+		public static DateTime LastDayOfQuarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
 			int month = GetStartMonthFromQuarter(definition, dateTime.Quarter(definition));
 			int year = dateTime.Year;
@@ -73,10 +73,10 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the last day of the quarter based on a custom <see cref="IQuarterProvider" /> implementation.
+		/// Returns the last day of the quarter based on a custom <see cref="ICalendarQuarterProvider" /> implementation.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value whose quarter is being evaluated.</param>
-		/// <param name="provider">The <see cref="IQuarterProvider" /> that defines custom quarter mappings and start months.</param>
+		/// <param name="provider">The <see cref="ICalendarQuarterProvider" /> that defines custom quarter mappings and start months.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the last calendar day of the applicable custom quarter, with the time set to midnight
 		/// (00:00:00) and the <see cref="DateTime.Kind" /> preserved.
@@ -89,7 +89,7 @@ namespace Bodu.Extensions
 		/// This method supports advanced quarter systems such as 4-4-5 accounting or domain-specific fiscal quarters by delegating logic to
 		/// the specified <paramref name="provider" />.
 		/// </remarks>
-		public static DateTime LastDayOfQuarter(this DateTime dateTime, IQuarterProvider provider)
+		public static DateTime LastDayOfQuarter(this DateTime dateTime, ICalendarQuarterProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
 

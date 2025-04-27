@@ -16,7 +16,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(QuarterDefinitionTestData), typeof(DateTimeExtensionsTests))]
-		public void GetStartMonthFromQuarter_WhenCalledWithValidInputs_ShouldReturnExpectedMonth(DateTime _, QuarterDefinition definition, int quarter, DateTime expected, DateTime __)
+		public void GetStartMonthFromQuarter_WhenCalledWithValidInputs_ShouldReturnExpectedMonth(DateTime _, CalendarQuarterDefinition definition, int quarter, DateTime expected, DateTime __)
 		{
 			int result = DateTimeExtensions.GetStartMonthFromQuarter(definition, quarter);
 
@@ -28,7 +28,7 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.GetStartMonthFromQuarter(QuarterDefinition.Custom, 1);
+				_ = DateTimeExtensions.GetStartMonthFromQuarter(CalendarQuarterDefinition.Custom, 1);
 			});
 		}
 
@@ -40,14 +40,14 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.GetStartMonthFromQuarter(QuarterDefinition.CalendarYear,quarter);
+				_ = DateTimeExtensions.GetStartMonthFromQuarter(CalendarQuarterDefinition.CalendarYear,quarter);
 			});
 		}
 
 		[TestMethod]
 		public void GetStartMonthFromQuarter_WhenDefinitionIsInvalid_ShouldThrowArgumentOutOfRangeException()
 		{
-			var invalidDefinition = (QuarterDefinition)999;
+			var invalidDefinition = (CalendarQuarterDefinition)999;
 
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
 			{
@@ -59,7 +59,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(AllQuarterDefinitionsExceptCustom), typeof(DateTimeExtensionsTests))]
-		public void GetStartMonthFromQuarter_WhenUsedWithQuarterMethod_ShouldMatchReverseMapping(QuarterDefinition definition)
+		public void GetStartMonthFromQuarter_WhenUsedWithQuarterMethod_ShouldMatchReverseMapping(CalendarQuarterDefinition definition)
 		{
 			for (int month = 1; month <= 12; month++)
 			{
