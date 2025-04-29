@@ -1,10 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTime.Add.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
-
-using System.Globalization;
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.IsWeekday.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -26,14 +24,14 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
 		/// <param name="weekend">A <see cref="CalendarWeekendDefinition" /> value that defines which days are considered part of the weekend.</param>
-		/// <param name="provider">An optional <see cref="ICalendarWeekendProvider" /> used for custom weekend rules.</param>
+		/// <param name="provider">An optional <see cref="IWeekendDefinitionProvider" /> used for custom weekend rules.</param>
 		/// <returns>
 		/// <see langword="true" /> if the <paramref name="dateTime" /> is considered a weekday under the specified weekend rule; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> but <paramref name="provider" /> is null.
 		/// </exception>
-		public static bool IsWeekday(this DateTime dateTime, CalendarWeekendDefinition weekend, ICalendarWeekendProvider? provider = null) =>
+		public static bool IsWeekday(this DateTime dateTime, CalendarWeekendDefinition weekend, IWeekendDefinitionProvider? provider = null) =>
 			!IsWeekend(dateTime, weekend, provider);
 	}
 }

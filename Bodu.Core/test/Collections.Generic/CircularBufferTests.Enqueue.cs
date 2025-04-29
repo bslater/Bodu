@@ -45,13 +45,13 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Enqueue throws an exception when the buffer is full and overwrite is not allowed.
 		/// </summary>
 		[TestMethod]
-		public void Enqueue_WhenFullAndOverwriteNotAllowed_ShouldThrowInvalidOperationException()
+		public void Enqueue_WhenFullAndOverwriteNotAllowed_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(2, allowOverwrite: false);
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				buffer.Enqueue(3); // should throw
 			});
@@ -102,13 +102,13 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Enqueue throws an InvalidOperationException when the buffer is full and overwrite is disabled.
 		/// </summary>
 		[TestMethod]
-		public void Enqueue_WhenBufferIsFullAndOverwriteDisabled_ShouldThrowInvalidOperationException()
+		public void Enqueue_WhenBufferIsFullAndOverwriteDisabled_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<string>(2, allowOverwrite: false);
 			buffer.Enqueue("A");
 			buffer.Enqueue("B");
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				buffer.Enqueue("C");
 			});

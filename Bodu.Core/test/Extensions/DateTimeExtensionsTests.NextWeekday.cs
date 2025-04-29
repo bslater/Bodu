@@ -29,11 +29,11 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void NextWeekday_WhenInvalidEnum_ShouldThrow()
+		public void NextWeekday_WhenInvalidEnum_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 4, 18);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.NextDayOfWeek((DayOfWeek)999);
 			});

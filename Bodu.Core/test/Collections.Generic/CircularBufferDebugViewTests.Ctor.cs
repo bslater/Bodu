@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bodu.Collections.Generic
+﻿namespace Bodu.Collections.Generic
 {
 	public partial class CircularBufferDebugViewTests
 	{
@@ -20,9 +18,9 @@ namespace Bodu.Collections.Generic
 		/// Ensures that constructing a DebugView with a null buffer throws ArgumentNullException.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WithNullBuffer_ShouldThrow()
+		public void Ctor_WithNullBuffer_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				_ = new CircularBufferDebugView<int>(null!);
 			});

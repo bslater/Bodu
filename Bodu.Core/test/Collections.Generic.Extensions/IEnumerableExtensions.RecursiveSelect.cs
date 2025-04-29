@@ -247,10 +247,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// Verifies that calling RecursiveSelect throws <see cref="ArgumentNullException" /> when the source sequence is <c>null</c>.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WhenSourceIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WhenSourceIsNull_ShouldThrowExactly()
 		{
 			IEnumerable<object>? source = null!;
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(_ => Enumerable.Empty<object>()).ToList()
 			);
 		}
@@ -259,11 +259,11 @@ namespace Bodu.Collections.Generic.Extensions
 		/// Verifies that calling RecursiveSelect throws <see cref="ArgumentNullException" /> when the child selector delegate is <c>null</c>.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WhenChildSelectorIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WhenChildSelectorIsNull_ShouldThrowExactly()
 		{
 			var source = new[] { new object() };
 			Func<object, IEnumerable<object>>? childSelector = null!;
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(childSelector).ToList())
 			;
 		}
@@ -273,10 +273,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// the two-parameter overload.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WithSelector_WhenSelectorIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WithSelector_WhenSelectorIsNull_ShouldThrowExactly()
 		{
 			var source = new[] { new object() };
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
 					selector: (Func<object, object>)null!
@@ -288,10 +288,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// Verifies that RecursiveSelect throws <see cref="ArgumentNullException" /> when the indexed selector delegate is <c>null</c>.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WithIndexSelector_WhenSelectorIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WithIndexSelector_WhenSelectorIsNull_ShouldThrowExactly()
 		{
 			var source = new[] { new object() };
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
 					selector: (Func<object, int, object>)null!
@@ -303,10 +303,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// Verifies that RecursiveSelect throws <see cref="ArgumentNullException" /> when the depth-aware selector delegate is <c>null</c>.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WithIndexAndDepthSelector_WhenSelectorIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WithIndexAndDepthSelector_WhenSelectorIsNull_ShouldThrowExactly()
 		{
 			var source = new[] { new object() };
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
 					selector: (Func<object, int, int, object>)null!
@@ -319,10 +319,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// the selector is <c>null</c>.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WithRecursionControl_WhenSelectorIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WithRecursionControl_WhenSelectorIsNull_ShouldThrowExactly()
 		{
 			var source = new[] { new object() };
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
 					selector: (Func<object, int, int, object>)null!,
@@ -335,10 +335,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// Verifies that RecursiveSelect throws <see cref="ArgumentNullException" /> when the recursion control delegate is <c>null</c>.
 		/// </summary>
 		[TestMethod]
-		public void RecursiveSelect_WithRecursionControl_WhenRecursionControlIsNull_ShouldThrowArgumentNullException()
+		public void RecursiveSelect_WithRecursionControl_WhenRecursionControlIsNull_ShouldThrowExactly()
 		{
 			var source = new[] { new object() };
-			Assert.ThrowsException<ArgumentNullException>(
+			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
 					selector: (e, i, d) => e,
@@ -379,7 +379,7 @@ namespace Bodu.Collections.Generic.Extensions
 		{
 			var tree = new object[] { NodeSampleTree.BuildSampleTree() };
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				tree.RecursiveSelect(
 					n => (n as Node).Children,

@@ -420,4 +420,19 @@
   <data name="Arg_OutOfRange_CountExceedsAvailable" xml:space="preserve">
     <value>Count must be non-negative and not exceed the number of available items ({0}).</value>
   </data>
+  <data name="Arg_Invalid_FormatString" xml:space="preserve">
+    <value>The format string is invalid.</value>
+  </data>
+  <data name="Format_Invalid_Character" xml:space="preserve">
+    <value>Input string contained an invalid character '{0}' at position {1}.</value>
+  </data>
+  <data name="Format_Invalid_StringLength" xml:space="preserve">
+    <value>Input string was not in the correct format. Must be {0} characters in length.</value>
+  </data>
+  <data name="Format_Invalid_UnselectedCharacter" xml:space="preserve">
+    <value>Input unselected day character must be consistent. Found '{0}' vs expected '{1}'.</value>
+  </data>
+  <data name="SerializationException_InvalidState" xml:space="preserve">
+    <value>Insufficient or invalid serialized state for {0}.</value>
+  </data>
 </root>

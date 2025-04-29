@@ -46,11 +46,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that ContainsKey throws ArgumentNullException when a null key is provided and the key type is a reference type.
 		/// </summary>
 		[TestMethod]
-		public void ContainsKey_WhenKeyIsNull_ShouldThrowArgumentNullException()
+		public void ContainsKey_WhenKeyIsNull_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(3);
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				_ = dictionary.ContainsKey(null!);
 			});

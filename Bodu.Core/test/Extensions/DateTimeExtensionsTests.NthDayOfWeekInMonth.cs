@@ -34,35 +34,35 @@ namespace Bodu.Extensions
 
 
 		[TestMethod]
-		public void GetNthDayOfWeekInMonth_WhenFifthDoesNotExist_ShouldThrowArgumentOutOfRangeException()
+		public void GetNthDayOfWeekInMonth_WhenFifthDoesNotExist_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2023, 2, 1); // February 2023 has only 4 Wednesdays
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				input.NthDayOfWeekInMonth(DayOfWeek.Wednesday, WeekOfMonthOrdinal.Fifth);
 			});
 		}
 
 		[TestMethod]
-		public void GetNthDayOfWeekInMonth_WhenOrdinalIsInvalidEnum_ShouldThrowArgumentOutOfRangeException()
+		public void GetNthDayOfWeekInMonth_WhenOrdinalIsInvalidEnum_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 1, 1);
 			WeekOfMonthOrdinal invalidOrdinal = (WeekOfMonthOrdinal)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				input.NthDayOfWeekInMonth(DayOfWeek.Monday, invalidOrdinal);
 			});
 		}
 
 		[TestMethod]
-		public void GetNthDayOfWeekInMonth_WhenDayOfWeekIsInvalidEnum_ShouldThrowArgumentOutOfRangeException()
+		public void GetNthDayOfWeekInMonth_WhenDayOfWeekIsInvalidEnum_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 1, 1);
 			DayOfWeek invalidDay = (DayOfWeek)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				input.NthDayOfWeekInMonth(invalidDay, WeekOfMonthOrdinal.First);
 			});

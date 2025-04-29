@@ -76,57 +76,57 @@ namespace Bodu.Collections.Generic
 		/// Verifies that ICollection.CopyTo throws ArgumentNullException if target array is null.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenTargetArrayIsNull_ShouldThrow()
+		public void ICollection_CopyTo_WhenTargetArrayIsNull_ShouldThrowExactly()
 		{
 			ICollection buffer = new CircularBuffer<string>(2);
-			Assert.ThrowsException<ArgumentNullException>(() => buffer.CopyTo(null, 0));
+			Assert.ThrowsExactly<ArgumentNullException>(() => buffer.CopyTo(null, 0));
 		}
 
 		/// <summary>
 		/// Verifies that ICollection.CopyTo throws ArgumentException for multi-dimensional arrays.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenTargetArrayIsMultiDimensional_ShouldThrow()
+		public void ICollection_CopyTo_WhenTargetArrayIsMultiDimensional_ShouldThrowExactly()
 		{
 			ICollection buffer = new CircularBuffer<int>(2);
 			var multidim = new int[2, 2];
-			Assert.ThrowsException<ArgumentException>(() => buffer.CopyTo(multidim, 0));
+			Assert.ThrowsExactly<ArgumentException>(() => buffer.CopyTo(multidim, 0));
 		}
 
 		/// <summary>
 		/// Verifies that ICollection.CopyTo throws ArgumentException for non-zero lower-bound arrays.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayHasNonZeroLowerBound_ShouldThrow()
+		public void ICollection_CopyTo_WhenArrayHasNonZeroLowerBound_ShouldThrowExactly()
 		{
 			ICollection buffer = new CircularBuffer<int>(2);
 			Array array = Array.CreateInstance(typeof(int), new[] { 5 }, new[] { 1 });
-			Assert.ThrowsException<ArgumentException>(() => buffer.CopyTo(array, 0));
+			Assert.ThrowsExactly<ArgumentException>(() => buffer.CopyTo(array, 0));
 		}
 
 		/// <summary>
 		/// Verifies that ICollection.CopyTo throws ArgumentOutOfRangeException for negative index.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenIndexIsNegative_ShouldThrow()
+		public void ICollection_CopyTo_WhenIndexIsNegative_ShouldThrowExactly()
 		{
 			ICollection buffer = new CircularBuffer<int>(2);
 			var array = new int[3];
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => buffer.CopyTo(array, -1));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => buffer.CopyTo(array, -1));
 		}
 
 		/// <summary>
 		/// Verifies that ICollection.CopyTo throws ArgumentException when the array is too small.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayTooSmall_ShouldThrow()
+		public void ICollection_CopyTo_WhenArrayTooSmall_ShouldThrowExactly()
 		{
 			ICollection buffer = new CircularBuffer<int>(3);
 			((CircularBuffer<int>)buffer).Enqueue(1);
 			((CircularBuffer<int>)buffer).Enqueue(2);
 
 			var array = new int[1];
-			Assert.ThrowsException<ArgumentException>(() => buffer.CopyTo(array, 0));
+			Assert.ThrowsExactly<ArgumentException>(() => buffer.CopyTo(array, 0));
 		}
 
 		/// <summary>
@@ -159,13 +159,13 @@ namespace Bodu.Collections.Generic
 		/// element type.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayTypeMismatch_ShouldThrow()
+		public void ICollection_CopyTo_WhenArrayTypeMismatch_ShouldThrowExactly()
 		{
 			ICollection buffer = new CircularBuffer<string>(2);
 			((CircularBuffer<string>)buffer).Enqueue("test");
 
 			var wrongTypeArray = new int[5];
-			Assert.ThrowsException<ArgumentException>(() => buffer.CopyTo(wrongTypeArray, 0));
+			Assert.ThrowsExactly<ArgumentException>(() => buffer.CopyTo(wrongTypeArray, 0));
 		}
 
 		/// <summary>

@@ -8,10 +8,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that setting a value using an invalid key type throws ArgumentException.
 		/// </summary>
 		[TestMethod]
-		public void IDictionary_IndexerSet_WhenKeyIsInvalidType_ShouldThrowArgumentException()
+		public void IDictionary_IndexerSet_WhenKeyIsInvalidType_ShouldThrowExactly()
 		{
 			IDictionary dictionary = new EvictingDictionary<string, int>(3);
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				dictionary[123] = 42;
 			});
@@ -21,10 +21,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that setting a value using an invalid value type throws ArgumentException.
 		/// </summary>
 		[TestMethod]
-		public void IDictionary_IndexerSet_WhenValueIsInvalidType_ShouldThrowArgumentException()
+		public void IDictionary_IndexerSet_WhenValueIsInvalidType_ShouldThrowExactly()
 		{
 			IDictionary dictionary = new EvictingDictionary<string, int>(3);
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				dictionary["hello"] = "not-an-int";
 			});
@@ -34,10 +34,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that adding an item with an invalid key type throws ArgumentException.
 		/// </summary>
 		[TestMethod]
-		public void IDictionary_Add_WhenKeyIsInvalidType_ShouldThrowArgumentException()
+		public void IDictionary_Add_WhenKeyIsInvalidType_ShouldThrowExactly()
 		{
 			IDictionary dictionary = new EvictingDictionary<string, int>(3);
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				dictionary.Add(123, 1);
 			});
@@ -47,10 +47,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that adding an item with an invalid value type throws ArgumentException.
 		/// </summary>
 		[TestMethod]
-		public void IDictionary_Add_WhenValueIsInvalidType_ShouldThrowArgumentException()
+		public void IDictionary_Add_WhenValueIsInvalidType_ShouldThrowExactly()
 		{
 			IDictionary dictionary = new EvictingDictionary<string, int>(3);
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				dictionary.Add("key", "invalid-value");
 			});
@@ -60,12 +60,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that removing with an invalid key type throws ArgumentException.
 		/// </summary>
 		[TestMethod]
-		public void IDictionary_Remove_WhenKeyIsInvalidType_ShouldThrowArgumentException()
+		public void IDictionary_Remove_WhenKeyIsInvalidType_ShouldThrowExactly()
 		{
 			IDictionary dictionary = new EvictingDictionary<string, int>(3);
 			dictionary.Add("key", 1);
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				dictionary.Remove(100);
 			});

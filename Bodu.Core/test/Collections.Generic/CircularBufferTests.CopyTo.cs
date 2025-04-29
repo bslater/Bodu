@@ -22,12 +22,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentNullException when the destination array is null.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenTargetArrayIsNull_ShouldThrowArgumentNullException()
+		public void CopyTo_WhenTargetArrayIsNull_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<string>(1);
 			buffer.Enqueue("a");
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				buffer.CopyTo(null, 0);
 			});
@@ -37,13 +37,13 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentOutOfRangeException when the target index is negative.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenTargetIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+		public void CopyTo_WhenTargetIndexIsNegative_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(2);
 			buffer.Enqueue(1);
 			var array = new int[3];
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				buffer.CopyTo(array, -1);
 			});
@@ -53,14 +53,14 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the destination array is too small to hold all elements.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenTargetArrayIsTooSmall_ShouldThrowArgumentException()
+		public void CopyTo_WhenTargetArrayIsTooSmall_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(2);
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 			var array = new int[1];
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				buffer.CopyTo(array, 0);
 			});

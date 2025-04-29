@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu.Collections.Generic
+﻿namespace Bodu.Collections.Generic
 {
 	public partial class SequenceGeneratorTests
 	{
@@ -22,9 +16,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Factory throws an ArgumentNullException when the enumerator factory is null.
 		/// </summary>
 		[TestMethod]
-		public void Factory_WhenFactoryIsNull_ShouldThrow()
+		public void Factory_WhenFactoryIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				_ = SequenceGenerator.Factory<int>(null!).ToArray();
 			});

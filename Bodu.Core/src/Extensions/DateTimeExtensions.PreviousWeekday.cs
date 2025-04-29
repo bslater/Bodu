@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTime.NextDayOfWeek.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.PreviousWeekday.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -49,7 +49,7 @@ namespace Bodu.Extensions
 		/// <param name="dateTime">The starting <see cref="DateTime" /> from which to search backward.</param>
 		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that defines the default pattern of weekend days.</param>
 		/// <param name="provider">
-		/// An optional <see cref="ICalendarWeekendProvider" /> that can override the weekend definition with custom logic. If <c>null</c>,
+		/// An optional <see cref="IWeekendDefinitionProvider" /> that can override the weekend definition with custom logic. If <c>null</c>,
 		/// the default behavior based on <paramref name="weekend" /> is used.
 		/// </param>
 		/// <returns>
@@ -66,7 +66,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>The returned value preserves the original time-of-day and <see cref="DateTime.Kind" /> values of <paramref name="dateTime" />.</para>
 		/// </remarks>
-		public static DateTime PreviousWeekday(this DateTime dateTime, CalendarWeekendDefinition weekend, ICalendarWeekendProvider? provider)
+		public static DateTime PreviousWeekday(this DateTime dateTime, CalendarWeekendDefinition weekend, IWeekendDefinitionProvider? provider)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
 

@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bodu.Collections.Extensions;
-using Bodu.Collections.Generic.Extensions;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class XorShiftRandomTests
 	{
@@ -168,10 +163,10 @@ namespace Bodu
 		[DataTestMethod]
 		[DataRow(0)]
 		[DataRow(-5)]
-		public void Next_WithMaxValueZero_ShouldThrow(int maxValue)
+		public void Next_WithMaxValueZero_ShouldThrowExactly(int maxValue)
 		{
 			var rng = new XorShiftRandom();
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => rng.Next(maxValue));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => rng.Next(maxValue));
 		}
 
 		[TestMethod]
@@ -193,10 +188,10 @@ namespace Bodu
 		[DataRow(1, 0)]
 		[DataRow(1, 1)]
 		[DataRow(10, 5)]
-		public void Next_WithMinGreaterThanMax_ShouldThrow(int minValue, int maxValue)
+		public void Next_WithMinGreaterThanMax_ShouldThrowExactly(int minValue, int maxValue)
 		{
 			var rng = new XorShiftRandom();
-			Assert.ThrowsException<ArgumentException>(() => rng.Next(minValue, maxValue));
+			Assert.ThrowsExactly<ArgumentException>(() => rng.Next(minValue, maxValue));
 		}
 
 		/// <summary>

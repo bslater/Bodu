@@ -1,10 +1,11 @@
-﻿using System;
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
+
 using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bodu.Buffers
 {

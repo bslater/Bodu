@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="ShuffleHelpers.Shuffle.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
+
 using System.Runtime.CompilerServices;
-using Bodu.Collections.Extensions;
 
 namespace Bodu.Collections.Generic
 {

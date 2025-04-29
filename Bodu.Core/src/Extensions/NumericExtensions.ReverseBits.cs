@@ -1,4 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="NumericExtensions.ReverseBits.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
+
+using System.Runtime.CompilerServices;
 
 namespace Bodu.Extensions
 {

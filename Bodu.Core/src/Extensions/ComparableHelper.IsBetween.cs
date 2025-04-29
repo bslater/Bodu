@@ -1,14 +1,11 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="ComparableHelper.IsBetween.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="ComparableHelper.IsBetween.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
-	using System;
-	using System.Collections.Generic;
-
 	/// <summary>
 	/// Provides helper methods for comparing values.
 	/// </summary>

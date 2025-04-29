@@ -81,7 +81,7 @@
 
 			buffer.ItemEvicted += _ => throw new InvalidOperationException("Simulated error");
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				buffer.Enqueue("C"); // Overwrites "A" → triggers ItemEvicted
 			});

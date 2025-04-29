@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu.Buffers
+﻿namespace Bodu.Buffers
 {
 	public partial class PooledBufferBuilderTests
 	{
@@ -15,9 +9,9 @@ namespace Bodu.Buffers
 			builder.AppendRange(Enumerable.Range(1, 5));
 			builder.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() => builder.AsArray());
-			Assert.ThrowsException<ObjectDisposedException>(() => builder.AsSpan());
-			Assert.ThrowsException<ObjectDisposedException>(() => _ = builder.Count);
+			Assert.ThrowsExactly<ObjectDisposedException>(() => builder.AsArray());
+			Assert.ThrowsExactly<ObjectDisposedException>(() => builder.AsSpan());
+			Assert.ThrowsExactly<ObjectDisposedException>(() => _ = builder.Count);
 		}
 
 		[TestMethod]

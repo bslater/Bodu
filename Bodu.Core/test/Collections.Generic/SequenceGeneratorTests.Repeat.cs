@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu.Collections.Generic
+﻿namespace Bodu.Collections.Generic
 {
 	public partial class SequenceGeneratorTests
 	{
@@ -32,9 +26,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Repeat throws an ArgumentOutOfRangeException when count is negative.
 		/// </summary>
 		[TestMethod]
-		public void Repeat_WhenCountIsNegative_ShouldThrow()
+		public void Repeat_WhenCountIsNegative_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				SequenceGenerator.Repeat("X", -2).ToArray();
 			});

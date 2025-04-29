@@ -42,11 +42,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Dequeue throws InvalidOperationException when the buffer is empty.
 		/// </summary>
 		[TestMethod]
-		public void Dequeue_WhenBufferIsEmpty_ShouldThrowInvalidOperationException()
+		public void Dequeue_WhenBufferIsEmpty_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(2);
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				buffer.Dequeue();
 			});

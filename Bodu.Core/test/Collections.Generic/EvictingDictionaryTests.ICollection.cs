@@ -51,10 +51,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentNullException when the array is null.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayIsNull_ShouldThrowArgumentNullException()
+		public void ICollection_CopyTo_WhenArrayIsNull_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				((ICollection)dictionary).CopyTo(null!, 0);
 			});
@@ -64,12 +64,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the array is multidimensional.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayIsMultidimensional_ShouldThrowArgumentException()
+		public void ICollection_CopyTo_WhenArrayIsMultidimensional_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			var array = new DictionaryEntry[2, 2];
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				((ICollection)dictionary).CopyTo(array, 0);
 			});
@@ -79,12 +79,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the array has a non-zero lower bound.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayHasNonZeroLowerBound_ShouldThrowArgumentException()
+		public void ICollection_CopyTo_WhenArrayHasNonZeroLowerBound_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			Array array = Array.CreateInstance(typeof(DictionaryEntry), new[] { 2 }, new[] { 1 });
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				((ICollection)dictionary).CopyTo(array, 0);
 			});
@@ -94,12 +94,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentOutOfRangeException when the index is negative.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+		public void ICollection_CopyTo_WhenIndexIsNegative_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			var array = new DictionaryEntry[2];
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				((ICollection)dictionary).CopyTo(array, -1);
 			});
@@ -109,7 +109,7 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the array is too small to hold items.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenArrayIsTooSmall_ShouldThrowArgumentException()
+		public void ICollection_CopyTo_WhenArrayIsTooSmall_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(2);
 			dictionary.Add("x", 1);
@@ -117,7 +117,7 @@ namespace Bodu.Collections.Generic
 
 			var array = new DictionaryEntry[1];
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				((ICollection)dictionary).CopyTo(array, 0);
 			});
@@ -127,14 +127,14 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the object array is multidimensional.
 		/// </summary>
 		[TestMethod]
-		public void ICollection_CopyTo_WhenObjectArrayIsMultidimensional_ShouldThrowArgumentException()
+		public void ICollection_CopyTo_WhenObjectArrayIsMultidimensional_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			dictionary["A"] = 1;
 
 			var array = new object[1, 1];
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				((ICollection)dictionary).CopyTo(array, 0);
 			});

@@ -31,11 +31,11 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Truncate_WhenResolutionIsInvalid_ShouldThrowArgumentException()
+		public void Truncate_WhenResolutionIsInvalid_ShouldThrowExactly()
 		{
 			DateTimeResolution invalid = (DateTimeResolution)999;
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				_ = Sample.Truncate(invalid);
 			});

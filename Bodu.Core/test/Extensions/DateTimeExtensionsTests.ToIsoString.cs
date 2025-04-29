@@ -68,10 +68,10 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void ToIsoString_WithEmptyFormat_ShouldThrow()
+		public void ToIsoString_WithEmptyFormat_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 4, 20);
-			Assert.ThrowsException<ArgumentNullException>(() => input.ToIsoString(""));
+			Assert.ThrowsExactly<ArgumentNullException>(() => input.ToIsoString(""));
 		}
 	}
 }

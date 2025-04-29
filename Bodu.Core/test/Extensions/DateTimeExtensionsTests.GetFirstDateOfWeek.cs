@@ -50,23 +50,23 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void GetFirstDateOfWeek_WithInvalidWeekNumber_ShouldThrow()
+		public void GetFirstDateOfWeek_WithInvalidWeekNumber_ShouldThrowExactly()
 		{
 			// en-US: Week 54 does not exist
 			CultureInfo culture = CultureInfo.GetCultureInfo("en-US");
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				DateTimeExtensions.GetFirstDateOfWeek(2024, 54, culture);
 			});
 		}
 
 		[TestMethod]
-		public void GetFirstDateOfWeek_WithInvalidWeekendEnum_ShouldThrow()
+		public void GetFirstDateOfWeek_WithInvalidWeekendEnum_ShouldThrowExactly()
 		{
 			CalendarWeekendDefinition invalid = (CalendarWeekendDefinition)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				DateTimeExtensions.GetFirstDateOfWeek(2024, 1, invalid);
 			});

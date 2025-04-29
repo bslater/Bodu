@@ -1,8 +1,9 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
+﻿// // --------------------------------------------------------------------------------------------------------------- //
 // <copyright file="ThrowHelper.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
 // </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+
 using System.Runtime.CompilerServices;
 
 namespace Bodu
@@ -96,19 +97,20 @@ namespace Bodu
 
 		/// <summary>
 		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <c>null</c> when the
-		/// <paramref name="conditionalParam" /> equals the specified <paramref name="conditionalValue" />.
+		/// <paramref name="conditionalParam" /> matches the specified <paramref name="conditionalValue" />.
 		/// </summary>
 		/// <typeparam name="TValue">The type of the parameter being validated.</typeparam>
-		/// <typeparam name="TCondition">The type of the conditional parameter value.</typeparam>
-		/// <param name="value">The parameter value to validate.</param>
+		/// <typeparam name="TCondition">The type of the conditional parameter.</typeparam>
+		/// <param name="value">The parameter value to validate for null.</param>
 		/// <param name="conditionalParam">The current value of the conditional parameter.</param>
-		/// <param name="conditionalValue">The value of the conditional parameter that requires <paramref name="value" /> to be non-null.</param>
-		/// <param name="paramName">The name of the <paramref name="value" /> parameter. Automatically captured.</param>
+		/// <param name="conditionalValue">The conditional value that requires <paramref name="value" /> to be non-null.</param>
+		/// <param name="paramName">The name of the <paramref name="value" /> parameter (captured automatically).</param>
+		/// <param name="conditionalParamName">The name of the <paramref name="conditionalParam" /> parameter (captured automatically).</param>
 		/// <exception cref="ArgumentException">
-		/// Thrown when <paramref name="conditionalParam" /> equals <paramref name="conditionalValue" /> and <paramref name="value" /> is <c>null</c>.
-		/// Message: "Parameter '{0}' is required when '{1}' is '{2}'."
+		/// Thrown when <paramref name="conditionalParam" /> equals <paramref name="conditionalValue" /> and <paramref name="value" /> is
+		/// <c>null</c>. The exception message follows the pattern: "Parameter '{0}' is required when '{1}' is '{2}'."
 		/// </exception>
-		/// <remarks>Use this method when a parameter is required based on the value of another conditional parameter.</remarks>
+		/// <remarks>Use this method when a parameter becomes mandatory based on the value of another parameter.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfConditionallyRequiredParameterIsNull<TValue, TCondition>(
 			TValue? value,

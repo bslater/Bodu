@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu.Collections.Generic
+﻿namespace Bodu.Collections.Generic
 {
 	public partial class SequenceGeneratorTests
 	{/// <summary>
@@ -46,9 +40,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Range throws when the count is negative.
 		/// </summary>
 		[TestMethod]
-		public void Range_WhenCountIsNegative_ShouldThrow()
+		public void Range_WhenCountIsNegative_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				SequenceGenerator.Range(1L, -1).ToArray();
 			});
@@ -58,9 +52,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Range throws if the resulting long range would overflow.
 		/// </summary>
 		[TestMethod]
-		public void Range_WhenResultWouldOverflowLong_ShouldThrow()
+		public void Range_WhenResultWouldOverflowLong_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				SequenceGenerator.Range(long.MaxValue - 2, 5).ToArray();
 			});

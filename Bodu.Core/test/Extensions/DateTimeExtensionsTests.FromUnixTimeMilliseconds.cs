@@ -29,22 +29,22 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FromUnixTimeMilliseconds_WhenBelowMinimum_ShouldThrow()
+		public void FromUnixTimeMilliseconds_WhenBelowMinimum_ShouldThrowExactly()
 		{
 			long belowMin = -62135596800001; // 1 ms before DateTime.MinValue
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = belowMin.FromUnixTimeMilliseconds();
 			});
 		}
 
 		[TestMethod]
-		public void FromUnixTimeMilliseconds_WhenAboveMaximum_ShouldThrow()
+		public void FromUnixTimeMilliseconds_WhenAboveMaximum_ShouldThrowExactly()
 		{
 			long aboveMax = 253402300800000; // 1 ms after DateTime.MaxValue
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = aboveMax.FromUnixTimeMilliseconds();
 			});

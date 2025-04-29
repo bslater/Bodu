@@ -1,11 +1,10 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Buffers;
-using System.Security.Cryptography;
 
 namespace Bodu.Collections.Generic.Extensions
 {

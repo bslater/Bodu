@@ -1,3 +1,9 @@
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.GetFirstDateOfWeek.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
+
 using System.Globalization;
 
 namespace Bodu.Extensions
@@ -84,7 +90,7 @@ namespace Bodu.Extensions
 			CalendarWeekendDefinition.SundayOnly => DayOfWeek.Monday,
 			CalendarWeekendDefinition.FridayOnly => DayOfWeek.Saturday,
 			_ => throw new ArgumentOutOfRangeException(nameof(weekend),
-				$"Unsupported {nameof(CalendarWeekendDefinition)} value: {weekend}")
+				$"Unsupported {nameof(CalendarWeekendDefinition)} selectedDays: {weekend}")
 		};
 	}
 }

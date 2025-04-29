@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="CalendarWeekendDefinition.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -42,7 +42,7 @@ namespace Bodu.Extensions
 		None = 5,
 
 		/// <summary>
-		/// Custom definition provided via an <see cref="ICalendarWeekendProvider" />.
+		/// Custom definition provided via an <see cref="IWeekendDefinitionProvider" />.
 		/// </summary>
 		Custom = 6
 	}

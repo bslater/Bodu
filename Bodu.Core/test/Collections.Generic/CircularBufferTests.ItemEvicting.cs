@@ -85,7 +85,7 @@
 
 			buffer.ItemEvicting += _ => throw new InvalidOperationException("Eviction vetoed");
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				buffer.Enqueue("Z"); // Overwrites "X" → triggers ItemEvicting
 			});

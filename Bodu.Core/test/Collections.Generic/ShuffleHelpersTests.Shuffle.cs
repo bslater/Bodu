@@ -21,9 +21,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that passing a null array to Shuffle throws <see cref="ArgumentNullException" />.
 		/// </summary>
 		[TestMethod]
-		public void Shuffle_WhenArrayIsNull_ShouldThrow()
+		public void Shuffle_WhenArrayIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				ShuffleHelpers.Shuffle<int>(null!, new SystemRandomAdapter());
 			});
@@ -33,9 +33,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that passing a null RNG to Shuffle (array) throws <see cref="ArgumentNullException" />.
 		/// </summary>
 		[TestMethod]
-		public void Shuffle_WhenRngIsNull_ShouldThrow_UsingArray()
+		public void Shuffle_WhenRngIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				ShuffleHelpers.Shuffle(new[] { 1, 2, 3 }, null!);
 			});
@@ -45,10 +45,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that passing a null RNG to Shuffle (span) throws <see cref="ArgumentNullException" />.
 		/// </summary>
 		[TestMethod]
-		public void Shuffle_WhenRngIsNull_ShouldThrow_UsingSpan()
+		public void Shuffle_WhenValidSpanAndRngIsNull_ShouldThrowExactly()
 		{
 			var buffer = new[] { 1, 2, 3 };
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				ShuffleHelpers.Shuffle(buffer.AsSpan(), null!);
 			});
@@ -58,10 +58,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that passing a null RNG to Shuffle (memory) throws <see cref="ArgumentNullException" />.
 		/// </summary>
 		[TestMethod]
-		public void Shuffle_WhenRngIsNull_ShouldThrow_UsingMemory()
+		public void Shuffle_WhenValidMemoryAndRngIsNull_ShouldThrowExactly()
 		{
 			var buffer = new[] { 1, 2, 3 };
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				ShuffleHelpers.Shuffle(buffer.AsMemory(), null!);
 			});

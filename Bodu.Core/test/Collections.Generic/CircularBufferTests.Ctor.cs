@@ -83,9 +83,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that passing null as the source collection throws an ArgumentNullException.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenCollectionIsNull_ShouldThrowArgumentNullException()
+		public void Ctor_WhenCollectionIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				_ = new CircularBuffer<object>((IEnumerable<object>)null);
 			});
@@ -97,9 +97,9 @@ namespace Bodu.Collections.Generic
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(0)]
-		public void Ctor_WhenCapacityIsInvalid_ShouldThrowArgumentOutOfRangeException(int size)
+		public void Ctor_WhenCapacityIsInvalid_ShouldThrowExactly(int size)
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new CircularBuffer<int>(size);
 			});
@@ -109,11 +109,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that initializing from a collection that exceeds capacity with overwrite disabled throws.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenCollectionExceedsCapacityAndOverwriteIsFalse_ShouldThrowInvalidOperationException()
+		public void Ctor_WhenCollectionExceedsCapacityAndOverwriteIsFalse_ShouldThrowExactly()
 		{
 			var source = new[] { 1, 2, 3 };
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				_ = new CircularBuffer<int>(source, 2, false);
 			});
@@ -123,11 +123,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that a negative capacity with an empty collection throws ArgumentOutOfRangeException.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenEmptyCollectionAndNegativeCapacityProvided_ShouldThrowArgumentOutOfRangeException()
+		public void Ctor_WhenEmptyCollectionAndNegativeCapacityProvided_ShouldThrowExactly()
 		{
 			var empty = Array.Empty<string>();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new CircularBuffer<string>(empty, -1);
 			});
@@ -137,11 +137,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that negative capacity and overwrite flag throw even with empty collection.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenEmptyCollectionNegativeCapacityAndOverwriteProvided_ShouldThrowArgumentOutOfRangeException()
+		public void Ctor_WhenEmptyCollectionNegativeCapacityAndOverwriteProvided_ShouldThrowExactly()
 		{
 			var empty = Array.Empty<string>();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new CircularBuffer<string>(empty, -10, allowOverwrite: true);
 			});

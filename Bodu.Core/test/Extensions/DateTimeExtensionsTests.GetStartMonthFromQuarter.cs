@@ -24,9 +24,9 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void GetStartMonthFromQuarter_WhenCustomQuarterDefinition_ShouldThrowOutOfRangeException()
+		public void GetStartMonthFromQuarter_WhenCustomQuarterDefinition_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = DateTimeExtensions.GetStartMonthFromQuarter(CalendarQuarterDefinition.Custom, 1);
 			});
@@ -36,20 +36,20 @@ namespace Bodu.Extensions
 		[DataRow(-1)]
 		[DataRow(0)]
 		[DataRow(5)]
-		public void GetStartMonthFromQuarter_WhenQuarterIsOutOfRange_ShouldThrowArgumentOutOfRangeException(int quarter)
+		public void GetStartMonthFromQuarter_WhenQuarterIsOutOfRange_ShouldThrowExactly(int quarter)
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = DateTimeExtensions.GetStartMonthFromQuarter(CalendarQuarterDefinition.CalendarYear,quarter);
 			});
 		}
 
 		[TestMethod]
-		public void GetStartMonthFromQuarter_WhenDefinitionIsInvalid_ShouldThrowArgumentOutOfRangeException()
+		public void GetStartMonthFromQuarter_WhenDefinitionIsInvalid_ShouldThrowExactly()
 		{
 			var invalidDefinition = (CalendarQuarterDefinition)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = DateTimeExtensions.GetStartMonthFromQuarter(invalidDefinition, 1);
 			});

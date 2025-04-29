@@ -99,24 +99,24 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void WeekOfMonth_WhenDayOfWeekIsInvalid_ShouldThrow()
+		public void WeekOfMonth_WhenDayOfWeekIsInvalid_ShouldThrowExactly()
 		{
 			var date = new DateTime(2024, 01, 01);
 			var invalidDay = (DayOfWeek)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = date.WeekOfMonth(CalendarWeekRule.FirstDay, invalidDay);
 			});
 		}
 
 		[TestMethod]
-		public void WeekOfMonth_WhenCalendarWeekRuleIsInvalid_ShouldThrow()
+		public void WeekOfMonth_WhenCalendarWeekRuleIsInvalid_ShouldThrowExactly()
 		{
 			var date = new DateTime(2024, 01, 01);
 			var invalidRule = (CalendarWeekRule)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = date.WeekOfMonth(invalidRule, DayOfWeek.Monday);
 			});

@@ -6,10 +6,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that accessing a missing key via indexer throws a KeyNotFoundException.
 		/// </summary>
 		[TestMethod]
-		public void Indexer_Get_WhenKeyIsMissing_ShouldThrowKeyNotFoundException()
+		public void Indexer_Get_WhenKeyIsMissing_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
-			Assert.ThrowsException<KeyNotFoundException>(() => _ = dictionary["missing"]);
+			Assert.ThrowsExactly<KeyNotFoundException>(() => _ = dictionary["missing"]);
 		}
 
 		/// <summary>

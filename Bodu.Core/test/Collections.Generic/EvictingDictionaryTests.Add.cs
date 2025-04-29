@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace Bodu.Collections.Generic
 {
 	public partial class EvictingDictionaryTests
@@ -37,11 +35,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that an ArgumentNullException is thrown when adding a null key.
 		/// </summary>
 		[TestMethod]
-		public void Add_WhenKeyIsNull_ShouldThrowArgumentNullException()
+		public void Add_WhenKeyIsNull_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, string>(2);
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				dictionary.Add(null, "value");
 			});
@@ -151,11 +149,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that an ArgumentNullException is thrown when adding a null KeyValuePair key.
 		/// </summary>
 		[TestMethod]
-		public void AddKeyValuePair_WhenKeyIsNull_ShouldThrowArgumentNullException()
+		public void AddKeyValuePair_WhenKeyIsNull_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(3);
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				dictionary.Add(new KeyValuePair<string, int>(null!, 1));
 			});

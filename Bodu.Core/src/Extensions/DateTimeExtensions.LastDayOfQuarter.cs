@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTime.Add.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -73,10 +73,10 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the last day of the quarter based on a custom <see cref="ICalendarQuarterProvider" /> implementation.
+		/// Returns the last day of the quarter based on a custom <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value whose quarter is being evaluated.</param>
-		/// <param name="provider">The <see cref="ICalendarQuarterProvider" /> that defines custom quarter mappings and start months.</param>
+		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> that defines custom quarter mappings and start months.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the last calendar day of the applicable custom quarter, with the time set to midnight
 		/// (00:00:00) and the <see cref="DateTime.Kind" /> preserved.
@@ -89,7 +89,7 @@ namespace Bodu.Extensions
 		/// This method supports advanced quarter systems such as 4-4-5 accounting or domain-specific fiscal quarters by delegating logic to
 		/// the specified <paramref name="provider" />.
 		/// </remarks>
-		public static DateTime LastDayOfQuarter(this DateTime dateTime, ICalendarQuarterProvider provider)
+		public static DateTime LastDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
 

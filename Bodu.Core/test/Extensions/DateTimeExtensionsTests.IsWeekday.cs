@@ -17,17 +17,17 @@ namespace Bodu.Extensions
 		[DynamicData(nameof(WeekendTestData), typeof(DateTimeExtensionsTests))]
 		public void IsWeekday_WhenUsingStandardWeekend_ShouldReturnExpected(DateTime input, CalendarWeekendDefinition weekend, Type? providerType, bool expected)
 		{
-			ICalendarWeekendProvider? provider = providerType is null ? null : (ICalendarWeekendProvider)Activator.CreateInstance(providerType)!;
+			IWeekendDefinitionProvider? provider = providerType is null ? null : (IWeekendDefinitionProvider)Activator.CreateInstance(providerType)!;
 
 			bool result = input.IsWeekday(weekend, provider);
 			Assert.AreEqual(!expected, result, $"Failed for {input} with weekend {weekend}");
 		}
 
 		[TestMethod]
-		public void IsWeekday_WhenCustomRuleMissingProvider_ShouldThrow()
+		public void IsWeekday_WhenCustomRuleMissingProvider_ShouldThrowExactly()
 		{
 			DateTime date = new DateTime(2024, 4, 19);
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = date.IsWeekday(CalendarWeekendDefinition.Custom, null!);
 			});

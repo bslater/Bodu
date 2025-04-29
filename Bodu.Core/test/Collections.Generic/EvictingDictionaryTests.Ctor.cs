@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Bodu.Collections.Generic
 {
 	public partial class EvictingDictionaryTests
@@ -93,9 +91,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that the constructor throws when a null source is provided.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenSourceIsNull_ShouldThrowArgumentNullException()
+		public void Ctor_WhenSourceIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				_ = new EvictingDictionary<string, int>(5, (IEnumerable<KeyValuePair<string, int>>)null!);
 			});
@@ -117,11 +115,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that the constructor throws when capacity is negative and source is empty.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenEmptySourceAndNegativeCapacity_ShouldThrow()
+		public void Ctor_WhenEmptySourceAndNegativeCapacity_ShouldThrowExactly()
 		{
 			var empty = new Dictionary<string, int>();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new EvictingDictionary<string, int>(-1, empty);
 			});
@@ -202,9 +200,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that the constructor throws if capacity is zero.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenCapacityIsZero_ShouldThrowArgumentOutOfRangeException()
+		public void Ctor_WhenCapacityIsZero_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new EvictingDictionary<string, int>(0);
 			});
@@ -214,9 +212,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that the constructor throws if capacity is negative.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenCapacityIsNegative_ShouldThrowArgumentOutOfRangeException()
+		public void Ctor_WhenCapacityIsNegative_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new EvictingDictionary<string, int>(-5);
 			});

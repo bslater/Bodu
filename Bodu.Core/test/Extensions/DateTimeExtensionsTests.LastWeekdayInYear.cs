@@ -29,12 +29,12 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastWeekdayInYear_WhenDayOfWeekIsInvalid_ShouldThrow()
+		public void LastWeekdayInYear_WhenDayOfWeekIsInvalid_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 1, 1);
 			var invalidDay = (DayOfWeek)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.LastWeekdayInYear(invalidDay);
 			});

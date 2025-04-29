@@ -31,23 +31,23 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfQuarter_WhenUsingInvalidProvider_ShouldThrowOutOfRangeException()
+		public void FirstDayOfQuarter_WhenUsingInvalidProvider_ShouldThrowExactly()
 		{
 			var input = new DateTime(2024, 4, 20);
 			var provider = new DateTimeExtensionsTests.InValidQuarterProvider();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.FirstDayOfQuarter(provider);
 			});
 		}
 
 		[TestMethod]
-		public void FirstDayOfQuarter_WhenUsingCustomQuarterDefinitionWithoutProvider_ShouldThrowArgumentOutOfRangeException()
+		public void FirstDayOfQuarter_WhenUsingCustomQuarterDefinitionWithoutProvider_ShouldThrowExactly()
 		{
 			var input = new DateTime(2024, 4, 20);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.FirstDayOfQuarter(CalendarQuarterDefinition.Custom);
 			});

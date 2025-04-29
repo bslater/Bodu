@@ -97,12 +97,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Contains throws ArgumentNullException when the key is null in the KeyValuePair.
 		/// </summary>
 		[TestMethod]
-		public void Contains_WhenKeyIsNull_ShouldThrowArgumentNullException()
+		public void Contains_WhenKeyIsNull_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(3);
 			var kvp = new KeyValuePair<string, int>(null!, 42);
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				_ = dictionary.Contains(kvp);
 			});

@@ -59,36 +59,36 @@ namespace Bodu.Extensions
 		[DataRow(15, 0)]
 		[DataRow(-15, 0)]
 		[DataRow(14, 1)]
-		public void ToDateTimeOffset_WithOffsetOutsideRange_ShouldThrowArgumentOutOfRangeException(int hours, int minutes)
+		public void ToDateTimeOffset_WithOffsetOutsideRange_ShouldThrowExactly(int hours, int minutes)
 		{
 			var offset = new TimeSpan(hours, minutes, 0);
 			DateTime input = new DateTime(2024, 4, 18, 12, 0, 0);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.ToDateTimeOffset(offset);
 			});
 		}
 
 		[TestMethod]
-		public void ToDateTimeOffset_WhenResultTooEarly_ShouldThrowArgumentOutOfRangeException()
+		public void ToDateTimeOffset_WhenResultTooEarly_ShouldThrowExactly()
 		{
 			DateTime input = DateTime.MinValue.AddHours(1);
 			var offset = TimeSpan.FromHours(2); // UTC = MinValue - 1 hour (underflow)
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.ToDateTimeOffset(offset);
 			});
 		}
 
 		[TestMethod]
-		public void ToDateTimeOffset_WhenResultTooLate_ShouldThrowArgumentOutOfRangeException()
+		public void ToDateTimeOffset_WhenResultTooLate_ShouldThrowExactly()
 		{
 			DateTime input = DateTime.MaxValue.AddHours(-1);
 			var offset = TimeSpan.FromHours(-2); // UTC = MaxValue + 1 hour (overflow)
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.ToDateTimeOffset(offset);
 			});

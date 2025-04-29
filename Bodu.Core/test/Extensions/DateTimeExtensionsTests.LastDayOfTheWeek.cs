@@ -87,7 +87,7 @@ namespace Bodu.Extensions
 			DateTime min = DateTime.MaxValue;
 			var culture = new CultureInfo("en-US");// Sunday is first day
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = min.LastDayOfWeek(culture); // is outside the range for a DateTime value
 			});

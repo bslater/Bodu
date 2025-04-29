@@ -1,6 +1,5 @@
 ﻿using Bodu.Collections.Generic.Extensions;
 using Bodu.Infrastructure;
-using System;
 
 namespace Bodu.Collections.Generic
 {
@@ -81,10 +80,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when count is negative.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenCountNegative_ShouldThrow()
+		public void ShuffleAndYield_WhenCountNegative_ShouldThrowExactly()
 		{
 			var buffer = new[] { 1, 2, 3 };
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 				ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), -1).ToArray());
 		}
 
@@ -92,10 +91,10 @@ namespace Bodu.Collections.Generic
 		/// Verifies that ShuffleAndYield throws an ArgumentOutOfRangeException when count exceeds the number of elements in the input.
 		/// </summary>
 		[TestMethod]
-		public void ShuffleAndYield_WhenCountExceedsLength_ShouldThrow()
+		public void ShuffleAndYield_WhenCountExceedsLength_ShouldThrowExactly()
 		{
 			var buffer = new[] { 1, 2, 3 };
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 				ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 4).ToArray());
 		}
 

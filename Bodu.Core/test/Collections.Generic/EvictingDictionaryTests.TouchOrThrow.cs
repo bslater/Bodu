@@ -6,11 +6,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that TouchOrThrow throws KeyNotFoundException when the key does not exist.
 		/// </summary>
 		[TestMethod]
-		public void TouchOrThrow_WhenKeyIsMissing_ShouldThrowKeyNotFoundException()
+		public void TouchOrThrow_WhenKeyIsMissing_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(3);
 
-			Assert.ThrowsException<KeyNotFoundException>(() =>
+			Assert.ThrowsExactly<KeyNotFoundException>(() =>
 			{
 				dictionary.TouchOrThrow("not-found");
 			});

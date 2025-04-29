@@ -40,12 +40,12 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstWeekdayInYear_WhenEnumInvalid_ShouldThrow()
+		public void FirstWeekdayInYear_WhenEnumInvalid_ShouldThrowExactly()
 		{
 			var input = new DateTime(2024, 1, 1);
 			var invalidDay = (DayOfWeek)999;
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.FirstWeekdayInYear(invalidDay);
 			});

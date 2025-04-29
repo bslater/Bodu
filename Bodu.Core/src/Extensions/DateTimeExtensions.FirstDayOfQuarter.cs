@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTime.Add.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -67,10 +67,10 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the first day of the quarter based on a custom <see cref="ICalendarQuarterProvider" /> implementation.
+		/// Returns the first day of the quarter based on a custom <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value whose quarter is being evaluated.</param>
-		/// <param name="provider">The <see cref="ICalendarQuarterProvider" /> that defines custom quarter logic.</param>
+		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> that defines custom quarter logic.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the first calendar day of the applicable custom quarter, with the time set to midnight
 		/// (00:00:00) and the <see cref="DateTime.Kind" /> preserved.
@@ -83,7 +83,7 @@ namespace Bodu.Extensions
 		/// This method supports advanced or domain-specific definitions of quarters by delegating logic to the specified
 		/// <paramref name="provider" />, such as 4-4-5 fiscal calendars or regional fiscal systems.
 		/// </remarks>
-		public static DateTime FirstDayOfQuarter(this DateTime dateTime, ICalendarQuarterProvider provider)
+		public static DateTime FirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
 

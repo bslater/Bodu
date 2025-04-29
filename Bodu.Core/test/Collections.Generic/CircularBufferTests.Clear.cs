@@ -15,7 +15,7 @@ namespace Bodu.Collections.Generic
 
 			Assert.AreEqual(0, buffer.Count);
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				_ = buffer.Dequeue(); // should throw
 			});

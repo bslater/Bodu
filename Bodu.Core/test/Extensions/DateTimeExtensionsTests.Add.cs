@@ -39,11 +39,11 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Add_WhenResultExceedsMaxDateTime_ShouldThrow()
+		public void Add_WhenResultExceedsMaxDateTime_ShouldThrowExactly()
 		{
 			DateTime nearMax = DateTime.MaxValue.AddDays(-1);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				DateTime result = nearMax.Add(0, 0, 2); // Should exceed DateTime.MaxValue
 			});

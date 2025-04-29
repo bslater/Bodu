@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="IWeekendDefinitionProvider.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -13,7 +13,7 @@ namespace Bodu.Extensions
 	/// Implement this interface to supply custom weekend definitions that are not covered by built-in
 	/// <see cref="CalendarWeekendDefinition" /> options.
 	/// </remarks>
-	public interface ICalendarWeekendProvider
+	public interface IWeekendDefinitionProvider
 	{
 		/// <summary>
 		/// Determines whether the specified <see cref="DayOfWeek" /> is considered a weekend day.

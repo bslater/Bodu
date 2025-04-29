@@ -53,13 +53,13 @@ namespace Bodu.Extensions
 		[DataTestMethod]
 		[DataRow(0)]
 		[DataRow(-1)]
-		public void NextOccurrence_WhenInvalidTimeSpan_ShouldThrowArgumentOutOfRangeException(long  ticks)
+		public void NextOccurrence_WhenInvalidTimeSpan_ShouldThrowExactly(long  ticks)
 		{
 			var start = new DateTime(2024, 4, 4);
 			var after=new DateTime(2024, 6, 4);
 			var interval =new  TimeSpan(ticks);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = start.NextOccurrence(interval, after);
 			});

@@ -22,14 +22,14 @@ namespace Bodu.Collections.Generic
 		/// Verifies that modifying the buffer during enumeration throws InvalidOperationException.
 		/// </summary>
 		[TestMethod]
-		public void Enumerator_WhenModifiedDuringIteration_ShouldThrowInvalidOperationException()
+		public void Enumerator_WhenModifiedDuringIteration_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(3);
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 
 			var enumerator = buffer.GetEnumerator();
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				while (enumerator.MoveNext())
 				{

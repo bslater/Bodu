@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Bodu.Collections.Extensions
+﻿namespace Bodu.Collections.Extensions
 {
 	[TestClass]
 	public class FibonacciTests
@@ -25,9 +20,9 @@ namespace Bodu.Collections.Extensions
 		/// Verifies that Fibonacci throws ArgumentOutOfRangeException when minimum is negative.
 		/// </summary>
 		[TestMethod]
-		public void Fibonacci_WhenMinimumIsNegative_ShouldThrow()
+		public void Fibonacci_WhenMinimumIsNegative_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				SequenceGenerator.Fibonacci(-1, 10).ToList();
 			});
@@ -37,9 +32,9 @@ namespace Bodu.Collections.Extensions
 		/// Verifies that Fibonacci throws ArgumentOutOfRangeException when maximum is negative.
 		/// </summary>
 		[TestMethod]
-		public void Fibonacci_WhenMaximumIsNegative_ShouldThrow()
+		public void Fibonacci_WhenMaximumIsNegative_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				SequenceGenerator.Fibonacci(0, -5).ToList();
 			});
@@ -49,9 +44,9 @@ namespace Bodu.Collections.Extensions
 		/// Verifies that Fibonacci throws ArgumentException when minimum is greater than maximum.
 		/// </summary>
 		[TestMethod]
-		public void Fibonacci_WhenMinimumGreaterThanMaximum_ShouldThrow()
+		public void Fibonacci_WhenMinimumGreaterThanMaximum_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				SequenceGenerator.Fibonacci(10, 5).ToList();
 			});

@@ -38,11 +38,11 @@ namespace Bodu.Collections.Generic
 		/// Verifies that Peek throws InvalidOperationException when the buffer is empty.
 		/// </summary>
 		[TestMethod]
-		public void Peek_WhenBufferIsEmpty_ShouldThrowInvalidOperationException()
+		public void Peek_WhenBufferIsEmpty_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<string>(2);
 
-			Assert.ThrowsException<InvalidOperationException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				_ = buffer.Peek();
 			});

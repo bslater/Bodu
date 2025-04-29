@@ -1,9 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bodu.Collections.Extensions;
-using Bodu.Collections.Generic.Extensions;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class XorShiftRandomTests
 	{
@@ -34,10 +29,10 @@ namespace Bodu
 		}
 
 		[TestMethod]
-		public void NextBytes_WithNullBuffer_ShouldThrow()
+		public void NextBytes_WithNullBuffer_ShouldThrowExactly()
 		{
 			var rng = new XorShiftRandom();
-			Assert.ThrowsException<ArgumentNullException>(() => rng.NextBytes(null!));
+			Assert.ThrowsExactly<ArgumentNullException>(() => rng.NextBytes(null!));
 		}
 	}
 }

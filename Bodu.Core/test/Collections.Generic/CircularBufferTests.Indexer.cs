@@ -22,13 +22,13 @@ namespace Bodu.Collections.Generic
 		/// Verifies that accessing an index equal to Count throws ArgumentOutOfRangeException.
 		/// </summary>
 		[TestMethod]
-		public void Indexer_WhenIndexEqualsCount_ShouldThrowArgumentOutOfRangeException()
+		public void Indexer_WhenIndexEqualsCount_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(3);
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = buffer[buffer.Count];
 			});
@@ -38,12 +38,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that accessing a negative index throws ArgumentOutOfRangeException.
 		/// </summary>
 		[TestMethod]
-		public void Indexer_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+		public void Indexer_WhenIndexIsNegative_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(2);
 			buffer.Enqueue(10);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = buffer[-1];
 			});
@@ -53,13 +53,13 @@ namespace Bodu.Collections.Generic
 		/// Verifies that accessing an index greater than Count throws ArgumentOutOfRangeException.
 		/// </summary>
 		[TestMethod]
-		public void Indexer_WhenIndexExceedsCount_ShouldThrowArgumentOutOfRangeException()
+		public void Indexer_WhenIndexExceedsCount_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<int>(3);
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = buffer[99];
 			});
@@ -69,12 +69,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that accessing an unused index throws ArgumentOutOfRangeException.
 		/// </summary>
 		[TestMethod]
-		public void Indexer_WhenIndexIsUnused_ShouldThrowArgumentOutOfRangeException()
+		public void Indexer_WhenIndexIsUnused_ShouldThrowExactly()
 		{
 			var buffer = new CircularBuffer<string>(2);
 			buffer.Enqueue("x");
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = buffer[1];
 			});

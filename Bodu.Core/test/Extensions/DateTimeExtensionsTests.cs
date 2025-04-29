@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 
 namespace Bodu.Extensions
 {
@@ -26,12 +21,12 @@ namespace Bodu.Extensions
 			}
 		}
 
-		private sealed class FridayOnlyWeekendProvider : ICalendarWeekendProvider
+		private sealed class FridayOnlyWeekendProvider : IWeekendDefinitionProvider
 		{
 			public bool IsWeekend(DayOfWeek dayOfWeek) => dayOfWeek == DayOfWeek.Friday;
 		}
 
-		private sealed class InValidQuarterProvider : ICalendarQuarterProvider
+		private sealed class InValidQuarterProvider : IQuarterDefinitionProvider
 		{
 			/// <summary>
 			/// Returns an invalid month number (outside the 1–12 range) for each valid quarter.
@@ -68,7 +63,7 @@ namespace Bodu.Extensions
 			}
 		}
 
-		private sealed class ValidQuarterProvider : ICalendarQuarterProvider
+		private sealed class ValidQuarterProvider : IQuarterDefinitionProvider
 		{
 			public static IEnumerable<object[]> QuarterDefinitionTestData
 			{

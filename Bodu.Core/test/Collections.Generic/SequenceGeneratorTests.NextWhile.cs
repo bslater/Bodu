@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu.Collections.Generic
+﻿namespace Bodu.Collections.Generic
 {
 	public partial class SequenceGeneratorTests
 	{
@@ -55,9 +49,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that NextWhile throws when the result selector is null.
 		/// </summary>
 		[TestMethod]
-		public void NextWhile_WhenResultSelectorIsNull_ShouldThrow()
+		public void NextWhile_WhenResultSelectorIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				SequenceGenerator.NextWhile(0, x => true, (Func<int, int>)null!).ToArray();
 			});
@@ -81,9 +75,9 @@ namespace Bodu.Collections.Generic
 		/// Verifies that NextWhile throws when the iterate function is null for a stateful generator.
 		/// </summary>
 		[TestMethod]
-		public void NextWhile_WhenIterateFunctionIsNull_ShouldThrow()
+		public void NextWhile_WhenIterateFunctionIsNull_ShouldThrowExactly()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				SequenceGenerator.NextWhile(new { X = 0 }, x => true, null!, x => x.X).ToArray();
 			});

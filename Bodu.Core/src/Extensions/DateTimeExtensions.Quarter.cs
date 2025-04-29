@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTime.Add.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.Quarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -65,10 +65,10 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom <see cref="ICalendarQuarterProvider" /> implementation.
+		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <param name="provider">An implementation of <see cref="ICalendarQuarterProvider" /> that determines the quarter based on custom logic.</param>
+		/// <param name="provider">An implementation of <see cref="IQuarterDefinitionProvider" /> that determines the quarter based on custom logic.</param>
 		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -78,7 +78,7 @@ namespace Bodu.Extensions
 		/// Use this overload to support advanced or non-standard fiscal calendars, such as 4-4-5 financial periods, retail accounting
 		/// calendars, or region-specific quarter models not covered by <see cref="CalendarQuarterDefinition" />.
 		/// </remarks>
-		public static int Quarter(this DateTime dateTime, ICalendarQuarterProvider provider)
+		public static int Quarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
 

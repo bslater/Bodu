@@ -196,6 +196,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The format string is invalid..
+        /// </summary>
+        internal static string Arg_Invalid_FormatString {
+            get {
+                return ResourceManager.GetString("Arg_Invalid_FormatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value must not be greater than or equal to the value of {0}..
         /// </summary>
         internal static string Arg_Invalid_GreaterThanOrEqualOtherParameter {
@@ -583,11 +592,38 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input string contained an invalid character &apos;{0}&apos; at position {1}..
+        /// </summary>
+        internal static string Format_Invalid_Character {
+            get {
+                return ResourceManager.GetString("Format_Invalid_Character", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input string was not in the correct format..
         /// </summary>
         internal static string Format_Invalid_String {
             get {
                 return ResourceManager.GetString("Format_Invalid_String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input string was not in the correct format. Must be {0} characters in length..
+        /// </summary>
+        internal static string Format_Invalid_StringLength {
+            get {
+                return ResourceManager.GetString("Format_Invalid_StringLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input unselected day character must be consistent. Found &apos;{0}&apos; vs expected &apos;{1}&apos;..
+        /// </summary>
+        internal static string Format_Invalid_UnselectedCharacter {
+            get {
+                return ResourceManager.GetString("Format_Invalid_UnselectedCharacter", resourceCulture);
             }
         }
         
@@ -786,6 +822,15 @@ namespace Bodu {
         internal static string Rank_MultiDimensionArrayNotSupported {
             get {
                 return ResourceManager.GetString("Rank_MultiDimensionArrayNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insufficient or invalid serialized state for {0}..
+        /// </summary>
+        internal static string SerializationException_InvalidState {
+            get {
+                return ResourceManager.GetString("SerializationException_InvalidState", resourceCulture);
             }
         }
         

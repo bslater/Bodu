@@ -46,7 +46,7 @@ namespace Bodu.Collections.Generic
 			// Disable overwrite
 			buffer.AllowOverwrite = false;
 
-			Assert.ThrowsException<InvalidOperationException>(() => buffer.Enqueue(4));
+			Assert.ThrowsExactly<InvalidOperationException>(() => buffer.Enqueue(4));
 			CollectionAssert.AreEqual(new[] { 1, 2, 3 }, buffer.ToArray());
 		}
 

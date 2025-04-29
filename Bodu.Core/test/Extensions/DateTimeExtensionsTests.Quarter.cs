@@ -127,23 +127,23 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void GetQuarter_WhenUsingInvalidProvider_ShouldThrowOutOfRangeException()
+		public void GetQuarter_WhenUsingInvalidProvider_ShouldThrowExactly()
 		{
 			var input = new DateTime(2024, 4, 20);
 			var provider = new DateTimeExtensionsTests.InValidQuarterProvider();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.Quarter(provider);
 			});
 		}
 
 		[TestMethod]
-		public void GetQuarter_WhenUsingCustomQuarterDefinitionWithoutProvider_ShouldThrowArgumentOutOfRangeException()
+		public void GetQuarter_WhenUsingCustomQuarterDefinitionWithoutProvider_ShouldThrowExactly()
 		{
 			var input = new DateTime(2024, 4, 20);
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.Quarter(CalendarQuarterDefinition.Custom);
 			});

@@ -6,12 +6,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentNullException when the destination array is null.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenArrayIsNull_ShouldThrowArgumentNullException()
+		public void CopyTo_WhenArrayIsNull_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(2);
 			dictionary.Add("A", 1);
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				dictionary.CopyTo(null, 0);
 			});
@@ -49,12 +49,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the destination array is multidimensional.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenArrayIsMultidimensional_ShouldThrowArgumentException()
+		public void CopyTo_WhenArrayIsMultidimensional_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			var array = new KeyValuePair<string, int>[1, 1];
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				((System.Collections.ICollection)dictionary).CopyTo(array, 0);
 			});
@@ -64,12 +64,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the array has a non-zero lower bound.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenArrayHasNonZeroLowerBound_ShouldThrowArgumentException()
+		public void CopyTo_WhenArrayHasNonZeroLowerBound_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			var array = Array.CreateInstance(typeof(KeyValuePair<string, int>), new[] { 1 }, new[] { 1 });
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				((System.Collections.ICollection)dictionary).CopyTo(array, 0);
 			});
@@ -79,12 +79,12 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentOutOfRangeException when the specified index is negative.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+		public void CopyTo_WhenIndexIsNegative_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(1);
 			var array = new KeyValuePair<string, int>[1];
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				dictionary.CopyTo(array, -1);
 			});
@@ -94,7 +94,7 @@ namespace Bodu.Collections.Generic
 		/// Verifies that CopyTo throws ArgumentException when the destination array is too small.
 		/// </summary>
 		[TestMethod]
-		public void CopyTo_WhenArrayIsTooSmall_ShouldThrowArgumentException()
+		public void CopyTo_WhenArrayIsTooSmall_ShouldThrowExactly()
 		{
 			var dictionary = new EvictingDictionary<string, int>(2);
 			dictionary.Add("A", 1);
@@ -102,7 +102,7 @@ namespace Bodu.Collections.Generic
 
 			var array = new KeyValuePair<string, int>[1];
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				dictionary.CopyTo(array, 0);
 			});

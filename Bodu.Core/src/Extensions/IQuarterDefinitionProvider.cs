@@ -1,4 +1,8 @@
-﻿using System;
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="IQuarterDefinitionProvider.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -8,10 +12,10 @@ namespace Bodu.Extensions
 	/// <remarks>
 	/// Implement this interface to support <see cref="CalendarQuarterDefinition.Custom" /> in
 	/// <see cref="DateTimeExtensions.Quarter(DateTime, CalendarQuarterDefinition)" /> and related methods like
-	/// <see cref="DateTimeExtensions.FirstDayOfQuarter(DateTime, ICalendarQuarterProvider)" />. This allows support for non-standard or
+	/// <see cref="DateTimeExtensions.FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" />. This allows support for non-standard or
 	/// domain-specific quarterly definitions such as 4-4-5 calendars or region-specific fiscal models.
 	/// </remarks>
-	public interface ICalendarQuarterProvider
+	public interface IQuarterDefinitionProvider
 	{
 		/// <summary>
 		/// Gets the quarter number (1–4) for the specified <paramref name="dateTime" />.

@@ -1,14 +1,21 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="ComparableHelper.IsOutside.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="ComparableHelper.IsOutside.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
+
+/* Unmerged change from project 'Bodu.Core (net6.0)'
+Before:
 // ---------------------------------------------------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+After:
+// ---------------------------------------------------------------------------------------------------------------
+*/
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
-	using System;
-	using System.Collections.Generic;
-
 	/// <summary>
 	/// Provides helper methods for comparing values.
 	/// </summary>
