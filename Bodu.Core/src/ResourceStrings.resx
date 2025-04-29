@@ -435,4 +435,7 @@
   <data name="SerializationException_InvalidState" xml:space="preserve">
     <value>Insufficient or invalid serialized state for {0}.</value>
   </data>
+  <data name="Arg_Invalid_DestinationTooSmall" xml:space="preserve">
+    <value>The destination {0} must be at least as long as the source {0}</value>
+  </data>
 </root>

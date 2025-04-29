@@ -187,6 +187,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The destination {0} must be at least as long as the source {0}.
+        /// </summary>
+        internal static string Arg_Invalid_DestinationTooSmall {
+            get {
+                return ResourceManager.GetString("Arg_Invalid_DestinationTooSmall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value is not a valid member of {0}..
         /// </summary>
         internal static string Arg_Invalid_EnumValue {
