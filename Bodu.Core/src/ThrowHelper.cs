@@ -830,6 +830,27 @@ namespace Bodu
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthIsInsufficient<T>(
+			ReadOnlySpan<T> span, int index, int requiredLength,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
+		{
+			if (span.Length - index < requiredLength)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
+		/// </summary>
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="index">The index from which to measure the remaining length.</param>
+		/// <param name="requiredLength">The required number of elements.</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
+		/// Message: "Span is too short. Required minimum is {0} from a specified index."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfSpanLengthIsInsufficient<T>(
 			Span<T> span, int index, int requiredLength,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
@@ -852,6 +873,84 @@ namespace Bodu
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
 			ReadOnlySpan<T> span,
+			int divisor,
+			Func<string, Exception>? func = null,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
+		{
+			if (span.Length == 0 || span.Length % divisor != 0)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the destination span is smaller than the source span.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the source span elements.</typeparam>
+		/// <typeparam name="TDestination">The type of the destination span elements.</typeparam>
+		/// <param name="source">The source span.</param>
+		/// <param name="destination">The destination span.</param>
+		/// <param name="paramDestinationName">The name of the destination parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="destination" /> is shorter than <paramref name="source" />.
+		/// Message: "The destination span must be at least as long as the source span."
+		/// </exception>
+		/// <remarks>Useful for validating buffer-to-buffer operations such as copying or endian swapping.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfDestinationTooSmall<TSource, TDestination>(
+			ReadOnlySpan<TSource> source,
+			Span<TDestination> destination,
+			[CallerArgumentExpression(nameof(destination))] string? paramDestinationName = null)
+		{
+			if (destination.Length < source.Length)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "span"),
+					paramDestinationName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the destination array is smaller than the source array.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the source array elements.</typeparam>
+		/// <typeparam name="TDestination">The type of the destination array elements.</typeparam>
+		/// <param name="source">The source array.</param>
+		/// <param name="destination">The destination array.</param>
+		/// <param name="paramDestinationName">The name of the destination parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="destination" /> is shorter than <paramref name="source" />.
+		/// Message: "The destination array (length {0}) must be at least as long as the source array (length {1})."
+		/// </exception>
+		/// <remarks>
+		/// Useful for validating array-to-array operations such as copying or endian swapping. Null checks must be handled separately.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfDestinationTooSmall<TSource, TDestination>(
+			TSource[] source,
+			TDestination[] destination,
+			[CallerArgumentExpression(nameof(destination))] string? paramDestinationName = null)
+		{
+			if (destination.Length < source.Length)
+			{
+				if (destination.Length < source.Length)
+					throw new ArgumentException(
+						string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "array"),
+						paramDestinationName);
+			}
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// </summary>
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
+		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Message: "Length of the Span must be a multiple of {0}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
+			Span<T> span,
 			int divisor,
 			Func<string, Exception>? func = null,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
