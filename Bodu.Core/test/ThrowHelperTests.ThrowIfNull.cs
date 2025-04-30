@@ -5,38 +5,49 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfNull_WhenValueIsNull_ShouldThrow()
+		[DataTestMethod]
+		[DataRow(null)]
+		public void ThrowIfNull_WhenValueIsNull_ShouldThrow(object? value)
 		{
-			object? value = null;
-			Assert.ThrowsExactly<ArgumentNullException>(() => ThrowHelper.ThrowIfNull(value));
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				ThrowHelper.ThrowIfNull(value);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfNull_WhenValueIsNotNull_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow("test")]
+		[DataRow(123)]
+		[DataRow(typeof(string))]
+		public void ThrowIfNull_WhenValueIsNotNull_ShouldNotThrow(object value)
 		{
-			object value = new object();
 			ThrowHelper.ThrowIfNull(value);
 		}
 
-		[TestMethod]
-		public void ThrowIfNull_WithMessage_WhenValueIsNull_ShouldThrowWithMessage()
+		[DataTestMethod]
+		[DataRow(null, "Custom message")]
+		public void ThrowIfNull_WithMessage_WhenValueIsNull_ShouldThrowWithMessage(object? value, string message)
 		{
-			object? value = null;
-			var ex = Assert.ThrowsExactly<ArgumentNullException>(() => ThrowHelper.ThrowIfNull(value, "Custom message"));
-			StringAssert.Contains(ex.Message, "Custom message");
+			var ex = Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				ThrowHelper.ThrowIfNull(value, message);
+			});
+
+			StringAssert.Contains(ex.Message, message);
 		}
 
-		[TestMethod]
-		public void ThrowIfNull_WithMessage_WhenValueIsNotNull_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow("hello", "Custom message")]
+		[DataRow(99, "Another message")]
+		public void ThrowIfNull_WithMessage_WhenValueIsNotNull_ShouldNotThrow(object value, string message)
 		{
-			object value = new object();
-			ThrowHelper.ThrowIfNull(value, "Custom message");
+			ThrowHelper.ThrowIfNull(value, message);
 		}
 	}
 }

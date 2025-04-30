@@ -11,18 +11,27 @@ namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfArrayLengthIsInsufficient_WhenArrayTooShort_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(5, 2, 5)]  // 2 + 5 = 7 > 5 => insufficient
+		[DataRow(4, 0, 5)]  // 0 + 5 = 5 > 4 => insufficient
+		[DataRow(3, 1, 3)]  // 1 + 3 = 4 > 3 => insufficient
+		public void ThrowIfArrayLengthIsInsufficient_WhenArrayTooShort_ShouldThrowExactly(int arrayLength, int offset, int count)
 		{
-			var array = new int[5];
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, 2, 5));
+			var array = new int[arrayLength];
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, count);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfArrayLengthIsInsufficient_WhenArraySufficient_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(10, 2, 5)]  // 2 + 5 = 7 <= 10 => sufficient
+		[DataRow(5, 0, 5)]   // 0 + 5 = 5 <= 5 => sufficient
+		[DataRow(8, 3, 5)]   // 3 + 5 = 8 <= 8 => sufficient
+		public void ThrowIfArrayLengthIsInsufficient_WhenArrayIsSufficient_ShouldNotThrow(int arrayLength, int offset, int count)
 		{
-			var array = new int[10];
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, 2, 5);
+			var array = new int[arrayLength];
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, count);
 		}
 	}
 }

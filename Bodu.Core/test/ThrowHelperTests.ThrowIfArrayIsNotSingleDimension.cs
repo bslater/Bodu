@@ -11,18 +11,35 @@ namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfArrayIsNotSingleDimension_WhenArrayIsMultiDimensional_ShouldThrowExactly()
+		[DataTestMethod]
+		[DynamicData(nameof(GetMultiDimensionalArrayTestData), DynamicDataSourceType.Method)]
+		public void ThrowIfArrayIsNotSingleDimension_WhenArrayIsMultiDimensional_ShouldThrowExactly(Array array)
 		{
-			var array = new int[2, 2];
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIfArrayIsNotSingleDimension(array));
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfArrayIsNotSingleDimension_WhenArrayIsSingleDimension_ShouldNotThrow()
+		[DataTestMethod]
+		[DynamicData(nameof(GetSingleDimensionalArrayTestData), DynamicDataSourceType.Method)]
+		public void ThrowIfArrayIsNotSingleDimension_WhenArrayIsSingleDimension_ShouldNotThrow(Array array)
 		{
-			var array = new int[5];
 			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
+		}
+
+		private static IEnumerable<object[]> GetMultiDimensionalArrayTestData()
+		{
+			yield return new object[] { new int[2, 2] };
+			yield return new object[] { new double[3, 1] };
+			yield return new object[] { new string[1, 1] };
+		}
+
+		private static IEnumerable<object[]> GetSingleDimensionalArrayTestData()
+		{
+			yield return new object[] { new int[5] };
+			yield return new object[] { new double[0] };
+			yield return new object[] { new string[3] };
 		}
 	}
 }

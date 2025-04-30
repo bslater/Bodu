@@ -5,22 +5,37 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfNegative_WhenValueIsNegative_ShouldThrow()
+		/// <summary>
+		/// Verifies that <see cref="ThrowHelper.ThrowIfNegative(int)" /> throws an <see cref="ArgumentOutOfRangeException" /> when the
+		/// value is negative.
+		/// </summary>
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(int.MinValue)]
+		public void ThrowIfNegative_WhenValueIsNegative_ShouldThrowArgumentOutOfRangeException(int value)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfNegative(-1));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfNegative(value);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfNegative_WhenValueIsZeroOrPositive_ShouldNotThrow()
+		/// <summary>
+		/// Verifies that <see cref="ThrowHelper.ThrowIfNegative(int)" /> does not throw when the value is zero or positive.
+		/// </summary>
+		[DataTestMethod]
+		[DataRow(0)]
+		[DataRow(1)]
+		[DataRow(int.MaxValue)]
+		public void ThrowIfNegative_WhenValueIsZeroOrPositive_ShouldNotThrow(int value)
 		{
-			ThrowHelper.ThrowIfNegative(0);
-			ThrowHelper.ThrowIfNegative(5);
+			ThrowHelper.ThrowIfNegative(value);
 		}
 	}
 }

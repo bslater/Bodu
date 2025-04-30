@@ -11,29 +11,37 @@ namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIsNullOrWhiteSpace_WhenNull_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(null)]
+		public void ThrowIsNullOrWhiteSpace_WhenNull_ShouldThrowArgumentNullException(string? value)
 		{
-			string? value = null;
-			Assert.ThrowsExactly<ArgumentNullException>(() => ThrowHelper.ThrowIsNullOrWhiteSpace(value!));
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				ThrowHelper.ThrowIsNullOrWhiteSpace(value!);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIsNullOrWhiteSpace_WhenEmpty_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow("")]
+		[DataRow("   ")]
+		[DataRow("\t")]
+		[DataRow("\n")]
+		public void ThrowIsNullOrWhiteSpace_WhenEmptyOrWhitespace_ShouldThrowArgumentException(string value)
 		{
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIsNullOrWhiteSpace(string.Empty));
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIsNullOrWhiteSpace(value);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIsNullOrWhiteSpace_WhenWhitespace_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow("Valid")]
+		[DataRow("x")]
+		[DataRow("  trimmed")]
+		[DataRow("middle space")]
+		public void ThrowIsNullOrWhiteSpace_WhenValueIsValid_ShouldNotThrow(string value)
 		{
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIsNullOrWhiteSpace("   "));
-		}
-
-		[TestMethod]
-		public void ThrowIsNullOrWhiteSpace_WhenValid_ShouldNotThrow()
-		{
-			ThrowHelper.ThrowIsNullOrWhiteSpace("Valid");
+			ThrowHelper.ThrowIsNullOrWhiteSpace(value);
 		}
 	}
 }

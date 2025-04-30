@@ -5,29 +5,38 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfNullOrEmpty_WhenValueIsNull_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(null)]
+		public void ThrowIfNullOrEmpty_WhenValueIsNull_ShouldThrowArgumentNullException(string? value)
 		{
-			string? value = null;
-			Assert.ThrowsExactly<ArgumentNullException>(() => ThrowHelper.ThrowIfNullOrEmpty(value!));
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				ThrowHelper.ThrowIfNullOrEmpty(value!);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfNullOrEmpty_WhenValueIsEmpty_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow("")]
+		public void ThrowIfNullOrEmpty_WhenValueIsEmpty_ShouldThrowArgumentException(string value)
 		{
-			string value = string.Empty;
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIfNullOrEmpty(value));
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIfNullOrEmpty(value);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfNullOrEmpty_WhenValueIsValid_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow("a")]
+		[DataRow("test")]
+		[DataRow("   ")] // Optional: consider whether whitespace-only is allowed
+		public void ThrowIfNullOrEmpty_WhenValueIsNonEmpty_ShouldNotThrow(string value)
 		{
-			string value = "test";
 			ThrowHelper.ThrowIfNullOrEmpty(value);
 		}
 	}

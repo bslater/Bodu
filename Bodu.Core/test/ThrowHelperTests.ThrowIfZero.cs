@@ -11,16 +11,24 @@ namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfZero_WhenValueIsZero_ShouldThrow()
+		[DataTestMethod]
+		[DataRow(0)]
+		public void ThrowIfZero_WhenValueIsZero_ShouldThrow(int value)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfZero(0));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfZero(value);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfZero_WhenValueIsNonZero_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(1)]
+		[DataRow(-1)]
+		[DataRow(int.MinValue)]
+		[DataRow(int.MaxValue)]
+		public void ThrowIfZero_WhenValueIsNonZero_ShouldNotThrow(int value)
 		{
-			ThrowHelper.ThrowIfZero(5);
+			ThrowHelper.ThrowIfZero(value);
 		}
 	}
 }

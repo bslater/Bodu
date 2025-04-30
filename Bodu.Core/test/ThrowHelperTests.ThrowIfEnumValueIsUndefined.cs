@@ -17,16 +17,23 @@ namespace Bodu
 
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfEnumValueIsUndefined_WhenValueIsUndefined_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow((TestEnum)99)]
+		[DataRow((TestEnum)(-1))]
+		public void ThrowIfEnumValueIsUndefined_WhenValueIsUndefined_ShouldThrowArgumentOutOfRangeException(TestEnum value)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfEnumValueIsUndefined((TestEnum)99));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfEnumValueIsUndefined(value);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfEnumValueIsUndefined_WhenValueIsDefined_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(TestEnum.A)]
+		[DataRow(TestEnum.B)]
+		public void ThrowIfEnumValueIsUndefined_WhenValueIsDefined_ShouldNotThrow(TestEnum value)
 		{
-			ThrowHelper.ThrowIfEnumValueIsUndefined(TestEnum.A);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(value);
 		}
 	}
 }

@@ -5,22 +5,33 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfGreaterThan_WhenValueIsGreater_ShouldThrow()
+		[DataTestMethod]
+		[DataRow(6, 5)]
+		[DataRow(1, 0)]
+		[DataRow(int.MaxValue, int.MaxValue - 1)]
+		public void ThrowIfGreaterThan_WhenValueIsGreater_ShouldThrowArgumentOutOfRangeException(int value, int max)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfGreaterThan(5, 3));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfGreaterThan(value, max);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfGreaterThan_WhenValueIsLessOrEqual_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(3, 3)]
+		[DataRow(2, 3)]
+		[DataRow(0, 0)]
+		[DataRow(-1, 0)]
+		[DataRow(int.MinValue, int.MinValue)]
+		public void ThrowIfGreaterThan_WhenValueIsLessThanOrEqualToMax_ShouldNotThrow(int value, int max)
 		{
-			ThrowHelper.ThrowIfGreaterThan(3, 3);
-			ThrowHelper.ThrowIfGreaterThan(2, 3);
+			ThrowHelper.ThrowIfGreaterThan(value, max);
 		}
 	}
 }

@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="ThrowHelperTests.ThrowIfArrayLengthIsZero.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -5,27 +11,25 @@ namespace Bodu.Core.Test
 {
 	public sealed partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfArrayLengthIsZero_WhenArrayLengthIsZero_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(0)]
+		public void ThrowIfArrayLengthIsZero_WhenArrayLengthIsZero_ShouldThrowExactly(int length)
 		{
-			// Arrange
-			var array = new int[0];
-
-			// Act and Assert
+			var array = new int[length];
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				ThrowHelper.ThrowIfArrayLengthIsZero(array);
 			});
 		}
 
-		[TestMethod]
-		public void ThrowIfArrayLengthIsZero_WhenArrayLengthIsNonZero_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(1)]
+		[DataRow(5)]
+		[DataRow(100)]
+		public void ThrowIfArrayLengthIsZero_WhenArrayLengthIsNonZero_ShouldNotThrow(int length)
 		{
-			// Arrange
-			var array = new int[1];
-
-			// Act and Assert
-			ThrowHelper.ThrowIfArrayLengthIsZero(array); // Should not throw
+			var array = new int[length];
+			ThrowHelper.ThrowIfArrayLengthIsZero(array);
 		}
 	}
 }

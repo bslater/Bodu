@@ -5,22 +5,32 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfLessThanOther_WhenValueIsLess_ShouldThrow()
+		[DataTestMethod]
+		[DataRow(-1, 0)]
+		[DataRow(0, 1)]
+		[DataRow(5, 6)]
+		[DataRow(int.MinValue, int.MaxValue)]
+		public void ThrowIfLessThanOther_WhenValueIsLessThanOther_ShouldThrowArgumentException(int value, int other)
 		{
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIfLessThanOther(1, 2));
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIfLessThanOther(value, other);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfLessThanOther_WhenValueIsEqualOrGreater_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(0, 0)]
+		[DataRow(6, 5)]
+		[DataRow(int.MaxValue, int.MinValue)]
+		public void ThrowIfLessThanOther_WhenValueIsEqualOrGreaterThanOther_ShouldNotThrow(int value, int other)
 		{
-			ThrowHelper.ThrowIfLessThanOther(2, 2);
-			ThrowHelper.ThrowIfLessThanOther(3, 2);
+			ThrowHelper.ThrowIfLessThanOther(value, other);
 		}
 	}
 }

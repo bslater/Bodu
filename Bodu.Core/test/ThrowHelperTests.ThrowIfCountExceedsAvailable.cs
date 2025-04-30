@@ -5,27 +5,32 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfCountExceedsAvailable_WhenCountIsTooLarge_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(6, 5)]   // Count exceeds available
+		[DataRow(-1, 5)]  // Count is negative
+		[DataRow(-10, 0)] // Count is negative regardless of available
+		public void ThrowIfCountExceedsAvailable_WhenCountIsInvalid_ShouldThrowArgumentOutOfRangeException(int count, int available)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfCountExceedsAvailable(6, 5));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfCountExceedsAvailable(count, available);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfCountExceedsAvailable_WhenCountIsNegative_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(0, 0)]
+		[DataRow(0, 5)]
+		[DataRow(3, 5)]
+		[DataRow(5, 5)]
+		public void ThrowIfCountExceedsAvailable_WhenCountIsValid_ShouldNotThrow(int count, int available)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfCountExceedsAvailable(-1, 5));
-		}
-
-		[TestMethod]
-		public void ThrowIfCountExceedsAvailable_WhenCountIsValid_ShouldNotThrow()
-		{
-			ThrowHelper.ThrowIfCountExceedsAvailable(3, 5);
+			ThrowHelper.ThrowIfCountExceedsAvailable(count, available);
 		}
 	}
 }

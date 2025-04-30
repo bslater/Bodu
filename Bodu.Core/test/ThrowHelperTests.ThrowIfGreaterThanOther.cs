@@ -1,4 +1,9 @@
-// Auto-generated test stub for ThrowIfGreaterThanOther
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="ThrowHelperTests.ThrowIfGreaterThanOther.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -6,17 +11,27 @@ namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfGreaterThanOther_WhenValueIsGreater_ShouldThrow()
+		[DataTestMethod]
+		[DataRow(6, 5)]
+		[DataRow(1, 0)]
+		[DataRow(int.MaxValue, int.MaxValue - 1)]
+		public void ThrowIfGreaterThanOther_WhenValueIsGreaterThanOther_ShouldThrowArgumentException(int value, int other)
 		{
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIfGreaterThanOther(5, 3));
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIfGreaterThanOther(value, other);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfGreaterThanOther_WhenValueIsLessOrEqual_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(3, 3)]
+		[DataRow(2, 3)]
+		[DataRow(0, 0)]
+		[DataRow(-1, 0)]
+		[DataRow(int.MinValue, int.MaxValue)]
+		public void ThrowIfGreaterThanOther_WhenValueIsLessThanOrEqualToOther_ShouldNotThrow(int value, int other)
 		{
-			ThrowHelper.ThrowIfGreaterThanOther(2, 3);
-			ThrowHelper.ThrowIfGreaterThanOther(3, 3);
+			ThrowHelper.ThrowIfGreaterThanOther(value, other);
 		}
 	}
 }

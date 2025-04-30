@@ -11,17 +11,28 @@ namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfInvalidStringComparison_WhenInvalidValue_ShouldThrow()
+		[DataTestMethod]
+		[DataRow((StringComparison)999)]
+		[DataRow((StringComparison)(-1))]
+		[DataRow((StringComparison)int.MaxValue)]
+		public void ThrowIfInvalidStringComparison_WhenValueIsInvalid_ShouldThrowArgumentException(StringComparison stringComparison)
 		{
-			Assert.ThrowsExactly<ArgumentException>(() => ThrowHelper.ThrowIfInvalidStringComparison((StringComparison)999));
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				ThrowHelper.ThrowIfInvalidStringComparison(stringComparison);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfInvalidStringComparison_WhenValidValue_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(StringComparison.CurrentCulture)]
+		[DataRow(StringComparison.CurrentCultureIgnoreCase)]
+		[DataRow(StringComparison.InvariantCulture)]
+		[DataRow(StringComparison.InvariantCultureIgnoreCase)]
+		[DataRow(StringComparison.Ordinal)]
+		[DataRow(StringComparison.OrdinalIgnoreCase)]
+		public void ThrowIfInvalidStringComparison_WhenValueIsValid_ShouldNotThrow(StringComparison stringComparison)
 		{
-			ThrowHelper.ThrowIfInvalidStringComparison(StringComparison.Ordinal);
-			ThrowHelper.ThrowIfInvalidStringComparison(StringComparison.InvariantCultureIgnoreCase);
+			ThrowHelper.ThrowIfInvalidStringComparison(stringComparison);
 		}
 	}
 }

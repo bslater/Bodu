@@ -5,50 +5,71 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfLessThan_WhenValueIsLess_ShouldThrow()
+		// Non-nullable overloads
+
+		[DataTestMethod]
+		[DataRow(-1, 0)]
+		[DataRow(0, 1)]
+		[DataRow(5, 6)]
+		public void ThrowIfLessThan_WhenValueIsLessThanMin_ShouldThrowArgumentOutOfRangeException(int value, int min)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfLessThan(2, 5));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfLessThan(value, min);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfLessThan_WhenValueIsEqualOrGreater_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(0, 0)]
+		[DataRow(6, 5)]
+		[DataRow(int.MaxValue, int.MinValue)]
+		public void ThrowIfLessThan_WhenValueIsGreaterThanOrEqualToMin_ShouldNotThrow(int value, int min)
 		{
-			ThrowHelper.ThrowIfLessThan(5, 5);
-			ThrowHelper.ThrowIfLessThan(6, 5);
+			ThrowHelper.ThrowIfLessThan(value, min);
 		}
 
-		[TestMethod]
-		public void ThrowIfLessThan_WhenNullableIsNullAndThrowIfNull_ShouldThrowExactly()
+		// Nullable overloads
+
+		[DataTestMethod]
+		[DataRow(null, 5, true)]
+		public void ThrowIfLessThan_Nullable_WhenValueIsNullAndThrowIfNull_ShouldThrowArgumentNullException(int? value, int min, bool throwIfNull)
 		{
-			int? value = null;
-			Assert.ThrowsExactly<ArgumentNullException>(() => ThrowHelper.ThrowIfLessThan(value, 5, true));
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				ThrowHelper.ThrowIfLessThan(value, min, throwIfNull);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfLessThan_WhenNullableIsNullAndThrowIfNullIsFalse_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(null, 5, false)]
+		public void ThrowIfLessThan_Nullable_WhenValueIsNullAndThrowIfNullIsFalse_ShouldNotThrow(int? value, int min, bool throwIfNull)
 		{
-			int? value = null;
-			ThrowHelper.ThrowIfLessThan(value, 5, false);
+			ThrowHelper.ThrowIfLessThan(value, min, throwIfNull);
 		}
 
-		[TestMethod]
-		public void ThrowIfLessThan_WhenNullableIsLess_ShouldThrow()
+		[DataTestMethod]
+		[DataRow(2, 5, false)]
+		[DataRow(-1, 0, false)]
+		public void ThrowIfLessThan_Nullable_WhenValueIsLessThanMin_ShouldThrowArgumentOutOfRangeException(int? value, int min, bool throwIfNull)
 		{
-			int? value = 2;
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfLessThan(value, 5, false));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfLessThan(value, min, throwIfNull);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfLessThan_WhenNullableIsGreaterOrEqual_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(5, 5, false)]
+		[DataRow(6, 5, false)]
+		public void ThrowIfLessThan_Nullable_WhenValueIsGreaterThanOrEqualToMin_ShouldNotThrow(int? value, int min, bool throwIfNull)
 		{
-			int? value = 5;
-			ThrowHelper.ThrowIfLessThan(value, 5, false);
+			ThrowHelper.ThrowIfLessThan(value, min, throwIfNull);
 		}
 	}
 }

@@ -5,36 +5,30 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfConditionallyRequiredParameterIsNull_WhenConditionMatchesAndValueIsNull_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(null, true, true)]
+		public void ThrowIfConditionallyRequiredParameterIsNull_WhenConditionMatchesAndValueIsNull_ShouldThrowArgumentException(string? value, bool condition, bool matchValue)
 		{
-			string? value = null;
-			var condition = true;
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
-				ThrowHelper.ThrowIfConditionallyRequiredParameterIsNull(value, condition, true);
+				ThrowHelper.ThrowIfConditionallyRequiredParameterIsNull(value, condition, matchValue);
 			});
 		}
 
-		[TestMethod]
-		public void ThrowIfConditionallyRequiredParameterIsNull_WhenConditionDoesNotMatch_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(null, false, true)]
+		[DataRow(null, true, false)]
+		[DataRow("ok", true, true)]
+		[DataRow("ok", false, true)]
+		public void ThrowIfConditionallyRequiredParameterIsNull_WhenConditionDoesNotMatchOrValueIsNotNull_ShouldNotThrow(string? value, bool condition, bool matchValue)
 		{
-			string? value = null;
-			var condition = false;
-			ThrowHelper.ThrowIfConditionallyRequiredParameterIsNull(value, condition, true);
-		}
-
-		[TestMethod]
-		public void ThrowIfConditionallyRequiredParameterIsNull_WhenConditionMatchesAndValueIsNotNull_ShouldNotThrow()
-		{
-			string? value = "ok";
-			var condition = true;
-			ThrowHelper.ThrowIfConditionallyRequiredParameterIsNull(value, condition, true);
+			ThrowHelper.ThrowIfConditionallyRequiredParameterIsNull(value, condition, matchValue);
 		}
 	}
 }

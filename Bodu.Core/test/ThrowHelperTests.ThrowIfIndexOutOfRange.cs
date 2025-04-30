@@ -5,23 +5,35 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace Bodu
 {
 	public partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfIndexOutOfRange_WhenIndexIsGreaterThanOrEqualSize_ShouldThrow()
+		private static readonly int[] TestArray = new[] { 1, 2, 3, 4, 5 };
+
+		[DataTestMethod]
+		[DataRow(5)] // index == Count
+		[DataRow(6)] // index > Count
+		[DataRow(int.MaxValue)]
+		[DataRow(-1)] // negative index
+		public void ThrowIfIndexOutOfRange_WhenIndexIsInvalid_ShouldThrowArgumentOutOfRangeException(int index)
 		{
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfIndexOutOfRange<int>(5, 5));
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ThrowHelper.ThrowIfIndexOutOfRange<int>(6, 5));
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				ThrowHelper.ThrowIfIndexOutOfRange(index, TestArray);
+			});
 		}
 
-		[TestMethod]
-		public void ThrowIfIndexOutOfRange_WhenIndexIsWithinRange_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(0)]
+		[DataRow(1)]
+		[DataRow(4)]
+		public void ThrowIfIndexOutOfRange_WhenIndexIsWithinBounds_ShouldNotThrow(int index)
 		{
-			ThrowHelper.ThrowIfIndexOutOfRange<int>(0, 5);
-			ThrowHelper.ThrowIfIndexOutOfRange<int>(4, 5);
+			ThrowHelper.ThrowIfIndexOutOfRange(index, TestArray);
 		}
 	}
 }

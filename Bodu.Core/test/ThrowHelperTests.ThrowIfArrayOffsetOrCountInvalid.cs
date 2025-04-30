@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="ThrowHelperTests.ThrowIfArrayOffsetOrCountInvalid.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -5,67 +11,42 @@ namespace Bodu
 {
 	public sealed partial class ThrowHelperTests
 	{
-		[TestMethod]
-		public void ThrowIfArrayOffsetOrCountInvalid_WhenIndexIsNegative_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(-1, 2)]  // Negative offset
+		[DataRow(6, 2)]   // Offset > array length
+		[DataRow(2, -1)]  // Negative count
+		[DataRow(2, 10)]  // Count > array length
+		public void ThrowIfArrayOffsetOrCountInvalid_WhenOffsetOrCountOutOfRange_ShouldThrowArgumentOutOfRangeException(int offset, int count)
 		{
 			var array = new int[5];
-
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, -1, 2);
+				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, offset, count);
 			});
 		}
 
-		[TestMethod]
-		public void ThrowIfArrayOffsetOrCountInvalid_WhenIndexExceedsArrayLength_ShouldThrowExactly()
+		[DataTestMethod]
+		[DataRow(3, 3)]  // Offset + count exceeds array length
+		[DataRow(4, 2)]  // Offset + count exceeds array length
+		public void ThrowIfArrayOffsetOrCountInvalid_WhenSumExceedsLength_ShouldThrowArgumentException(int offset, int count)
 		{
 			var array = new int[5];
-
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
-			{
-				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, 6, 2);
-			});
-		}
-
-		[TestMethod]
-		public void ThrowIfArrayOffsetOrCountInvalid_WhenCountIsNegative_ShouldThrowExactly()
-		{
-			var array = new int[5];
-
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
-			{
-				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, 2, -1);
-			});
-		}
-
-		[TestMethod]
-		public void ThrowIfArrayOffsetOrCountInvalid_WhenCountExceedsArrayLength_ShouldThrowExactly()
-		{
-			var array = new int[5];
-
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
-			{
-				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, 2, 10);
-			});
-		}
-
-		[TestMethod]
-		public void ThrowIfArrayOffsetOrCountInvalid_WhenSumOfIndexAndCountExceedsArrayLength_ShouldThrowExactly()
-		{
-			var array = new int[5];
-
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
-				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, 3, 3);
+				ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, offset, count);
 			});
 		}
 
-		[TestMethod]
-		public void ThrowIfArrayOffsetOrCountInvalid_WhenParametersAreValid_ShouldNotThrow()
+		[DataTestMethod]
+		[DataRow(0, 5)]
+		[DataRow(1, 4)]
+		[DataRow(2, 3)]
+		[DataRow(3, 2)]
+		[DataRow(4, 1)]
+		public void ThrowIfArrayOffsetOrCountInvalid_WhenParametersAreValid_ShouldNotThrow(int offset, int count)
 		{
 			var array = new int[5];
-
-			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, 1, 3);
+			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(array, offset, count);
 		}
 	}
 }
