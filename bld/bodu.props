@@ -1,1 +1,7 @@
-
+<Project>
+  <PropertyGroup>
+    <Authors>Bodu Pty. Ltd.</Authors>
+    <Company>Bodu Pty. Ltd.</Company>
+    <Copyright>&#169; Bodu Pty. Ltd.  All rights reserved.</Copyright>
+  </PropertyGroup>
+</Project>

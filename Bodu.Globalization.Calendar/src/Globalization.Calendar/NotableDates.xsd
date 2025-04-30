@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+  vc:minVersion="1.1"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="urn:bodu:globalization:calendar"
+  xmlns:es="urn:bodu:globalization:calendar">
+
+  <!-- Root -->
+  <xs:element name="NotableDates">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="NotableDate" type="es:NotableDate" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Notable Date -->
+  <xs:complexType name="NotableDate">
+    <xs:sequence>
+      <xs:element name="Definition" type="es:Definition"  minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <!-- Definition -->
+  <xs:complexType name="Definition">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element name="Fixed">
+          <xs:complexType>
+            <xs:attribute name="day" type="es:day" use="required" />
+            <xs:attribute name="month" type="es:monthName" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Dynamic">
+          <xs:complexType>
+            <xs:attribute name="providerType" type="es:assemblyTypeName" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Rule">
+          <xs:complexType>
+            <xs:attribute name="month" type="es:monthName" use="required" />
+            <xs:attribute name="dayOfWeek" type="es:dayOfWeek" use="required" />
+            <xs:attribute name="weekOrdinal" type="es:weekOrdinal" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OffsetFrom">
+          <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="offset" type="xs:int" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+
+      <!-- Updated: now using AdjustmentRule -->
+      <xs:element name="AdjustmentRule" type="es:AdjustmentRule" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="type" type="es:notableDateType" use="required" />
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="nonWorking" type="xs:boolean" use="optional" />
+    <xs:attribute name="firstYear" type="xs:unsignedShort" use="optional" />
+    <xs:attribute name="lastYear" type="xs:unsignedShort" use="optional" />
+    <xs:attribute name="calendarType" type="es:assemblyTypeName" use="optional" />
+    <xs:attribute name="territory" type="es:territory" use="optional" />
+    <xs:attribute name="occurrenceYears" type="xs:int" use="optional" />
+  </xs:complexType>
+
+  <!-- AdjustmentRule foundation -->
+  <xs:simpleType name="WhenConditionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Always" />
+      <xs:enumeration value="IfDayOfWeek" />
+      <xs:enumeration value="IfWeekend" />
+      <xs:enumeration value="IfWeekday" />
+      <xs:enumeration value="IfNonWorkingDay" />
+      <xs:enumeration value="IfBeforeFixedDate" />
+      <xs:enumeration value="IfAfterFixedDate" />
+      <xs:enumeration value="IfLeapYear" />
+      <xs:enumeration value="IfNthOccurrenceInMonth" />
+      <xs:enumeration value="Custom" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ActionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MoveToNextWeekday" />
+      <xs:enumeration value="MoveToNextNonWorkingDay" />
+      <xs:enumeration value="MoveToPreviousWeekday" />
+      <xs:enumeration value="AddDays" />
+      <xs:enumeration value="ReplaceWithNamedDate" />
+      <xs:enumeration value="AddObservableDate" />
+      <xs:enumeration value="Custom" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Abstract Base for all AdjustmentRules -->
+  <xs:complexType name="AdjustmentRule">
+    <xs:attribute name="when" type="es:WhenConditionType" use="required" />
+    <xs:attribute name="action" type="es:ActionType" use="required" />
+    <xs:attribute name="dayOfWeek" type="es:dayOfWeek" use="optional" />
+    <xs:attribute name="priority" type="xs:int" use="optional" />
+    <xs:attribute name="nonWorking" type="xs:boolean" use="optional" />
+    <xs:attribute name="territory" type="es:territory" use="optional" />
+    <xs:attribute name="calendarType" type="es:assemblyTypeName" use="optional" />
+    <xs:attribute name="target" type="xs:string" use="optional" />
+    <xs:attribute name="customHandler" type="es:assemblyTypeName" use="optional" />
+  </xs:complexType>
+
+  <!-- Fundamental Types -->
+  <xs:simpleType name="notableDateType">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Holiday" />
+          <xs:enumeration value="Observance" />
+          <xs:enumeration value="DaylightSavingTime" />
+          <xs:enumeration value="Season" />
+          <xs:enumeration value="Christian" />
+          <xs:enumeration value="Chinese" />
+          <xs:enumeration value="Jewish" />
+          <xs:enumeration value="Muslim" />
+          <xs:enumeration value="Orthodox" />
+          <xs:enumeration value="Regional" />
+          <xs:enumeration value="NonOfficial" />
+          <xs:enumeration value="Cultural" />
+          <xs:enumeration value="Remembrance" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+
+  <xs:simpleType name="territory">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^([A-Z]{2}(-[A-Z0-9]{2,3})?)(,([A-Z]{2}(-[A-Z0-9]{2,3})?))*$" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="assemblyTypeName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(([A-Za-z][A-Za-z0-9.+]*?){1,}?)(,\s?([^/\\:*?&quot;&lt;&gt;|]*((,\s?(Version=(\d\.?){1,4}|Culture=(neutral|\w{2}-\w{2})|PublicKeyToken=[a-f0-9]{16})(,\s?)?){3}|))){0,1}$" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="day">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1" />
+      <xs:maxInclusive value="31" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="monthName">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="January" />
+      <xs:enumeration value="February" />
+      <xs:enumeration value="March" />
+      <xs:enumeration value="April" />
+      <xs:enumeration value="May" />
+      <xs:enumeration value="June" />
+      <xs:enumeration value="July" />
+      <xs:enumeration value="August" />
+      <xs:enumeration value="September" />
+      <xs:enumeration value="October" />
+      <xs:enumeration value="November" />
+      <xs:enumeration value="December" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="dayOfWeek">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Monday" />
+      <xs:enumeration value="Tuesday" />
+      <xs:enumeration value="Wednesday" />
+      <xs:enumeration value="Thursday" />
+      <xs:enumeration value="Friday" />
+      <xs:enumeration value="Saturday" />
+      <xs:enumeration value="Sunday" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="weekOrdinal">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="First" />
+      <xs:enumeration value="Second" />
+      <xs:enumeration value="Third" />
+      <xs:enumeration value="Fourth" />
+      <xs:enumeration value="Fifth" />
+      <xs:enumeration value="Last" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
