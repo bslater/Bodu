@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
@@ -31,10 +31,16 @@ namespace Bodu.Collections.Extensions
 		/// <para>All elements are treated as <see cref="object" /> and may need casting to their actual types.</para>
 		/// </remarks>
 		/// <example>
-		/// <code><![CDATA[
-		///class Category { public string Name; public List<Category> Children; }
-		///var root = new List<Category> { ... };
-		///var all = root.RecursiveSelect(c => c.Children).Cast<Category>();
+		/// <code language="csharp">
+		///<![CDATA[
+		/// var root = new[]
+		/// {
+		///     new Node { Name = "A", Children = { new Node { Name = "B" }, new Node { Name = "C" } } },
+		///     new Node { Name = "D" }
+		/// };
+		///
+		/// var flattened = root.RecursiveSelect(n => ((Node)n).Children);
+		/// // Yields: A, B, C, D
 		///]]>
 		/// </code>
 		/// </example>
@@ -63,8 +69,16 @@ namespace Bodu.Collections.Extensions
 		/// </exception>
 		/// <remarks>This overload is useful when you want to flatten and transform the hierarchy into a different shape or type.</remarks>
 		/// <example>
-		/// <code><![CDATA[
-		///var names = nodes.RecursiveSelect(n =< n.Children, n => n.Name);
+		/// <code language="csharp">
+		///<![CDATA[
+		/// var root = new[]
+		/// {
+		///     new Node { Name = "A", Children = { new Node { Name = "B" }, new Node { Name = "C" } } },
+		///     new Node { Name = "D" }
+		/// };
+		///
+		/// var names = root.RecursiveSelect(n => ((Node)n).Children, n => ((Node)n).Name);
+		/// // Yields: "A", "B", "C", "D"
 		///]]>
 		/// </code>
 		/// </example>
@@ -97,8 +111,16 @@ namespace Bodu.Collections.Extensions
 		/// </exception>
 		/// <remarks>Use this when you need both element content and positional context during recursion.</remarks>
 		/// <example>
-		/// <code><![CDATA[
-		///var labeled = nodes.RecursiveSelect(n => n.Children, (n, i) => $"{i}: {n.Name}");
+		/// <code language="csharp">
+		///<![CDATA[
+		/// var root = new[]
+		/// {
+		///     new Node { Name = "A", Children = { new Node { Name = "B" }, new Node { Name = "C" } } },
+		///     new Node { Name = "D" }
+		/// };
+		///
+		/// var labeled = root.RecursiveSelect(n => ((Node)n).Children, (n, i) => $"{i}: {((Node)n).Name}");
+		/// // Yields: "0: A", "1: B", "2: C", "3: D"
 		///]]>
 		/// </code>
 		/// </example>
@@ -131,10 +153,22 @@ namespace Bodu.Collections.Extensions
 		/// </exception>
 		/// <remarks>Use when formatting output that depends on the depth of the node in the hierarchy (e.g., indentation, styling).</remarks>
 		/// <example>
-		/// <code><![CDATA[
-		///var result = nodes.RecursiveSelect(
-		///n => n.Children,
-		///(n, i, depth) => new { n.Name, Index = i, IndentLevel = depth });
+		/// <code language="csharp">
+		///<![CDATA[
+		/// var root = new[]
+		/// {
+		///     new Node { Name = "A", Children = { new Node { Name = "B" }, new Node { Name = "C" } } },
+		///     new Node { Name = "D" }
+		/// };
+		///
+		/// var structured = root.RecursiveSelect(n => ((Node)n).Children,
+		///     (n, i, depth) => new { ((Node)n).Name, Index = i, Depth = depth });
+		///
+		/// // Yields:
+		/// // { Name = "A", Index = 0, Depth = 0 }
+		/// // { Name = "B", Index = 1, Depth = 1 }
+		/// // { Name = "C", Index = 2, Depth = 1 }
+		/// // { Name = "D", Index = 3, Depth = 0 }
 		///]]>
 		/// </code>
 		/// </example>
@@ -171,13 +205,22 @@ namespace Bodu.Collections.Extensions
 		/// </exception>
 		/// <remarks>Useful when pruning the recursion tree — e.g., limiting depth, skipping inactive branches, or filtering by condition.</remarks>
 		/// <example>
-		/// <code><![CDATA[
-		///var filtered = nodes.RecursiveSelect(
-		///n => n.Children,
-		///(n, i, d) => n.Name,
-		///n => n.Children?.Count() > 2
-		///? RecursiveSelectControl.Recurse
-		///: RecursiveSelectControl.YieldOnly);
+		/// <code language="csharp">
+		///<![CDATA[
+		/// var root = new[]
+		/// {
+		///     new Node { Name = "A", Children = { new Node { Name = "B" }, new Node { Name = "C" } } },
+		///     new Node { Name = "D" }
+		/// };
+		///
+		/// var pruned = root.RecursiveSelect(
+		///     n => ((Node)n).Children,
+		///     (n, i, d) => ((Node)n).Name,
+		///     n => ((Node)n).Name == "A"
+		///         ? RecursiveSelectControl.YieldAndRecurse
+		///         : RecursiveSelectControl.YieldOnly);
+		///
+		/// // Yields: "A", "B", "C", "D"
 		///]]>
 		/// </code>
 		/// </example>

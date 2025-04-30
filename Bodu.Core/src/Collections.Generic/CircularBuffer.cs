@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="CircularBuffer.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="CircularBuffer.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
@@ -184,14 +184,14 @@ namespace Bodu.Collections.Generic
 		/// </para>
 		/// </remarks>
 		/// <example>
-		/// <code>
+		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
-		///buffer.ItemEvicted += item => Console.WriteLine($"Evicted: {item}");
+		/// var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
+		/// buffer.ItemEvicted += item => Console.WriteLine($"Evicted: {item}");
 		///
-		///buffer.Enqueue("A");
-		///buffer.Enqueue("B");
-		///buffer.Enqueue("C"); // Triggers ItemEvicted for "A"
+		/// buffer.Enqueue("A");
+		/// buffer.Enqueue("B");
+		/// buffer.Enqueue("C"); // Triggers ItemEvicted for "A"
 		///]]>
 		/// </code>
 		/// </example>
@@ -211,14 +211,14 @@ namespace Bodu.Collections.Generic
 		/// </para>
 		/// </remarks>
 		/// <example>
-		/// <code>
+		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
-		///buffer.ItemEvicting += item => Console.WriteLine($"Evicting: {item}");
+		/// var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
+		/// buffer.ItemEvicting += item => Console.WriteLine($"Evicting: {item}");
 		///
-		///buffer.Enqueue("A");
-		///buffer.Enqueue("B");
-		///buffer.Enqueue("C"); // Triggers ItemEvicting for "A"
+		/// buffer.Enqueue("A");
+		/// buffer.Enqueue("B");
+		/// buffer.Enqueue("C"); // Triggers ItemEvicting for "A"
 		///]]>
 		/// </code>
 		/// </example>

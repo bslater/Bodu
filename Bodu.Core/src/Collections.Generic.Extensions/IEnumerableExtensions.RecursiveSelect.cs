@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Collections.Extensions;
@@ -29,8 +29,8 @@ namespace Bodu.Collections.Generic.Extensions
 		/// Thrown if <paramref name="source" /> or <paramref name="childSelector" /> is null.
 		/// </exception>
 		/// <example>
-		/// <code><![CDATA[
-		///var allNodes = rootNodes.RecursiveSelect(node => node.Children);
+		/// <code language="csharp"><![CDATA[
+		/// var allNodes = rootNodes.RecursiveSelect(node => node.Children);
 		///]]>
 		/// </code>
 		/// </example>
@@ -61,10 +61,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <paramref name="selector" /> is null.
 		/// </exception>
 		/// <example>
-		/// <code><![CDATA[
-		///var names = rootNodes.RecursiveSelect(
-		///node => node.Children,
-		///node => node.Name);
+		/// <code language="csharp"><![CDATA[
+		/// var names = rootNodes.RecursiveSelect(
+		///     node => node.Children,
+		///     node => node.Name);
 		///]]>
 		/// </code>
 		/// </example>
@@ -97,10 +97,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <paramref name="selector" /> is null.
 		/// </exception>
 		/// <example>
-		/// <code><![CDATA[
-		///var indexedNames = rootNodes.RecursiveSelect(
-		///node => node.Children,
-		///(node, index) => $\"{index}: {node.Name}\");
+		/// <code language="csharp"><![CDATA[
+		/// var indexedNames = rootNodes.RecursiveSelect(
+		///     node => node.Children,
+		///     (node, index) => $\"{index}: {node.Name}\");
 		///]]>
 		/// </code>
 		/// </example>
@@ -131,10 +131,10 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <paramref name="selector" /> is null.
 		/// </exception>
 		/// <example>
-		/// <code><![CDATA[
-		///var formatted = rootNodes.RecursiveSelect(
-		///node => node.Children,
-		///(node, index, depth) => new { node.Name, index, depth });
+		/// <code language="csharp"><![CDATA[
+		/// var formatted = rootNodes.RecursiveSelect(
+		///     node => node.Children,
+		///     (node, index, depth) => new { node.Name, index, depth });
 		///]]>
 		/// </code>
 		/// </example>
@@ -173,11 +173,11 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <paramref name="selector" />, or <paramref name="recursionControl" /> is null.
 		/// </exception>
 		/// <example>
-		/// <code><![CDATA[
-		///var filtered = rootNodes.RecursiveSelect(
-		///node => node.Children,
-		///(node, index, depth) => node.Name,
-		///node => node.Children.Count > 0);
+		/// <code language="csharp"><![CDATA[
+		/// var filtered = rootNodes.RecursiveSelect(
+		/// node => node.Children,
+		///     (node, index, depth) => node.Name,
+		///     node => node.Children.Count > 0);
 		///]]>
 		/// </code>
 		/// </example>

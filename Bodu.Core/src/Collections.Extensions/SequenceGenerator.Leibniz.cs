@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="SequenceGenerator.Leibniz.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="SequenceGenerator.Leibniz.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Collections.Extensions
@@ -23,9 +23,9 @@ namespace Bodu.Collections.Extensions
 		/// </returns>
 		/// <remarks>
 		/// <para>The Leibniz series is an infinite alternating series defined as:
-		/// <code>
+		/// <code language="csharp">
 		///<![CDATA[
-		///F(n) = (-1)^n / (2n + 1)
+		/// F(n) = (-1)^n / (2n + 1)
 		///]]>
 		/// </code>
 		/// It converges to π/4 as n approaches infinity.

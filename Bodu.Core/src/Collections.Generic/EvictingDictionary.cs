@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="EvictingDictionary.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="EvictingDictionary.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics;
@@ -323,15 +323,15 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
-		///var cache = new EvictingDictionary<string, int>(capacity: 2, policy: EvictionPolicy.FirstInFirstOut);
-		///cache.ItemEvicting += (key, value) =>
-		///{
-		///Console.WriteLine($""[BeforeEvict] {key} = {value}"");
-		///};
+		/// var cache = new EvictingDictionary<string, int>(capacity: 2, policy: EvictionPolicy.FirstInFirstOut);
+		/// cache.ItemEvicting += (key, value) =>
+		/// {
+		///     Console.WriteLine($""[BeforeEvict] {key} = {value}"");
+		/// };
 		///
-		///cache.Add(""A"", 1);
-		///cache.Add(""B"", 2);
-		///cache.Add(""C"", 3); // Triggers ItemEvicting for ""A""
+		/// cache.Add(""A"", 1);
+		/// cache.Add(""B"", 2);
+		/// cache.Add(""C"", 3); // Triggers ItemEvicting for ""A""
 		///]]>
 		/// </code>
 		/// </example>
@@ -353,15 +353,15 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
-		///var cache = new EvictingDictionary<string, int>(capacity: 2, policy: EvictionPolicy.FirstInFirstOut);
-		///cache.ItemEvicted += (key, value) =>
-		///{
-		///Console.WriteLine($""[AfterEvict] {key} = {value}"");
-		///};
+		/// var cache = new EvictingDictionary<string, int>(capacity: 2, policy: EvictionPolicy.FirstInFirstOut);
+		/// cache.ItemEvicted += (key, value) =>
+		/// {
+		///     Console.WriteLine($""[AfterEvict] {key} = {value}"");
+		/// };
 		///
-		///cache.Add(""A"", 1);
-		///cache.Add(""B"", 2);
-		///cache.Add(""C"", 3); // Triggers ItemEvicted for ""A""
+		/// cache.Add(""A"", 1);
+		/// cache.Add(""B"", 2);
+		/// cache.Add(""C"", 3); // Triggers ItemEvicted for ""A""
 		///]]>
 		/// </code>
 		/// </example>
