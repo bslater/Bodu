@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Provides the base implementation of the <see cref="SipHash" /> cryptographic hash algorithm—a fast, secure, and keyed pseudorandom
+	/// Provides the base implementation of the <see cref="SipHash" /> cryptographic hash algorithm - a fast, secure, and keyed pseudorandom
 	/// function optimized for short input messages. See the <see href="https://131002.net/siphash/">official SipHash specification</see>
 	/// for details.
 	/// </summary>
@@ -28,10 +28,10 @@ namespace Bodu.Security.Cryptography
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
-	/// <description><see cref="SipHash64" /> — Produces a 64-bit hash output suitable for compact keyed checksums.</description>
+	/// <description><see cref="SipHash64" /> -  Produces a 64-bit hash output suitable for compact keyed checksums.</description>
 	/// </item>
 	/// <item>
-	/// <description><see cref="SipHash128" /> — Produces a 128-bit hash output offering increased collision resistance.</description>
+	/// <description><see cref="SipHash128" /> - Produces a 128-bit hash output offering increased collision resistance.</description>
 	/// </item>
 	/// </list>
 	/// <para>The algorithm proceeds in two primary phases:</para>
