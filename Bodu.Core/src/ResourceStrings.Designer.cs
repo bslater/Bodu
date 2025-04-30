@@ -412,6 +412,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to he specified date {0:d} is outside the range of the configured fiscal year starting on {1:d}..
+        /// </summary>
+        internal static string Arg_OutOfRange_DateOutsideFiscalYear {
+            get {
+                return ResourceManager.GetString("Arg_OutOfRange_DateOutsideFiscalYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The index must be non-negative and less than the size of {0}..
         /// </summary>
         internal static string Arg_OutOfRange_IndexValidRange {

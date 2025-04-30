@@ -438,4 +438,7 @@
   <data name="Arg_Invalid_DestinationTooSmall" xml:space="preserve">
     <value>The destination {0} must be at least as long as the source {0}</value>
   </data>
+  <data name="Arg_OutOfRange_DateOutsideFiscalYear" xml:space="preserve">
+    <value>he specified date {0:d} is outside the range of the configured fiscal year starting on {1:d}.</value>
+  </data>
 </root>

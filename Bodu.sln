@@ -10,12 +10,19 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Core.Test", "Bodu.Core\test\Bodu.Core.Test.csproj", "{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E6F805D-8F48-4494-9BEF-4757D7C83648}"
+	ProjectSection(SolutionItems) = preProject
+		bld\bodu.props = bld\bodu.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Security.Cryptography", "Bodu.Security.Cryptography\src\Bodu.Security.Cryptography.csproj", "{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Security.Cryptography.Test", "Bodu.Security.Cryptography\test\Bodu.Security.Cryptography.Test.csproj", "{960C5F9E-A46E-482E-891F-C6252D0923C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{E76ADB4A-C954-415C-A17F-81787C876381}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Globalization.Calendar", "Bodu.Globalization.Calendar\src\Bodu.Globalization.Calendar.csproj", "{510FE440-C019-4E70-8138-0DCBDD29CF0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Globalization.Calendar.Test", "Bodu.Globalization.Calendar\test\Bodu.Globalization.Calendar.Test.csproj", "{7D628D91-802A-450A-B65A-67C9396D6188}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +50,14 @@ Global
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D628D91-802A-450A-B65A-67C9396D6188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D628D91-802A-450A-B65A-67C9396D6188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D628D91-802A-450A-B65A-67C9396D6188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D628D91-802A-450A-B65A-67C9396D6188}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -30,10 +30,23 @@ namespace Bodu
 		{
 			foreach (var item in array)
 			{
-				if (item == null) continue;
-				TypeCode code = Type.GetTypeCode(item.GetType());
-				if (code < TypeCode.SByte || code > TypeCode.Decimal)
+				if (item is null) continue;
+
+				var type = item.GetType();
+
+				// Unbox nullable to underlying type if needed
+				if (Nullable.GetUnderlyingType(type) is Type underlying)
+					type = underlying;
+
+				if (type != typeof(byte) && type != typeof(sbyte) &&
+					type != typeof(short) && type != typeof(ushort) &&
+					type != typeof(int) && type != typeof(uint) &&
+					type != typeof(long) && type != typeof(ulong) &&
+					type != typeof(float) && type != typeof(double) &&
+					type != typeof(decimal))
+				{
 					throw new ArgumentException(ResourceStrings.Arg_Invalid_Array_NumericOnly, paramName);
+				}
 			}
 		}
 
@@ -390,25 +403,23 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the index is outside the valid range of a collection.
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the index is outside the valid range of the specified array.
 		/// </summary>
-		/// <typeparam name="T">Type of items in the collection (used for annotation).</typeparam>
 		/// <param name="index">The index to validate.</param>
-		/// <param name="size">The valid size of the collection.</param>
-		/// <param name="paramName">The parameter name for the index.</param>
+		/// <param name="array">The array to validate the index against.</param>
+		/// <param name="paramName">The name of the parameter representing the index.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="index" /> is not in [0, <paramref name="size" />).
-		/// Message: "The index must be non-negative and less than the size of {0}."
+		/// Thrown if <paramref name="index" /> is less than zero or greater than or equal to <c><paramref name="array" />.LongLength</c>.
+		/// The exception message will state: "The index must be non-negative and less than the size of {0}."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfIndexOutOfRange<T>(
-			int index, int size,
+		public static void ThrowIfIndexOutOfRange(
+			long index, Array array,
 			[CallerArgumentExpression(nameof(index))] string? paramName = null)
-			where T : IComparable<T>
 		{
-			if (index >= size)
+			if (index < 0 || index >= array.LongLength)
 				throw new ArgumentOutOfRangeException(paramName,
-					string.Format(ResourceStrings.Arg_OutOfRange_IndexValidRange, size));
+					string.Format(ResourceStrings.Arg_OutOfRange_IndexValidRange, array.LongLength));
 		}
 
 		/// <summary>

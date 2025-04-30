@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="CalendarQuarterDefinition.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="CalendarQuarterDefinition.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
@@ -52,6 +52,6 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Indicates that the quarter system is defined by a custom rule. Requires external logic to determine quarter boundaries.
 		/// </summary>
-		Custom = 99
+		Custom = -1
 	}
 }
