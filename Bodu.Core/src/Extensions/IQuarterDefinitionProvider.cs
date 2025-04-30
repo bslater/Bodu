@@ -28,6 +28,10 @@ namespace Bodu.Extensions
 		/// </exception>
 		/// <remarks>
 		/// The returned value must be in the range 1 to 4. Implementations should throw an exception for unsupported values or ambiguous ranges.
+		/// <para>
+		/// This method is used by <see cref="DateTimeExtensions.Quarter(DateTime, IQuarterDefinitionProvider)" /> and related extensions to
+		/// support quarter-based logic for non-standard fiscal calendars.
+		/// </para>
 		/// </remarks>
 		int GetQuarter(DateTime dateTime);
 

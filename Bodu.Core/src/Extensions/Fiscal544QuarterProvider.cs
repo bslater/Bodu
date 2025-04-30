@@ -66,8 +66,13 @@ namespace Bodu.Extensions
 
 		/// <inheritdoc />
 		/// <remarks>
-		/// Each quarter spans 13 weeks. The method computes the number of weeks elapsed since the start of the fiscal year and maps it to a
-		/// 1-based quarter. Only dates within the configured fiscal year are supported.
+		/// This method is used by <see cref="DateTimeExtensions.Quarter(DateTime, IQuarterDefinitionProvider)" /> to determine the 1-based
+		/// fiscal quarter for the specified date.
+		/// <para>
+		/// Each quarter spans 13 weeks, beginning from the aligned fiscal year anchor. The method calculates the number of full weeks
+		/// between the input date and the fiscal year start and returns the corresponding quarter number (1–4).
+		/// </para>
+		/// <para>Throws <see cref="ArgumentOutOfRangeException" /> if the date falls outside the supported fiscal year.</para>
 		/// </remarks>
 		public int GetQuarter(DateTime dateTime)
 		{
@@ -88,7 +93,11 @@ namespace Bodu.Extensions
 		}
 
 		/// <inheritdoc />
-		/// <remarks>Calculates the start date of the quarter by offsetting from the fiscal year anchor by 13-week intervals.</remarks>
+		/// <remarks>
+		/// This method is used by <see cref="DateTimeExtensions.FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> to compute the
+		/// starting calendar date of the quarter containing the specified date.
+		/// <para>The start is calculated by offsetting from the fiscal anchor date by a multiple of 13 weeks (91 days) based on the quarter.</para>
+		/// </remarks>
 		public DateTime GetStartDate(DateTime dateTime)
 		{
 			int quarter = GetQuarter(dateTime);
@@ -97,7 +106,11 @@ namespace Bodu.Extensions
 		}
 
 		/// <inheritdoc />
-		/// <remarks>Returns the final calendar day of the quarter, which is always 91 days (13 weeks) after the quarter's start date.</remarks>
+		/// <remarks>
+		/// This method is used by <see cref="DateTimeExtensions.LastDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> to compute the
+		/// final calendar date of the quarter containing the specified date.
+		/// <para>The end date is calculated as 91 days (13 weeks) after the quarter's start date, inclusive.</para>
+		/// </remarks>
 		public DateTime GetEndDate(DateTime dateTime)
 		{
 			var start = GetStartDate(dateTime);
