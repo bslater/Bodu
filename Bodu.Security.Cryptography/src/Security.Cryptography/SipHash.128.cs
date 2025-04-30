@@ -28,8 +28,8 @@ namespace Bodu.Security.Cryptography
 	/// This implementation is suitable for scenarios requiring a higher degree of collision resistance or extended output length, such as
 	/// key-based message authentication over variable-length data.
 	/// </para>
-	/// <note type="important"> This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
-	/// signatures, or secure data integrity checks. </note>
+	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
+	/// signatures, or secure data integrity checks.</note>
 	/// </remarks>
 	public sealed class SipHash128
 		: SipHash

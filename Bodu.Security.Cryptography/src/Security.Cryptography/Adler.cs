@@ -11,23 +11,47 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes an Adler-32 checksum over input data.
+	/// Provides a common base implementation for Adler-32-style checksum algorithms.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Adler-32 is a fast, non-cryptographic checksum algorithm designed by Mark Adler for use in the zlib compression library. It produces
-	/// a 32-bit checksum composed of two sums (A and B) modulo 65521.
+	/// Adler-32 is a fast, non-cryptographic checksum algorithm developed by Mark Adler for use in the zlib compression library. It
+	/// produces a 32-bit checksum composed of two running sums (A and B) combined into a single value. Variants of the algorithm differ in
+	/// the modulus used for summation.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
-	/// password hashing, or integrity verification in security-sensitive contexts.</note>
+	/// <para>
+	/// This abstract base class supports reuse and multiple block processing, and can be extended to implement specific Adler-32 variants.
+	/// Concrete implementations include:
+	/// <list type="bullet">
+	/// <item>
+	/// <term><see cref="Adler32" /></term>
+	/// <description>The standard Adler-32 algorithm using modulo 65521.</description>
+	/// </item>
+	/// <item>
+	/// <term><see cref="Adler32C" /></term>
+	/// <description>An optimized variant using modulo 65536 for SIMD alignment.</description>
+	/// </item>
+	/// </list>
+	/// </para>
+	/// <note type="important">This algorithm family is <b>not</b> cryptographically secure and should <b>not</b> be used for password
+	/// hashing, digital signatures, or integrity verification in security-critical contexts.</note>
 	/// </remarks>
-	public sealed class Adler32
+	public abstract class Adler
 		: System.Security.Cryptography.HashAlgorithm
 	{
-		private const uint Modulo = 65521; // Largest prime smaller than 2^16
+		/// <summary>
+		/// The standard Adler-32 modulus (65521), used in the original zlib implementation.
+		/// </summary>
+		protected const uint Adler32_Modulo = 65521; // Largest prime smaller than 2^16
+
+		/// <summary>
+		/// The Adler-32C modulus (65536), used for performance-oriented implementations with SIMD alignment.
+		/// </summary>
+		protected const uint Adler32C_Modulo = 65536; // 2^16, used in vectorized variants
+
+		private readonly uint modulo;
 		private uint partA;
 		private uint partB;
-		private readonly uint seed;
 		private bool disposed;
 #if !NET6_0_OR_GREATER
 
@@ -36,14 +60,39 @@ namespace Bodu.Security.Cryptography
 #endif
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Adler32" /> class.
+		/// Initializes a new instance of the <see cref="Adler" /> class.
 		/// </summary>
-		public Adler32()
+		protected Adler(uint modulo)
 		{
+			this.modulo = modulo;
 			this.HashSizeValue = 32;
-			this.seed = 0;
 			this.Initialize();
 		}
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
+		/// </summary>
+		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
+		/// internal state and perform a new hash computation without creating a new instance.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
+		/// </returns>
+		/// <remarks>
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
+		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
+		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
 
 		/// <summary>
 		/// Initializes or resets the internal state for a new checksum computation.
@@ -59,25 +108,13 @@ namespace Bodu.Security.Cryptography
 			this.partB = 0;
 		}
 
-#if !NET6_0_OR_GREATER
-
+		/// <inheritdoc />
 		/// <summary>
-		/// Processes a block of data by feeding it into the Fletcher algorithm.
+		/// Processes a block of data by feeding it into the <see cref=" " /> algorithm.
 		/// </summary>
 		/// <param name="array">The byte array containing the data to be hashed.</param>
 		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
 		/// <param name="cbSize">The length of the data to process.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
-#else
-
-		/// <summary>
-		/// Processes a block of data by feeding it into the Fletcher algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-#endif
-
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);
@@ -100,26 +137,11 @@ namespace Bodu.Security.Cryptography
 					this.partB += this.partA;
 				}
 
-				this.partA %= Modulo;
-				this.partB %= Modulo;
+				this.partA %= this.modulo;
+				this.partB %= this.modulo;
 				cbSize -= chunkSize;
 			}
 		}
-
-#if !NET6_0_OR_GREATER
-
-		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
-		/// <exception cref="CryptographicUnexpectedOperationException">This method was called more than once without reinitializing.</exception>
-#else
-
-		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
-#endif
 
 		/// <inheritdoc />
 		protected override void Dispose(bool disposing)
@@ -135,20 +157,18 @@ namespace Bodu.Security.Cryptography
 			base.Dispose(disposing);
 		}
 
-		///// <inheritdoc />
-		//public override bool Equals(object obj)
-		//{
-		//	return obj is Adler32 other &&
-		//		   this. == other.Seed &&
-		//		   this.Prime == other.Prime;
-		//}
-
-		///// <inheritdoc />
-		//public override int GetHashCode()
-		//{
-		//	return HashCode.Combine(this.Seed, this.Prime);
-		//}
-
+		/// <inheritdoc />
+		/// <summary>
+		/// Finalizes the <see cref="Adler" /> checksum computation after all input data has been processed, and returns the resulting hash value.
+		/// </summary>
+		/// <returns>
+		/// A byte array containing the Adler-32 result. The length is always 4 bytes, representing a 32-bit checksum composed of the
+		/// combined values of the two internal accumulators.
+		/// </returns>
+		/// <remarks>
+		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
+		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// </remarks>
 		protected override byte[] HashFinal()
 		{
 #if !NET6_0_OR_GREATER
@@ -196,7 +216,7 @@ namespace Bodu.Security.Cryptography
 			ObjectDisposedException.ThrowIf(this.disposed, this);
 #else
 			if (this.disposed)
-				throw new ObjectDisposedException(nameof(Adler32));
+				throw new ObjectDisposedException(nameof(Adler));
 #endif
 		}
 	}

@@ -7,7 +7,7 @@
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Contains unit tests for the <see cref="Adler32" /> hash algorithm.
+	/// Contains unit tests for the <see cref="Adler" /> hash algorithm.
 	/// </summary>
 	[TestClass]
 	public partial class BernsteinTests

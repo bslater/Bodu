@@ -8,18 +8,18 @@ using Bodu.Infrastructure;
 
 namespace Bodu.Security.Cryptography
 {
-	public partial class Adler32Tests
+	public partial class Adler32CTests
 	{
 		/// <inheritdoc />
 		public override IEnumerable<HashAlgorithmVariant> GetVariants() => new[]
 		{
 			new HashAlgorithmVariant
 			{
-				Name = "Adler32Base",
-				Factory = () => new Adler32(),
+				Name = "Adler32CBase",
+				Factory = () => new Adler32C(),
 				ExpectedHash_ForEmptyByteArray = "00000001",
-				ExpectedHash_ForSimpleTextAsciiBytes = "5BDC0FDA",
-				ExpectedHash_ForByteSequence0To255 = "ADF67F81",
+				ExpectedHash_ForSimpleTextAsciiBytes = "5BCD0FDA",
+				ExpectedHash_ForByteSequence0To255 = "AB807F81",
 				ExpectedHash_ForInputPrefixes = new[]
 				{
 					"00000001", // []
@@ -46,7 +46,7 @@ namespace Bodu.Security.Cryptography
 		/// Provides test case data for parameterized tests using the <c>DynamicData</c> attribute.
 		/// </summary>
 		/// <remarks>
-		/// This method creates a new instance of the <see cref="Adler32Tests" /> class and yields test case data for each
+		/// This method creates a new instance of the <see cref="Adler32CTests" /> class and yields test case data for each
 		/// <see cref="HashAlgorithmVariant" /> defined in <see cref="GetVariants" />. It is intended to be used as a data source for
 		/// <c>[DataTestMethod]</c> tests that validate different configurations or behaviors of the <see cref="Adler" /> hash algorithm.
 		/// </remarks>
@@ -55,7 +55,7 @@ namespace Bodu.Security.Cryptography
 		/// </returns>
 		public static IEnumerable<object[]> GetTestVariants()
 		{
-			var instance = new Adler32Tests();
+			var instance = new Adler32CTests();
 			foreach (var variant in instance.GetVariants())
 				yield return new object[] { variant };
 		}

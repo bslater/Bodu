@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
-using System;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
@@ -28,7 +27,7 @@ namespace Bodu.Security.Cryptography
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
-	/// <description><see cref="SipHash64" /> -  Produces a 64-bit hash output suitable for compact keyed checksums.</description>
+	/// <description><see cref="SipHash64" /> - Produces a 64-bit hash output suitable for compact keyed checksums.</description>
 	/// </item>
 	/// <item>
 	/// <description><see cref="SipHash128" /> - Produces a 128-bit hash output offering increased collision resistance.</description>
@@ -48,8 +47,8 @@ namespace Bodu.Security.Cryptography
 	/// </description>
 	/// </item>
 	/// </list>
-	/// <note type="important"> This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
-	/// signatures, or secure data integrity checks. </note>
+	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
+	/// signatures, or secure data integrity checks.</note>
 	/// </remarks>
 	public abstract class SipHash
 		: System.Security.Cryptography.KeyedHashAlgorithm
@@ -185,6 +184,31 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
+		/// </summary>
+		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
+		/// internal state and perform a new hash computation without creating a new instance.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
+		/// </returns>
+		/// <remarks>
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
+		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
+		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
+		/// <inheritdoc />
 		public override void Initialize()
 		{
 			this.ThrowIfDisposed();
@@ -222,14 +246,28 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		protected override void HashCore(byte[] buffer, int offset, int length)
+		/// <summary>
+		/// Processes a block of data by feeding it into the <see cref="SipHash" /> algorithm.
+		/// </summary>
+		/// <param name="array">The byte array containing the data to be hashed.</param>
+		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
+		/// <param name="cbSize">The length of the data to process.</param>
+		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			this.ThrowIfDisposed();
 			this.length += (ulong)length;
-			this.ProcessBlocks(buffer, offset, length);
+			this.ProcessBlocks(array, ibStart, cbSize);
 		}
 
 		/// <inheritdoc />
+		/// <summary>
+		/// Finalizes the <see cref="Elf64" /> hash computation after all input data has been processed, and returns the resulting hash value.
+		/// </summary>
+		/// <returns>A byte array containing the Elf64 result. The length is always 8 bytes, representing the 64-bit hash output.</returns>
+		/// <remarks>
+		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
+		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// </remarks>
 		protected override byte[] HashFinal()
 		{
 			this.ThrowIfDisposed();

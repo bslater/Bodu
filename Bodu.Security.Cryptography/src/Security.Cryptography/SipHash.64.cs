@@ -27,8 +27,8 @@ namespace Bodu.Security.Cryptography
 	/// This implementation is intended for applications requiring fast keyed hashing over short messages, such as hash table protection or
 	/// lightweight message authentication.
 	/// </para>
-	/// <note type="important"> This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
-	/// signatures, or secure data integrity checks. </note>
+	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
+	/// signatures, or secure data integrity checks.</note>
 	/// </remarks>
 	public sealed class SipHash64
 		: SipHash

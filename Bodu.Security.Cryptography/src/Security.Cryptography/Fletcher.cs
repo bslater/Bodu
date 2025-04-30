@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
-using System;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
@@ -87,6 +86,31 @@ namespace Bodu.Security.Cryptography
 			base.Dispose(disposing);
 		}
 
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
+		/// </summary>
+		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
+		/// internal state and perform a new hash computation without creating a new instance.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
+		/// </returns>
+		/// <remarks>
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
+		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
+		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
 		/// <summary>
 		/// Initializes the internal state of the hash algorithm.
 		/// </summary>
@@ -103,25 +127,13 @@ namespace Bodu.Security.Cryptography
 			this.residualBytes = 0;
 		}
 
-#if !NET6_0_OR_GREATER
-
+		/// <inheritdoc />
 		/// <summary>
-		/// Processes a block of data by feeding it into the Fletcher algorithm.
+		/// Processes a block of data by feeding it into the <see cref="Fletcher" /> algorithm.
 		/// </summary>
 		/// <param name="array">The byte array containing the data to be hashed.</param>
 		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
 		/// <param name="cbSize">The length of the data to process.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
-#else
-
-		/// <summary>
-		/// Processes a block of data by feeding it into the Fletcher algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-#endif
-
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);
@@ -137,10 +149,26 @@ namespace Bodu.Security.Cryptography
 			this.ProcessBlocks(array.AsSpan(), ibStart, cbSize);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash value.
+		/// Finalizes the <see cref="Fletcher" /> checksum computation after all input data has been processed, and returns the resulting
+		/// hash value.
 		/// </summary>
-		/// <returns>A byte array containing the computed hash.</returns>
+		/// <returns>
+		/// A byte array containing the Fletcher result. The length depends on the <see cref="HashAlgorithm.HashSize" /> setting:
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>HashSize = 32</c>: Returns a 4-byte Fletcher-32 checksum</description>
+		/// </item>
+		/// <item>
+		/// <description><c>HashSize = 64</c>: Returns an 8-byte Fletcher-64 checksum</description>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
+		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// </remarks>
 		protected override byte[] HashFinal()
 		{
 			ThrowIfDisposed();

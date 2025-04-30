@@ -6,8 +6,6 @@
 
 using Bodu.Extensions;
 using System.Buffers.Binary;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -210,6 +208,31 @@ namespace Bodu.Security.Cryptography
 			);
 		}
 
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
+		/// </summary>
+		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
+		/// internal state and perform a new hash computation without creating a new instance.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <inheritdoc />
+		/// <summary>
+		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
+		/// </returns>
+		/// <remarks>
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
+		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
+		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
 		/// <summary>
 		/// Initializes the current instance of the <see cref="Crc" /> class using the initial value from the CRC parameters.
 		/// </summary>
@@ -269,6 +292,12 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
+		/// <summary>
+		/// Processes a block of data by feeding it into the <see cref="Crc" /> algorithm using the provided <see cref="CrcStandard" />.
+		/// </summary>
+		/// <param name="array">The byte array containing the data to be hashed.</param>
+		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
+		/// <param name="cbSize">The length of the data to process.</param>
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);
@@ -286,6 +315,18 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
+		/// <summary>
+		/// Finalizes the CRC (Cyclic Redundancy Check) computation after all input data has been processed, and returns the resulting
+		/// checksum value.
+		/// </summary>
+		/// <returns>
+		/// A byte array containing the CRC result. The length depends on the configured <see cref="HashAlgorithm.HashSize" />, which is
+		/// determined by the CRC standard supplied when the instance was created (e.g., 8 bits = 1 byte, 32 bits = 4 bytes, 64 bits = 8 bytes).
+		/// </returns>
+		/// <remarks>
+		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
+		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// </remarks>
 		protected override byte[] HashFinal()
 		{
 #if !NET6_0_OR_GREATER
