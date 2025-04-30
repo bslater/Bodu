@@ -5,42 +5,42 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-    
-jobs:
-  build-docfx:
-    runs-on: windows-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  actions: read
+  pages: write
+  id-token: write
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.x'
-
-      - name: Install DocFX globally
-        run: dotnet tool install -g docfx
-
-      - name: Install dependencies
-        run: dotnet restore
-        
-      - name: Build documentation site
-        working-directory: docs
-        run: docfx docfx.json
-          
-      #- name: Add root index page
-      #  run: |
-      #    echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Bodu Docs</title></head><body><h1>Bodu Documentation</h1><ul><li><a href='Bodu.Core/'>Bodu.Core API Docs</a></li><li><a href='Bodu.Security.Cryptography/'>Bodu.Security.Cryptography API Docs</a></li></ul></body></html>" > _site/index.html
-
-      - name: List generated output
-        run: dir docs/_site
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
   
-      - name: Publish to GitHub Pages
-        if: github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_site
-          keep_files: false
-          force_orphan: true
+jobs:
+  publish-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Dotnet Setup
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.x
+
+    - run: dotnet tool update -g docfx
+    - run: docfx docs/docfx.json
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        # Upload entire repository
+        path: 'docs/_site'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+
