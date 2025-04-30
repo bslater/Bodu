@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.Quarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateTimeExtensions.Quarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
@@ -38,15 +38,18 @@ namespace Bodu.Extensions
 			=> Quarter(dateTime, CalendarQuarterDefinition.CalendarYear);
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using the given <see cref="CalendarQuarterDefinition" /> to
-		/// determine the fiscal calendar structure.
+		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using the given
+		/// <see cref="CalendarQuarterDefinition" /> to determine the fiscal calendar structure.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <param name="definition">The quarter system definition to apply (e.g., <see cref="CalendarQuarterDefinition.CalendarYear" />, <see cref="CalendarQuarterDefinition.FinancialJuly" />).</param>
+		/// <param name="definition">
+		/// The quarter system definition to apply (e.g., <see cref="CalendarQuarterDefinition.CalendarYear" />, <see cref="CalendarQuarterDefinition.FinancialJuly" />).
+		/// </param>
 		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="definition" /> is not a valid value of the <see cref="CalendarQuarterDefinition" /> enum, or if it is
-		/// <see cref="CalendarQuarterDefinition.Custom" />. Use the <c>Quarter(DateTime, IDateTimeQuarterProvider)</c> overload to support custom definitions.
+		/// <see cref="CalendarQuarterDefinition.Custom" />. Use the <see cref="Quarter(DateTime, IQuarterDefinitionProvider)" /> overload
+		/// to support custom definitions.
 		/// </exception>
 		/// <remarks>
 		/// This method supports predefined quarter structures aligned to calendar or financial years. The result is based on adjusting the
@@ -54,21 +57,23 @@ namespace Bodu.Extensions
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
-			if (!Enum.IsDefined(typeof(CalendarQuarterDefinition), definition) || definition == CalendarQuarterDefinition.Custom)
-				throw new ArgumentOutOfRangeException(nameof(definition),
-					definition == CalendarQuarterDefinition.Custom
-						? "Custom quarter definitions require an external provider."
-						: string.Format(ResourceStrings.Arg_Invalid_EnumValue, typeof(CalendarQuarterDefinition).Name));
+			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
 			int offset = (int)definition;
 			return ((dateTime.Month + offset - 1) % 12) / 3 + 1;
 		}
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom <see cref="IQuarterDefinitionProvider" /> implementation.
+		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom
+		/// <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <param name="provider">An implementation of <see cref="IQuarterDefinitionProvider" /> that determines the quarter based on custom logic.</param>
+		/// <param name="provider">
+		/// An implementation of <see cref="IQuarterDefinitionProvider" /> that determines the quarter based on custom logic.
+		/// </param>
 		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -77,6 +82,11 @@ namespace Bodu.Extensions
 		/// <remarks>
 		/// Use this overload to support advanced or non-standard fiscal calendars, such as 4-4-5 financial periods, retail accounting
 		/// calendars, or region-specific quarter models not covered by <see cref="CalendarQuarterDefinition" />.
+		/// <para>
+		/// This method delegates to <see cref="IQuarterDefinitionProvider.GetQuarter" /> and can be used in conjunction with
+		/// <see cref="FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> and
+		/// <see cref="LastDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> for complete custom quarter boundary resolution.
+		/// </para>
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{

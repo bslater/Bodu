@@ -387,8 +387,8 @@
   <data name="Arg_Invalid_GreaterThanOrEqualOtherParameter" xml:space="preserve">
     <value>The value must not be greater than or equal to the value of {0}.</value>
   </data>
-  <data name="Arg_Exception_ParameterRequiredIf" xml:space="preserve">
-    <value>A value for '{0}' must be provided when '{1}' is  {2}.</value>
+  <data name="Arg_Required_ParameterRequiredIf" xml:space="preserve">
+    <value>The '{0}' parameter is required when '{1}' is set to {2}.</value>
   </data>
   <data name="Arg_Invalid_LessThanOrEqualOtherParameter" xml:space="preserve">
     <value>The value must not be less than or equal to the value of {0}.</value>
@@ -440,5 +440,8 @@
   </data>
   <data name="Arg_OutOfRange_DateOutsideFiscalYear" xml:space="preserve">
     <value>he specified date {0:d} is outside the range of the configured fiscal year starting on {1:d}.</value>
+  </data>
+  <data name="Arg_Required_ProviderInterface" xml:space="preserve">
+    <value>Custom definitions require an external provider that implements {0}.</value>
   </data>
 </root>

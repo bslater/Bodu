@@ -61,15 +61,6 @@ namespace Bodu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A value for &apos;{0}&apos; must be provided when &apos;{1}&apos; is  {2}..
-        /// </summary>
-        internal static string Arg_Exception_ParameterRequiredIf {
-            get {
-                return ResourceManager.GetString("Arg_Exception_ParameterRequiredIf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0} action must be initialized with no {1} items..
         /// </summary>
         internal static string Arg_Invalid_ActionRequiresNull {
@@ -588,6 +579,24 @@ namespace Bodu {
         internal static string Arg_Params_ContainsNullValue {
             get {
                 return ResourceManager.GetString("Arg_Params_ContainsNullValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; parameter is required when &apos;{1}&apos; is set to {2}..
+        /// </summary>
+        internal static string Arg_Required_ParameterRequiredIf {
+            get {
+                return ResourceManager.GetString("Arg_Required_ParameterRequiredIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom definitions require an external provider that implements {0}..
+        /// </summary>
+        internal static string Arg_Required_ProviderInterface {
+            get {
+                return ResourceManager.GetString("Arg_Required_ProviderInterface", resourceCulture);
             }
         }
         

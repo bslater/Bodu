@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="RecursiveSelectControl.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="RecursiveSelectControl.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Collections.Extensions
@@ -21,73 +21,73 @@ namespace Bodu.Collections.Extensions
 	/// <list type="table">
 	/// <listheader>
 	/// <term>Combination</term>
-	/// <description>Yield?</description>
-	/// <description>Recurse?</description>
-	/// <description>Break Level?</description>
-	/// <description>Exit All?</description>
+	/// <description>Yield</description>
+	/// <description>Recurse</description>
+	/// <description>Break Level</description>
+	/// <description>Exit All</description>
 	/// </listheader>
 	/// <item>
 	/// <term><see cref="SkipOnly" /></term>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="YieldOnly" /></term>
-	/// <description>✔️</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="YieldAndRecurse" /></term>
-	/// <description>✔️</description>
-	/// <description>✔️</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
+	/// <description>Yes</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="YieldAndBreak" /></term>
-	/// <description>✔️</description>
-	/// <description>❌</description>
-	/// <description>✔️</description>
-	/// <description>❌</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="YieldAndExit" /></term>
-	/// <description>✔️</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>✔️</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="RecurseOnly" /></term>
-	/// <description>❌</description>
-	/// <description>✔️</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
+	/// <description>No</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="SkipAndRecurse" /></term>
-	/// <description>❌</description>
-	/// <description>✔️</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
+	/// <description>No</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="SkipAndBreak" /></term>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>✔️</description>
-	/// <description>❌</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>Yes</description>
+	/// <description>No</description>
 	/// </item>
 	/// <item>
 	/// <term><see cref="SkipAndExit" /></term>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>❌</description>
-	/// <description>✔️</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>No</description>
+	/// <description>Yes</description>
 	/// </item>
 	/// </list>
 	/// </remarks>

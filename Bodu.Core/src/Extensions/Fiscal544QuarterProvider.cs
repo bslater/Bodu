@@ -42,22 +42,6 @@ namespace Bodu.Extensions
 	/// The start of each week is controlled by the specified <see cref="DayOfWeek" /> (commonly Sunday). The anchor date will be
 	/// automatically aligned to the beginning of its week based on this value.
 	/// </para>
-	/// <para>This provider must be explicitly instantiated and passed to quarter-related extension methods such as:</para>
-	/// <code language="csharp">
-	///<![CDATA[
-	///var provider = new Fiscal544QuarterProvider(
-	///fiscalYearStart: new DateTime(2025, 1, 26), // Sunday closest to Feb 1
-	///firstDayOfWeek: DayOfWeek.Sunday
-	///);
-	///
-	///int quarter = someDate.Quarter(provider);
-	///DateTime start = someDate.FirstDayOfQuarter(provider);
-	///]]>
-	/// </code>
-	/// <para>
-	/// These methods use the logic in <see cref="IQuarterDefinitionProvider" /> to determine the quarter number and boundaries. This
-	/// approach avoids modifying enum-based logic and is fully extensible.
-	/// </para>
 	/// </remarks>
 	public sealed class Fiscal544QuarterProvider : IQuarterDefinitionProvider
 	{
@@ -81,12 +65,10 @@ namespace Bodu.Extensions
 		}
 
 		/// <inheritdoc />
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown when the specified <paramref name="dateTime" /> falls outside the bounds of the fiscal year defined by the
-		/// <c>fiscalYearStart</c>. The date must be within the range of week 1 to week 52 (or 53) of the fiscal year. This provider
-		/// instance only supports a single fiscal year beginning at the configured start date. Use a separate provider instance for dates
-		/// in other fiscal years.
-		/// </exception>
+		/// <remarks>
+		/// Each quarter spans 13 weeks. The method computes the number of weeks elapsed since the start of the fiscal year and maps it to a
+		/// 1-based quarter. Only dates within the configured fiscal year are supported.
+		/// </remarks>
 		public int GetQuarter(DateTime dateTime)
 		{
 			var alignedDate = AlignToStartOfWeek(dateTime.Date, firstDayOfWeek);
@@ -94,24 +76,33 @@ namespace Bodu.Extensions
 
 			if (totalWeeks < 0)
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
-					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, this.fiscalYearStart));
+					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, fiscalYearStart));
 
 			int maxWeeks = Is53WeekFiscalYear() ? 53 : 52;
 
 			if (totalWeeks >= maxWeeks)
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
-					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, this.fiscalYearStart));
+					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, fiscalYearStart));
 
 			return Math.Min((totalWeeks / 13) + 1, 4);
 		}
 
 		/// <inheritdoc />
-		public int GetStartMonthFromQuarter(int quarter)
+		/// <remarks>Calculates the start date of the quarter by offsetting from the fiscal year anchor by 13-week intervals.</remarks>
+		public DateTime GetStartDate(DateTime dateTime)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(quarter, 1, 4);
+			int quarter = GetQuarter(dateTime);
+			var start = fiscalYearStart.AddDays((quarter - 1) * 13 * 7);
+			return new DateTime(start.Year, start.Month, start.Day, 0, 0, 0, dateTime.Kind);
+		}
 
-			var startOfQuarter = fiscalYearStart.AddDays((quarter - 1) * 13 * 7);
-			return startOfQuarter.Month;
+		/// <inheritdoc />
+		/// <remarks>Returns the final calendar day of the quarter, which is always 91 days (13 weeks) after the quarter's start date.</remarks>
+		public DateTime GetEndDate(DateTime dateTime)
+		{
+			var start = GetStartDate(dateTime);
+			var end = start.AddDays((13 * 7) - 1);
+			return new DateTime(end.Year, end.Month, end.Day, 0, 0, 0, dateTime.Kind);
 		}
 
 		/// <summary>

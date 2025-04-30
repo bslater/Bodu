@@ -135,7 +135,7 @@ namespace Bodu
 			if (EqualityComparer<TCondition>.Default.Equals(conditionalParam, conditionalValue) && value is null)
 			{
 				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Exception_ParameterRequiredIf, paramName, conditionalParamName, conditionalValue),
+					string.Format(ResourceStrings.Arg_Required_ParameterRequiredIf, paramName, conditionalParamName, conditionalValue),
 					paramName);
 			}
 		}

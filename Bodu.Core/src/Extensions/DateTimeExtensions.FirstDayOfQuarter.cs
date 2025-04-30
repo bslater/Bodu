@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateTimeExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
@@ -52,12 +52,22 @@ namespace Bodu.Extensions
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="definition" /> is not a defined value of the <see cref="CalendarQuarterDefinition" /> enumeration.
 		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />, which requires an external
+		/// provider. Use the <see cref="FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> overload instead.
+		/// </exception>
 		/// <remarks>
-		/// This overload supports different quarter definitions such as the Calendar Year and various Financial Year systems, as defined by
-		/// the <see cref="CalendarQuarterDefinition" /> enumeration.
+		/// This overload supports predefined calendar and financial quarter systems only. Use the <c>Custom</c> value with a provider-based
+		/// overload for non-standard fiscal systems.
 		/// </remarks>
 		public static DateTime FirstDayOfQuarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
+			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
+
 			int month = GetStartMonthFromQuarter(definition, dateTime.Quarter(definition));
 			int year = dateTime.Year;
 			if (month > dateTime.Month)
@@ -76,9 +86,7 @@ namespace Bodu.Extensions
 		/// (00:00:00) and the <see cref="DateTime.Kind" /> preserved.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if the <paramref name="provider" /> returns an invalid quarter number or month (outside the range 1–12).
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="provider" /> returns an invalid quarter boundary.</exception>
 		/// <remarks>
 		/// This method supports advanced or domain-specific definitions of quarters by delegating logic to the specified
 		/// <paramref name="provider" />, such as 4-4-5 fiscal calendars or regional fiscal systems.
@@ -86,14 +94,7 @@ namespace Bodu.Extensions
 		public static DateTime FirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-
-			int startMonth = provider.GetStartMonthFromQuarter(Quarter(dateTime, provider));
-			if (startMonth is < 1 or > 12)
-				throw new ArgumentOutOfRangeException(nameof(provider), ResourceStrings.Arg_OutOfRange_InvalidMonthNumber);
-
-			int year = dateTime.Month >= startMonth ? dateTime.Year : dateTime.Year - 1;
-
-			return new DateTime(GetTicksForDate(year, startMonth, 1), dateTime.Kind);
+			return provider.GetStartDate(dateTime);
 		}
 	}
 }
