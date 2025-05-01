@@ -3,8 +3,7 @@ namespace Bodu.Collections.Generic
 	public partial class CircularBufferTests
 	{
 		/// <summary>
-		/// Verifies that TrimExcess reduces the internal capacity to match Count when the buffer is
-		/// not full.
+		/// Verifies that TrimExcess reduces the internal capacity to match Count when the buffer is not full.
 		/// </summary>
 		[TestMethod]
 		public void TrimExcess_WhenBufferIsNotFull_ShouldReduceCapacityToCount()
@@ -92,18 +91,40 @@ namespace Bodu.Collections.Generic
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 			buffer.Enqueue(3);
+			buffer.Enqueue(4);
 			buffer.Dequeue();         // remove 1
-			buffer.Enqueue(4);        // wrap
+			buffer.Enqueue(5);
 
 			buffer.TrimExcess();
-			CollectionAssert.AreEqual(new[] { 2, 3, 4 }, buffer.ToArray());
+			CollectionAssert.AreEqual(new[] { 2, 3, 4, 5 }, buffer.ToArray());
 
 			buffer.Dequeue();         // remove 2
-			buffer.Dequeue();         // remove 3
-			buffer.TrimExcess();      // capacity should reduce to 1
-			buffer.Enqueue(5);        // wrap
+			buffer.TrimExcess();      // capacity should reduce to 3
+			buffer.Enqueue(6);        // wrap
 
-			CollectionAssert.AreEqual(new[] { 5 }, buffer.ToArray());
+			CollectionAssert.AreEqual(new[] { 4, 5, 6 }, buffer.ToArray());
+		}
+
+		/// <summary>
+		/// Verifies that TrimExcess preserves the last item.
+		/// </summary>
+		[TestMethod]
+		public void TrimExcess_WhenCalled_ShouldPreservePeek()
+		{
+			var buffer = new CircularBuffer<int>(10);
+			buffer.Enqueue(1);
+			buffer.Enqueue(2);
+			buffer.Enqueue(3);
+			buffer.Enqueue(4);
+			buffer.Dequeue();         // remove 1
+			buffer.Enqueue(5);        // buffer: [2, 3, 4, 5]
+
+			int peek = buffer.Peek(); // should be 2
+			Assert.AreEqual(2, peek);
+
+			buffer.TrimExcess();
+
+			Assert.AreEqual(peek, buffer.Peek()); // still 2
 		}
 	}
 }

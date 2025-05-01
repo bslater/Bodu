@@ -95,6 +95,7 @@ namespace Bodu.Collections.Generic
 
 			var dequeueing = Task.Run(() =>
 			{
+				Task.Delay(5).Wait(); // allow buffer to fill slightly
 				for (int i = 0; i < 100; i++)
 				{
 					if (buffer.TryDequeue(out int value))

@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="CircularBuffer.IEnumerable.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="CircularBuffer.IEnumerable.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
@@ -12,44 +12,16 @@ namespace Bodu.Collections.Generic
 		: System.Collections.Generic.IEnumerable<T>
 	{
 		/// <summary>
-		/// Returns an enumerator that iterates through the <see cref="CircularBuffer{T}" />.
+		/// Returns an enumerator that iterates over a snapshot of the buffer’s contents.
 		/// </summary>
-		/// <returns>An <see cref="Enumerator" /> that can be used to iterate through the buffer.</returns>
+		/// <returns>An enumerator that provides forward-only, read-only access to the buffer's contents.</returns>
 		/// <remarks>
 		/// <para>
-		/// The <see langword="foreach" /> statement in C# ( <c>For Each</c> in Visual Basic) hides
-		/// the complexity of using enumerators. Therefore, using <see langword="foreach" /> is
-		/// recommended over directly manipulating the enumerator.
+		/// This method captures a snapshot of the buffer using <see cref="ToArray" />. The enumerator operates over that snapshot, ensuring
+		/// that enumeration is not affected by modifications made to the buffer after enumeration begins.
 		/// </para>
-		/// <para>
-		/// The enumerator provides read-only access to the collection. It cannot be used to modify
-		/// the underlying buffer.
-		/// </para>
-		/// <para>
-		/// Initially, the enumerator is positioned before the first element. At this position,
-		/// <see cref="Enumerator.Current" /> is undefined. You must call
-		/// <see cref="Enumerator.MoveNext" /> to advance to the first element before reading <see cref="Enumerator.Current" />.
-		/// </para>
-		/// <para>
-		/// <see cref="Enumerator.Current" /> returns the same value until
-		/// <see cref="Enumerator.MoveNext" /> is called. Each call to
-		/// <see cref="Enumerator.MoveNext" /> advances the enumerator to the next element.
-		/// </para>
-		/// <para>
-		/// If <see cref="Enumerator.MoveNext" /> passes the end of the buffer, the enumerator is
-		/// positioned after the last element and returns <see langword="false" />. At this point,
-		/// <see cref="Enumerator.Current" /> is undefined, and you must create a new enumerator
-		/// instance to iterate again.
-		/// </para>
-		/// <para>
-		/// The enumerator is invalidated if the buffer is modified. Subsequent calls to
-		/// <see cref="Enumerator.MoveNext" /> or
-		/// <see cref="System.Collections.IEnumerator.Reset" /> will throw an <see cref="System.InvalidOperationException" />.
-		/// </para>
-		/// <para>
-		/// Enumeration is not thread-safe. To guarantee thread safety, lock the buffer during
-		/// enumeration. <see cref="CircularBuffer{T}" /> is not synchronized by default.
-		/// </para>
+		/// <para>For performance and safety, the enumerator should be preferred over manual index iteration in concurrent or volatile scenarios.</para>
+		/// <para><b>Note:</b> This type is not thread-safe. If thread safety is required, consider using <see cref="Bodu.Collections.Generic.Concurrent.ConcurrentCircularBuffer{T}" />.</para>
 		/// </remarks>
 		public Enumerator GetEnumerator()
 			=> new CircularBuffer<T>.Enumerator(this);

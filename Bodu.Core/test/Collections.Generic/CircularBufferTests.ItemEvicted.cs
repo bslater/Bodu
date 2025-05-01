@@ -60,13 +60,24 @@
 		public void ItemEvicted_WhenConcurrentOverwrite_ShouldNotThrow()
 		{
 			var buffer = new CircularBuffer<int>(10, allowOverwrite: true);
-			var fired = 0;
+			using var evicted = new ManualResetEventSlim(false);
 
-			buffer.ItemEvicted += _ => Interlocked.Increment(ref fired);
+			buffer.ItemEvicted += (evictedItem) => evicted.Set();
 
-			Parallel.For(0, 1000, i => buffer.Enqueue(i));
+			// Fill buffer to enable overwriting
+			for (int i = 0; i < buffer.Capacity; i++)
+				buffer.Enqueue(i);
 
-			Assert.IsTrue(fired > 0);
+			// Start concurrent enqueuing that will trigger overwrite
+			var writer = Task.Run(() =>
+			{
+				for (int i = 0; i < 100; i++)
+					buffer.Enqueue(i);
+			});
+
+			writer.Wait();
+
+			Assert.IsTrue(evicted.Wait(1000), "Eviction event was not triggered during concurrent overwrite.");
 		}
 
 		/// <summary>

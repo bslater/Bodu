@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace Bodu.Extensions
 {
@@ -29,24 +30,7 @@ namespace Bodu.Extensions
 		private sealed class InValidQuarterProvider : IQuarterDefinitionProvider
 		{
 			/// <summary>
-			/// Returns an invalid month number (outside the 1–12 range) for each valid quarter.
-			/// </summary>
-			/// <param name="quarter">The quarter (expected 1–4).</param>
-			/// <returns>An invalid month number.</returns>
-			public int GetStartMonthFromQuarter(int quarter)
-			{
-				return quarter switch
-				{
-					1 => 0,    // Invalid (below range)
-					2 => 13,   // Invalid (above range)
-					3 => -1,   // Invalid (negative)
-					4 => 999,  // Invalid (far above range)
-					_ => throw new ArgumentOutOfRangeException(nameof(quarter), "GetQuarter must be between 1 and 4.")
-				};
-			}
-
-			/// <summary>
-			/// Always returns an invalid quarter number (outside the 1–4 range).
+			/// Always returns an invalid quarter number (outside the expected range of 1–4).
 			/// </summary>
 			/// <param name="dateTime">The input <see cref="DateTime" />.</param>
 			/// <returns>An invalid quarter number.</returns>
@@ -54,12 +38,40 @@ namespace Bodu.Extensions
 			{
 				return dateTime.Month switch
 				{
-					1 => 0,    // Invalid (below range)
-					2 => -5,   // Invalid (negative)
-					3 => 5,    // Invalid (above range)
-					4 => 999,  // Invalid (far above range)
-					_ => 10    // Also invalid
+					1 => 0,     // Invalid (below range)
+					2 => -5,    // Invalid (negative)
+					3 => 5,     // Invalid (above range)
+					4 => 999,   // Invalid (far above range)
+					_ => 10     // Also invalid
 				};
+			}
+
+			/// <summary>
+			/// Always throws <see cref="ArgumentOutOfRangeException" /> to simulate an invalid quarter mapping.
+			/// </summary>
+			/// <param name="dateTime">The input <see cref="DateTime" />.</param>
+			public DateTime GetStartDate(DateTime dateTime)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateTime), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			/// <summary>
+			/// Always throws <see cref="ArgumentOutOfRangeException" /> to simulate an invalid quarter mapping.
+			/// </summary>
+			/// <param name="dateTime">The input <see cref="DateTime" />.</param>
+			public DateTime GetEndDate(DateTime dateTime)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateTime), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateTime GetStartDate(int quarter)
+			{
+				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateTime GetEndDate(int quarter)
+			{
+				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
 			}
 		}
 
@@ -84,56 +96,68 @@ namespace Bodu.Extensions
 				}
 			}
 
-			/// <summary>
-			/// Returns the first calendar month corresponding to the specified quarter, where quarters are defined as:
-			/// <list type="bullet">
-			/// <item>
-			/// <term>Q1</term>
-			/// <description>December–February (Starts in December)</description>
-			/// </item>
-			/// <item>
-			/// <term>Q2</term>
-			/// <description>March–May</description>
-			/// </item>
-			/// <item>
-			/// <term>Q3</term>
-			/// <description>June–August</description>
-			/// </item>
-			/// <item>
-			/// <term>Q4</term>
-			/// <description>September–November</description>
-			/// </item>
-			/// </list>
-			/// </summary>
-			/// <param name="quarter">The quarter number (1–4).</param>
-			/// <returns>The first month of the specified quarter, where months are in the range 1 (January) to 12 (December).</returns>
-			/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is not in the range 1–4.</exception>
-			/// <remarks>
-			/// This implementation supports fiscal or retail calendars where the fiscal year begins in December, and Q1 spans December to February.
-			/// </remarks>
-			public int GetStartMonthFromQuarter(int quarter)
+			public int GetQuarter(DateTime dateTime)
 			{
-				return quarter switch
+				return dateTime.Month switch
 				{
-					1 => 12,
-					2 => 3,
-					3 => 6,
-					4 => 9,
-					_ => throw new ArgumentOutOfRangeException(nameof(quarter), "GetQuarter must be between 1 and 4.")
+					12 => 1,
+					1 or 2 => 1,
+					3 or 4 or 5 => 2,
+					6 or 7 or 8 => 3,
+					9 or 10 or 11 => 4,
+					_ => throw new ArgumentOutOfRangeException(nameof(dateTime.Month))
 				};
 			}
 
-			/// <summary>
-			/// Gets the quarter number (1–4) for the specified date where quarters are defined as: Q1 = Dec–Feb, Q2 = Mar–May, Q3 =
-			/// Jun–Aug, Q4 = Sep–Nov.
-			/// </summary>
-			/// <param name="dateTime">The date to evaluate.</param>
-			/// <returns>An integer from 1 to 4 indicating the quarter.</returns>
-			public int GetQuarter(DateTime dateTime)
+			public DateTime GetStartDate(DateTime dateTime)
 			{
-				// Shift month index so that December = 0, January = 1, ..., November = 11
-				int shifted = dateTime.Month % 12;
-				return (shifted / 3) + 1;
+				return GetQuarter(dateTime) switch
+				{
+					1 => new DateTime(dateTime.Month == 12 ? dateTime.Year : dateTime.Year - 1, 12, 1),
+					2 => new DateTime(dateTime.Year, 3, 1),
+					3 => new DateTime(dateTime.Year, 6, 1),
+					4 => new DateTime(dateTime.Year, 9, 1),
+					_ => throw new ArgumentOutOfRangeException(nameof(dateTime))
+				};
+			}
+
+			public DateTime GetEndDate(DateTime dateTime)
+			{
+				var quarter = GetQuarter(dateTime);
+				var start = GetStartDate(dateTime);
+
+				return quarter switch
+				{
+					1 => new DateTime(start.Year + 1, 2, DateTime.DaysInMonth(start.Year + 1, 2)),
+					2 => new DateTime(start.Year, 5, 31),
+					3 => new DateTime(start.Year, 8, 31),
+					4 => new DateTime(start.Year, 11, 30),
+					_ => throw new ArgumentOutOfRangeException(nameof(dateTime))
+				};
+			}
+
+			public DateTime GetStartDate(int quarter)
+			{
+				return quarter switch
+				{
+					1 => new DateTime(2023, 12, 1), // assumes test year context
+					2 => new DateTime(2024, 3, 1),
+					3 => new DateTime(2024, 6, 1),
+					4 => new DateTime(2024, 9, 1),
+					_ => throw new ArgumentOutOfRangeException(nameof(quarter))
+				};
+			}
+
+			public DateTime GetEndDate(int quarter)
+			{
+				return quarter switch
+				{
+					1 => new DateTime(2024, 2, DateTime.DaysInMonth(2024, 2)),
+					2 => new DateTime(2024, 5, 31),
+					3 => new DateTime(2024, 8, 31),
+					4 => new DateTime(2024, 11, 30),
+					_ => throw new ArgumentOutOfRangeException(nameof(quarter))
+				};
 			}
 		}
 	}

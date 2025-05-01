@@ -47,7 +47,7 @@ namespace Bodu.Extensions
 		{
 			var input = new DateTime(2024, 4, 20);
 
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				_ = input.FirstDayOfQuarter(CalendarQuarterDefinition.Custom);
 			});

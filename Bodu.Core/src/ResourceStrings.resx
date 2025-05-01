@@ -439,7 +439,7 @@
     <value>The destination {0} must be at least as long as the source {0}</value>
   </data>
   <data name="Arg_OutOfRange_DateOutsideFiscalYear" xml:space="preserve">
-    <value>he specified date {0:d} is outside the range of the configured fiscal year starting on {1:d}.</value>
+    <value>The specified date {0:d} is outside the range of the configured fiscal year starting on {1:d}.</value>
   </data>
   <data name="Arg_Required_ProviderInterface" xml:space="preserve">
     <value>Custom definitions require an external provider that implements {0}.</value>

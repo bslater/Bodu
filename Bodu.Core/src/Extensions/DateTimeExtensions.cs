@@ -142,14 +142,26 @@ namespace Bodu.Extensions
 
 		private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
 
-		/// <summary> Returns the number of ticks representing the date portion (midnight) of the specified tick value. <param name="ticks">
-		/// A tick count representing a date and time, where one tick equals 100 nanoseconds since 0001-01-01 00:00:00.000 in the Gregorian
-		/// calendar. </param> <returns> The number of ticks corresponding to the start of the day (midnight) for the given <paramref
-		/// name="ticks" />. This value is a multiple of <see cref="DateTimeExtensions.TicksPerDay" />. </returns> <remarks> <para> This
-		/// method discards any time-of-day component by rounding down to the nearest whole day. It is equivalent to calling
+		/// <summary>
+		/// Returns the number of ticks representing the date portion (midnight) of the specified tick value.
+		/// </summary>
+		/// <param name="ticks">
+		/// A tick count representing a date and time, where one tick equals 100 nanoseconds since 0001-01-01 00:00:00.000 in the Gregorian calendar.
+		/// </param>
+		/// <returns>
+		/// The number of ticks corresponding to the start of the day (midnight) for the given <paramref name="ticks" />. This value is a
+		/// multiple of <see cref="DateTimeExtensions.TicksPerDay" />.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method discards any time-of-day component by rounding down to the nearest whole day. It is equivalent to calling
 		/// <c>DateTime.Date.Ticks</c> but avoids object allocations and is optimized for internal calendar or performance-sensitive usage.
-		/// </para> <para> No validation is performed. The caller is responsible for ensuring that <paramref name="ticks" /> falls within
-		/// the valid <see cref="DateTime" /> range. </para> </remarks>
+		/// </para>
+		/// <para>
+		/// No validation is performed. The caller is responsible for ensuring that <paramref name="ticks" /> falls within the valid
+		/// <see cref="DateTime" /> range.
+		/// </para>
+		/// </remarks>
 		internal static long GetDateAsTicks(long ticks)
 			=> ticks - (ticks % DateTimeExtensions.TicksPerDay);
 
@@ -264,9 +276,7 @@ namespace Bodu.Extensions
 		/// This method multiplies the input <paramref name="days" /> by the number of ticks per day, rounding to the nearest whole tick
 		/// using symmetric arithmetic rounding (midpoint rounding away from zero).
 		/// </para>
-		/// <para>
-		/// It is equivalent in purpose to <see cref="TimeSpan.FromDays(double).Ticks" /> but optimized for internal use and avoids allocations.
-		/// </para>
+		/// <para>It is equivalent in purpose to <see cref="TimeSpan.FromDays(double)" /> but optimized for internal use and avoids allocations.</para>
 		/// <para>
 		/// No argument validation is performed; it is the caller's responsibility to ensure that <paramref name="days" /> is within a valid range.
 		/// </para>
@@ -557,7 +567,7 @@ namespace Bodu.Extensions
 		/// <see cref="System.DateTime" /> range, and that <paramref name="dayOfWeek" /> is a valid <see cref="System.DayOfWeek" /> enum value.
 		/// </para>
 		/// </remarks>
-		private static long GetPreviousDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
+		internal static long GetPreviousDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
 		{
 			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
 			return DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)day - 7) % 7);

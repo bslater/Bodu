@@ -49,6 +49,14 @@ namespace Bodu.Extensions
 		DateTime GetStartDate(DateTime dateTime);
 
 		/// <summary>
+		/// Gets the start date of the specified quarter number (1–4) within the configured fiscal year.
+		/// </summary>
+		/// <param name="quarter">The quarter number (1–4).</param>
+		/// <returns>A <see cref="DateTime" /> value representing the start date of the given quarter.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the quarter value is not between 1 and 4.</exception>
+		DateTime GetStartDate(int quarter);
+
+		/// <summary>
 		/// Gets the end date of the quarter that includes the specified <paramref name="dateTime" />.
 		/// </summary>
 		/// <param name="dateTime">The input <see cref="DateTime" /> used to identify the containing quarter.</param>
@@ -60,5 +68,13 @@ namespace Bodu.Extensions
 		/// Thrown if the <paramref name="dateTime" /> does not fall within a known or supported quarter.
 		/// </exception>
 		DateTime GetEndDate(DateTime dateTime);
+
+		/// <summary>
+		/// Gets the end date of the specified quarter number (1–4) within the configured fiscal year.
+		/// </summary>
+		/// <param name="quarter">The quarter number (1–4).</param>
+		/// <returns>A <see cref="DateTime" /> value representing the end date of the given quarter.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the quarter value is not between 1 and 4.</exception>
+		DateTime GetEndDate(int quarter);
 	}
 }

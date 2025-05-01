@@ -89,55 +89,32 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the array is too short for the given index and required length.
+		/// Throws an exception if the array does not have enough elements from the specified index to accommodate the required length.
 		/// </summary>
-		/// <param name="array">The array to check.</param>
-		/// <param name="index">The starting index.</param>
-		/// <param name="requiredLength">The required length from index onward.</param>
-		/// <param name="paramName">The name of the array parameter.</param>
+		/// <param name="array">The array to validate. Must be non-null and single-dimensional.</param>
+		/// <param name="index">The starting index to validate against.</param>
+		/// <param name="requiredLength">The number of elements required starting from <paramref name="index" />.</param>
+		/// <param name="paramArrayName">The name of the array parameter (captured automatically).</param>
+		/// <param name="paramIndexName">The name of the index parameter (captured automatically).</param>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index" /> is negative.</exception>
 		/// <exception cref="ArgumentException">
-		/// Thrown when <c>array.Length - index &lt; requiredLength</c>.
+		/// Thrown when <c><paramref name="array" />.Length - <paramref name="index" /> &lt; <paramref name="requiredLength" /></c>.
 		/// Message: "Array is too short. Required minimum is {0} from a specified index."
 		/// </exception>
+		/// <remarks>
+		/// This method ensures that a caller can safely access a block of <paramref name="requiredLength" /> elements starting at
+		/// <paramref name="index" /> without exceeding array bounds.
+		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfArrayLengthIsInsufficient(
 			Array array, int index, int requiredLength,
-			[CallerArgumentExpression(nameof(array))] string? paramName = null)
+			[CallerArgumentExpression(nameof(array))] string? paramArrayName = null,
+			[CallerArgumentExpression(nameof(array))] string? paramIndexName = null)
 		{
+			if (index < 0)
+				throw new ArgumentOutOfRangeException(string.Format(ResourceStrings.Arg_OutOfRange_IndexValidRange, paramArrayName), paramIndexName);
 			if (array.Length - index < requiredLength)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <c>null</c> when the
-		/// <paramref name="conditionalParam" /> matches the specified <paramref name="conditionalValue" />.
-		/// </summary>
-		/// <typeparam name="TValue">The type of the parameter being validated.</typeparam>
-		/// <typeparam name="TCondition">The type of the conditional parameter.</typeparam>
-		/// <param name="value">The parameter value to validate for null.</param>
-		/// <param name="conditionalParam">The current value of the conditional parameter.</param>
-		/// <param name="conditionalValue">The conditional value that requires <paramref name="value" /> to be non-null.</param>
-		/// <param name="paramName">The name of the <paramref name="value" /> parameter (captured automatically).</param>
-		/// <param name="conditionalParamName">The name of the <paramref name="conditionalParam" /> parameter (captured automatically).</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when <paramref name="conditionalParam" /> equals <paramref name="conditionalValue" /> and <paramref name="value" /> is
-		/// <c>null</c>. The exception message follows the pattern: "Parameter '{0}' is required when '{1}' is '{2}'."
-		/// </exception>
-		/// <remarks>Use this method when a parameter becomes mandatory based on the value of another parameter.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfConditionallyRequiredParameterIsNull<TValue, TCondition>(
-			TValue? value,
-			TCondition conditionalParam,
-			TCondition conditionalValue,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null,
-			[CallerArgumentExpression(nameof(conditionalParam))] string? conditionalParamName = null)
-		{
-			if (EqualityComparer<TCondition>.Default.Equals(conditionalParam, conditionalValue) && value is null)
-			{
-				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Required_ParameterRequiredIf, paramName, conditionalParamName, conditionalValue),
-					paramName);
-			}
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramArrayName);
 		}
 
 		/// <summary>
@@ -264,6 +241,38 @@ namespace Bodu
 		}
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <c>null</c> when the
+		/// <paramref name="conditionalParam" /> matches the specified <paramref name="conditionalValue" />.
+		/// </summary>
+		/// <typeparam name="TValue">The type of the parameter being validated.</typeparam>
+		/// <typeparam name="TCondition">The type of the conditional parameter.</typeparam>
+		/// <param name="value">The parameter value to validate for null.</param>
+		/// <param name="conditionalParam">The current value of the conditional parameter.</param>
+		/// <param name="conditionalValue">The conditional value that requires <paramref name="value" /> to be non-null.</param>
+		/// <param name="paramName">The name of the <paramref name="value" /> parameter (captured automatically).</param>
+		/// <param name="conditionalParamName">The name of the <paramref name="conditionalParam" /> parameter (captured automatically).</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="conditionalParam" /> equals <paramref name="conditionalValue" /> and <paramref name="value" /> is
+		/// <c>null</c>. The exception message follows the pattern: "Parameter '{0}' is required when '{1}' is '{2}'."
+		/// </exception>
+		/// <remarks>Use this method when a parameter becomes mandatory based on the value of another parameter.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfConditionallyRequiredParameterIsNull<TValue, TCondition>(
+			TValue? value,
+			TCondition conditionalParam,
+			TCondition conditionalValue,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null,
+			[CallerArgumentExpression(nameof(conditionalParam))] string? conditionalParamName = null)
+		{
+			if (EqualityComparer<TCondition>.Default.Equals(conditionalParam, conditionalValue) && value is null)
+			{
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Required_ParameterRequiredIf, paramName, conditionalParamName, conditionalValue),
+					paramName);
+			}
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the specified <paramref name="count" /> is less than zero or greater
 		/// than the number of <paramref name="available" /> items.
 		/// </summary>
@@ -286,6 +295,58 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(paramName,
 					string.Format(ResourceStrings.Arg_OutOfRange_CountExceedsAvailable, available));
 			}
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the destination span is smaller than the source span.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the source span elements.</typeparam>
+		/// <typeparam name="TDestination">The type of the destination span elements.</typeparam>
+		/// <param name="source">The source span.</param>
+		/// <param name="destination">The destination span.</param>
+		/// <param name="paramDestinationName">The name of the destination parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="destination" /> is shorter than <paramref name="source" />.
+		/// Message: "The destination span must be at least as long as the source span."
+		/// </exception>
+		/// <remarks>Useful for validating buffer-to-buffer operations such as copying or endian swapping.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfDestinationTooSmall<TSource, TDestination>(
+			ReadOnlySpan<TSource> source,
+			Span<TDestination> destination,
+			[CallerArgumentExpression(nameof(destination))] string? paramDestinationName = null)
+		{
+			if (destination.Length < source.Length)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "span"),
+					paramDestinationName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the destination array is smaller than the source array.
+		/// </summary>
+		/// <typeparam name="TSource">The type of the source array elements.</typeparam>
+		/// <typeparam name="TDestination">The type of the destination array elements.</typeparam>
+		/// <param name="source">The source array.</param>
+		/// <param name="destination">The destination array.</param>
+		/// <param name="paramDestinationName">The name of the destination parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="destination" /> is shorter than <paramref name="source" />.
+		/// Message: "The destination array (length {0}) must be at least as long as the source array (length {1})."
+		/// </exception>
+		/// <remarks>
+		/// Useful for validating array-to-array operations such as copying or endian swapping. Null checks must be handled separately.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfDestinationTooSmall<TSource, TDestination>(
+			TSource[] source,
+			TDestination[] destination,
+			[CallerArgumentExpression(nameof(destination))] string? paramDestinationName = null)
+		{
+			if (destination.Length < source.Length)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "array"),
+					paramDestinationName);
 		}
 
 		/// <summary>
@@ -890,61 +951,6 @@ namespace Bodu
 		{
 			if (span.Length == 0 || span.Length % divisor != 0)
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), paramName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the destination span is smaller than the source span.
-		/// </summary>
-		/// <typeparam name="TSource">The type of the source span elements.</typeparam>
-		/// <typeparam name="TDestination">The type of the destination span elements.</typeparam>
-		/// <param name="source">The source span.</param>
-		/// <param name="destination">The destination span.</param>
-		/// <param name="paramDestinationName">The name of the destination parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="destination" /> is shorter than <paramref name="source" />.
-		/// Message: "The destination span must be at least as long as the source span."
-		/// </exception>
-		/// <remarks>Useful for validating buffer-to-buffer operations such as copying or endian swapping.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfDestinationTooSmall<TSource, TDestination>(
-			ReadOnlySpan<TSource> source,
-			Span<TDestination> destination,
-			[CallerArgumentExpression(nameof(destination))] string? paramDestinationName = null)
-		{
-			if (destination.Length < source.Length)
-				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "span"),
-					paramDestinationName);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the destination array is smaller than the source array.
-		/// </summary>
-		/// <typeparam name="TSource">The type of the source array elements.</typeparam>
-		/// <typeparam name="TDestination">The type of the destination array elements.</typeparam>
-		/// <param name="source">The source array.</param>
-		/// <param name="destination">The destination array.</param>
-		/// <param name="paramDestinationName">The name of the destination parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="destination" /> is shorter than <paramref name="source" />.
-		/// Message: "The destination array (length {0}) must be at least as long as the source array (length {1})."
-		/// </exception>
-		/// <remarks>
-		/// Useful for validating array-to-array operations such as copying or endian swapping. Null checks must be handled separately.
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfDestinationTooSmall<TSource, TDestination>(
-			TSource[] source,
-			TDestination[] destination,
-			[CallerArgumentExpression(nameof(destination))] string? paramDestinationName = null)
-		{
-			if (destination.Length < source.Length)
-			{
-				if (destination.Length < source.Length)
-					throw new ArgumentException(
-						string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "array"),
-						paramDestinationName);
-			}
 		}
 
 		/// <summary>
