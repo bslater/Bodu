@@ -25,6 +25,18 @@ namespace Bodu.Collections.Generic
 			Assert.AreEqual(0, buffer.Count);
 			Assert.IsTrue(buffer.AllowOverwrite);
 		}
+		
+		/// <summary>
+		/// Verifies that specifying capacity uses it and defaults AllowOverwrite to true.
+		/// </summary>
+		[DataTestMethod]
+		[DataRow(10)]
+		[DataRow(Array.MaxLength)]
+		public void Ctor_WhenCapacityProvided_ShouldUseCapacity(int capacity)
+		{
+			var buffer = new CircularBuffer<int>(capacity);
+			Assert.AreEqual(capacity, buffer.Capacity);
+		}
 
 		/// <summary>
 		/// Verifies that AllowOverwrite is set correctly when passed to the constructor.
@@ -97,6 +109,7 @@ namespace Bodu.Collections.Generic
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(0)]
+		[DataRow(int.MaxValue)]
 		public void Ctor_WhenCapacityIsInvalid_ShouldThrowExactly(int size)
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
