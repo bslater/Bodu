@@ -3,8 +3,122 @@ namespace Bodu.Collections.Generic
 	public partial class CircularBufferTests
 	{
 		/// <summary>
-		/// Verifies that enumerator iterates over buffer elements in FirstInFirstOut (First-In,
-		/// First-Out) order.
+		/// Verifies that enumeration remains consistent after multiple wraparounds and mutations.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_AfterMultipleStateChanges_ShouldYieldCorrectSequence()
+		{
+			var buffer = new CircularBuffer<int>(3);
+			buffer.Enqueue(10);
+			buffer.Enqueue(20);
+			buffer.Enqueue(30);
+			buffer.Dequeue();         // 10 removed
+			buffer.Enqueue(40);       // wrap
+			buffer.Dequeue();         // 20 removed
+			buffer.Enqueue(50);       // wrap again
+
+			var result = buffer.ToList();
+
+			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, result);
+		}
+
+		/// <summary>
+		/// Verifies that the enumerator is declared as a readonly struct and that all instance fields are readonly.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_ShouldBeImmutable()
+		{
+			// Arrange
+			var enumeratorType = typeof(CircularBuffer<int>.Enumerator);
+
+			// Assert - Struct must be marked as readonly
+			Assert.IsTrue(enumeratorType.IsValueType, "Enumerator must be a value type (struct).");
+
+			// Assert - All instance fields must be readonly (IsInitOnly == true)
+			var mutableFields = enumeratorType
+				.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
+				.Where(f => !f.IsInitOnly && !f.IsStatic)
+				.ToList();
+
+			Assert.AreEqual(0, mutableFields.Count,
+				$"Enumerator contains mutable instance fields: {string.Join(", ", mutableFields.Select(f => f.Name))}");
+		}
+
+		/// <summary>
+		/// Verifies that enumeration does not fail when the head is at index 0, ensuring the enumerator does not access a negative array
+		/// index when initialized with head - 1.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenHeadIsZero_ShouldEnumerateCorrectly()
+		{
+			// Arrange
+			var buffer = new CircularBuffer<int>(3);
+			buffer.Enqueue(10); // Head will be at 0
+			buffer.Enqueue(20);
+			buffer.Enqueue(30);
+
+			buffer.Dequeue();   // Remove 10, head now at 1
+			buffer.Dequeue();   // Remove 20, head now at 2
+			buffer.Enqueue(40); // Head wraps to 2, then tail at 0
+			buffer.Enqueue(50); // Head wraps to 0 again
+
+			// Final state: buffer contains [30, 40, 50] in circular order Head is now at 0, and this triggers the head - 1 = -1 logic in
+			// old design
+
+			var result = buffer.ToList();
+
+			// Assert
+			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, result);
+		}
+
+		/// <summary>
+		/// Verifies that accessing Current before calling MoveNext throws an InvalidOperationException.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenAccessingCurrentBeforeMoveNext_ShouldThrow()
+		{
+			var buffer = new CircularBuffer<int>(3);
+			buffer.Enqueue(1);
+
+			using var enumerator = buffer.GetEnumerator();
+			Assert.ThrowsException<InvalidOperationException>(() =>
+			{
+				_ = enumerator.Current;
+			});
+		}
+
+		/// <summary>
+		/// Verifies that null values are preserved in enumeration in correct order.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenBufferContainsNulls_ShouldYieldNullsInCorrectOrder()
+		{
+			var buffer = new CircularBuffer<string>(3);
+			buffer.Enqueue("X");
+			buffer.Enqueue(null);
+			buffer.Enqueue("Y");
+
+			var result = buffer.ToArray();
+			CollectionAssert.AreEqual(new[] { "X", null, "Y" }, result);
+		}
+
+		/// <summary>
+		/// Verifies that enumerator yields null values if they are present in the buffer.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenBufferContainsNulls_ShouldYieldNullValues()
+		{
+			var buffer = new CircularBuffer<string>(2);
+			buffer.Enqueue("A");
+			buffer.Enqueue(null);
+
+			var result = buffer.ToArray();
+			Assert.AreEqual("A", result[0]);
+			Assert.IsNull(result[1]);
+		}
+
+		/// <summary>
+		/// Verifies that enumerator iterates over buffer elements in FirstInFirstOut (First-In, First-Out) order.
 		/// </summary>
 		[TestMethod]
 		public void Enumerator_WhenBufferHasItems_ShouldIterateInFifoOrder()
@@ -16,6 +130,69 @@ namespace Bodu.Collections.Generic
 
 			var items = buffer.ToList();
 			CollectionAssert.AreEqual(new[] { 1, 2, 3 }, items);
+		}
+
+		/// <summary>
+		/// Verifies that enumerator yields no elements when the buffer is empty.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenBufferIsEmpty_ShouldYieldNoItems()
+		{
+			var buffer = new CircularBuffer<string>(5);
+			var items = buffer.ToList();
+			Assert.AreEqual(0, items.Count);
+		}
+
+		/// <summary>
+		/// Verifies that the enumerator returns a snapshot and is not affected by future mutations.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenBufferIsMutatedAfterCreation_ShouldNotReflectChanges()
+		{
+			var buffer = new CircularBuffer<int>(5);
+			buffer.Enqueue(1);
+			buffer.Enqueue(2);
+
+			var enumerator = buffer.GetEnumerator();
+
+			buffer.Enqueue(3); // Mutate after enumerator obtained
+
+			var items = new List<int>();
+			while (enumerator.MoveNext())
+			{
+				items.Add(enumerator.Current);
+			}
+
+			CollectionAssert.AreEqual(new[] { 1, 2 }, items);
+		}
+
+		/// <summary>
+		/// Verifies that enumeration returns correct order of elements after the buffer wraps around.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenBufferIsWrapped_ShouldYieldCorrectOrder()
+		{
+			var buffer = new CircularBuffer<int>(3);
+			buffer.Enqueue(1);
+			buffer.Enqueue(2);
+			buffer.Enqueue(3);
+			buffer.Dequeue();       // remove 1
+			buffer.Enqueue(4);      // wraps around
+
+			var result = buffer.ToList();
+			CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result);
+		}
+
+		/// <summary>
+		/// Verifies that MoveNext returns false when enumerating an empty buffer.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenEmpty_ShouldReturnFalseImmediately()
+		{
+			var buffer = new CircularBuffer<int>(3);
+			using var enumerator = buffer.GetEnumerator();
+
+			Assert.IsFalse(enumerator.MoveNext());
 		}
 
 		/// <summary>
@@ -39,81 +216,45 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
-		/// Verifies that enumeration remains consistent after multiple wraparounds and mutations.
+		/// Verifies that accessing Current after the enumerator has passed the end throws an InvalidOperationException.
 		/// </summary>
 		[TestMethod]
-		public void Enumerator_AfterMultipleStateChanges_ShouldYieldCorrectSequence()
+		public void Enumerator_WhenPastEnd_ShouldThrowOnCurrent()
+		{
+			var buffer = new CircularBuffer<int>(1);
+			buffer.Enqueue(1);
+
+			using var enumerator = buffer.GetEnumerator();
+			Assert.IsTrue(enumerator.MoveNext());
+			Assert.AreEqual(1, enumerator.Current);
+
+			Assert.IsFalse(enumerator.MoveNext());
+			Assert.ThrowsException<InvalidOperationException>(() =>
+			{
+				_ = enumerator.Current;
+			});
+		}
+
+		/// <summary>
+		/// Verifies that Reset positions the enumerator before the first element.
+		/// </summary>
+		[TestMethod]
+		public void Enumerator_WhenResetCalled_ShouldStartFromBeginning()
 		{
 			var buffer = new CircularBuffer<int>(3);
 			buffer.Enqueue(10);
 			buffer.Enqueue(20);
 			buffer.Enqueue(30);
-			buffer.Dequeue();         // 10 removed
-			buffer.Enqueue(40);       // wrap
-			buffer.Dequeue();         // 20 removed
-			buffer.Enqueue(50);       // wrap again
 
-			var result = buffer.ToList();
+			var enumerator = buffer.GetEnumerator();
 
-			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, result);
-		}
+			Assert.IsTrue(enumerator.MoveNext());
+			Assert.AreEqual(10, enumerator.Current);
 
-		/// <summary>
-		/// Verifies that null values are preserved in enumeration in correct order.
-		/// </summary>
-		[TestMethod]
-		public void Enumerator_WhenBufferContainsNulls_ShouldYieldNullsInCorrectOrder()
-		{
-			var buffer = new CircularBuffer<string>(3);
-			buffer.Enqueue("X");
-			buffer.Enqueue(null);
-			buffer.Enqueue("Y");
+			enumerator.Reset();
 
-			var result = buffer.ToArray();
-			CollectionAssert.AreEqual(new[] { "X", null, "Y" }, result);
-		}
-
-		/// <summary>
-		/// Verifies that enumerator yields no elements when the buffer is empty.
-		/// </summary>
-		[TestMethod]
-		public void Enumerator_WhenBufferIsEmpty_ShouldYieldNoItems()
-		{
-			var buffer = new CircularBuffer<string>(5);
-			var items = buffer.ToList();
-			Assert.AreEqual(0, items.Count);
-		}
-
-		/// <summary>
-		/// Verifies that enumeration returns correct order of elements after the buffer wraps around.
-		/// </summary>
-		[TestMethod]
-		public void Enumerator_WhenBufferIsWrapped_ShouldYieldCorrectOrder()
-		{
-			var buffer = new CircularBuffer<int>(3);
-			buffer.Enqueue(1);
-			buffer.Enqueue(2);
-			buffer.Enqueue(3);
-			buffer.Dequeue();       // remove 1
-			buffer.Enqueue(4);      // wraps around
-
-			var result = buffer.ToList();
-			CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result);
-		}
-
-		/// <summary>
-		/// Verifies that enumerator yields null values if they are present in the buffer.
-		/// </summary>
-		[TestMethod]
-		public void Enumerator_WhenBufferContainsNulls_ShouldYieldNullValues()
-		{
-			var buffer = new CircularBuffer<string>(2);
-			buffer.Enqueue("A");
-			buffer.Enqueue(null);
-
-			var result = buffer.ToArray();
-			Assert.AreEqual("A", result[0]);
-			Assert.IsNull(result[1]);
+			Assert.IsTrue(enumerator.MoveNext());
+			Assert.AreEqual(10, enumerator.Current);
 		}
 	}
 }

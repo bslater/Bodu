@@ -718,11 +718,11 @@ namespace Bodu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The enumerator is positioned before the first element or after the last element of the collection..
+        ///   Looks up a localized string similar to Enumeration has not started or has already ended..
         /// </summary>
-        internal static string InvalidOperation_EnumeratorPositionOutOfRange {
+        internal static string InvalidOperation_EnumeratorNotOnElement {
             get {
-                return ResourceManager.GetString("InvalidOperation_EnumeratorPositionOutOfRange", resourceCulture);
+                return ResourceManager.GetString("InvalidOperation_EnumeratorNotOnElement", resourceCulture);
             }
         }
         

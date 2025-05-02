@@ -3,129 +3,166 @@ namespace Bodu.Collections.Generic
 	public partial class CircularBufferTests
 	{
 		/// <summary>
-		/// Verifies that the default constructor initializes an empty buffer with the default capacity and overwrite enabled.
+		/// Verifies that specifying false for overwrite disables the overwrite functionality.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenDefaultUsed_ShouldInitializeWithDefaultCapacityAndAllowOverwrite()
+		public void Constructor_WhenAllowOverwriteFalseProvided_ShouldDisableOverwrite()
 		{
-			var buffer = new CircularBuffer<int>();
-			Assert.AreEqual(DefaultCapacity, buffer.Capacity);
-			Assert.AreEqual(0, buffer.Count);
+			var buffer = new CircularBuffer<string>(5, false);
+			Assert.IsFalse(buffer.AllowOverwrite);
+		}
+
+		/// <summary>
+		/// Verifies that a buffer constructed with all parameters adopts the collection properly.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenAllParametersProvided_ShouldAdoptCollection()
+		{
+			var source = new[] { 1, 2, 3 };
+			var buffer = new CircularBuffer<int>(source, 3, false);
+			CollectionAssert.AreEqual(source, buffer.ToArray());
+		}
+
+		/// <summary>
+		/// Verifies that a buffer constructed with all parameters respects the overwrite flag.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenAllParametersProvided_ShouldRespectOverwriteFlag()
+		{
+			var source = new[] { 1, 2, 3 };
+			var buffer = new CircularBuffer<int>(source, 3, false);
+			Assert.IsFalse(buffer.AllowOverwrite);
+		}
+
+		/// <summary>
+		/// Verifies that a buffer constructed with all parameters sets the specified capacity.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenAllParametersProvided_ShouldSetCapacity()
+		{
+			var source = new[] { 1, 2, 3 };
+			var buffer = new CircularBuffer<int>(source, 3, false);
+			Assert.AreEqual(3, buffer.Capacity);
+		}
+
+		/// <summary>
+		/// Verifies that the buffer can be created with the maximum allowed array length.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenArrayMaxLengthProvided_ShouldSetCapacity()
+		{
+			var buffer = new CircularBuffer<int>(0x7FFFFFC7);
+			Assert.AreEqual(0x7FFFFFC7, buffer.Capacity);
+		}
+
+		/// <summary>
+		/// Verifies that constructing from an array preserves the element order.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenArrayProvided_ShouldPreserveOrder()
+		{
+			int[] source = { 1, 2, 3 };
+			var buffer = new CircularBuffer<int>(source, 5);
+			CollectionAssert.AreEqual(source, buffer.ToArray());
+		}
+
+		/// <summary>
+		/// Verifies that constructing from an array sets the correct count.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenArrayProvided_ShouldSetCorrectCount()
+		{
+			int[] source = { 1, 2, 3 };
+			var buffer = new CircularBuffer<int>(source, 5);
+			Assert.AreEqual(3, buffer.Count);
+		}
+
+		/// <summary>
+		/// Verifies that invalid capacity values throw an <see cref="ArgumentOutOfRangeException" />.
+		/// </summary>
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(0)]
+		[DataRow(int.MaxValue)]
+		public void Constructor_WhenCapacityIsInvalid_ShouldThrowExactly(int capacity)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				_ = new CircularBuffer<int>(capacity);
+			});
+		}
+
+		/// <summary>
+		/// Verifies that the buffer defaults to allowing overwrite when capacity is specified without an explicit overwrite flag.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenCapacityProvided_ShouldEnableOverwriteByDefault()
+		{
+			var buffer = new CircularBuffer<int>(5);
 			Assert.IsTrue(buffer.AllowOverwrite);
 		}
 
 		/// <summary>
-		/// Verifies that specifying capacity uses it and defaults AllowOverwrite to true.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenCapacityProvided_ShouldUseCapacityAndDefaultAllowOverwrite()
-		{
-			var buffer = new CircularBuffer<int>(5);
-			Assert.AreEqual(5, buffer.Capacity);
-			Assert.AreEqual(0, buffer.Count);
-			Assert.IsTrue(buffer.AllowOverwrite);
-		}
-		
-		/// <summary>
-		/// Verifies that specifying capacity uses it and defaults AllowOverwrite to true.
+		/// Verifies that providing a valid capacity initializes the buffer with the specified capacity.
 		/// </summary>
 		[DataTestMethod]
-		[DataRow(10)]
-		[DataRow(Array.MaxLength)]
-		public void Ctor_WhenCapacityProvided_ShouldUseCapacity(int capacity)
+		[DataRow(5)]
+		[DataRow(16)]
+		public void Constructor_WhenCapacityProvided_ShouldSetSpecifiedCapacity(int capacity)
 		{
 			var buffer = new CircularBuffer<int>(capacity);
 			Assert.AreEqual(capacity, buffer.Capacity);
 		}
 
 		/// <summary>
-		/// Verifies that AllowOverwrite is set correctly when passed to the constructor.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenAllowOverwriteFalseProvided_ShouldRespectFlag()
-		{
-			var buffer = new CircularBuffer<string>(5, false);
-			Assert.AreEqual(5, buffer.Capacity);
-			Assert.IsFalse(buffer.AllowOverwrite);
-		}
-
-		/// <summary>
-		/// Verifies that initializing from a collection loads its contents and uses default capacity.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenCollectionProvided_ShouldAdoptContentsAndUseDefaultCapacity()
-		{
-			var source = new[] { "a", "b", "c" };
-			var buffer = new CircularBuffer<string>(source);
-
-			CollectionAssert.AreEqual(source, buffer.ToArray());
-			Assert.AreEqual(DefaultCapacity, buffer.Capacity);
-			Assert.AreEqual(source.Length, buffer.Count);
-			Assert.IsTrue(buffer.AllowOverwrite);
-		}
-
-		/// <summary>
-		/// Verifies that capacity limits trim the contents of a supplied collection.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenCollectionAndLimitedCapacityProvided_ShouldTrimOlderItems()
-		{
-			var source = new[] { 1, 2, 3, 4 };
-			var buffer = new CircularBuffer<int>(source, 2);
-
-			CollectionAssert.AreEqual(new[] { 3, 4 }, buffer.ToArray());
-			Assert.AreEqual(2, buffer.Capacity);
-		}
-
-		/// <summary>
-		/// Verifies that all constructor parameters are respected when used together.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenCollectionCapacityAndOverwriteFlagProvided_ShouldRespectAllParameters()
-		{
-			var source = new[] { 1, 2, 3 };
-			var buffer = new CircularBuffer<int>(source, 3, false);
-
-			CollectionAssert.AreEqual(source, buffer.ToArray());
-			Assert.AreEqual(3, buffer.Capacity);
-			Assert.IsFalse(buffer.AllowOverwrite);
-		}
-
-		/// <summary>
-		/// Verifies that passing null as the source collection throws an ArgumentNullException.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenCollectionIsNull_ShouldThrowExactly()
-		{
-			Assert.ThrowsExactly<ArgumentNullException>(() =>
-			{
-				_ = new CircularBuffer<object>((IEnumerable<object>)null);
-			});
-		}
-
-		/// <summary>
-		/// Verifies that specifying a negative capacity throws an ArgumentOutOfRangeException.
+		/// Verifies that an invalid collection capacity with overwrite flag set throws an <see cref="ArgumentOutOfRangeException" />.
 		/// </summary>
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(0)]
 		[DataRow(int.MaxValue)]
-		public void Ctor_WhenCapacityIsInvalid_ShouldThrowExactly(int size)
+		public void Constructor_WhenCollectionAndOverwriteCapacityIsInvalid_ShouldThrowExactly(int capacity)
 		{
+			var collection = new[] { 1 };
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = new CircularBuffer<int>(size);
+				_ = new CircularBuffer<int>(collection, capacity, true);
 			});
 		}
 
 		/// <summary>
-		/// Verifies that initializing from a collection that exceeds capacity with overwrite disabled throws.
+		/// Verifies that a collection with invalid capacity throws an <see cref="ArgumentOutOfRangeException" />.
+		/// </summary>
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(0)]
+		[DataRow(int.MaxValue)]
+		public void Constructor_WhenCollectionCapacityIsInvalid_ShouldThrowExactly(int capacity)
+		{
+			var collection = new[] { 1 };
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				_ = new CircularBuffer<int>(collection, capacity);
+			});
+		}
+
+		/// <summary>
+		/// Verifies that when a collection exceeds capacity, older elements are trimmed.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenCollectionExceedsCapacityAndOverwriteIsFalse_ShouldThrowExactly()
+		public void Constructor_WhenCollectionExceedsCapacity_ShouldTrimOldItems()
+		{
+			var buffer = new CircularBuffer<int>(new[] { 1, 2, 3, 4 }, 2);
+			CollectionAssert.AreEqual(new[] { 3, 4 }, buffer.ToArray());
+		}
+
+		/// <summary>
+		/// Verifies that exceeding capacity with overwrite disabled throws an <see cref="InvalidOperationException" />.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenCollectionExceedsCapacityAndOverwriteDisabled_ShouldThrowExactly()
 		{
 			var source = new[] { 1, 2, 3 };
-
 			Assert.ThrowsExactly<InvalidOperationException>(() =>
 			{
 				_ = new CircularBuffer<int>(source, 2, false);
@@ -133,13 +170,87 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
-		/// Verifies that a negative capacity with an empty collection throws ArgumentOutOfRangeException.
+		/// Verifies that constructing from a null collection throws an <see cref="ArgumentNullException" />.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenEmptyCollectionAndNegativeCapacityProvided_ShouldThrowExactly()
+		public void Constructor_WhenCollectionIsNull_ShouldThrowExactly()
+		{
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				_ = new CircularBuffer<object>((IEnumerable<object>)null!);
+			});
+		}
+
+		/// <summary>
+		/// Verifies that constructing from a collection adopts its elements.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenCollectionProvided_ShouldAdoptElements()
+		{
+			var source = new[] { "a", "b", "c" };
+			var buffer = new CircularBuffer<string>(source);
+			CollectionAssert.AreEqual(source, buffer.ToArray());
+		}
+
+		/// <summary>
+		/// Verifies that constructing from a collection sets the correct element count.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenCollectionProvided_ShouldSetCorrectCount()
+		{
+			var source = new[] { "a", "b", "c" };
+			var buffer = new CircularBuffer<string>(source);
+			Assert.AreEqual(source.Length, buffer.Count);
+		}
+
+		/// <summary>
+		/// Verifies that constructing from a collection uses the default capacity.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenCollectionProvided_ShouldUseDefaultCapacity()
+		{
+			var source = new[] { "a", "b", "c" };
+			var buffer = new CircularBuffer<string>(source);
+			Assert.AreEqual(DefaultCapacity, buffer.Capacity);
+		}
+
+		/// <summary>
+		/// Verifies that the default constructor enables overwrite by default.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenDefaultUsed_ShouldEnableOverwrite()
+		{
+			var buffer = new CircularBuffer<int>();
+			Assert.IsTrue(buffer.AllowOverwrite);
+		}
+
+		/// <summary>
+		/// Verifies that the default constructor sets the buffer capacity to the predefined default value.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenDefaultUsed_ShouldSetDefaultCapacity()
+		{
+			var buffer = new CircularBuffer<int>();
+			Assert.AreEqual(DefaultCapacity, buffer.Capacity);
+		}
+
+		/// <summary>
+		/// Verifies that the default constructor initializes an empty buffer.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenDefaultUsed_ShouldStartEmpty()
+		{
+			var buffer = new CircularBuffer<int>();
+			Assert.AreEqual(0, buffer.Count);
+		}
+
+		/// <summary>
+		/// Verifies that a negative capacity for an empty collection throws an <see cref="ArgumentOutOfRangeException" />.
+		/// </summary>
+		[TestMethod]
+		public void Constructor_WhenEmptyCollectionAndNegativeCapacity_ShouldThrowExactly()
 		{
 			var empty = Array.Empty<string>();
-
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new CircularBuffer<string>(empty, -1);
@@ -147,13 +258,12 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
-		/// Verifies that negative capacity and overwrite flag throw even with empty collection.
+		/// Verifies that a negative capacity with overwrite for an empty collection throws an <see cref="ArgumentOutOfRangeException" />.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenEmptyCollectionNegativeCapacityAndOverwriteProvided_ShouldThrowExactly()
+		public void Constructor_WhenEmptyCollectionNegativeCapacityAndOverwriteProvided_ShouldThrowExactly()
 		{
 			var empty = Array.Empty<string>();
-
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = new CircularBuffer<string>(empty, -10, allowOverwrite: true);
@@ -161,29 +271,14 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
-		/// Verifies that a non-array enumerable source is consumed using ToArray.
+		/// Verifies that a non-array enumerable can be used to construct the buffer correctly.
 		/// </summary>
 		[TestMethod]
-		public void Ctor_WhenNonArrayEnumerableProvided_ShouldConsumeUsingToArray()
+		public void Constructor_WhenNonArrayEnumerableProvided_ShouldConsumeCorrectly()
 		{
 			IEnumerable<int> source = Enumerable.Range(1, 3).Select(x => x * 10);
 			var buffer = new CircularBuffer<int>(source, 5);
-
 			CollectionAssert.AreEqual(new[] { 10, 20, 30 }, buffer.ToArray());
-			Assert.AreEqual(3, buffer.Count);
-		}
-
-		/// <summary>
-		/// Verifies that array sources are consumed directly without unnecessary copying.
-		/// </summary>
-		[TestMethod]
-		public void Ctor_WhenArrayProvided_ShouldUseDirectReference()
-		{
-			int[] source = { 1, 2, 3 };
-			var buffer = new CircularBuffer<int>(source, 5);
-
-			CollectionAssert.AreEqual(source, buffer.ToArray());
-			Assert.AreEqual(3, buffer.Count);
 		}
 	}
 }

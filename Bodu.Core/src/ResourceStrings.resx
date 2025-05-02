@@ -258,8 +258,8 @@
   <data name="InvalidOperation_EnumeratorExhausted" xml:space="preserve">
     <value>The enumerator has been exhausted.</value>
   </data>
-  <data name="InvalidOperation_EnumeratorPositionOutOfRange" xml:space="preserve">
-    <value>The enumerator is positioned before the first element or after the last element of the collection.</value>
+  <data name="InvalidOperation_EnumeratorNotOnElement" xml:space="preserve">
+    <value>Enumeration has not started or has already ended.</value>
   </data>
   <data name="InvalidOperation_InvalidConversion" xml:space="preserve">
     <value>Unable to convert type {0} to {1}.</value>

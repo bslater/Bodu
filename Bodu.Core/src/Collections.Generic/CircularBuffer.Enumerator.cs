@@ -36,34 +36,35 @@ namespace Bodu.Collections.Generic
 			{
 				this.circularBuffer = circularBuffer;
 				this.version = circularBuffer.version;
-				this.currentIndex = circularBuffer.head - 1; // start before the first element
+				this.currentIndex = -1;
 				this.current = default!;
 				this.iteratedCount = 0;
 			}
 
 			/// <inheritdoc />
-			public T Current => this.current;
+			public T Current =>
+				this.currentIndex == -1
+					? throw new InvalidOperationException(ResourceStrings.InvalidOperation_EnumeratorNotOnElement)
+					: this.current;
 
 			/// <inheritdoc />
-			object System.Collections.IEnumerator.Current => this.current!;
+			object System.Collections.IEnumerator.Current => this.Current!;
 
 			/// <inheritdoc />
 			public bool MoveNext()
 			{
-				// Detect changes made to the buffer during enumeration
 				if (this.version != this.circularBuffer.version)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionModified);
 
-				if (this.iteratedCount >= this.circularBuffer.Count)
+				if (this.iteratedCount >= this.circularBuffer.count)
 				{
-					// Reached the end of the collection
 					this.current = default!;
+					this.currentIndex = -1; // Ended
 					return false;
 				}
 
-				// Efficiently increment index without repeated modulo unless necessary
-				this.currentIndex = (this.currentIndex + 1) % this.circularBuffer.array.Length;
-				this.current = this.circularBuffer.array[currentIndex];
+				this.currentIndex = (this.circularBuffer.head + this.iteratedCount) % this.circularBuffer.capacity;
+				this.current = this.circularBuffer.array[this.currentIndex];
 				this.iteratedCount++;
 
 				return true;
@@ -75,7 +76,7 @@ namespace Bodu.Collections.Generic
 				if (this.version != this.circularBuffer.version)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionModified);
 
-				this.currentIndex = circularBuffer.head - 1;
+				this.currentIndex = -1;
 				this.current = default!;
 				this.iteratedCount = 0;
 			}

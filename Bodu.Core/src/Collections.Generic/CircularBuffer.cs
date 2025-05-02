@@ -47,6 +47,9 @@ namespace Bodu.Collections.Generic
 	public partial class CircularBuffer<T>
 	{
 		private const int DefaultCapacity = 16;
+#if !NET6_0_OR_GREATER
+		private const int MaxArrayLength = 0x7FFFFFC7; // 2,147,483,647 - 1
+#endif
 
 		private T[] array;
 		private int count;
@@ -99,8 +102,11 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public CircularBuffer(int capacity, bool allowOverwrite)
 		{
-			ThrowHelper.ThrowIfLessThanOrEqual(capacity, 0);
-
+#if NET6_0_OR_GREATER
+			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, Array.MaxLength);
+#else
+			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, MaxArrayLength);
+#endif
 			this.array = new T[capacity];
 			this.capacity = capacity;
 			this.AllowOverwrite = allowOverwrite;
@@ -161,7 +167,11 @@ namespace Bodu.Collections.Generic
 		public CircularBuffer(IEnumerable<T> collection, int capacity, bool allowOverwrite)
 		{
 			ThrowHelper.ThrowIfNull(collection);
-			ThrowHelper.ThrowIfLessThanOrEqual(capacity, 0);
+#if NET6_0_OR_GREATER
+			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, Array.MaxLength);
+#else
+			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, MaxArrayLength);
+#endif
 
 			var items = collection as T[] ?? collection.ToArray();
 
