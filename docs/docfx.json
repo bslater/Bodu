@@ -35,12 +35,20 @@
       "default",
       "modern"
     ],
+    "namespaceLayout": "nested",
+    "globalNamespaceId": "global",
+    "markdownEngineName": "markdig",
+    "xrefService": [
+      "https://xref.docs.microsoft.com/query?uid={uid}"
+    ],
+    "keepFileLink": false,
+    "noLangKeyword": false,
+    "disableDefaultFilter": true,
     "globalMetadata": {
-      "_appName": "",
-      "_appTitle": "",
+      "_appName": "Bodu",
+      "_appTitle": "Bodu Documentation",
       "_enableSearch": true,
       "pdf": true
-    },
-    "namespaceLayout": "nested"
+    }
   }
 }
