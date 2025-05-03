@@ -21,16 +21,11 @@ namespace Bodu
 		/// </exception>
 		/// <remarks>
 		/// <para>
-		/// If the input string does not clearly indicate whether the week starts on Sunday or Monday, the parser will attempt to infer the
-		/// starting day based on the logical alignment of selected days.
+		/// The format will be inferred from the length and character patterns of the input. For ambiguous inputs, the parser defaults to
+		/// Sunday-first ordering with underscore ( <c>'_'</c>) for unselected days.
 		/// </para>
 		/// <para>
-		/// For example, if the input string is <c>"______S"</c>, it could plausibly represent either: Sunday selected (Sunday-first,
-		/// <c>0b1000000</c>), or Saturday selected (Monday-first, <c>0b0000001</c>). In such ambiguous cases, the parser defaults to
-		/// interpreting the input as Sunday-first.
-		/// </para>
-		/// <para>
-		/// To guarantee correct parsing without relying on inference, use <see cref="ParseExact(string, string)" /> with an explicit format specifier.
+		/// To avoid ambiguity or ensure specific formatting, use <see cref="ParseExact(string, string)" /> with an explicit format string.
 		/// </para>
 		/// </remarks>
 		public static DaysOfWeekSet Parse(string input) =>
@@ -40,18 +35,41 @@ namespace Bodu
 		/// Converts the string representation of selected days into a <see cref="DaysOfWeekSet" /> instance using a specified format.
 		/// </summary>
 		/// <param name="input">The input string that represents selected days.</param>
-		/// <param name="format">The format specifier that defines how the input string is interpreted.</param>
-		/// <returns>A new <see cref="DaysOfWeekSet" /> instance parsed according to the specified format.</returns>
-		/// <exception cref="ArgumentNullException">Thrown if the <paramref name="format" /> is <c>null</c>.</exception>
+		/// <param name="format">
+		/// A format string that defines the day ordering and symbol used for unselected days. Supported values:
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>'S'</c> or <c>'M'</c> — Sunday- or Monday-first, using underscore ( <c>'_'</c>) for unselected days.</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, <c>'A'</c> — Sunday-first with space, underscore, dash, or asterisk for unselected days, respectively.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><c>'0'</c> or <c>'1'</c> — Binary format with <c>'1'</c> for selected and <c>'0'</c> for unselected days.</description>
+		/// </item>
+		/// <item>
+		/// <description>Two-character formats:
+		/// <list type="bullet">
+		/// <item>
+		/// <description>First character: <c>'S'</c> or <c>'M'</c></description>
+		/// </item>
+		/// <item>
+		/// <description>Second character: <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c> (space, underscore, dash, or asterisk).</description>
+		/// </item>
+		/// </list>
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>A <see cref="DaysOfWeekSet" /> parsed according to the specified format.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is <c>null</c>.</exception>
 		/// <exception cref="FormatException">
-		/// Thrown if the <paramref name="input" /> or <paramref name="format" /> are invalid or cannot be parsed.
+		/// Thrown if the <paramref name="input" /> or <paramref name="format" /> are invalid or unrecognized.
 		/// </exception>
-		public static DaysOfWeekSet ParseExact(string input, string format)
-		{
-			ThrowHelper.ThrowIfNull(format);
-
-			return ParseCore(input, ParseFormatString(format, false));
-		}
+		public static DaysOfWeekSet ParseExact(string input, string format) =>
+			ParseCore(input, ParseFormatForParse(format));
 
 		/// <summary>
 		/// Attempts to parse the string representation of selected days into a <see cref="DaysOfWeekSet" />, automatically inferring the
@@ -62,6 +80,10 @@ namespace Bodu
 		/// When this method returns, contains the parsed <see cref="DaysOfWeekSet" /> if parsing succeeded; otherwise, contains <see cref="DaysOfWeekSet.Empty" />.
 		/// </param>
 		/// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
+		/// <remarks>
+		/// For ambiguous or invalid formats, the parser falls back to Sunday-first with underscore ( <c>'_'</c>) for unselected days. Use
+		/// <see cref="TryParseExact(string, string, out DaysOfWeekSet)" /> for stricter format control.
+		/// </remarks>
 		public static bool TryParse(string input, out DaysOfWeekSet result)
 		{
 			try
@@ -80,7 +102,34 @@ namespace Bodu
 		/// Attempts to parse the string representation of selected days into a <see cref="DaysOfWeekSet" /> using a specified format.
 		/// </summary>
 		/// <param name="input">The input string that represents selected days.</param>
-		/// <param name="format">The format specifier that defines how the input string is interpreted.</param>
+		/// <param name="format">
+		/// A format string that defines the day ordering and symbol used for unselected days. Supported values:
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>'S'</c> or <c>'M'</c> — Sunday- or Monday-first, using underscore ( <c>'_'</c>) for unselected days.</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, <c>'A'</c> — Sunday-first with space, underscore, dash, or asterisk for unselected days, respectively.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description><c>'0'</c> or <c>'1'</c> — Binary format with <c>'1'</c> for selected and <c>'0'</c> for unselected days.</description>
+		/// </item>
+		/// <item>
+		/// <description>Two-character formats:
+		/// <list type="bullet">
+		/// <item>
+		/// <description>First character: <c>'S'</c> or <c>'M'</c></description>
+		/// </item>
+		/// <item>
+		/// <description>Second character: <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c></description>
+		/// </item>
+		/// </list>
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="result">
 		/// When this method returns, contains the parsed <see cref="DaysOfWeekSet" /> if parsing succeeded; otherwise, contains <see cref="DaysOfWeekSet.Empty" />.
 		/// </param>
@@ -89,7 +138,7 @@ namespace Bodu
 		{
 			try
 			{
-				result = ParseCore(input, ParseFormatString(format, false));
+				result = ParseCore(input, ParseFormatForParse(format));
 				return true;
 			}
 			catch

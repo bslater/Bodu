@@ -52,12 +52,31 @@ namespace Bodu
 			}
 		}
 
+		public static IEnumerable<object[]> GetTryParseExactTestData() =>
+			GetValidParseInputTestData()
+				.Where(o => o[1] != null) // remove null format cases
+				.Select(o => new object[] { o[0], o[1], o[2], true })
+			.Union(
+				GetInvalidParseInputTestData()
+					.Select(o => new object[] { o[0], o[1], (byte)0b0000000, false })
+			);
+
+		public static IEnumerable<object[]> GetTryParseTestData() =>
+			GetValidParseInputTestData()
+				.Select(o => new object[] { o[0], o[2], true })
+			.Union(
+				GetInvalidParseInputTestData()
+					.Where(o => o[1] == null) // only use null format cases
+					.Select(o => new object[] { o[0], (byte)0b0000000, false })
+			);
+
 		/// <summary>
 		/// Filters valid parse test cases to only those with an explicit non-null format.
 		/// </summary>
 
-		public static IEnumerable<object[]> GetValidParseInputWithExplicitFormatTestData() => GetValidParseInputTestData()
-																							  .Where(o => o[1] != null);
+		public static IEnumerable<object[]> GetValidParseInputWithExplicitFormatTestData() =>
+			GetValidParseInputTestData()
+				.Where(o => o[1] != null);
 
 		/// <summary>
 		/// Provides a comprehensive set of valid test cases for parsing <see cref="DaysOfWeekSet" />, including letter-based, binary, and
@@ -85,8 +104,8 @@ namespace Bodu
 			yield return new object[] { "S-TWTFS", "sd", (byte)0b1011111 };
 			yield return new object[] { "S*TWTFS", "SA", (byte)0b1011111 };
 			yield return new object[] { "S*TWTFS", "sa", (byte)0b1011111 };
-			yield return new object[] { "S TWTFS", "SB", (byte)0b1011111 };
-			yield return new object[] { "S TWTFS", "sb", (byte)0b1011111 };
+			yield return new object[] { "S TWTFS", "SE", (byte)0b1011111 };
+			yield return new object[] { "S TWTFS", "se", (byte)0b1011111 };
 
 			// Monday-first with explicit unselected characters
 			yield return new object[] { "M_WTF_S", "MU", (byte)0b1101110 };
@@ -95,8 +114,8 @@ namespace Bodu
 			yield return new object[] { "M-WTF-S", "md", (byte)0b1101110 };
 			yield return new object[] { "M*WTF*S", "MA", (byte)0b1101110 };
 			yield return new object[] { "M*WTF*S", "ma", (byte)0b1101110 };
-			yield return new object[] { "M WTF S", "MB", (byte)0b1101110 };
-			yield return new object[] { "M WTF S", "mb", (byte)0b1101110 };
+			yield return new object[] { "M WTF S", "ME", (byte)0b1101110 };
+			yield return new object[] { "M WTF S", "me", (byte)0b1101110 };
 
 			// Mixed selection examples
 			yield return new object[] { "S_T_T_S", "SU", (byte)0b1010101 };
@@ -114,16 +133,28 @@ namespace Bodu
 			yield return new object[] { "MTWTFSS", "M", (byte)0b1111111 };
 			yield return new object[] { "mtwtfss", "m", (byte)0b1111111 };
 
+			// Unselected format examples
+			yield return new object[] { "S_T_T_S", "U", (byte)0b1010101 };
+			yield return new object[] { "m_w_f__", "u", (byte)0b0101010 };
+			yield return new object[] { "M-W-F--", "D", (byte)0b0101010 };
+			yield return new object[] { "m-w-f--", "d", (byte)0b0101010 };
+			yield return new object[] { "S*T*T*S", "A", (byte)0b1010101 };
+			yield return new object[] { "s t t s", "e", (byte)0b1010101 };
+
 			// empty
 			yield return new object[] { "       ", null, (byte)0b0000000 };
 			yield return new object[] { "-------", null, (byte)0b0000000 };
 			yield return new object[] { "*******", null, (byte)0b0000000 };
 			yield return new object[] { "_______", null, (byte)0b0000000 };
 			yield return new object[] { "0000000", "b", (byte)0b0000000 };
-			yield return new object[] { "       ", "sB", (byte)0b0000000 };
+			yield return new object[] { "       ", "se", (byte)0b0000000 };
 			yield return new object[] { "-------", "sD", (byte)0b0000000 };
 			yield return new object[] { "*******", "sa", (byte)0b0000000 };
 			yield return new object[] { "_______", "mu", (byte)0b0000000 };
+			yield return new object[] { "       ", "e", (byte)0b0000000 };
+			yield return new object[] { "-------", "D", (byte)0b0000000 };
+			yield return new object[] { "*******", "a", (byte)0b0000000 };
+			yield return new object[] { "_______", "u", (byte)0b0000000 };
 		}
 
 		/// <summary>

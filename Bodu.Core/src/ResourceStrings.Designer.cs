@@ -196,6 +196,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid format string specified..
+        /// </summary>
+        internal static string Arg_Invalid_FormatSpecification {
+            get {
+                return ResourceManager.GetString("Arg_Invalid_FormatSpecification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The format string is invalid..
         /// </summary>
         internal static string Arg_Invalid_FormatString {
@@ -660,15 +669,6 @@ namespace Bodu {
         internal static string Format_Invalid_WeekDays {
             get {
                 return ResourceManager.GetString("Format_Invalid_WeekDays", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Format String can only be &quot;S&quot;, &quot;s&quot;, &quot;M&quot;, &quot;m&quot;, &apos;B&apos;, b&apos;..
-        /// </summary>
-        internal static string Format_Invalid_WeekDaysFormatSpecification {
-            get {
-                return ResourceManager.GetString("Format_Invalid_WeekDaysFormatSpecification", resourceCulture);
             }
         }
         

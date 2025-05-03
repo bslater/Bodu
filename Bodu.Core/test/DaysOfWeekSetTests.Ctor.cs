@@ -18,8 +18,26 @@ namespace Bodu
 		[TestMethod]
 		public void Constructor_WhenNullArrayProvided_ShouldBeEmpty()
 		{
-			var set = new DaysOfWeekSet(null);
+			var set = new DaysOfWeekSet((DayOfWeek[])null);
 			Assert.AreEqual(0, set.Count);
+		}
+
+		[TestMethod]
+		public void Constructor_WhenNullStringProvided_ShouldThrowExactly()
+		{
+			string input = null;
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				_ = new DaysOfWeekSet(input);
+			});
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(GetValidParseInputTestData), typeof(DaysOfWeekSetTests))]
+		public void Constructor_WhenValidStringProvided_ShouldReturnExpected(string input, string _, byte expected)
+		{
+			var result = new DaysOfWeekSet(input);
+			Assert.AreEqual(expected, result);
 		}
 
 		[DataTestMethod]

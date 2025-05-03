@@ -12,82 +12,138 @@ namespace Bodu
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the default format.
 		/// </summary>
-		/// <returns>A string representing the selected days in Sunday-to-Saturday order, with underscore ('_') for unselected days.</returns>
+		/// <returns>
+		/// A string representing the selected days in Sunday-to-Saturday order, using underscore ( <c>'_'</c>) for unselected days.
+		/// </returns>
 		public override string ToString() => this.ToString("S", null!);
 
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the specified format.
 		/// </summary>
 		/// <param name="format">
-		/// A single-character format specifier that determines the ordering and output style:
+		/// A format string that defines the day ordering and symbol used for unselected days. Supported formats include:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'S'</c> or <c>'s'</c> — Sunday-to-Saturday ordering using weekday symbols (default).</description>
+		/// <description>
+		/// <c>'S'</c> or <c>'s'</c> — Sunday-to-Saturday using weekday symbols; unselected days shown as underscore ( <c>'_'</c>).
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <description><c>'M'</c> or <c>'m'</c> — Monday-to-Sunday ordering using weekday symbols.</description>
+		/// <description>
+		/// <c>'M'</c> or <c>'m'</c> — Monday-to-Sunday using weekday symbols; unselected days shown as underscore ( <c>'_'</c>).
+		/// </description>
 		/// </item>
 		/// <item>
-		/// <description><c>'B'</c> or <c>'b'</c> — Binary format; '1' for selected days, '0' for unselected days.</description>
+		/// <description>
+		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c> — Sunday-to-Saturday using weekday symbols with a specific symbol for
+		/// unselected days:
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>'E'</c> — space ( <c>' '</c>)</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'U'</c> — underscore ( <c>'_'</c>)</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'D'</c> — dash ( <c>'-'</c>)</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'A'</c> — asterisk ( <c>'*'</c>)</description>
+		/// </item>
+		/// </list>
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// <c>'0'</c> or <c>'1'</c> — Binary representation; <c>'1'</c> for selected and <c>'0'</c> for unselected days.
+		/// </description>
+		/// </item>
+		/// <item>
+		/// <description>Two-character format:
+		/// <list type="bullet">
+		/// <item>
+		/// <description>First character: <c>'S'</c> or <c>'M'</c> to indicate Sunday- or Monday-first ordering.</description>
+		/// </item>
+		/// <item>
+		/// <description>
+		/// Second character: <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c> to specify the symbol for unselected days.
+		/// </description>
+		/// </item>
+		/// </list>
+		/// </description>
 		/// </item>
 		/// </list>
 		/// </param>
 		/// <returns>A formatted string representing the selected days.</returns>
 		/// <exception cref="ArgumentException">Thrown if the <paramref name="format" /> is invalid.</exception>
-		public string ToString(string format) => this.ToString(format, null!);
+		public string ToString(string format) =>
+			this.ToString(format, null!);
 
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the default format and the specified
 		/// culture-specific formatting information.
 		/// </summary>
 		/// <param name="provider">An <see cref="IFormatProvider" /> supplying culture-specific formatting information (currently ignored).</param>
-		/// <returns>A string representing the selected days in Sunday-to-Saturday order.</returns>
-		public string ToString(IFormatProvider provider) => this.ToString("S", provider);
+		/// <returns>
+		/// A string representing the selected days in Sunday-to-Saturday order using underscore ( <c>'_'</c>) for unselected days.
+		/// </returns>
+		public string ToString(IFormatProvider provider) =>
+			this.ToString("S", provider);
 
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the specified format and culture-specific
 		/// formatting information.
 		/// </summary>
 		/// <param name="format">
-		/// A format string that defines the day ordering and symbol used for unselected days. Supported formats are:
+		/// A format string that defines the day ordering and symbol used for unselected days. Supported formats include:
 		/// <list type="bullet">
 		/// <item>
-		/// <description>Single character:
+		/// <description>Single-character formats:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'S'</c> or <c>'s'</c> — Sunday-to-Saturday, using underscore ('_') for unselected days (default).</description>
+		/// <description><c>'S'</c> — Sunday-first, unselected = underscore ( <c>'_'</c>).</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'M'</c> or <c>'m'</c> — Monday-to-Sunday, using underscore ('_') for unselected days.</description>
+		/// <description><c>'M'</c> — Monday-first, unselected = underscore ( <c>'_'</c>).</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'B'</c> or <c>'b'</c> — Binary format; '1' for selected, '0' for unselected days.</description>
+		/// <description><c>'E'</c> — Sunday-first, unselected = space ( <c>' '</c>).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'U'</c> — Sunday-first, unselected = underscore ( <c>'_'</c>).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'D'</c> — Sunday-first, unselected = dash ( <c>'-'</c>).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'A'</c> — Sunday-first, unselected = asterisk ( <c>'*'</c>).</description>
+		/// </item>
+		/// <item>
+		/// <description><c>'0'</c> or <c>'1'</c> — Binary; <c>'1'</c> = selected, <c>'0'</c> = unselected.</description>
 		/// </item>
 		/// </list>
 		/// </description>
 		/// </item>
 		/// <item>
-		/// <description>Two characters:
+		/// <description>Two-character formats:
 		/// <list type="bullet">
 		/// <item>
-		/// <description>
-		/// The first character must be <c>'S'</c> or <c>'M'</c> (case-insensitive), indicating Sunday-first or Monday-first ordering.
-		/// </description>
+		/// <description>First character: <c>'S'</c> or <c>'M'</c> — day ordering.</description>
 		/// </item>
 		/// <item>
-		/// <description>The second character specifies the symbol for unselected days:
+		/// <description>Second character: <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c> — unselected day symbol:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'U'</c> — Underscore ('_')</description>
+		/// <description><c>'E'</c> — space ( <c>' '</c>)</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'D'</c> — Dash ('-')</description>
+		/// <description><c>'U'</c> — underscore ( <c>'_'</c>)</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'A'</c> — Asterisk ('*')</description>
+		/// <description><c>'D'</c> — dash ( <c>'-'</c>)</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'B'</c> — Space (' ')</description>
+		/// <description><c>'A'</c> — asterisk ( <c>'*'</c>)</description>
 		/// </item>
 		/// </list>
 		/// </description>
@@ -102,8 +158,8 @@ namespace Bodu
 		/// <exception cref="ArgumentException">Thrown if the <paramref name="format" /> is invalid.</exception>
 		public string ToString(string format, IFormatProvider provider)
 		{
-			var (startDay, unselectedChar, isBinary) = ParseFormatString(format ?? "S", true);
-
+			var (startDay, unselectedChar, isBinary) = ParseFormatForToString(format);
+			unselectedChar ??= '_'; // Default to underscore if not specified
 			bool isMondayStart = startDay == 'M';
 			var buffer = new char[7];
 
@@ -114,10 +170,23 @@ namespace Bodu
 
 				buffer[i] = selected
 					? (isBinary ? '1' : WeekdaySymbols[dayIndex])
-					: (isBinary ? '0' : unselectedChar);
+					: (isBinary ? '0' : unselectedChar.Value);
 			}
 
 			return new string(buffer);
+		}
+
+		/// <summary>
+		/// Parses the format string for use in <see cref="ToString(string, IFormatProvider)" />, throwing <see cref="ArgumentException" />
+		/// if invalid.
+		/// </summary>
+		private static (char? startDay, char? unselectedChar, bool isBinary) ParseFormatForToString(string format)
+		{
+			format ??= "S";
+			if (!TryParseFormatInfo(format, out var info))
+				throw new ArgumentException(ResourceStrings.Arg_Invalid_FormatString, nameof(format));
+
+			return info;
 		}
 
 		//private static (char startDay, char unselectedChar, bool isBinary) ParseFormatString(string format, bool throwAsArgumentException)

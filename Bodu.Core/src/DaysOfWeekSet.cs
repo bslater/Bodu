@@ -60,6 +60,20 @@ namespace Bodu
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DaysOfWeekSet" /> struct by parsing the specified string.
+		/// </summary>
+		/// <param name="input">The input string representing selected days.</param>
+		/// <exception cref="FormatException">
+		/// Thrown if the <paramref name="input" /> is <c>null</c>, not exactly 7 characters long, or contains invalid characters.
+		/// </exception>
+		/// <remarks>
+		/// This constructor behaves the same as <see cref="Parse(string)" />, automatically inferring the format from the input string.
+		/// </remarks>
+		public DaysOfWeekSet(string input)
+			: this(Parse(input)) // delegates to the implicit copy constructor from static method
+		{ }
+
 		private DaysOfWeekSet(int value)
 		{
 			ThrowHelper.ThrowIfNotBetweenInclusive(value, MinValue, MaxValue);

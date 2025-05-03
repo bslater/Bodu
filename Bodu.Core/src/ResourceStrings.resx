@@ -225,8 +225,8 @@
   <data name="Format_Invalid_WeekDays" xml:space="preserve">
     <value>Unrecognized week days format.</value>
   </data>
-  <data name="Format_Invalid_WeekDaysFormatSpecification" xml:space="preserve">
-    <value>Format String can only be "S", "s", "M", "m", 'B', b'.</value>
+  <data name="Arg_Invalid_FormatSpecification" xml:space="preserve">
+    <value>Invalid format string specified.</value>
   </data>
   <data name="IO_Error_PathDirectoryNotFound" xml:space="preserve">
     <value>Could not find directory '{0}'.</value>

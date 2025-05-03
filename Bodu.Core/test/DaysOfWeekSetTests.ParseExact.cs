@@ -50,20 +50,6 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DaysOfWeekSet.ParseExact(string, string)" /> throws a <see cref="FormatException" /> when the input
-		/// string is invalid for the specified format.
-		/// </summary>
-		[TestMethod]
-		[DynamicData(nameof(DaysOfWeekSetTests.GetInvalidParseInputWithExplicitFormatTestData), typeof(DaysOfWeekSetTests))]
-		public void ParseExact_WhenInvalidInputWithFormat_ShouldThrowExactly(string input, string format)
-		{
-			Assert.ThrowsExactly<FormatException>(() =>
-			{
-				_ = DaysOfWeekSet.ParseExact(input, format);
-			});
-		}
-
-		/// <summary>
 		/// Verifies that <see cref="DaysOfWeekSet.ParseExact(string, string)" /> throws a <see cref="FormatException" /> when the format
 		/// string is invalid or unsupported.
 		/// </summary>
