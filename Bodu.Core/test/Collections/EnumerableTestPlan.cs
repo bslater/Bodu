@@ -7,7 +7,7 @@ namespace Bodu.Collections
 	/// </summary>
 	/// <typeparam name="TSource">The input sequence element type.</typeparam>
 	/// <typeparam name="TResult">The result type after transformation.</typeparam>
-	public class EnumerableTestPlan<TSource, TResult>
+	public class EnumerableTestPlan<TSource>
 	{
 		public string Name { get; init; } = string.Empty;
 
@@ -19,7 +19,7 @@ namespace Bodu.Collections
 		/// <summary>
 		/// The strongly-typed selector used to transform results into comparable values.
 		/// </summary>
-		public Func<TSource, TResult> Selector { get; init; } = null!;
+		public Func<TSource, object> ResultSelector { get; init; } = null!;
 
 		/// <summary>
 		/// The strongly-typed transformation or query logic to test.
@@ -29,7 +29,7 @@ namespace Bodu.Collections
 		/// <summary>
 		/// The expected transformed result.
 		/// </summary>
-		public IEnumerable<TResult> ExpectedResult { get; init; } = null!;
+		public IEnumerable<object> ExpectedResult { get; init; } = null!;
 
 		public override string ToString() => Name;
 	}

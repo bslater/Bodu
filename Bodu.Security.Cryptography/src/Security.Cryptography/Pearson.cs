@@ -153,7 +153,7 @@ namespace Bodu.Security.Cryptography
 			{
 				this.ThrowIfDisposed();
 				this.ThrowIfInvalidState();
-				ThrowHelper.ThrowIfNotBetweenInclusive(value, MinHashSize, MaxHashSize);
+				ThrowHelper.ThrowIfOutOfRange(value, MinHashSize, MaxHashSize);
 				ThrowHelper.ThrowIfNotPositiveMultipleOf(value, 8);
 
 				this.HashSizeValue = value;

@@ -123,7 +123,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfNotBetweenInclusive(value, MinRounds, MaxRounds);
+				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
 				this.finalizationRounds = value;
 				this.Initialize();
 			}
@@ -153,7 +153,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfNotBetweenInclusive(value, MinHashSize, MaxHashSize);
+				ThrowHelper.ThrowIfOutOfRange(value, MinHashSize, MaxHashSize);
 				ThrowHelper.ThrowIfNotPositiveMultipleOf(value, 8);
 				this.HashSizeValue = value;
 				this.Initialize();
@@ -182,7 +182,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfNotBetweenInclusive(value, MinRounds, MaxRounds);
+				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
 				this.initializationRounds = value;
 				this.Initialize();
 			}
@@ -211,7 +211,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfNotBetweenInclusive(value, MinInputBlockSize, MaxInputBlockSize);
+				ThrowHelper.ThrowIfOutOfRange(value, MinInputBlockSize, MaxInputBlockSize);
 				this.inputBlockSizeBits = value * 8;
 				this.Initialize();
 			}
@@ -238,7 +238,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfNotBetweenInclusive(value, MinRounds, MaxRounds);
+				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
 				this.rounds = value;
 				this.Initialize();
 			}

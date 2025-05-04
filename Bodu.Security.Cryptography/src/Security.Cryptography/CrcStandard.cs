@@ -44,7 +44,7 @@ namespace Bodu.Security.Cryptography
 		public CrcStandard(string name, int size, ulong polynomial, ulong initialValue, bool reflectIn, bool reflectOut, ulong xOrOut)
 		{
 			ThrowHelper.ThrowIfNullOrEmpty(name);
-			ThrowHelper.ThrowIfNotBetweenInclusive(size, MinSize, MaxSize);
+			ThrowHelper.ThrowIfOutOfRange(size, MinSize, MaxSize);
 
 			this.Name = name;
 			this.Size = size;

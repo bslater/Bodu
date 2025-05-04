@@ -10,9 +10,9 @@
 		/// <summary>
 		/// Provides extension method test cases that should exhibit deferred execution.
 		/// </summary>
-		public static IEnumerable<EnumerableTestPlan<Node, string>> GetCases()
+		public static IEnumerable<EnumerableTestPlan<Node>> GetCases()
 		{
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -20,11 +20,11 @@
 					source: source,
 					childSelector: e => (e as Node).Children
 				),
-				Selector = node => node.Name,
+				ResultSelector = node => node.Name,
 				ExpectedResult = new[] { "Root", "A", "B", "B1", "B2", "C", "C1", "C1A", "C2", "C2A", "C2B", "C2C", "D", "E" },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index Selector",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -36,7 +36,7 @@
 				ExpectedResult = new[] { "0:Root", "0:A", "1:B", "0:B1", "1:B2", "2:C", "0:C1", "0:C1A", "1:C2", "0:C2A", "1:C2B", "2:C2C", "3:D", "4:E" },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -48,7 +48,7 @@
 				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector and Control = YieldAndBreak",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -61,7 +61,7 @@
 				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector and Control = SkipOnly",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -74,7 +74,7 @@
 				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--1:B2", "-2:C", "--1:C2", "---0:C2A", "---2:C2C", "-3:D" },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector and Control = SkipAndRecurse",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -87,7 +87,7 @@
 				ExpectedResult = Array.Empty<string>(),
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector and Control = YieldAndExit",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -100,7 +100,7 @@
 				ExpectedResult = new[] { "0:Root" },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector and Control = SkipAndBreak",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -113,7 +113,7 @@
 				ExpectedResult = Array.Empty<string>(),
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Index and Depth Selector and Control = YieldAndRecurse on 'C'",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -126,7 +126,7 @@
 				ExpectedResult = new[] { "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C" },
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Control = YieldOnly for Stop nodes",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -141,7 +141,7 @@
 				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Control = RecurseOnly on Root",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -156,7 +156,7 @@
 				ExpectedResult = new[] { "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with Control = SkipAndExit on Stop",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -173,7 +173,7 @@
 				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B" }
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect with complex control logic per node name",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -195,7 +195,7 @@
 				ExpectedResult = new[] { "0:Root", "-0:A", "--0:B1" }
 			};
 
-			yield return new EnumerableTestPlan<Node, string>
+			yield return new EnumerableTestPlan<Node>
 			{
 				Name = "RecursiveSelect skipping only C2B",
 				Source = NodeSampleTree.BuildSampleTree(),
@@ -216,7 +216,7 @@
 		/// </summary>
 		[TestMethod]
 		[DynamicData(nameof(GetDeferredExecutionCases), DynamicDataSourceType.Method)]
-		public void RecursiveSelect_WhenCalled_ShouldDeferExecution(EnumerableTestPlan<Node, string> testCase)
+		public void RecursiveSelect_WhenCalled_ShouldDeferExecution(EnumerableTestPlan<Node> testCase)
 		{
 			AssertExecutionIsDeferred(testCase.Name, testCase.Invoke, testCase.Source);
 		}
@@ -226,7 +226,7 @@
 		/// </summary>
 		[TestMethod]
 		[DynamicData(nameof(GetDeferredExecutionCases), DynamicDataSourceType.Method)]
-		public void RecursiveSelect_WhenEnumerated_ShouldTriggerExecution(EnumerableTestPlan<Node, string> testCase)
+		public void RecursiveSelect_WhenEnumerated_ShouldTriggerExecution(EnumerableTestPlan<Node> testCase)
 		{
 			AssertExecutionOccursOnEnumeration(testCase.Name, testCase.Invoke, testCase.Source);
 		}
@@ -236,9 +236,10 @@
 		/// </summary>
 		[TestMethod]
 		[DynamicData(nameof(GetDeferredExecutionCases), DynamicDataSourceType.Method)]
-		public void RecursiveSelect_WhenEnumerated_ShouldReturnExpectedResults(EnumerableTestPlan<Node, string> testCase)
+		public void RecursiveSelect_WhenEnumerated_ShouldReturnExpectedResults(EnumerableTestPlan<Node> testCase)
 		{
-			AssertExecutionReturnsExpectedResults(testCase.Name, testCase.Invoke, testCase.Source, testCase.ExpectedResult, testCase.Selector);
+			//AssertExecutionReturnsExpectedResults(testCase.Name, testCase.Invoke, testCase.Source, testCase.ExpectedResult, testCase.Selector);
+			AssertExecutionReturnsExpectedResults(testCase.Name, testCase.Invoke, testCase.Source, testCase.ExpectedResult, testCase.ResultSelector);
 		}
 
 		/// <summary>

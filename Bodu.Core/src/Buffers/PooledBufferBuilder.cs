@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Buffers;
@@ -51,6 +51,20 @@ namespace Bodu.Buffers
 			}
 
 			return false;
+		}
+
+		/// <summary>
+		/// Appends a single item to the buffer, expanding it if necessary.
+		/// </summary>
+		/// <param name="item">The item to append.</param>
+		public void Append(T item)
+		{
+			this.ThrowIfDisposed();
+
+			if (count >= buffer.Length)
+				Grow();
+
+			buffer[count++] = item;
 		}
 
 		/// <summary>

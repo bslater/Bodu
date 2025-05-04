@@ -67,17 +67,24 @@ namespace Bodu.Collections
 		/// Optional projection to convert elements from the result to <typeparamref name="TResult" />. If not specified, elements are cast
 		/// to <typeparamref name="TResult" />.
 		/// </param>
+		//protected static void AssertExecutionReturnsExpectedResults<TSource, TResult>(
+		//	string methodName,
+		//	Func<IEnumerable<TSource>, IEnumerable> invokeExtensionMethod,
+		//	IEnumerable<TSource> source,
+		//	IEnumerable<TResult> expected,
+		//	Func<TSource, TResult>? selector = null)
+		//{
 		protected static void AssertExecutionReturnsExpectedResults<TSource, TResult>(
 			string methodName,
 			Func<IEnumerable<TSource>, IEnumerable> invokeExtensionMethod,
 			IEnumerable<TSource> source,
 			IEnumerable<TResult> expected,
-			Func<TSource, TResult>? selector = null)
+			Func<TSource, TResult> resultSelector)
 		{
 			// Evaluate result with optional selector or cast
 			var result = invokeExtensionMethod(source)
 				.Cast<object>()
-				.Select(e => selector != null ? selector((TSource)e) : (TResult)e)
+				.Select(e => resultSelector != null ? resultSelector((TSource)e) : (TResult)e)
 				.ToList();
 
 			var expectedList = expected.ToList();

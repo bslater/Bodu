@@ -649,49 +649,48 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not between min and max (exclusive).
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the specified value is not within the given range.
 		/// </summary>
-		/// <typeparam name="T">A comparable type.</typeparam>
+		/// <typeparam name="T">A type that implements <see cref="IComparable{T}" />.</typeparam>
 		/// <param name="value">The value to validate.</param>
-		/// <param name="min">The lower exclusive bound.</param>
-		/// <param name="max">The upper exclusive bound.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
+		/// <param name="min">The lower bound of the range.</param>
+		/// <param name="max">The upper bound of the range.</param>
+		/// <param name="inclusive">
+		/// If <c>true</c>, the range check is inclusive (i.e., value must be between <paramref name="min" /> and <paramref name="max" />,
+		/// inclusive); otherwise, the check is exclusive.
+		/// </param>
+		/// <param name="paramName">The name of the parameter being validated.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> &lt;= <paramref name="min" /> or &gt;= <paramref name="max" />.
-		/// Message: "The value must be greater than {0} and less than {1}."
+		/// Thrown if the value is outside the specified range.
+		/// <list type="bullet">
+		/// <item>
+		/// If <paramref name="inclusive" /> is <c>true</c>, the exception is thrown when <paramref name="value" /> is less than
+		/// <paramref name="min" /> or greater than <paramref name="max" />.
+		/// </item>
+		/// <item>
+		/// If <paramref name="inclusive" /> is <c>false</c>, the exception is thrown when <paramref name="value" /> is less than or equal
+		/// to <paramref name="min" /> or greater than or equal to <paramref name="max" />.
+		/// </item>
+		/// </list>
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotBetweenExclusive<T>(
-			T value, T min, T max,
+		public static void ThrowIfOutOfRange<T>(
+			T value, T min, T max, bool inclusive = true,
 			[CallerArgumentExpression(nameof(value))] string? paramName = null)
 			where T : IComparable<T>
 		{
-			if (value.CompareTo(min) <= 0 || value.CompareTo(max) >= 0)
-				throw new ArgumentOutOfRangeException(paramName,
-					string.Format(ResourceStrings.Arg_OutOfRange_RequireBetweenExclusive, min, max));
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not between min and max (inclusive).
-		/// </summary>
-		/// <typeparam name="T">A comparable type.</typeparam>
-		/// <param name="value">The value to validate.</param>
-		/// <param name="min">The lower inclusive bound.</param>
-		/// <param name="max">The upper inclusive bound.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> &lt; <paramref name="min" /> or &gt; <paramref name="max" />.
-		/// Message: "The value must be between {0} and {1}, inclusive."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotBetweenInclusive<T>(
-			T value, T min, T max,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-			where T : IComparable<T>
-		{
-			if (value.CompareTo(min) < 0 || value.CompareTo(max) > 0)
-				throw new ArgumentOutOfRangeException(paramName,
-					string.Format(ResourceStrings.Arg_OutOfRange_RequireBetweenInclusive, min, max));
+			if (inclusive)
+			{
+				if (value.CompareTo(min) < 0 || value.CompareTo(max) > 0)
+					throw new ArgumentOutOfRangeException(paramName,
+						string.Format(ResourceStrings.Arg_OutOfRange_RequireBetweenInclusive, min, max));
+			}
+			else
+			{
+				if (value.CompareTo(min) <= 0 || value.CompareTo(max) >= 0)
+					throw new ArgumentOutOfRangeException(paramName,
+						string.Format(ResourceStrings.Arg_OutOfRange_RequireBetweenExclusive, min, max));
+			}
 		}
 
 		/// <summary>

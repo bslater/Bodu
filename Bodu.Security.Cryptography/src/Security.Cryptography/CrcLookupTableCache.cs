@@ -26,7 +26,7 @@ namespace Bodu.Security.Cryptography
 
 		public ImmutableArray<ulong> GetLookupTable(int size, ulong polynomial, bool reflectIn)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(size, CrcStandard.MinSize, CrcStandard.MaxSize);
+			ThrowHelper.ThrowIfOutOfRange(size, CrcStandard.MinSize, CrcStandard.MaxSize);
 
 			string cacheKey = $"{size}_{polynomial}_{reflectIn}";
 			return localCache.GetOrAdd(cacheKey, key => CrcUtility.BuildLookupTable(size, polynomial, reflectIn)).ToImmutableArray();

@@ -103,7 +103,7 @@ namespace Bodu.Collections.Generic
 		public CircularBuffer(int capacity, bool allowOverwrite)
 		{
 #if NET6_0_OR_GREATER
-			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, Array.MaxLength);
+			ThrowHelper.ThrowIfOutOfRange(capacity, 1, Array.MaxLength);
 #else
 			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, MaxArrayLength);
 #endif
@@ -168,7 +168,7 @@ namespace Bodu.Collections.Generic
 		{
 			ThrowHelper.ThrowIfNull(collection);
 #if NET6_0_OR_GREATER
-			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, Array.MaxLength);
+			ThrowHelper.ThrowIfOutOfRange(capacity, 1, Array.MaxLength);
 #else
 			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, MaxArrayLength);
 #endif

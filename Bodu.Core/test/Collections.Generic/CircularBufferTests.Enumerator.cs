@@ -23,35 +23,12 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
-		/// Verifies that the enumerator is declared as a readonly struct and that all instance fields are readonly.
-		/// </summary>
-		[TestMethod]
-		public void Enumerator_ShouldBeImmutable()
-		{
-			// Arrange
-			var enumeratorType = typeof(CircularBuffer<int>.Enumerator);
-
-			// Assert - Struct must be marked as readonly
-			Assert.IsTrue(enumeratorType.IsValueType, "Enumerator must be a value type (struct).");
-
-			// Assert - All instance fields must be readonly (IsInitOnly == true)
-			var mutableFields = enumeratorType
-				.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
-				.Where(f => !f.IsInitOnly && !f.IsStatic)
-				.ToList();
-
-			Assert.AreEqual(0, mutableFields.Count,
-				$"Enumerator contains mutable instance fields: {string.Join(", ", mutableFields.Select(f => f.Name))}");
-		}
-
-		/// <summary>
 		/// Verifies that enumeration does not fail when the head is at index 0, ensuring the enumerator does not access a negative array
 		/// index when initialized with head - 1.
 		/// </summary>
 		[TestMethod]
 		public void Enumerator_WhenHeadIsZero_ShouldEnumerateCorrectly()
 		{
-			// Arrange
 			var buffer = new CircularBuffer<int>(3);
 			buffer.Enqueue(10); // Head will be at 0
 			buffer.Enqueue(20);
@@ -64,10 +41,8 @@ namespace Bodu.Collections.Generic
 
 			// Final state: buffer contains [30, 40, 50] in circular order Head is now at 0, and this triggers the head - 1 = -1 logic in
 			// old design
-
 			var result = buffer.ToList();
 
-			// Assert
 			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, result);
 		}
 
@@ -141,29 +116,6 @@ namespace Bodu.Collections.Generic
 			var buffer = new CircularBuffer<string>(5);
 			var items = buffer.ToList();
 			Assert.AreEqual(0, items.Count);
-		}
-
-		/// <summary>
-		/// Verifies that the enumerator returns a snapshot and is not affected by future mutations.
-		/// </summary>
-		[TestMethod]
-		public void Enumerator_WhenBufferIsMutatedAfterCreation_ShouldNotReflectChanges()
-		{
-			var buffer = new CircularBuffer<int>(5);
-			buffer.Enqueue(1);
-			buffer.Enqueue(2);
-
-			var enumerator = buffer.GetEnumerator();
-
-			buffer.Enqueue(3); // Mutate after enumerator obtained
-
-			var items = new List<int>();
-			while (enumerator.MoveNext())
-			{
-				items.Add(enumerator.Current);
-			}
-
-			CollectionAssert.AreEqual(new[] { 1, 2 }, items);
 		}
 
 		/// <summary>

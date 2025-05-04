@@ -76,7 +76,7 @@ namespace Bodu
 
 		private DaysOfWeekSet(int value)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(value, MinValue, MaxValue);
+			ThrowHelper.ThrowIfOutOfRange(value, MinValue, MaxValue);
 
 			this.selectedDays = (byte)value;
 		}
