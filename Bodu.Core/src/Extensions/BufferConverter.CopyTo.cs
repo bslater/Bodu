@@ -101,7 +101,11 @@ namespace Bodu.Extensions
 			ThrowHelper.ThrowIfArrayLengthIsInsufficient(targetArray, index, Unsafe.SizeOf<T>());
 
 			Span<byte> targetSpan = targetArray.AsSpan(index, Unsafe.SizeOf<T>());
-			MemoryMarshal.Write(targetSpan, ref value);
+#if NET8_0_OR_GREATER
+			MemoryMarshal.Write(targetSpan, in value); // Preferred in .NET 8+
+#else
+			MemoryMarshal.Write(targetSpan, ref value); // Required in .NET 6/7
+#endif
 		}
 	}
 }
