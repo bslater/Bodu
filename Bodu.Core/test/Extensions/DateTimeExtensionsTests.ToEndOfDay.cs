@@ -20,7 +20,7 @@ namespace Bodu.Extensions
 		{
 			DateTime input = DateTime.Parse(inputDate, null, System.Globalization.DateTimeStyles.RoundtripKind);
 			DateTime expected = DateTime.Parse(expectedDate, null, System.Globalization.DateTimeStyles.RoundtripKind);
-			DateTime result = input.EndOfDay();
+			DateTime result = input.ToEndOfDay();
 
 			Assert.AreEqual(expected, result);
 		}
@@ -29,7 +29,7 @@ namespace Bodu.Extensions
 		public void EndOfTheDay_WhenMaxDateTime_ShouldReturnMaxValue()
 		{
 			DateTime maxDate = DateTime.MaxValue.Date;
-						var result  = maxDate.EndOfDay();
+						var result  = maxDate.ToEndOfDay();
 
 			Assert.AreEqual(DateTime.MaxValue, result);
 		}
@@ -41,9 +41,9 @@ namespace Bodu.Extensions
 			DateTime utc = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Utc);
 			DateTime unspecified = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Unspecified);
 
-			Assert.AreEqual(DateTimeKind.Local, local.EndOfDay().Kind);
-			Assert.AreEqual(DateTimeKind.Utc, utc.EndOfDay().Kind);
-			Assert.AreEqual(DateTimeKind.Unspecified, unspecified.EndOfDay().Kind);
+			Assert.AreEqual(DateTimeKind.Local, local.ToEndOfDay().Kind);
+			Assert.AreEqual(DateTimeKind.Utc, utc.ToEndOfDay().Kind);
+			Assert.AreEqual(DateTimeKind.Unspecified, unspecified.ToEndOfDay().Kind);
 		}
 	}
 }

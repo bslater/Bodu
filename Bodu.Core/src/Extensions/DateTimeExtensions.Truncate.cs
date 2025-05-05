@@ -72,7 +72,7 @@ namespace Bodu.Extensions
 					return new DateTime(DateTimeExtensions.GetTicksForDate(dateTime.Year, dateTime.Month, 1), dateTime.Kind);
 
 				case DateTimeResolution.Day:
-					return new DateTime(DateTimeExtensions.GetTicks(dateTime), dateTime.Kind);
+					return new DateTime(DateTimeExtensions.GetDateTicks(dateTime), dateTime.Kind);
 
 				case DateTimeResolution.Hour:
 					return dateTime.AddTicks(-(dateTime.Ticks % DateTimeExtensions.TicksPerHour));

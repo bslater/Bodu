@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.EndOfTheDay.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateTimeExtensions.EndOfTheDay.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
@@ -20,7 +20,7 @@ namespace Bodu.Extensions
 		/// The result represents the maximum possible time value for the day, just before midnight of the following day. The
 		/// <see cref="DateTime.Kind" /> of the input is retained in the result.
 		/// </remarks>
-		public static DateTime EndOfDay(this DateTime dateTime)
-			=> new DateTime(DateTimeExtensions.GetTicks(dateTime) + (DateTimeExtensions.TicksPerDay - 1), dateTime.Kind);
+		public static DateTime ToEndOfDay(this DateTime dateTime)
+			=> new DateTime(DateTimeExtensions.GetDateTicks(dateTime) + (DateTimeExtensions.TicksPerDay - 1), dateTime.Kind);
 	}
 }

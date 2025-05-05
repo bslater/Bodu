@@ -16,7 +16,7 @@ namespace Bodu.Extensions
 		[DataRow("2000-01-01T12:00:00", "2000-01-01T00:00:00")]
 		[DataRow("0001-01-01T03:30:00", "0001-01-01T00:00:00")]
 		[DataRow("9999-12-31T22:00:00", "9999-12-31T00:00:00")]
-		public void Midnight_WhenCalled_ShouldReturnMidnightOnSameDate(string inputDate, string expectedDate)
+		public void ToMidnight_WhenCalled_ShouldReturnMidnightOnSameDate(string inputDate, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			DateTime expected = DateTime.Parse(expectedDate);
@@ -27,7 +27,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midnight_WhenKindIsUtc_ShouldPreserveKind()
+		public void ToMidnight_WhenKindIsUtc_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 9, 30, 0, DateTimeKind.Utc);
 			DateTime result = input.ToMidnight();
@@ -37,7 +37,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midnight_WhenKindIsLocal_ShouldPreserveKind()
+		public void ToMidnight_WhenKindIsLocal_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 22, 15, 0, DateTimeKind.Local);
 			DateTime result = input.ToMidnight();
@@ -47,7 +47,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midnight_WhenKindIsUnspecified_ShouldPreserveKind()
+		public void ToMidnight_WhenKindIsUnspecified_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 18, 45, 0, DateTimeKind.Unspecified);
 			DateTime result = input.ToMidnight();
@@ -57,7 +57,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midnight_WhenUsingMinValue_ShouldReturnMidnight()
+		public void ToMidnight_WhenUsingMinValue_ShouldReturnMidnight()
 		{
 			DateTime input = DateTime.MinValue.Date;
 			DateTime result = input.ToMidnight();
@@ -66,7 +66,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midnight_WhenUsingMaxValue_ShouldReturnMidnight()
+		public void ToMidnight_WhenUsingMaxValue_ShouldReturnMidnight()
 		{
 			DateTime input = DateTime.MaxValue.Date;
 			DateTime result = input.ToMidnight();

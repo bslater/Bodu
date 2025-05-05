@@ -46,7 +46,7 @@ namespace Bodu.Extensions
 			culture ??= Thread.CurrentThread.CurrentCulture;
 			DayOfWeek firstDayOfWeek = culture.DateTimeFormat.FirstDayOfWeek;
 
-			long baseTicks = DateTimeExtensions.GetTicks(dateTime);
+			long baseTicks = DateTimeExtensions.GetDateTicks(dateTime);
 			long offsetTicks = ((7 + (dateTime.DayOfWeek - firstDayOfWeek)) % 7) * DateTimeExtensions.TicksPerDay;
 
 			long ticks = baseTicks - offsetTicks;

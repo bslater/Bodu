@@ -17,7 +17,7 @@ namespace Bodu.Extensions
 		[DataRow("2000-01-01T05:45:00", "2000-01-01T12:00:00")]
 		[DataRow("9999-12-31T11:59:59", "9999-12-31T12:00:00")]
 		[DataRow("0001-01-01T03:00:00", "0001-01-01T12:00:00")]
-		public void Midday_WhenCalled_ShouldSetTimeToNoon(string inputDate, string expectedDate)
+		public void ToMidday_WhenCalled_ShouldSetTimeToNoon(string inputDate, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			DateTime expected = DateTime.Parse(expectedDate);
@@ -28,7 +28,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midday_WhenKindIsUtc_ShouldPreserveKind()
+		public void ToMidday_WhenKindIsUtc_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 5, 0, 0, DateTimeKind.Utc);
 			DateTime result = input.ToMidday();
@@ -38,7 +38,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midday_WhenKindIsLocal_ShouldPreserveKind()
+		public void ToMidday_WhenKindIsLocal_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 7, 30, 0, DateTimeKind.Local);
 			DateTime result = input.ToMidday();
@@ -48,7 +48,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midday_WhenKindIsUnspecified_ShouldPreserveKind()
+		public void ToMidday_WhenKindIsUnspecified_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 10, 15, 0, DateTimeKind.Unspecified);
 			DateTime result = input.ToMidday();
@@ -58,7 +58,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midday_WhenUsingMinDate_ShouldReturnNoonOnThatDay()
+		public void ToMidday_WhenUsingMinDate_ShouldReturnNoonOnThatDay()
 		{
 			DateTime input = DateTime.MinValue.Date;
 			DateTime result = input.ToMidday();
@@ -67,7 +67,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void Midday_WhenUsingMaxDate_ShouldReturnNoonOnThatDay()
+		public void ToMidday_WhenUsingMaxDate_ShouldReturnNoonOnThatDay()
 		{
 			DateTime input = DateTime.MaxValue.Date;
 			DateTime result = input.ToMidday();

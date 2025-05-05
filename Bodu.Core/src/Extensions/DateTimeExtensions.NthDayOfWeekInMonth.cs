@@ -83,8 +83,8 @@ namespace Bodu.Extensions
 		/// </remarks>
 		internal static DateTime NthDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek, WeekOfMonthOrdinal ordinal)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
-			ThrowHelper.ThrowIfNotBetweenInclusive(month, 1, 12);
+			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
+			ThrowHelper.ThrowIfOutOfRange(month, 1, 12);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(ordinal);
 

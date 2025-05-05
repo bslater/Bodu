@@ -54,7 +54,7 @@ namespace Bodu.Extensions
 		/// <remarks>The returned <see cref="DateTime" /> has <see cref="DateTimeKind.Utc" />.</remarks>
 		public static DateTime FromUnixTimeMilliseconds(this long dateTime)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(dateTime, DateTimeExtensions.MinEpochMilliseconds, DateTimeExtensions.MaxEpochMilliseconds);
+			ThrowHelper.ThrowIfOutOfRange(dateTime, DateTimeExtensions.MinEpochMilliseconds, DateTimeExtensions.MaxEpochMilliseconds);
 
 			return new DateTime(DateTimeExtensions.UnixEpochTicks + (dateTime * DateTimeExtensions.TicksPerMillisecond), DateTimeKind.Utc);
 		}
@@ -70,7 +70,7 @@ namespace Bodu.Extensions
 		/// <remarks>The returned <see cref="DateTime" /> has <see cref="DateTimeKind.Utc" />.</remarks>
 		public static DateTime FromUnixTimeSeconds(this long dateTime)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(dateTime, DateTimeExtensions.MinEpochSeconds, DateTimeExtensions.MaxEpochSeconds);
+			ThrowHelper.ThrowIfOutOfRange(dateTime, DateTimeExtensions.MinEpochSeconds, DateTimeExtensions.MaxEpochSeconds);
 
 			return new DateTime(DateTimeExtensions.UnixEpochTicks + (dateTime * DateTimeExtensions.TicksPerSecond), DateTimeKind.Utc);
 		}

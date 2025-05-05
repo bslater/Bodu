@@ -18,7 +18,7 @@ namespace Bodu.Extensions
 		/// original <see cref="DateTime.Kind" />.
 		/// </returns>
 		/// <remarks>This method is functionally similar to accessing <c>dateTime.Date</c>, but explicitly retains the original <see cref="DateTime.Kind" />.</remarks>
-		public static DateTime StartOfDay(this DateTime dateTime)
-			=> new DateTime(DateTimeExtensions.GetTicks(dateTime), dateTime.Kind);
+		public static DateTime ToStartOfDay(this DateTime dateTime)
+			=> new DateTime(DateTimeExtensions.GetDateTicks(dateTime), dateTime.Kind);
 	}
 }

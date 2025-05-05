@@ -1,4 +1,4 @@
-// // --------------------------------------------------------------------------------------------------------------- //
+ï»¿// // --------------------------------------------------------------------------------------------------------------- //
 // <copyright file="DateTimeExtensions.cs" company="PlaceholderCompany">
 //     // Copyright (c) PlaceholderCompany. All rights reserved. //
 // </copyright>
@@ -170,8 +170,8 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The <see cref="System.DateTime" /> instance whose date components are to be extracted.</param>
 		/// <param name="year">When this method returns, contains the year component of the specified <paramref name="dateTime" />.</param>
-		/// <param name="month">When this method returns, contains the month component (1–12) of the specified <paramref name="dateTime" />.</param>
-		/// <param name="day">When this method returns, contains the day component (1–31) of the specified <paramref name="dateTime" />.</param>
+		/// <param name="month">When this method returns, contains the month component (1â€“12) of the specified <paramref name="dateTime" />.</param>
+		/// <param name="day">When this method returns, contains the day component (1â€“31) of the specified <paramref name="dateTime" />.</param>
 		/// <remarks>
 		/// <para>
 		/// This method computes the date parts directly from the <see cref="DateTime.Ticks" /> value, using Gregorian calendar math. It
@@ -318,28 +318,6 @@ namespace Bodu.Extensions
 			=> DateTimeExtensions.TicksPerDay * (((((int)dayOfWeek - (int)dateTime.DayOfWeek) - 7) % 7 - 7) % 7);
 
 		/// <summary>
-		/// Returns the 1-based starting month of the specified quarter for the given quarter definition.
-		/// </summary>
-		/// <param name="definition">
-		/// The quarter system definition to apply (e.g., <see cref="CalendarQuarterDefinition.CalendarYear" />, <see cref="CalendarQuarterDefinition.FinancialJuly" />).
-		/// </param>
-		/// <param name="quarter">The quarter number to evaluate (expected to be in the range 1 to 4).</param>
-		/// <returns>An integer between 1 and 12 representing the starting month of the specified quarter.</returns>
-		/// <remarks>
-		/// This method performs no input validation. It assumes that <paramref name="definition" /> is a valid non-custom value of
-		/// <see cref="CalendarQuarterDefinition" />, and that <paramref name="quarter" /> is between 1 and 4.
-		/// <para>
-		/// If <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />, you must use an external provider instead.
-		/// </para>
-		/// <para>
-		/// The starting month is calculated by applying the inverse offset of the quarter system. For example, in a July-based financial
-		/// year ( <see cref="CalendarQuarterDefinition.FinancialJuly" />), Q1 starts in July (month 7), Q2 in October (month 10), etc.
-		/// </para>
-		/// </remarks>
-		internal static int GetStartMonthFromQuarter(CalendarQuarterDefinition definition, int quarter) =>
-			((((quarter - 1) * 3) - (int)definition + 12) % 12) + 1;
-
-		/// <summary>
 		/// Returns the number of ticks representing the date portion (midnight) of the specified <see cref="DateTime" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="System.DateTime" /> instance from which to extract the date portion as a tick count.</param>
@@ -354,8 +332,8 @@ namespace Bodu.Extensions
 		/// optimized for internal use.
 		/// </para>
 		/// </remarks>
-		internal static long GetTicks(DateTime dateTime)
-			=> dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
+		internal static long GetDateTicks(DateTime dateTime)
+		=> dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
 
 		/// <summary>
 		/// Returns the number of ticks at midnight on the specified year, month, and day.
@@ -538,7 +516,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>This method performs no argument validation and assumes that <paramref name="ticks" /> is within the valid range for <see cref="System.DateTime" />.</para>
 		/// </remarks>
-		private static long GetNextDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
+		internal static long GetNextDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
 		{
 			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
 			return DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)day + 7) % 7);

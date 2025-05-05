@@ -35,7 +35,7 @@ namespace Bodu.Extensions
 		/// </list>
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime)
-			=> Quarter(dateTime, CalendarQuarterDefinition.CalendarYear);
+			=> Quarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using the given
@@ -43,7 +43,7 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
 		/// <param name="definition">
-		/// The quarter system definition to apply (e.g., <see cref="CalendarQuarterDefinition.CalendarYear" />, <see cref="CalendarQuarterDefinition.FinancialJuly" />).
+		/// The quarter system definition to apply (e.g., <see cref="CalendarQuarterDefinition.JanuaryDecember" />, <see cref="CalendarQuarterDefinition.JulyToJune" />).
 		/// </param>
 		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -58,12 +58,29 @@ namespace Bodu.Extensions
 		public static int Quarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+
 			if (definition == CalendarQuarterDefinition.Custom)
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			int offset = (int)definition;
-			return ((dateTime.Month + offset - 1) % 12) / 3 + 1;
+			// Enum is format MMDD Extract the anchor month and day
+			uint def = (uint)definition;
+			uint defMonth = def / 100U;
+			uint defDay = def - defMonth * 100U;
+
+			// Estimate quarter using modular month offset
+			int quarter = ((dateTime.Month + 12 - (int)defMonth) % 12) / 3 + 1;
+
+			// Calculate the start month of the resolved quarter, and if we're in the start month of the quarter and before the anchor day,
+			// shift to the previous quarter
+			if (defDay != 1)
+			{
+				uint quarterStartMonth = (((uint)(quarter - 1) * 3U + defMonth - 1U) % 12U) + 1U;
+
+				if ((uint)dateTime.Month == quarterStartMonth && (uint)dateTime.Day < defDay)
+					quarter = quarter == 1 ? 4 : quarter - 1;
+			}
+			return quarter;
 		}
 
 		/// <summary>

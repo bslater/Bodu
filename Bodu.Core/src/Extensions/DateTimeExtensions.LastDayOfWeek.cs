@@ -52,7 +52,7 @@ namespace Bodu.Extensions
 			culture ??= Thread.CurrentThread.CurrentCulture;
 			DayOfWeek lastDayOfWeek = culture.DateTimeFormat.LastDayOfWeek();
 
-			long baseTicks = DateTimeExtensions.GetTicks(dateTime);
+			long baseTicks = DateTimeExtensions.GetDateTicks(dateTime);
 			long offsetTicks = dateTime.DayOfWeek == lastDayOfWeek
 				? 0
 				: DateTimeExtensions.GetNextDayOfWeekAsTicks(dateTime, lastDayOfWeek);

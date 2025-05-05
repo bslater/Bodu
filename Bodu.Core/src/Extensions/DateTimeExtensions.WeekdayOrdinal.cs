@@ -29,7 +29,7 @@ namespace Bodu.Extensions
 		/// </exception>
 		public static WeekOfMonthOrdinal WeekdayOrdinal(this DateTime dateTime)
 		{
-			int ordinal = (int)((DateTimeExtensions.GetTicks(dateTime) - DateTimeExtensions.GetFirstDayOfMonthTicks(dateTime)) / DateTimeExtensions.TicksPerWeek);
+			int ordinal = (int)((DateTimeExtensions.GetDateTicks(dateTime) - DateTimeExtensions.GetFirstDayOfMonthTicks(dateTime)) / DateTimeExtensions.TicksPerWeek);
 
 			if (!Enum.IsDefined(typeof(WeekOfMonthOrdinal), ordinal))
 				throw new ArgumentOutOfRangeException(nameof(dateTime), $"The weekday occurrence at ordinal index {ordinal} is not defined in {nameof(WeekOfMonthOrdinal)}.");
