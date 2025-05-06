@@ -12,176 +12,163 @@
 		/// </summary>
 		public static IEnumerable<EnumerableTestPlan<Node>> GetCases()
 		{
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children
+					childSelector: e => ((Node)e).Children
 				),
-				ResultSelector = node => node.Name,
-				ExpectedResult = new[] { "Root", "A", "B", "B1", "B2", "C", "C1", "C1A", "C2", "C2A", "C2B", "C2C", "D", "E" },
-			};
+				expectedResult: new[] { "Root", "A", "B", "B1", "B2", "C", "C1", "C1A", "C2", "C2A", "C2B", "C2C", "D", "E" },
+				resultSelector: node => node.Name
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index Selector",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index Selector",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i) => $"{i}:{(e as Node).Name}"
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i) => $"{i}:{((Node)e).Name}"
 				),
-				ExpectedResult = new[] { "0:Root", "0:A", "1:B", "0:B1", "1:B2", "2:C", "0:C1", "0:C1A", "1:C2", "0:C2A", "1:C2B", "2:C2C", "3:D", "4:E" },
-			};
+				expectedResult: new[] { "0:Root", "0:A", "1:B", "0:B1", "1:B2", "2:C", "0:C1", "0:C1A", "1:C2", "0:C2A", "1:C2B", "2:C2C", "3:D", "4:E" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}"
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}"
 				),
-				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" },
-			};
+				expectedResult: new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector and Control = YieldAndBreak",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector and Control = YieldAndBreak",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					e => (e as Node).Stop ? RecursiveSelectControl.YieldAndExit : RecursiveSelectControl.YieldAndRecurse
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Stop ? RecursiveSelectControl.YieldAndExit : RecursiveSelectControl.YieldAndRecurse
 				),
-				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", },
-			};
+				expectedResult: new[] { "0:Root", "-0:A", "-1:B", "--0:B1" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector and Control = SkipOnly",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector and Control = SkipOnly",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					e => (e as Node).Stop ? RecursiveSelectControl.SkipOnly : RecursiveSelectControl.YieldAndRecurse
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Stop ? RecursiveSelectControl.SkipOnly : RecursiveSelectControl.YieldAndRecurse
 				),
-				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--1:B2", "-2:C", "--1:C2", "---0:C2A", "---2:C2C", "-3:D" },
-			};
+				expectedResult: new[] { "0:Root", "-0:A", "-1:B", "--1:B2", "-2:C", "--1:C2", "---0:C2A", "---2:C2C", "-3:D" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector and Control = SkipAndRecurse",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector and Control = SkipAndRecurse",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					e => RecursiveSelectControl.SkipAndRecurse
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => RecursiveSelectControl.SkipAndRecurse
 				),
-				ExpectedResult = Array.Empty<string>(),
-			};
+				expectedResult: Array.Empty<string>()
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector and Control = YieldAndExit",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector and Control = YieldAndExit",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					e => RecursiveSelectControl.YieldAndExit
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => RecursiveSelectControl.YieldAndExit
 				),
-				ExpectedResult = new[] { "0:Root" },
-			};
+				expectedResult: new[] { "0:Root" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector and Control = SkipAndBreak",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector and Control = SkipAndBreak",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					e => RecursiveSelectControl.SkipAndBreak
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => RecursiveSelectControl.SkipAndBreak
 				),
-				ExpectedResult = Array.Empty<string>(),
-			};
+				expectedResult: Array.Empty<string>()
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Index and Depth Selector and Control = YieldAndRecurse on 'C'",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Index and Depth Selector and Control = YieldAndRecurse on 'C'",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					e => (e as Node).Name[0] == 'C' ? RecursiveSelectControl.YieldAndRecurse : RecursiveSelectControl.SkipAndRecurse
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Name[0] == 'C'
+						? RecursiveSelectControl.YieldAndRecurse
+						: RecursiveSelectControl.SkipAndRecurse
 				),
-				ExpectedResult = new[] { "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C" },
-			};
+				expectedResult: new[] { "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Control = YieldOnly for Stop nodes",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Control = YieldOnly for Stop nodes",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					recursionControl: e => (e as Node).Stop ? RecursiveSelectControl.YieldOnly : RecursiveSelectControl.YieldAndRecurse
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Stop
+						? RecursiveSelectControl.YieldOnly
+						: RecursiveSelectControl.YieldAndRecurse
 				),
+				expectedResult: new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
+			);
 
-				// C1A is excluded since C1 is Stop = true and marked YieldOnly (no recurse)
-				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
-			};
-
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Control = RecurseOnly on Root",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Control = RecurseOnly on Root",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					recursionControl: e => (e as Node).Name == "Root"
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Name == "Root"
 						? RecursiveSelectControl.RecurseOnly
 						: RecursiveSelectControl.YieldAndRecurse
 				),
-				ExpectedResult = new[] { "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
-			};
+				expectedResult: new[] { "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---1:C2B", "---2:C2C", "-3:D", "-4:E" }
+			);
 
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with Control = SkipAndExit on Stop",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with Control = SkipAndExit on Stop",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					recursionControl: e => (e as Node).Stop
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Stop
 						? RecursiveSelectControl.SkipAndExit
 						: RecursiveSelectControl.YieldAndRecurse
 				),
+				expectedResult: new[] { "0:Root", "-0:A", "-1:B" }
+			);
 
-				// B1 is Stop = true → SkipAndExit triggers full stop
-				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B" }
-			};
-
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect with complex control logic per node name",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect with complex control logic per node name",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					recursionControl: e => (e as Node).Name switch
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Name switch
 					{
 						"Root" => RecursiveSelectControl.YieldAndRecurse,
 						"A" => RecursiveSelectControl.YieldOnly,
@@ -190,25 +177,22 @@
 						_ => RecursiveSelectControl.YieldAndRecurse
 					}
 				),
+				expectedResult: new[] { "0:Root", "-0:A", "--0:B1" }
+			);
 
-				// Skips over B but recurses B, nd exits immediately on B1
-				ExpectedResult = new[] { "0:Root", "-0:A", "--0:B1" }
-			};
-
-			yield return new EnumerableTestPlan<Node>
-			{
-				Name = "RecursiveSelect skipping only C2B",
-				Source = NodeSampleTree.BuildSampleTree(),
-				Invoke = source => IEnumerableExtensions.RecursiveSelect(
+			yield return new EnumerableTestPlan<Node>(
+				name: "RecursiveSelect skipping only C2B",
+				source: NodeSampleTree.BuildSampleTree(),
+				invoke: source => IEnumerableExtensions.RecursiveSelect(
 					source: source,
-					childSelector: e => (e as Node).Children,
-					selector: (e, i, d) => $"{new string('-', d)}{i}:{(e as Node).Name}",
-					recursionControl: e => (e as Node).Name == "C2B"
+					childSelector: e => ((Node)e).Children,
+					selector: (e, i, d) => $"{new string('-', d)}{i}:{((Node)e).Name}",
+					recursionControl: e => ((Node)e).Name == "C2B"
 						? RecursiveSelectControl.SkipOnly
 						: RecursiveSelectControl.YieldAndRecurse
 				),
-				ExpectedResult = new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---2:C2C", "-3:D", "-4:E" }
-			};
+				expectedResult: new[] { "0:Root", "-0:A", "-1:B", "--0:B1", "--1:B2", "-2:C", "--0:C1", "---0:C1A", "--1:C2", "---0:C2A", "---2:C2C", "-3:D", "-4:E" }
+			);
 		}
 
 		/// <summary>

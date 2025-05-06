@@ -4,8 +4,6 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using System.Reflection.Metadata.Ecma335;
-
 namespace Bodu
 {
 	public partial struct DaysOfWeekSet

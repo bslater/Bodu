@@ -12,16 +12,16 @@ namespace Bodu
 	public partial class ThrowHelperTests
 	{
 		[DataTestMethod]
-		[DataRow(5, 3)] // destination too small
-		[DataRow(4, 2)]
-		public void ThrowIfDestinationTooSmall_Array_WhenDestinationTooSmall_ShouldThrowArgumentException(int sourceLength, int destinationLength)
+		[DataRow(10, 5)] // destination too small
+		[DataRow(5, 4)]
+		public void ThrowIfDestinationSpanTooSmall_WhenDestinationTooSmall_ShouldThrowArgumentException(int sourceLength, int destinationLength)
 		{
-			var source = new int[sourceLength];
+			var source = new byte[sourceLength];
 			var destination = new byte[destinationLength];
 
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
-				ThrowHelper.ThrowIfDestinationTooSmall(source, destination);
+				ThrowHelper.ThrowIfDestinationSpanTooSmall<byte, byte>(source.AsSpan(), destination.AsSpan());
 			});
 		}
 
@@ -29,12 +29,12 @@ namespace Bodu
 		[DataRow(5, 5)]
 		[DataRow(3, 5)]
 		[DataRow(0, 0)]
-		public void ThrowIfDestinationTooSmall_Array_WhenDestinationSufficient_ShouldNotThrow(int sourceLength, int destinationLength)
+		public void ThrowIfDestinationSpanTooSmall_WhenDestinationSufficient_ShouldNotThrow(int sourceLength, int destinationLength)
 		{
 			var source = new int[sourceLength];
-			var destination = new byte[destinationLength];
+			var destination = new int[destinationLength];
 
-			ThrowHelper.ThrowIfDestinationTooSmall(source, destination);
+			ThrowHelper.ThrowIfDestinationSpanTooSmall<int, int>(source.AsSpan(), destination.AsSpan());
 		}
 	}
 }

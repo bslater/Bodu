@@ -13,11 +13,11 @@ namespace Bodu.Extensions
 	{
 		private struct QuarterData
 		{
-			public DateTime Date { get; init; }
-			public CalendarQuarterDefinition Definition { get; init; }
-			public int Quarter { get; init; }
-			public DateTime StartDate { get; init; }
-			public DateTime EndDate { get; init; }
+			public DateTime Date { get;  }
+			public CalendarQuarterDefinition Definition { get;  }
+			public int Quarter { get;  }
+			public DateTime StartDate { get;  }
+			public DateTime EndDate { get;  }
 
 			public QuarterData(DateTime date, CalendarQuarterDefinition definition, int quarter, DateTime startDate, DateTime endDate)
 			{

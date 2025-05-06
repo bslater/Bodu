@@ -14,43 +14,42 @@ namespace Bodu.Collections.Generic.Extensions
 		{
 			new object[]
 			{
-				new EnumerableTestPlan<int>
-				{
-					Name = "Batch - even split",
-					Source = Enumerable.Range(1, 10),
-					Invoke = source => source.Batch(2),
-					ExpectedResult = new [] {
-						new [] { 1, 2 },
-						new [] { 3, 4 },
-						new [] { 5, 6 },
-						new [] { 7, 8 },
-						new [] {9, 10 }
+				new EnumerableTestPlan<int>(
+					name: "Batch - even split",
+					source: Enumerable.Range(1, 10),
+					invoke: source => source.Batch(2),
+					expectedResult: new[]
+					{
+						new[] { 1, 2 },
+						new[] { 3, 4 },
+						new[] { 5, 6 },
+						new[] { 7, 8 },
+						new[] { 9, 10 }
 					}
-				}
+				)
 			},
 			new object[]
 			{
-				new EnumerableTestPlan<int>
-				{
-					Name = "Batch - uneven split",
-					Source = Enumerable.Range(1, 10),
-					Invoke = source => source.Batch(3),
-					ExpectedResult = new [] {
-						new [] { 1, 2 ,3  },
-						new [] { 4,5, 6 },
-						new [] { 7, 8,9 },
+				new EnumerableTestPlan<int>(
+					name: "Batch - uneven split",
+					source: Enumerable.Range(1, 10),
+					invoke: source => source.Batch(3),
+					expectedResult: new[]
+					{
+						new[] { 1, 2, 3 },
+						new[] { 4, 5, 6 },
+						new[] { 7, 8, 9 },
 						new[] { 10 }
 					}
-				}
+				)
 			},
 			new object[]
 			{
-				new EnumerableTestPlan<int>
-				{
-					Name = "Batch - with selector",
-					Source = Enumerable.Range(1, 10),
-					Invoke = source => source.Batch(2, x => $"Item{x}"),
-					ExpectedResult = new[]
+				new EnumerableTestPlan<int>(
+					name: "Batch - with selector",
+					source: Enumerable.Range(1, 10),
+					invoke: source => source.Batch(2, x => $"Item{x}"),
+					expectedResult: new[]
 					{
 						new[] { "Item1", "Item2" },
 						new[] { "Item3", "Item4" },
@@ -58,16 +57,15 @@ namespace Bodu.Collections.Generic.Extensions
 						new[] { "Item7", "Item8" },
 						new[] { "Item9", "Item10" }
 					}
-				}
+				)
 			},
 			new object[]
 			{
-				new EnumerableTestPlan<int>
-				{
-					Name = "Batch - selector with index",
-					Source = Enumerable.Range(1, 10),
-					Invoke = source => source.Batch(2, (x, i) => $"{i}:{x}"),
-					ExpectedResult = new[]
+				new EnumerableTestPlan<int>(
+					name: "Batch - selector with index",
+					source: Enumerable.Range(1, 10),
+					invoke: source => source.Batch(2, (x, i) => $"{i}:{x}"),
+					expectedResult: new[]
 					{
 						new[] { "0:1", "1:2" },
 						new[] { "2:3", "3:4" },
@@ -75,7 +73,7 @@ namespace Bodu.Collections.Generic.Extensions
 						new[] { "6:7", "7:8" },
 						new[] { "8:9", "9:10" }
 					}
-				}
+				)
 			}
 		};
 

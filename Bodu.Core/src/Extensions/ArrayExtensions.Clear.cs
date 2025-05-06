@@ -16,7 +16,7 @@ namespace Bodu.Extensions
 		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <see langword="null" />.</exception>
 		public static void Clear<T>(this T[] array)
 		{
-			ThrowHelper.ThrowIfNull(array, nameof(array));
+			ThrowHelper.ThrowIfNull(array);
 			ClearInternal(array, 0, array.Length);
 		}
 
@@ -35,7 +35,7 @@ namespace Bodu.Extensions
 		/// </remarks>
 		public static void Clear<T>(this T[] array, int index)
 		{
-			ThrowHelper.ThrowIfNull(array, nameof(array));
+			ThrowHelper.ThrowIfNull(array);
 			ThrowHelper.ThrowIfIndexOutOfRange(index, array);
 			ClearInternal(array, index, array.Length - index);
 		}
@@ -55,7 +55,7 @@ namespace Bodu.Extensions
 		/// <remarks>This method clears exactly <paramref name="count" /> elements starting at <paramref name="index" />.</remarks>
 		public static void Clear<T>(this T[] array, int index, int count)
 		{
-			ThrowHelper.ThrowIfNull(array, nameof(array));
+			ThrowHelper.ThrowIfNull(array);
 			ThrowHelper.ThrowIfIndexOutOfRange(index, array);
 			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, count);
 			ClearInternal(array, index, count);
@@ -73,9 +73,9 @@ namespace Bodu.Extensions
 		/// <remarks>This method supports only single-dimensional, zero-based arrays.</remarks>
 		public static void Clear(this Array array)
 		{
-			ThrowHelper.ThrowIfNull(array, nameof(array));
-			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array, nameof(array));
-			ThrowHelper.ThrowIfArrayIsNotZeroBased(array, nameof(array));
+			ThrowHelper.ThrowIfNull(array);
+			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
+			ThrowHelper.ThrowIfArrayIsNotZeroBased(array);
 			ClearInternal(array, 0, array.Length);
 		}
 
@@ -94,9 +94,9 @@ namespace Bodu.Extensions
 		/// <remarks>Clears elements from <paramref name="index" /> to the end of the array.</remarks>
 		public static void Clear(this Array array, int index)
 		{
-			ThrowHelper.ThrowIfNull(array, nameof(array));
-			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array, nameof(array));
-			ThrowHelper.ThrowIfArrayIsNotZeroBased(array, nameof(array));
+			ThrowHelper.ThrowIfNull(array);
+			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
+			ThrowHelper.ThrowIfArrayIsNotZeroBased(array);
 			ThrowHelper.ThrowIfIndexOutOfRange(index, array);
 			ClearInternal(array, index, array.Length - index);
 		}
@@ -119,9 +119,9 @@ namespace Bodu.Extensions
 		/// <remarks>Clears <paramref name="count" /> elements starting at <paramref name="index" />.</remarks>
 		public static void Clear(this Array array, int index, int count)
 		{
-			ThrowHelper.ThrowIfNull(array, nameof(array));
-			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array, nameof(array));
-			ThrowHelper.ThrowIfArrayIsNotZeroBased(array, nameof(array));
+			ThrowHelper.ThrowIfNull(array);
+			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
+			ThrowHelper.ThrowIfArrayIsNotZeroBased(array);
 			ThrowHelper.ThrowIfIndexOutOfRange(index, array);
 			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, count);
 			ClearInternal(array, index, count);

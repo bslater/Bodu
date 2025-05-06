@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="ShuffleHelpers.Shuffle.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="ShuffleHelpers.Shuffle.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Runtime.CompilerServices;
@@ -33,6 +33,8 @@ namespace Bodu.Collections.Generic
 				(array[i], array[j]) = (array[j], array[i]);
 			}
 		}
+
+#if !NETSTANDARD2_0
 
 		/// <summary>
 		/// Performs an in-place Fisher–Yates shuffle over a span of elements.
@@ -74,5 +76,7 @@ namespace Bodu.Collections.Generic
 			ThrowHelper.ThrowIfNull(rng);
 			Shuffle(memory.Span, rng);
 		}
+
+#endif
 	}
 }

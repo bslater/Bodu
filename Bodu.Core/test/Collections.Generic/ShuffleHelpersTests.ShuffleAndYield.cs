@@ -19,6 +19,8 @@ namespace Bodu.Collections.Generic
 			CollectionAssert.IsSubsetOf(result, buffer);
 		}
 
+#if !NETSTANDARD2_0
+
 		/// <summary>
 		/// Verifies that ShuffleAndYield for a span returns a subset of the specified count, and all returned elements are from the
 		/// original span.
@@ -46,6 +48,59 @@ namespace Bodu.Collections.Generic
 			Assert.AreEqual(3, result.Length);
 			CollectionAssert.IsSubsetOf(result, memory.ToArray());
 		}
+
+		/// <summary>
+		/// Verifies that ShuffleAndYield using a span does not mutate the underlying original array.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_Span_ShouldNotModifyOriginalSpan()
+		{
+			var original = Enumerable.Range(1, 10).ToArray();
+			var copy = original.ToArray();
+
+			_ = ShuffleHelpers.ShuffleAndYield<int>(original.AsSpan(), new XorShiftRandom(), 5).ToArray();
+
+			CollectionAssert.AreEqual(copy, original, "Span-based shuffle should not mutate the original array.");
+		}
+
+		/// <summary>
+		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingSpan()
+		{
+			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsSpan(), new XorShiftRandom(), 5).ToArray();
+
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
+
+			// Ensure the references point to the original objects
+			foreach (var person in result)
+			{
+				Assert.IsTrue(source.Contains(person));
+			}
+		}
+
+		/// <summary>
+		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
+		/// </summary>
+		[TestMethod]
+		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingMemory()
+		{
+			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).ToArray();
+			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsMemory(), new XorShiftRandom(), 5).ToArray();
+
+			Assert.AreEqual(5, result.Length);
+			CollectionAssert.IsSubsetOf(result, source.ToArray());
+
+			// Ensure the references point to the original objects
+			foreach (var person in result)
+			{
+				Assert.IsTrue(source.Contains(person));
+			}
+		}
+#endif
 
 		/// <summary>
 		/// Verifies that ShuffleAndYield for IEnumerable returns a subset of the specified count, and all returned elements are from the
@@ -137,20 +192,6 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield using a span does not mutate the underlying original array.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_Span_ShouldNotModifyOriginalSpan()
-		{
-			var original = Enumerable.Range(1, 10).ToArray();
-			var copy = original.ToArray();
-
-			_ = ShuffleHelpers.ShuffleAndYield<int>(original.AsSpan(), new XorShiftRandom(), 5).ToArray();
-
-			CollectionAssert.AreEqual(copy, original, "Span-based shuffle should not mutate the original array.");
-		}
-
-		/// <summary>
 		/// Verifies that when count equals array length, all unique items are returned in a different order.
 		/// </summary>
 		[TestMethod]
@@ -203,7 +244,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingArray()
 		{
-			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).ToArray();
+			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).ToArray();
 			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
 
 			Assert.AreEqual(5, result.Length);
@@ -222,46 +263,8 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingEnumerable()
 		{
-			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).AsEnumerable();
+			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).AsEnumerable();
 			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
-
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
-
-			// Ensure the references point to the original objects
-			foreach (var person in result)
-			{
-				Assert.IsTrue(source.Contains(person));
-			}
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingSpan()
-		{
-			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsSpan(), new XorShiftRandom(), 5).ToArray();
-
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
-
-			// Ensure the references point to the original objects
-			foreach (var person in result)
-			{
-				Assert.IsTrue(source.Contains(person));
-			}
-		}
-
-		/// <summary>
-		/// Verifies that ShuffleAndYield works correctly with complex reference types and preserves object references.
-		/// </summary>
-		[TestMethod]
-		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingMemory()
-		{
-			var source = Enumerable.Range(1, 10).Select(i => new Person { Id = i, Name = $"Person {i}" }).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsMemory(), new XorShiftRandom(), 5).ToArray();
 
 			Assert.AreEqual(5, result.Length);
 			CollectionAssert.IsSubsetOf(result, source.ToArray());
@@ -297,13 +300,19 @@ namespace Bodu.Collections.Generic
 
 		public class Person
 		{
-			public int Id { get; set; }
+			public int Id { get; }
 
-			public string Name { get; set; }
+			public string Name { get; }
 
 			public override bool Equals(object obj) => obj is Person other && Id == other.Id;
 
 			public override int GetHashCode() => Id.GetHashCode();
+
+			public Person(int id, string name)
+			{
+				Id = id;
+				Name = name;
+			}
 		}
 	}
 }

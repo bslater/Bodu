@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="EvictingDictionaryDebugView.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="EvictingDictionaryDebugView.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Diagnostics;
@@ -18,7 +18,7 @@ namespace Bodu.Collections.Generic
 
 		public EvictingDictionaryDebugView(EvictingDictionary<TKey, TValue> dictionary)
 		{
-			ThrowHelper.ThrowIfNull(dictionary, nameof(dictionary));
+			ThrowHelper.ThrowIfNull(dictionary);
 
 			this.dictionary = dictionary;
 		}

@@ -2,7 +2,7 @@
   <Import Project="..\..\bld\Bodu.props" />
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -10,16 +10,24 @@
     <AssemblyName>Bodu.CoreLib.Test</AssemblyName>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+
+    <!-- Ensure test execution is limited to net6.0 -->
+    <RunConfigurationTargetFramework>net6.0</RunConfigurationTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+  </ItemGroup>
+
+  <!-- Exclude files that are incompatible with netstandard2.0 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Remove="Buffers\PooledBufferBuilderTests*.cs" />
+    <Compile Remove="ThrowHelperTests.ThrowIf*Span*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,5 +37,4 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Bodu.Core.csproj" />
   </ItemGroup>
-
 </Project>
