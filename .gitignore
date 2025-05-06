@@ -361,4 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Bodu.Core/src/docs/_site
+
+# ignore local docfx output
+/docs/api/
+/docs/_site/
+/docs/public/
+
+# Ignore local repository items
+/docs/api/
+/ConsoleApp2/

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{9BC5254D-21B7-4151-9AE1-7E3FDDCE6532}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Core", "Bodu.Core\src\Bodu.Core.csproj", "{F136F92E-234A-4378-AA7C-D392DD080865}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Core.Test", "Bodu.Core\test\Bodu.Core.Test.csproj", "{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}"
@@ -23,6 +21,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Globalization.Calendar", "Bodu.Globalization.Calendar\src\Bodu.Globalization.Calendar.csproj", "{510FE440-C019-4E70-8138-0DCBDD29CF0C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Globalization.Calendar.Test", "Bodu.Globalization.Calendar\test\Bodu.Globalization.Calendar.Test.csproj", "{7D628D91-802A-450A-B65A-67C9396D6188}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "doc", "docs\doc.csproj", "{6ABC151C-660B-421E-92A6-8A6AAB9448C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +58,10 @@ Global
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
