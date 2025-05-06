@@ -7,7 +7,7 @@ namespace Bodu.Collections.Generic.Extensions
 		: Collections.EnumerableTests
 	{
 		public static IEnumerable<object[]> GetDeferredExecutionCases()
-		=> GetCases().Select(tc => new object[] { tc });
+			=> GetCases().Select(tc => new object[] { tc });
 
 		/// <summary>
 		/// Provides extension method test cases that should exhibit deferred execution.
@@ -333,10 +333,10 @@ namespace Bodu.Collections.Generic.Extensions
 		}
 
 		/// <summary>
-		/// Ensures RecursiveSelect works when some childSelector calls return null (graceful fallback).
+		/// Verifies that <see cref="IEnumerableExtensions.RecursiveSelect" /> handles null child collections gracefully by skipping recursion.
 		/// </summary>
 		[TestMethod]
-		public void ChildSelector_ReturnsNull_ShouldSkipChildren()
+		public void RecursiveSelect_WhenChildSelectorReturnsNull_ShouldSkipChildren()
 		{
 			var root = new Node { Name = "Root", Children = null! };
 			var result = new object[] { root }.RecursiveSelect(n => (n as Node).Children).ToList();
@@ -346,10 +346,10 @@ namespace Bodu.Collections.Generic.Extensions
 		}
 
 		/// <summary>
-		/// Ensures that exceptions thrown by the selector are propagated correctly.
+		/// Verifies that an exception thrown by the selector during recursive traversal is propagated (not suppressed).
 		/// </summary>
 		[TestMethod]
-		public void Selector_ThrowsException_ShouldBubbleUp()
+		public void RecursiveSelect_WhenSelectorThrows_ShouldPropagateException()
 		{
 			var tree = new object[] { NodeSampleTree.BuildSampleTree() };
 

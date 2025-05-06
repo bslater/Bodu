@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\bld\Bodu.props" />
-  
+
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -18,9 +18,12 @@
     <DefineConstants>$(DefineConstants);ALLOW_UNSAFE</DefineConstants>
   </PropertyGroup>
 
-  <!-- Exclude shared version if needed -->
+  <!-- Exclude files that are not supported in .net standards -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="Buffers\PooledBufferBuilder.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
+    <Compile Remove="Extensions\DateOnly*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +42,7 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="GlobalUsings.cs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="ResourceStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -58,7 +61,4 @@
       <DependentUpon>ResourceStrings.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
-
-
 </Project>

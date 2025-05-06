@@ -49,6 +49,7 @@ namespace Bodu
 				}
 			}
 		}
+
 #else
 
 		/// <summary>
@@ -150,6 +151,7 @@ namespace Bodu
 			if (array.GetLowerBound(0) != 0)
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_ArrayNonZeroLowerBound, nameof(array));
 		}
+
 #else
 
 		/// <summary>
@@ -199,6 +201,7 @@ namespace Bodu
 			if (array.Length - index < requiredLength)
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), nameof(array));
 		}
+
 #else
 
 		/// <summary>
@@ -249,6 +252,7 @@ namespace Bodu
 			if (array.Length == 0)
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_ArrayIsZeroLength, nameof(array));
 		}
+
 #else
 
 		/// <summary>
@@ -290,6 +294,7 @@ namespace Bodu
 			if (array.Length == 0 || array.Length % divisor != 0)
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), nameof(array));
 		}
+
 #else
 
 		/// <summary>
@@ -352,6 +357,7 @@ namespace Bodu
 					ResourceStrings.Arg_Invalid_ArrayOffsetOrLength,
 					nameof(index), nameof(count), nameof(array)));
 		}
+
 #else
 
 		/// <summary>
@@ -418,6 +424,7 @@ namespace Bodu
 			if (array is not TExpected[])
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_ArrayType, nameof(array));
 		}
+
 #else
 
 		/// <summary>
@@ -463,6 +470,7 @@ namespace Bodu
 			if (collection.Count < minCount)
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_CollectionTooSmall, nameof(collection));
 		}
+
 #else
 
 		/// <summary>
@@ -518,6 +526,7 @@ namespace Bodu
 					nameof(value));
 			}
 		}
+
 #else
 
 		/// <summary>
@@ -576,6 +585,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(count),
 					string.Format(ResourceStrings.Arg_OutOfRange_CountExceedsAvailable, available));
 		}
+
 #else
 
 		/// <summary>
@@ -682,6 +692,7 @@ namespace Bodu
 					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "array"),
 					nameof(destination));
 		}
+
 #else
 
 		/// <summary>
@@ -720,14 +731,13 @@ namespace Bodu
 		/// </summary>
 		/// <typeparam name="TEnum">The enum type.</typeparam>
 		/// <param name="value">The value to validate.</param>
-		/// <param name="paramName">The parameter name, inferred from the caller.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown when <paramref name="value" /> is not a defined enum member.
 		/// Message: "The value is not a valid member of the enumeration {0}."
 		/// </exception>
 		/// <remarks>Uses <see cref="Enum.IsDefined(Type, object)" /> to check that the enum value is valid.</remarks>
 		public static void ThrowIfEnumValueIsUndefined<TEnum>(
-			TEnum value			)
+			TEnum value)
 			where TEnum : struct, Enum
 		{
 			if (!Enum.IsDefined(typeof(TEnum), value))
@@ -735,6 +745,7 @@ namespace Bodu
 					nameof(value),
 					string.Format(ResourceStrings.Arg_Invalid_EnumValue, typeof(TEnum).Name));
 		}
+
 #else
 
 		/// <summary>
@@ -769,7 +780,6 @@ namespace Bodu
 		/// <typeparam name="T">A comparable type.</typeparam>
 		/// <param name="value">The value to compare.</param>
 		/// <param name="max">The upper bound (inclusive).</param>
-		/// <param name="paramName">The parameter name of the value.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> &gt; <paramref name="max" />.
 		/// Message: "The value must be less than or equal to {0}."
@@ -783,6 +793,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(value),
 					string.Format(ResourceStrings.Arg_OutOfRange_RequireLessThanOrEqual, max));
 		}
+
 #else
 
 		/// <summary>
@@ -817,7 +828,6 @@ namespace Bodu
 		/// <typeparam name="T">A comparable type.</typeparam>
 		/// <param name="value">The value to compare.</param>
 		/// <param name="max">The exclusive upper bound.</param>
-		/// <param name="paramName">The parameter name of the value.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> &gt;= <paramref name="max" />.
 		/// Message: "The value must be less than {0}."
@@ -831,6 +841,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(value),
 					string.Format(ResourceStrings.Arg_OutOfRange_RequireLessThan, max));
 		}
+
 #else
 
 		/// <summary>
@@ -878,6 +889,7 @@ namespace Bodu
 				throw new ArgumentException(
 					string.Format(ResourceStrings.Arg_Invalid_GreaterThanOrEqualOtherParameter, nameof(other)), nameof(value));
 		}
+
 #else
 
 		/// <summary>
@@ -914,8 +926,6 @@ namespace Bodu
 		/// <typeparam name="T">A comparable type.</typeparam>
 		/// <param name="value">The current value being validated.</param>
 		/// <param name="other">The comparison reference value.</param>
-		/// <param name="paramName">Name of the value parameter.</param>
-		/// <param name="otherName">Name of the comparison parameter.</param>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> &gt; <paramref name="other" />.
 		/// Message: "The value must not be greater than the value of {0}."
@@ -929,6 +939,7 @@ namespace Bodu
 				throw new ArgumentException(
 					string.Format(ResourceStrings.Arg_Invalid_GreaterThanOtherParameter, nameof(other)), nameof(value));
 		}
+
 #else
 
 		/// <summary>
@@ -964,7 +975,6 @@ namespace Bodu
 		/// </summary>
 		/// <param name="index">The index to validate.</param>
 		/// <param name="array">The array to validate the index against.</param>
-		/// <param name="paramName">The name of the parameter representing the index.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="index" /> is less than zero or greater than or equal to <c><paramref name="array" />.LongLength</c>.
 		/// The exception message will state: "The index must be non-negative and less than the size of {0}."
@@ -977,6 +987,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(index),
 					string.Format(ResourceStrings.Arg_OutOfRange_IndexValidRange, array.LongLength));
 		}
+
 #else
 
 		/// <summary>
@@ -1019,6 +1030,7 @@ namespace Bodu
 			if (!Enum.IsDefined(typeof(StringComparison), comparison))
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringComparison, nameof(comparison));
 		}
+
 #else
 
 		/// <summary>
@@ -1050,7 +1062,6 @@ namespace Bodu
 		/// <typeparam name="T">A comparable type.</typeparam>
 		/// <param name="value">The value to check.</param>
 		/// <param name="min">The minimum value allowed.</param>
-		/// <param name="paramName">The parameter name for the value.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> &lt; <paramref name="min" />.
 		/// Message: "The value must be greater than or equal to {0}."
@@ -1064,6 +1075,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(value),
 					string.Format(ResourceStrings.Arg_OutOfRange_RequireGreaterThanOrEqual, min));
 		}
+
 #else
 
 		/// <summary>
@@ -1123,6 +1135,7 @@ namespace Bodu
 					string.Format(ResourceStrings.Arg_OutOfRange_RequireGreaterThanOrEqual, min));
 			}
 		}
+
 #else
 
 		/// <summary>
@@ -1182,6 +1195,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(value),
 					string.Format(ResourceStrings.Arg_OutOfRange_RequireGreaterThan, min));
 		}
+
 #else
 
 		/// <summary>
@@ -1216,8 +1230,6 @@ namespace Bodu
 		/// <typeparam name="T">A comparable type.</typeparam>
 		/// <param name="value">The value being validated.</param>
 		/// <param name="other">The comparison reference value.</param>
-		/// <param name="paramName">Name of the value parameter.</param>
-		/// <param name="otherName">Name of the comparison parameter.</param>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> &gt;= <paramref name="other" />.
 		/// Message: "The value must not be less than or equal to the value of {0}."
@@ -1231,6 +1243,7 @@ namespace Bodu
 				throw new ArgumentException(
 					string.Format(ResourceStrings.Arg_Invalid_LessThanOrEqualOtherParameter, nameof(other)), nameof(value));
 		}
+
 #else
 
 		/// <summary>
@@ -1267,8 +1280,6 @@ namespace Bodu
 		/// <typeparam name="T">A comparable type.</typeparam>
 		/// <param name="value">The current value being validated.</param>
 		/// <param name="other">The comparison reference value.</param>
-		/// <param name="paramName">Name of the value parameter.</param>
-		/// <param name="otherName">Name of the comparison parameter.</param>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> &gt; <paramref name="other" />.
 		/// Message: "The value must not be less than the value of {0}."
@@ -1282,6 +1293,7 @@ namespace Bodu
 				throw new ArgumentException(
 					string.Format(ResourceStrings.Arg_Invalid_LessThanOtherParameter, nameof(other)), nameof(value));
 		}
+
 #else
 
 		/// <summary>
@@ -1329,6 +1341,7 @@ namespace Bodu
 			if (value.CompareTo(default!) < 0)
 				throw new ArgumentOutOfRangeException(nameof(value), ResourceStrings.Arg_OutOfRange_RequireNonNegative);
 		}
+
 #else
 
 		/// <summary>
@@ -1454,7 +1467,6 @@ namespace Bodu
 		/// </summary>
 		/// <typeparam name="T">The target type to validate against.</typeparam>
 		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is null and
 		/// <typeparamref name="T" /> is a non-nullable value type.
@@ -1479,6 +1491,7 @@ namespace Bodu
 					nameof(value));
 			}
 		}
+
 #else
 
 		/// <summary>
@@ -1522,7 +1535,6 @@ namespace Bodu
 		/// </summary>
 		/// <param name="value">The value to validate.</param>
 		/// <param name="divisor">The required positive divisor.</param>
-		/// <param name="paramName">The name of the parameter.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> is not greater than zero or not divisible by <paramref name="divisor" />.
 		/// Message: "The value must be a positive number and a multiple of {0}."
@@ -1537,6 +1549,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(value),
 					string.Format(ResourceStrings.Arg_Invalid_PositiveMultipleOf, divisor));
 		}
+
 #else
 
 		/// <summary>
@@ -1570,7 +1583,6 @@ namespace Bodu
 		/// </summary>
 		/// <typeparam name="T">A type that supports equality comparison.</typeparam>
 		/// <param name="value">The value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> is not zero.
 		/// Message: "The value must be zero."
@@ -1584,6 +1596,7 @@ namespace Bodu
 			if (!value.Equals(default!))
 				throw new ArgumentOutOfRangeException(nameof(value), ResourceStrings.Arg_OutOfRange_RequireZero);
 		}
+
 #else
 
 		/// <summary>
@@ -1621,11 +1634,12 @@ namespace Bodu
 		/// Message: "Value cannot be null."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNull<T>(			T value)
+		public static void ThrowIfNull<T>(T value)
 		{
 			if (value is null)
 				throw new ArgumentNullException(nameof(value));
 		}
+
 #else
 
 		/// <summary>
@@ -1657,7 +1671,6 @@ namespace Bodu
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="value">The value to validate.</param>
 		/// <param name="message">A custom error message for the exception.</param>
-		/// <param name="paramName">The parameter name.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNull<T>(
@@ -1667,6 +1680,7 @@ namespace Bodu
 			if (value is null)
 				throw new ArgumentNullException(nameof(value), message);
 		}
+
 #else
 
 		/// <summary>
@@ -1695,7 +1709,6 @@ namespace Bodu
 		/// Throws an <see cref="ArgumentNullException" /> if the string is <c>null</c>, or an <see cref="ArgumentException" /> if it is empty.
 		/// </summary>
 		/// <param name="value">The string value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is an empty string.
@@ -1711,6 +1724,7 @@ namespace Bodu
 			if (value.Length == 0)
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringNullOrEmpty, nameof(value));
 		}
+
 #else
 
 		/// <summary>
@@ -1744,7 +1758,6 @@ namespace Bodu
 		/// </summary>
 		/// <typeparam name="T">A comparable numeric type.</typeparam>
 		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> &gt; 0.
 		/// Message: "The value must be zero or negative."
@@ -1757,6 +1770,7 @@ namespace Bodu
 			if (value.CompareTo(default!) > 0)
 				throw new ArgumentOutOfRangeException(nameof(value), ResourceStrings.Arg_OutOfRange_RequireNonPositive);
 		}
+
 #else
 
 		/// <summary>
@@ -1788,7 +1802,6 @@ namespace Bodu
 		/// </summary>
 		/// <param name="start">The starting value of the sequence.</param>
 		/// <param name="count">The number of values to generate.</param>
-		/// <param name="paramName">The name of the parameter representing <paramref name="count" />.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown when <paramref name="start" /> + <paramref name="count" /> - 1 would exceed <see cref="Int32.MaxValue" />.
 		/// </exception>
@@ -1801,6 +1814,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(start),
 					string.Format(ResourceStrings.Arg_OutOfRange_SequenceRangeOverflow, nameof(Int32)));
 		}
+
 #else
 
 		/// <summary>
@@ -1844,6 +1858,7 @@ namespace Bodu
 				throw new ArgumentOutOfRangeException(nameof(start),
 					string.Format(ResourceStrings.Arg_OutOfRange_SequenceRangeOverflow, nameof(Int64)));
 		}
+
 #else
 
 		/// <summary>
@@ -1877,7 +1892,6 @@ namespace Bodu
 		/// <param name="span">The span to check.</param>
 		/// <param name="index">The index from which to measure the remaining length.</param>
 		/// <param name="requiredLength">The required number of elements.</param>
-		/// <param name="paramName">The name of the span parameter.</param>
 		/// <exception cref="ArgumentException">
 		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
 		/// Message: "Span is too short. Required minimum is {0} from a specified index."
@@ -2064,7 +2078,6 @@ namespace Bodu
 		/// </summary>
 		/// <typeparam name="T">A type that implements <see cref="IEquatable{T}" />.</typeparam>
 		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> equals 0.
 		/// Message: "The value must not be zero."
@@ -2077,6 +2090,7 @@ namespace Bodu
 			if (value.Equals(default!))
 				throw new ArgumentOutOfRangeException(nameof(value), ResourceStrings.Arg_OutOfRange_RequireNonZero);
 		}
+
 #else
 
 		/// <summary>
@@ -2120,6 +2134,7 @@ namespace Bodu
 			if (value.CompareTo(default!) <= 0)
 				throw new ArgumentOutOfRangeException(nameof(value), ResourceStrings.Arg_OutOfRange_RequirePositive);
 		}
+
 #else
 
 		/// <summary>
@@ -2151,7 +2166,6 @@ namespace Bodu
 		/// </summary>
 		/// <typeparam name="T">A comparable numeric type.</typeparam>
 		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> &gt;= 0.
 		/// Message: "The value must be a negative number."
@@ -2164,6 +2178,7 @@ namespace Bodu
 			if (value.CompareTo(default!) >= 0)
 				throw new ArgumentOutOfRangeException(nameof(value), ResourceStrings.Arg_OutOfRange_RequireNegative);
 		}
+
 #else
 
 		/// <summary>
@@ -2195,7 +2210,6 @@ namespace Bodu
 		/// empty or whitespace.
 		/// </summary>
 		/// <param name="value">The string value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is empty or contains only whitespace.
@@ -2211,6 +2225,7 @@ namespace Bodu
 			if (string.IsNullOrWhiteSpace(value))
 				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringEmptyOrWhitespace, nameof(value));
 		}
+
 #else
 
 		/// <summary>

@@ -2,7 +2,7 @@
   <Import Project="..\..\bld\Bodu.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -14,6 +14,12 @@
     <!-- Ensure test execution is limited to net6.0 -->
     <RunConfigurationTargetFramework>net6.0</RunConfigurationTargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Collections.Generic.Concurrent\**" />
+    <EmbeddedResource Remove="Collections.Generic.Concurrent\**" />
+    <None Remove="Collections.Generic.Concurrent\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4">
