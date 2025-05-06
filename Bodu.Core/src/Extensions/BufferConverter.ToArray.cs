@@ -24,12 +24,19 @@ namespace Bodu.Extensions
 			where T : unmanaged
 		{
 			ThrowHelper.ThrowIfNull(sourceArray);
-			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(sourceArray, sourceIndex, count * Unsafe.SizeOf<T>());
+#if NET5_0_OR_GREATER
+			int elementSize = Unsafe.SizeOf<T>();
+#else
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(sourceArray, sourceIndex, count * elementSize);
 
 			var result = new T[count];
 			sourceArray.CopyTo(sourceIndex, result, 0, count);
 			return result;
 		}
+
+#if !NETSTANDARD2_0
 
 		/// <summary>
 		/// Converts a specified number of elements of type <typeparamref name="T" /> from a span of bytes into a new array of type <typeparamref name="T" />.
@@ -43,11 +50,18 @@ namespace Bodu.Extensions
 		public static T[] ToArray<T>(this ReadOnlySpan<byte> sourceSpan, int count)
 			where T : unmanaged
 		{
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, count * Unsafe.SizeOf<T>());
+#if NET5_0_OR_GREATER
+			int elementSize = Unsafe.SizeOf<T>();
+#else
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, count * elementSize);
 
 			var result = new T[count];
 			sourceSpan.CopyTo(result.AsSpan(), count);
 			return result;
 		}
+
+#endif
 	}
 }

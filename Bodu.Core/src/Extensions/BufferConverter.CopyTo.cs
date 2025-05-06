@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Bodu.Extensions
 {
@@ -29,13 +28,32 @@ namespace Bodu.Extensions
 			ThrowHelper.ThrowIfNull(sourceArray);
 			ThrowHelper.ThrowIfNull(targetArray);
 
-			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(sourceArray, sourceIndex, count * Unsafe.SizeOf<T>());
-			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(targetArray, targetIndex, count);
+#if NET5_0_OR_GREATER
+			int elementSize = Unsafe.SizeOf<T>();
+#else
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			int byteCount = count * elementSize;
 
-			ReadOnlySpan<byte> sourceSpan = sourceArray.AsSpan(sourceIndex, count * Unsafe.SizeOf<T>());
-			Span<T> targetSpan = targetArray.AsSpan(targetIndex, count);
+			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(sourceArray, sourceIndex, byteCount);
+			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(targetArray, targetIndex, byteCount);
 
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+			ReadOnlySpan<byte> sourceSpan = new ReadOnlySpan<byte>(sourceArray, sourceIndex, byteCount);
+			Span<T> targetSpan = new Span<T>(targetArray, targetIndex, count);
 			MemoryMarshal.Cast<byte, T>(sourceSpan).CopyTo(targetSpan);
+#else
+			var handle = GCHandle.Alloc(targetArray, GCHandleType.Pinned);
+			try
+			{
+				IntPtr destPtr = handle.AddrOfPinnedObject() + (targetIndex * elementSize);
+				Marshal.Copy(sourceArray, sourceIndex, destPtr, byteCount);
+			}
+			finally
+			{
+				handle.Free();
+			}
+#endif
 		}
 
 		/// <summary>
@@ -48,8 +66,10 @@ namespace Bodu.Extensions
 		/// <param name="targetArray">The target array to receive the elements.</param>
 		/// <param name="count">The number of elements of type <typeparamref name="T" /> to copy.</param>
 		public static void CopyTo<T>(this byte[] sourceArray, int sourceIndex, T[] targetArray, int count)
-			where T : unmanaged
-			=> CopyTo(sourceArray, sourceIndex, targetArray, 0, count);
+				where T : unmanaged
+				=> CopyTo(sourceArray, sourceIndex, targetArray, 0, count);
+
+#if !NETSTANDARD2_0
 
 		/// <summary>
 		/// Copies a specified number of elements of type <typeparamref name="T" /> from a source span into a target span.
@@ -64,11 +84,18 @@ namespace Bodu.Extensions
 		public static void CopyTo<T>(this ReadOnlySpan<byte> sourceSpan, Span<T> targetSpan, int count)
 			where T : unmanaged
 		{
+#if NET5_0_OR_GREATER
+			int elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
+#else
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			int byteCount = count * elementSize;
+
 			// ThrowHelper will handle range and size checks
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, count * Unsafe.SizeOf<T>());
+			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, byteCount);
 			ThrowHelper.ThrowIfSpanLengthIsInsufficient(targetSpan, 0, count);
 
-			MemoryMarshal.Cast<byte, T>(sourceSpan.Slice(0, count * Unsafe.SizeOf<T>())).CopyTo(targetSpan.Slice(0, count));
+			MemoryMarshal.Cast<byte, T>(sourceSpan.Slice(0, byteCount)).CopyTo(targetSpan.Slice(0, count));
 		}
 
 		/// <summary>
@@ -82,6 +109,8 @@ namespace Bodu.Extensions
 			where T : unmanaged
 			=> CopyTo(sourceMemory.Span, targetMemory.Span, count);
 
+#endif
+
 		/// <summary>
 		/// Copies a single value of type <typeparamref name="T" /> into a byte array at the specified index.
 		/// </summary>
@@ -90,21 +119,41 @@ namespace Bodu.Extensions
 		/// <param name="targetArray">The byte array to receive the value.</param>
 		/// <param name="index">The starting index in the <paramref name="targetArray" />.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="targetArray" /> is <see langword="null" />.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// <paramref name="index" /> is negative or greater than the available space in <paramref name="targetArray" />.
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is negative or exceeds the available space in <paramref name="targetArray" />.</exception>
 		public static void CopyTo<T>(this T value, byte[] targetArray, int index)
 			where T : unmanaged
 		{
-			ThrowHelper.ThrowIfNull(targetArray);
+			if (targetArray == null)
+				throw new ArgumentNullException(nameof(targetArray));
 
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(targetArray, index, Unsafe.SizeOf<T>());
-
-			Span<byte> targetSpan = targetArray.AsSpan(index, Unsafe.SizeOf<T>());
-#if NET8_0_OR_GREATER
-			MemoryMarshal.Write(targetSpan, in value); // Preferred in .NET 8+
+#if NET5_0_OR_GREATER
+			int elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
 #else
-			MemoryMarshal.Write(targetSpan, ref value); // Required in .NET 6/7
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			if (index < 0 || index + elementSize > targetArray.Length)
+				throw new ArgumentOutOfRangeException(nameof(index), "Target array does not have sufficient space.");
+
+#if NETSTANDARD2_0
+
+			// Use GCHandle to write without Span
+			var handle = GCHandle.Alloc(targetArray, GCHandleType.Pinned);
+			try
+			{
+				IntPtr destPtr = handle.AddrOfPinnedObject() + index;
+				Marshal.StructureToPtr(value, destPtr, false);
+			}
+			finally
+			{
+				handle.Free();
+			}
+#else
+			Span<byte> target = targetArray.AsSpan(index, elementSize);
+#if NET8_0_OR_GREATER
+			MemoryMarshal.Write(target, in value); // preferred overload in .NET 8+
+#else
+			MemoryMarshal.Write(target, ref value); // for .NET 5–7
+#endif
 #endif
 		}
 	}

@@ -20,10 +20,30 @@ namespace Bodu.Extensions
 			where T : unmanaged
 		{
 			ThrowHelper.ThrowIfNull(sourceArray);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(sourceArray, index, Unsafe.SizeOf<T>());
+#if NET5_0_OR_GREATER
+			int elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
+#else
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(sourceArray, index, elementSize);
 
-			return MemoryMarshal.Read<T>(sourceArray.AsSpan(index, Unsafe.SizeOf<T>()));
+#if NETSTANDARD2_0
+			var handle = GCHandle.Alloc(sourceArray, GCHandleType.Pinned);
+			try
+			{
+				IntPtr sourcePtr = handle.AddrOfPinnedObject() + index;
+				return Marshal.PtrToStructure<T>(sourcePtr);
+			}
+			finally
+			{
+				handle.Free();
+			}
+#else
+			return System.Runtime.InteropServices.MemoryMarshal.Read<T>(sourceArray.AsSpan(index, elementSize));
+#endif
 		}
+
+#if !NETSTANDARD2_0
 
 		/// <summary>
 		/// Reads a single element of type <typeparamref name="T" /> from a span of bytes.
@@ -36,9 +56,16 @@ namespace Bodu.Extensions
 		public static T Read<T>(this ReadOnlySpan<byte> sourceSpan)
 			where T : unmanaged
 		{
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, Unsafe.SizeOf<T>());
+#if NET5_0_OR_GREATER
+			int elementSize = System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
+#else
+			int elementSize = Marshal.SizeOf<T>();
+#endif
+			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, elementSize);
 
-			return MemoryMarshal.Read<T>(sourceSpan.Slice(0, Unsafe.SizeOf<T>()));
+			return MemoryMarshal.Read<T>(sourceSpan.Slice(0, elementSize));
 		}
+
+#endif
 	}
 }

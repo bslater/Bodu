@@ -38,8 +38,8 @@ namespace Bodu.Collections.Generic.Extensions
 			this IEnumerable<TSource> source,
 			Func<TSource, IEnumerable<TSource>> childSelector)
 		{
-			ThrowHelper.ThrowIfNull(source, nameof(source));
-			ThrowHelper.ThrowIfNull(childSelector, nameof(childSelector));
+			ThrowHelper.ThrowIfNull(source);
+			ThrowHelper.ThrowIfNull(childSelector);
 
 			return RecursiveSelectInternal(source, childSelector, (element, index, depth) => element, e => RecursiveSelectControl.YieldAndRecurse, 0);
 		}
@@ -73,9 +73,9 @@ namespace Bodu.Collections.Generic.Extensions
 			Func<TSource, IEnumerable<TSource>> childSelector,
 			Func<TSource, TResult> selector)
 		{
-			ThrowHelper.ThrowIfNull(source, nameof(source));
-			ThrowHelper.ThrowIfNull(childSelector, nameof(childSelector));
-			ThrowHelper.ThrowIfNull(selector, nameof(selector));
+			ThrowHelper.ThrowIfNull(source);
+			ThrowHelper.ThrowIfNull(childSelector);
+			ThrowHelper.ThrowIfNull(selector);
 
 			return RecursiveSelectInternal(source, childSelector, (element, index, depth) => selector(element), e => RecursiveSelectControl.YieldAndRecurse, 0);
 		}
@@ -109,9 +109,9 @@ namespace Bodu.Collections.Generic.Extensions
 			Func<TSource, IEnumerable<TSource>> childSelector,
 			Func<TSource, int, TResult> selector)
 		{
-			ThrowHelper.ThrowIfNull(source, nameof(source));
-			ThrowHelper.ThrowIfNull(childSelector, nameof(childSelector));
-			ThrowHelper.ThrowIfNull(selector, nameof(selector));
+			ThrowHelper.ThrowIfNull(source);
+			ThrowHelper.ThrowIfNull(childSelector);
+			ThrowHelper.ThrowIfNull(selector);
 
 			return RecursiveSelectInternal(source, childSelector, (element, index, depth) => selector(element, index), e => RecursiveSelectControl.YieldAndRecurse, 0);
 		}
@@ -143,9 +143,9 @@ namespace Bodu.Collections.Generic.Extensions
 			Func<TSource, IEnumerable<TSource>> childSelector,
 			Func<TSource, int, int, TResult> selector)
 		{
-			ThrowHelper.ThrowIfNull(source, nameof(source));
-			ThrowHelper.ThrowIfNull(childSelector, nameof(childSelector));
-			ThrowHelper.ThrowIfNull(selector, nameof(selector));
+			ThrowHelper.ThrowIfNull(source);
+			ThrowHelper.ThrowIfNull(childSelector);
+			ThrowHelper.ThrowIfNull(selector);
 
 			return RecursiveSelectInternal(source, childSelector, selector, e => RecursiveSelectControl.YieldAndRecurse, 0);
 		}
@@ -187,10 +187,10 @@ namespace Bodu.Collections.Generic.Extensions
 			Func<TSource, int, int, TResult> selector,
 			Func<TSource, RecursiveSelectControl> recursionControl)
 		{
-			ThrowHelper.ThrowIfNull(source, nameof(source));
-			ThrowHelper.ThrowIfNull(childSelector, nameof(childSelector));
-			ThrowHelper.ThrowIfNull(selector, nameof(selector));
-			ThrowHelper.ThrowIfNull(recursionControl, nameof(recursionControl));
+			ThrowHelper.ThrowIfNull(source);
+			ThrowHelper.ThrowIfNull(childSelector);
+			ThrowHelper.ThrowIfNull(selector);
+			ThrowHelper.ThrowIfNull(recursionControl);
 
 			return RecursiveSelectInternal(source, childSelector, selector, recursionControl, 0);
 		}

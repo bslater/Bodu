@@ -105,7 +105,7 @@ namespace Bodu.Collections.Generic
 #if NET6_0_OR_GREATER
 			ThrowHelper.ThrowIfOutOfRange(capacity, 1, Array.MaxLength);
 #else
-			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, MaxArrayLength);
+			ThrowHelper.ThrowIfOutOfRange(capacity, 1, MaxArrayLength);
 #endif
 			this.array = new T[capacity];
 			this.capacity = capacity;
@@ -170,7 +170,7 @@ namespace Bodu.Collections.Generic
 #if NET6_0_OR_GREATER
 			ThrowHelper.ThrowIfOutOfRange(capacity, 1, Array.MaxLength);
 #else
-			ThrowHelper.ThrowIfNotBetweenInclusive(capacity, 1, MaxArrayLength);
+			ThrowHelper.ThrowIfOutOfRange(capacity, 1, MaxArrayLength);
 #endif
 
 			var items = collection as T[] ?? collection.ToArray();

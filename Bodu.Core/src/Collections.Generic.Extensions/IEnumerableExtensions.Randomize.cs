@@ -1,10 +1,14 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
+#if !NETSTANDARD2_0
+
 using Bodu.Buffers;
+
+#endif
 
 namespace Bodu.Collections.Generic.Extensions
 {
@@ -111,23 +115,36 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count" /> exceeds the available number of items.</exception>
 		private static IEnumerable<T> RandomizeBuffered<T>(IEnumerable<T> source, IRandomGenerator rng, int? count)
 		{
+			IList<T> buffer;
+			int availableCount;
+
+#if NETSTANDARD2_0
+	var list = source is ICollection<T> col ? new List<T>(col) : new List<T>(source);
+	buffer = list;
+	availableCount = list.Count;
+#else
 			using var builder = new PooledBufferBuilder<T>();
 
 			if (source is IReadOnlyCollection<T> collection && builder.TryCopyFrom(collection))
 			{
-				var buffer = builder.AsArray();
-				int available = builder.Count;
-				int take = count ?? available;
-				ThrowHelper.ThrowIfGreaterThanOther(take, available, nameof(count), nameof(source));
-				return ShuffleHelpers.ShuffleAndYield(buffer, rng, take);
+				buffer = builder.AsArray(); // T[]
+				availableCount = builder.Count;
 			}
+			else
+			{
+				builder.AppendRange(source);
+				buffer = builder.AsArray();
+				availableCount = builder.Count;
+			}
+#endif
 
-			builder.AppendRange(source);
-			var result = builder.AsArray();
-			int availableCount = builder.Count;
 			int takeCount = count ?? availableCount;
-			ThrowHelper.ThrowIfGreaterThanOther(takeCount, availableCount, nameof(count), nameof(source));
-			return ShuffleHelpers.ShuffleAndYield(result, rng, takeCount);
+			ThrowHelper.ThrowIfGreaterThanOther(takeCount, availableCount);
+
+			if (takeCount == availableCount)
+				return ShuffleHelpers.ShuffleAndYield(buffer, rng); // IList<T> or T[]
+			else
+				return ShuffleHelpers.ShuffleAndYield(buffer.ToArray(), rng, takeCount);
 		}
 
 		/// <summary>

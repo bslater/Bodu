@@ -6,6 +6,56 @@ namespace Bodu.Extensions
 {
 	public static partial class BufferConverter
 	{
+#if NETSTANDARD2_0
+
+		/// <summary>
+		/// Reverses the elements in a byte array in place.
+		/// </summary>
+		/// <param name="array">The byte array to reverse.</param>
+		/// <remarks>This method reverses the order of bytes within the array without creating a copy.</remarks>
+		public static void Reverse(this byte[] array)
+		{
+			if (array == null || array.Length <= 1)
+				return;
+
+			int i = 0;
+			int j = array.Length - 1;
+			while (i < j)
+			{
+				byte tmp = array[i];
+				array[i] = array[j];
+				array[j] = tmp;
+				i++;
+				j--;
+			}
+		}
+
+		/// <summary>
+		/// Reverses the elements in an array of unmanaged elements in place.
+		/// </summary>
+		/// <typeparam name="T">The unmanaged type of the array elements.</typeparam>
+		/// <param name="array">The array to reverse.</param>
+		/// <remarks>This method reverses the order of elements in the array in place. It does not allocate memory.</remarks>
+		public static void Reverse<T>(this T[] array)
+			where T : unmanaged
+		{
+			if (array == null || array.Length <= 1)
+				return;
+
+			int i = 0;
+			int j = array.Length - 1;
+			while (i < j)
+			{
+				T tmp = array[i];
+				array[i] = array[j];
+				array[j] = tmp;
+				i++;
+				j--;
+			}
+		}
+
+#else
+
 		/// <summary>
 		/// Reverses the elements in a span of bytes in place.
 		/// </summary>
@@ -82,5 +132,7 @@ namespace Bodu.Extensions
 		{
 			memory.Span.Reverse();
 		}
+
+#endif
 	}
 }

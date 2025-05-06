@@ -41,6 +41,8 @@ namespace Bodu.Collections.Generic
 			});
 		}
 
+#if !NETSTANDARD2_0
+
 		/// <summary>
 		/// Verifies that passing a null RNG to Shuffle (span) throws <see cref="ArgumentNullException" />.
 		/// </summary>
@@ -65,45 +67,6 @@ namespace Bodu.Collections.Generic
 			{
 				ShuffleHelpers.Shuffle(buffer.AsMemory(), null!);
 			});
-		}
-
-		/// <summary>
-		/// Verifies that shuffling a single-element array does not change its contents.
-		/// </summary>
-		[TestMethod]
-		public void Shuffle_WhenArrayHasOneItem_ShouldReturnSameItem()
-		{
-			int[] buffer = { 42 };
-			int[] original = buffer.ToArray();
-
-			ShuffleHelpers.Shuffle(buffer, new SystemRandomAdapter());
-			CollectionAssert.AreEqual(original, buffer);
-		}
-
-		/// <summary>
-		/// Verifies that shuffling a multi-item array changes the original order.
-		/// </summary>
-		[TestMethod]
-		public void Shuffle_WhenCalled_ShouldMutateOriginalOrder_UsingArray()
-		{
-			int[] buffer = Enumerable.Range(1, 20).ToArray();
-			int[] original = buffer.ToArray();
-
-			ShuffleHelpers.Shuffle(buffer, new SystemRandomAdapter());
-			AssertOrderChanged(buffer, original, "Array shuffle did not alter order.");
-		}
-
-		/// <summary>
-		/// Verifies that shuffling a multi-item array retains all elements.
-		/// </summary>
-		[TestMethod]
-		public void Shuffle_WhenCalled_ShouldContainSameElements_UsingArray()
-		{
-			int[] buffer = Enumerable.Range(1, 50).ToArray();
-			int[] original = buffer.ToArray();
-
-			ShuffleHelpers.Shuffle(buffer, new SystemRandomAdapter());
-			CollectionAssert.AreEquivalent(original, buffer);
 		}
 
 		/// <summary>
@@ -182,6 +145,59 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
+		/// Verifies that shuffling a single-element memory block does not change its contents.
+		/// </summary>
+		[TestMethod]
+		public void Shuffle_WhenMemoryHasOneItem_ShouldReturnSameItem()
+		{
+			int[] buffer = { 42 };
+			int[] original = buffer.ToArray();
+
+			ShuffleHelpers.Shuffle(buffer.AsMemory(), new SystemRandomAdapter());
+			CollectionAssert.AreEqual(original, buffer);
+		}
+#endif
+
+		/// <summary>
+		/// Verifies that shuffling a single-element array does not change its contents.
+		/// </summary>
+		[TestMethod]
+		public void Shuffle_WhenArrayHasOneItem_ShouldReturnSameItem()
+		{
+			int[] buffer = { 42 };
+			int[] original = buffer.ToArray();
+
+			ShuffleHelpers.Shuffle(buffer, new SystemRandomAdapter());
+			CollectionAssert.AreEqual(original, buffer);
+		}
+
+		/// <summary>
+		/// Verifies that shuffling a multi-item array changes the original order.
+		/// </summary>
+		[TestMethod]
+		public void Shuffle_WhenCalled_ShouldMutateOriginalOrder_UsingArray()
+		{
+			int[] buffer = Enumerable.Range(1, 20).ToArray();
+			int[] original = buffer.ToArray();
+
+			ShuffleHelpers.Shuffle(buffer, new SystemRandomAdapter());
+			AssertOrderChanged(buffer, original, "Array shuffle did not alter order.");
+		}
+
+		/// <summary>
+		/// Verifies that shuffling a multi-item array retains all elements.
+		/// </summary>
+		[TestMethod]
+		public void Shuffle_WhenCalled_ShouldContainSameElements_UsingArray()
+		{
+			int[] buffer = Enumerable.Range(1, 50).ToArray();
+			int[] original = buffer.ToArray();
+
+			ShuffleHelpers.Shuffle(buffer, new SystemRandomAdapter());
+			CollectionAssert.AreEquivalent(original, buffer);
+		}
+
+		/// <summary>
 		/// Runs 20,000 in-place shuffles of a 10-element array to validate statistical uniformity of output positions. Each value should
 		/// appear roughly equally in each position, with no more than 2 statistically significant outliers.
 		/// </summary>
@@ -203,19 +219,6 @@ namespace Bodu.Collections.Generic
 			}
 
 			AssertStatisticalUniformity(tracker, size, label: nameof(ShuffleHelpers.Shuffle));
-		}
-
-		/// <summary>
-		/// Verifies that shuffling a single-element memory block does not change its contents.
-		/// </summary>
-		[TestMethod]
-		public void Shuffle_WhenMemoryHasOneItem_ShouldReturnSameItem()
-		{
-			int[] buffer = { 42 };
-			int[] original = buffer.ToArray();
-
-			ShuffleHelpers.Shuffle(buffer.AsMemory(), new SystemRandomAdapter());
-			CollectionAssert.AreEqual(original, buffer);
 		}
 	}
 }

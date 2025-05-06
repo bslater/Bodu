@@ -551,8 +551,13 @@ namespace Bodu.Collections.Generic
 					break;
 
 				case EvictionPolicy.RandomReplacement:
+#if NETSTANDARD2_0
+					foreach (var pair in store)
+						yield return new KeyValuePair<TKey, TValue>(pair.Key, pair.Value.Value);
+#else
 					foreach (var (key, item) in store)
 						yield return new KeyValuePair<TKey, TValue>(key, item.Value);
+#endif
 					break;
 
 				default:

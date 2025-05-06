@@ -15,13 +15,26 @@ namespace Bodu
 		/// Provides all bitmask permutations with symbol strings in Monday-first order, using the same bitmask and binary representation as
 		/// the original Sunday-first test data.
 		/// </summary>
-		public static IEnumerable<object[]> GetAllBitmaskPermutationWithMondaySymbolsTestData() => GetAllBitmaskPermutationTestData()
-																								   .Select(o => new object[]
-																									{
-																										o[0],									 // byte mask (unchanged)
-																										((string)o[1])[1..] + ((string)o[1])[0], // rotated symbol string: Sunday -> end
-																										o[2]                                     // binary string (unchanged)
-																									});
+		public static IEnumerable<object[]> GetAllBitmaskPermutationWithMondaySymbolsTestData()
+		{
+#if NETSTANDARD2_0
+			return GetAllBitmaskPermutationTestData()
+				.Select(o =>
+				{
+					var symbol = (string)o[1];
+					var rotated = symbol.Substring(1) + symbol[0]; // move Sunday to end
+					return new object[] { o[0], rotated, o[2] };
+				});
+#else
+			return GetAllBitmaskPermutationTestData()
+				.Select(o => new object[]
+				{
+					o[0],									 // byte mask (unchanged)
+					((string)o[1])[1..] + ((string)o[1])[0], // rotated symbol string: Sunday -> end
+					o[2]                                     // binary string (unchanged)
+				});
+#endif
+		}
 
 		/// <summary>
 		/// Generates all 128 valid permutations of <see cref="DaysOfWeekSet" /> values as test data, including both symbol and binary

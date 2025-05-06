@@ -107,14 +107,27 @@
 		}
 
 		/// <summary>
-		/// Verifies that Fibonacci generation stops before overflowing <see cref="long.MaxValue" />.
+		/// Verifies that all Fibonacci numbers generated are non-negative when the upper limit is <see cref="long.MaxValue" />.
 		/// </summary>
 		[TestMethod]
-		public void Fibonacci_WhenMaxIsLongMaxValue_ShouldStopBeforeOverflow()
+		public void Fibonacci_WhenMaxIsLongMaxValue_ShouldContainOnlyNonNegativeValues()
 		{
 			var values = SequenceGenerator.Fibonacci(0, long.MaxValue).ToList();
-			Assert.IsTrue(values.All(v => v >= 0));
-			Assert.IsTrue(values[^1] < long.MaxValue);
+			Assert.IsTrue(values.All(v => v >= 0), "All values should be non-negative.");
+		}
+
+		/// <summary>
+		/// Verifies that the Fibonacci sequence stops before exceeding <see cref="long.MaxValue" />.
+		/// </summary>
+		[TestMethod]
+		public void Fibonacci_WhenMaxIsLongMaxValue_ShouldStopBeforeExceedingLongMaxValue()
+		{
+			var values = SequenceGenerator.Fibonacci(0, long.MaxValue).ToList();
+#if NETSTANDARD1_2_OR_GREATER
+			Assert.IsTrue(values.Last() < long.MaxValue, "Last value should be less than long.MaxValue.");
+#else
+			Assert.IsTrue(values[^1] < long.MaxValue, "Last value should be less than long.MaxValue.");
+#endif
 		}
 	}
 }

@@ -1,9 +1,10 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="ShuffleHelpers.ShuffleAndYield.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="ShuffleHelpers.ShuffleAndYield.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
+using Bodu.Collections.Extensions;
 using System.Runtime.CompilerServices;
 
 namespace Bodu.Collections.Generic
@@ -85,6 +86,49 @@ namespace Bodu.Collections.Generic
 		}
 
 		/// <summary>
+		/// Lazily yields a fully shuffled sequence from the given source.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="source">The source sequence to shuffle.</param>
+		/// <param name="rng">The random number generator.</param>
+		/// <returns>A lazily-evaluated, fully shuffled sequence.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IEnumerable<T> ShuffleAndYield<T>(IEnumerable<T> source, IRandomGenerator rng)
+		{
+			ThrowHelper.ThrowIfNull(source);
+			return ShuffleAndYield(source, rng, source.CountOrDefault());
+		}
+
+		/// <summary>
+		/// Yields a fully shuffled copy of the array.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="array">The array to shuffle.</param>
+		/// <param name="rng">The random number generator.</param>
+		/// <returns>A shuffled sequence based on the array.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IEnumerable<T> ShuffleAndYield<T>(T[] array, IRandomGenerator rng)
+		{
+			ThrowHelper.ThrowIfNull(array);
+			return ShuffleAndYield(array, rng, array.Length);
+		}
+
+#if !NETSTANDARD2_0
+
+		/// <summary>
+		/// Yields a fully shuffled copy of the span.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="span">The span to shuffle.</param>
+		/// <param name="rng">The random number generator.</param>
+		/// <returns>A shuffled sequence from the span.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IEnumerable<T> ShuffleAndYield<T>(ReadOnlySpan<T> span, IRandomGenerator rng)
+		{
+			return ShuffleAndYield(span, rng, span.Length);
+		}
+
+		/// <summary>
 		/// Yields a randomized subset of a <see cref="ReadOnlySpan{T}" /> using a copied buffer and array shuffle.
 		/// </summary>
 		/// <typeparam name="T">The type of elements in the span.</typeparam>
@@ -98,6 +142,19 @@ namespace Bodu.Collections.Generic
 			=> ShuffleAndYield(span.ToArray(), rng, count);
 
 		/// <summary>
+		/// Yields a fully shuffled copy of the memory block.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="memory">The memory block to shuffle.</param>
+		/// <param name="rng">The random number generator.</param>
+		/// <returns>A shuffled sequence from the memory block.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IEnumerable<T> ShuffleAndYield<T>(Memory<T> memory, IRandomGenerator rng)
+		{
+			return ShuffleAndYield(memory, rng, memory.Length);
+		}
+
+		/// <summary>
 		/// Yields a randomized subset of a <see cref="Memory{T}" /> block using a copied buffer and array shuffle.
 		/// </summary>
 		/// <typeparam name="T">The type of elements in memory.</typeparam>
@@ -109,6 +166,8 @@ namespace Bodu.Collections.Generic
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> ShuffleAndYield<T>(Memory<T> memory, IRandomGenerator rng, int count)
 			=> ShuffleAndYield(memory.ToArray(), rng, count);
+
+#endif
 
 		/// <summary>
 		/// Yields a randomized subset of the specified array using an in-place partial Fisher–Yates shuffle.
