@@ -8,13 +8,15 @@
         }
       ],
       "dest": "api",
-      "namespaceLayout": "nested",
+      "namespaceLayout": "flattened",
+      "includePrivateMembers": false,
       "memberLayout": "separatePages",
       "enumSortOrder": "declaringOrder",
       "globalNamespaceId": "global",
+      "disableDefaultFilter": true,
       "properties": {
         "TargetFramework": "net8.0"
-      },
+      }
     },
   ],
   "build": {
@@ -37,7 +39,6 @@
     ],
     "keepFileLink": false,
     "noLangKeyword": false,
-    "disableDefaultFilter": true,
     "globalMetadata": {
       "_appName": "BODU",
       "_appTitle": "BODU",
