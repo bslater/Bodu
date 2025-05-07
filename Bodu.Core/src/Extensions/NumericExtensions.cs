@@ -6,10 +6,9 @@
 
 namespace Bodu.Extensions
 {
-	/// <content>
-	/// Provides a set of <see langword="static" /> ( <see langword="Shared" /> in Visual Basic)
-	/// methods that extend numeric types.
-	/// </content>
+	/// <summary>
+	/// Provides a set of <see langword="static" /> ( <see langword="Shared" /> in Visual Basic) methods that extend numeric types.
+	/// </summary>
 	public static partial class NumericExtensions
 	{ }
 }

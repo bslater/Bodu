@@ -8,10 +8,10 @@ using System;
 
 namespace Bodu.Extensions
 {
-	/// <content>
+	/// <summary>
 	/// Provides a set of <see langword="static" /> ( <see langword="Shared" /> in Visual Basic) methods that extend the
 	/// <see cref="Array" /> class.
-	/// </content>
+	/// </summary>
 	public static partial class ArrayExtensions
 	{ }
 }
