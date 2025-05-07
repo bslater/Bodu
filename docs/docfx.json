@@ -3,23 +3,11 @@
     {
       "src": [
         {
-          "src": "../Bodu.Core/",
+          "src": "../",
           "files": [ "**/src/*.csproj" ]
         }
       ],
-      "dest": "api/core",
-      "properties": {
-        "TargetFramework": "net8.0"
-      }
-    },
-    {
-      "src": [
-        {
-          "src": "../Bodu.Security.Cryptography/",
-          "files": [ "**/src/*.csproj" ]
-        }
-      ],
-      "dest": "api/crypto",
+      "dest": "api",
       "properties": {
         "TargetFramework": "net8.0"
       }
