@@ -67,5 +67,40 @@ namespace Bodu.Extensions
 
 			return new DateTime(ticks, dateTime.Kind);
 		}
+
+		/// <summary>
+/// Returns the last day of the week that contains the specified <see cref="DateTime" />, using the inferred
+/// start-of-week day from the provided <see cref="CalendarWeekendDefinition" />.
+/// </summary>
+/// <param name="date">The input <see cref="DateTime" /> whose week context is evaluated.</param>
+/// <param name="weekend">
+/// A <see cref="CalendarWeekendDefinition" /> value used to infer the start of the week and determine the week's structure.
+/// </param>
+/// <returns>
+/// A <see cref="DateTime" /> value representing the last day of the week that contains <paramref name="date" />.
+/// The returned value has a time component of 00:00:00 and preserves the <see cref="DateTime.Kind" /> of the input.
+/// </returns>
+/// <exception cref="ArgumentOutOfRangeException">
+/// Thrown if <paramref name="weekend" /> is not a valid <see cref="CalendarWeekendDefinition" />.
+/// </exception>
+/// <remarks>
+/// The last day of the week is calculated based on the inferred start-of-week from <paramref name="weekend" />.
+/// The result is offset forward up to 6 days from the input date, and is normalized to midnight.
+/// </remarks>
+		public static DateTime LastDayOfWeek(this DateTime date, CalendarWeekendDefinition weekend)
+{
+	ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
+	DayOfWeek startOfWeek = GetWeekStartDay(weekend);
+	DayOfWeek endOfWeek = (DayOfWeek)(((int)startOfWeek + 6) % 7);
+
+	int offsetDays = ((int)endOfWeek - (int)date.DayOfWeek + 7) % 7;
+	long dayTicks = date.Ticks + offsetDays * DateTimeExtensions.TicksPerDay;
+
+	if (dayTicks < DateTimeExtensions.MinTicks || dayTicks > DateTimeExtensions.MaxTicks)
+		throw new ArgumentOutOfRangeException(nameof(date),
+			string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
+
+	return new DateTime(dayTicks, date.Kind);
+}
 	}
 }
