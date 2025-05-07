@@ -51,5 +51,39 @@ namespace Bodu.Extensions
 
 			return DateOnly.FromDayNumber(dayNumber);
 		}
+
+		/// <summary>
+/// Returns the first day of the week that contains the specified <see cref="DateTime" />, using the inferred
+/// start-of-week day from the provided <see cref="CalendarWeekendDefinition" />.
+/// </summary>
+/// <param name="date">The input <see cref="DateTime" /> whose week context is evaluated.</param>
+/// <param name="weekend">
+/// A <see cref="CalendarWeekendDefinition" /> value used to infer the start of the week.
+/// </param>
+/// <returns>
+/// A <see cref="DateTime" /> value representing the first day of the week that contains <paramref name="date" />.
+/// The returned value has a time component of 00:00:00 and preserves the <see cref="DateTime.Kind" /> of the input.
+/// </returns>
+/// <exception cref="ArgumentOutOfRangeException">
+/// Thrown if <paramref name="weekend" /> is not a valid <see cref="CalendarWeekendDefinition" />.
+/// </exception>
+/// <remarks>
+/// This method uses the custom weekend definition to infer the start of the week. The returned date is normalized to midnight
+/// and may fall before or on the specified <paramref name="date" />.
+/// </remarks>
+		public static DateTime FirstDayOfWeek(this DateTime date, CalendarWeekendDefinition weekend)
+{
+	ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
+	DayOfWeek startOfWeek = GetWeekStartDay(weekend);
+
+	int offsetDays = ((7 + (date.DayOfWeek - startOfWeek)) % 7);
+	long dayTicks = date.Ticks - offsetDays * DateTimeExtensions.TicksPerDay;
+
+	if (dayTicks < DateTimeExtensions.MinTicks || dayTicks > DateTimeExtensions.MaxTicks)
+		throw new ArgumentOutOfRangeException(nameof(date),
+			string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
+
+	return new DateTime(dayTicks, date.Kind);
+}
 	}
 }
