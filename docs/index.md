@@ -4,8 +4,14 @@ This site contains reference documentation and articles for the Bodu libraries.
 
 ## API Reference
 
-- [Bodu.Core API](api/core/index.md)
-- [Bodu.Security.Cryptography API](api/crypto/index.md)
+- name: Home
+  href: index.md
+
+- name: API Reference
+  href: api/index.md
+
+- name: Articles
+  href: articles/toc.yml
 
 ## Articles
 
