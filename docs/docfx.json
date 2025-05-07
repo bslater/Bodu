@@ -9,7 +9,7 @@
       ],
       "dest": "api/core",
       "properties": {
-        "TargetFramework": "netstandard2.0;netstandard2.1;net8.0"
+        "TargetFramework": "net8.0"
       }
     },
     {

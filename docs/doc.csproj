@@ -5,7 +5,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <IncludeBuildOutput>false</IncludeBuildOutput> <!-- This avoids unnecessary bin/obj output -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <Configurations>Debug;Release;NetStandard20</Configurations> <!-- This avoids unnecessary bin/obj output -->
   </PropertyGroup>
 
   <ItemGroup>

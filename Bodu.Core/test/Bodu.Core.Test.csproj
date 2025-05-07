@@ -11,8 +11,7 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
 
-    <!-- Ensure test execution is limited to net6.0 -->
-    <RunConfigurationTargetFramework>net6.0</RunConfigurationTargetFramework>
+    <RunConfigurationTargetFramework>net8.0</RunConfigurationTargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

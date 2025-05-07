@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Core.Test", "Bodu.Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E6F805D-8F48-4494-9BEF-4757D7C83648}"
 	ProjectSection(SolutionItems) = preProject
-		bld\bodu.props = bld\bodu.props
+		bld\Bodu.props = bld\Bodu.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bodu.Security.Cryptography", "Bodu.Security.Cryptography\src\Bodu.Security.Cryptography.csproj", "{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}"
@@ -27,39 +27,53 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		NetStandard20|Any CPU = NetStandard20|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F136F92E-234A-4378-AA7C-D392DD080865}.NetStandard20|Any CPU.ActiveCfg = NetStandard20|Any CPU
+		{F136F92E-234A-4378-AA7C-D392DD080865}.NetStandard20|Any CPU.Build.0 = NetStandard20|Any CPU
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F136F92E-234A-4378-AA7C-D392DD080865}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}.NetStandard20|Any CPU.ActiveCfg = NetStandard20|Any CPU
+		{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}.NetStandard20|Any CPU.Build.0 = NetStandard20|Any CPU
 		{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F948CB9-9E56-40E2-8CFA-E5C10CF57C40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}.NetStandard20|Any CPU.ActiveCfg = NetStandard20|Any CPU
+		{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}.NetStandard20|Any CPU.Build.0 = NetStandard20|Any CPU
 		{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49AEB4D4-DCD1-4526-9963-54CCE14AE5AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{960C5F9E-A46E-482E-891F-C6252D0923C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{960C5F9E-A46E-482E-891F-C6252D0923C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960C5F9E-A46E-482E-891F-C6252D0923C1}.NetStandard20|Any CPU.ActiveCfg = Release|Any CPU
 		{960C5F9E-A46E-482E-891F-C6252D0923C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{960C5F9E-A46E-482E-891F-C6252D0923C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E76ADB4A-C954-415C-A17F-81787C876381}.NetStandard20|Any CPU.ActiveCfg = NetStandard20|Any CPU
+		{E76ADB4A-C954-415C-A17F-81787C876381}.NetStandard20|Any CPU.Build.0 = NetStandard20|Any CPU
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E76ADB4A-C954-415C-A17F-81787C876381}.Release|Any CPU.Build.0 = Release|Any CPU
 		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.NetStandard20|Any CPU.ActiveCfg = Release|Any CPU
 		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{510FE440-C019-4E70-8138-0DCBDD29CF0C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D628D91-802A-450A-B65A-67C9396D6188}.NetStandard20|Any CPU.ActiveCfg = Release|Any CPU
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D628D91-802A-450A-B65A-67C9396D6188}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.NetStandard20|Any CPU.ActiveCfg = NetStandard20|Any CPU
+		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.NetStandard20|Any CPU.Build.0 = NetStandard20|Any CPU
 		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ABC151C-660B-421E-92A6-8A6AAB9448C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
