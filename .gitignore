@@ -363,7 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # ignore local docfx output
-/docs/api/
+/docs/api/**/*.yml
+/docs/api/**/.manifest
 /docs/_site/
 /docs/public/
 
