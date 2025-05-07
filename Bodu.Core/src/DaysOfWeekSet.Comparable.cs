@@ -13,6 +13,7 @@ namespace Bodu
 		, System.IComparable<byte>
 		, System.IComparable
 	{
+		/// <inheritdoc />
 		/// <summary>
 		/// Compares this instance to a specified <see cref="object" /> and returns an indication of their relative values.
 		/// </summary>
@@ -34,7 +35,6 @@ namespace Bodu
 		/// </list>
 		/// </returns>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="obj" /> is not a <see cref="DaysOfWeekSet" /> or <see cref="byte" />.</exception>
-		/// <inheritdoc />
 		public int CompareTo(object? obj)
 		{
 			if (obj is null)
