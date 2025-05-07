@@ -1,12 +1,5 @@
-- name: Home
-  href: index.md
-
 # ./<Project Root Dir>/docs/toc.yml
-- name: API Reference
-  items:
-    - name: Docs
-      href: docs/
-    - name: API
-      href: api/
-    - name: Articles
-      href: articles/toc.yml
+- name: Docs
+  href: docs/
+- name: API
+  href: api/
