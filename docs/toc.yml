@@ -1,12 +1,5 @@
-- name: Home
-  href: index.md
-
-- name: API Reference
-  items:
-    - name: Bodu.Core
-      href: api/core/index.md
-    - name: Bodu.Security.Cryptography
-      href: api/crypto/index.md
-
-- name: Articles
-  href: articles/toc.yml
+# ./<Project Root Dir>/docs/toc.yml
+- name: Docs
+  href: docs/
+- name: API
+  href: api/
