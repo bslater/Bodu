@@ -11,30 +11,32 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns the quarter number (1–4) of the year for the specified <see cref="DateTime" />, using the standard calendar quarter definition.
+		/// Returns the quarter number (1–4) of the year for the specified <see cref="DateTime" />, using the standard calendar quarter
+		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryDecember" />).
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <returns>An integer between 1 and 4 representing the quarter that contains the <paramref name="dateTime" />.</returns>
+		/// <returns>An integer between 1 and 4 representing the calendar quarter that includes <paramref name="dateTime" />.</returns>
 		/// <remarks>
-		/// This method uses the standard calendar quarter structure:
+		/// This method uses the standard Gregorian calendar quarter structure aligned to the calendar year:
 		/// <list type="bullet">
 		/// <item>
 		/// <term>Q1</term>
-		/// <description>January–March</description>
+		/// <description>1 January – 31 March</description>
 		/// </item>
 		/// <item>
 		/// <term>Q2</term>
-		/// <description>April–June</description>
+		/// <description>1 April – 30 June</description>
 		/// </item>
 		/// <item>
 		/// <term>Q3</term>
-		/// <description>July–September</description>
+		/// <description>1 July – 30 September</description>
 		/// </item>
 		/// <item>
 		/// <term>Q4</term>
-		/// <description>October–December</description>
+		/// <description>1 October – 31 December</description>
 		/// </item>
 		/// </list>
+		/// The quarter number returned is based on the month of <paramref name="dateTime" />, regardless of the day or time.
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime)
 			=> Quarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);

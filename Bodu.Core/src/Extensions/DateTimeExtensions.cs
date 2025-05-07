@@ -141,9 +141,9 @@ namespace Bodu.Extensions
 		/// </summary>
 		private const long MinTicks = 0;
 
-		private static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+		internal static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 
-		private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+		internal static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
 
 		/// <summary>
 		/// Returns the number of ticks representing the date portion (midnight) of the specified tick value.
@@ -354,6 +354,43 @@ namespace Bodu.Extensions
 			dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
 
 		/// <summary>
+		/// Returns the day number corresponding to the specified year, month, and day, relative to 0001-01-01.
+		/// </summary>
+		/// <param name="year">The year component, which must be between 1 and 9999 inclusive.</param>
+		/// <param name="month">The month component, which must be between 1 and 12 inclusive.</param>
+		/// <param name="day">The day component, which must be valid for the specified year and month.</param>
+		/// <returns>An <see cref="int" /> representing the number of days since 0001-01-01.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown when <paramref name="year" />, <paramref name="month" />, or <paramref name="day" /> is outside the valid range of the
+		/// Gregorian calendar or does not form a valid date.
+		/// </exception>
+		/// <remarks>
+		/// <para>
+		/// This method performs full validation of the input parameters and throws an exception if the combination does not represent a
+		/// valid calendar date.
+		/// </para>
+		/// <para>
+		/// It is equivalent to computing <c>new DateOnly(year, month, day).DayNumber</c> but avoids allocation and is optimized for
+		/// internal use.
+		/// </para>
+		/// </remarks>
+		internal static int GetDayNumber(int year, int month, int day)
+		{
+			if (year >= 1 && year <= 9999 && month >= 1 && month <= 12)
+			{
+				int[] days = DateTime.IsLeapYear(year) ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
+				if (day >= 1 && day <= days[month] - days[month - 1])
+				{
+					int y = year - 1;
+					int dayNumber = (y * 365) + (y / 4) - (y / 100) + (y / 400) + days[month - 1] + day - 1;
+					return dayNumber;
+				}
+			}
+
+			throw new ArgumentOutOfRangeException(null, ResourceStrings.Arg_OutOfRange_BadYearMonthDay);
+		}
+
+		/// <summary>
 		/// Returns the number of ticks at midnight on the specified year, month, and day.
 		/// </summary>
 		/// <param name="year">The year component, which must be between 1 and 9999 inclusive.</param>
@@ -376,21 +413,8 @@ namespace Bodu.Extensions
 		/// high-performance internal date calculations.
 		/// </para>
 		/// </remarks>
-		internal static long GetTicksForDate(int year, int month, int day)
-		{
-			if (year >= 1 && year <= 9999 && month >= 1 && month <= 12)
-			{
-				int[] days = DateTime.IsLeapYear(year) ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
-				if (day >= 1 && day <= days[month] - days[month - 1])
-				{
-					int y = year - 1;
-					int n = (y * 365) + (y / 4) - (y / 100) + (y / 400) + days[month - 1] + day - 1;
-					return n * TicksPerDay;
-				}
-			}
-
-			throw new ArgumentOutOfRangeException(null, ResourceStrings.Arg_OutOfRange_BadYearMonthDay);
-		}
+		internal static long GetTicksForDate(int year, int month, int day) =>
+			DateTimeExtensions.GetDayNumber(year, month, day) * TicksPerDay;
 
 		/// <summary>
 		/// Returns the number of ticks at midnight on the first day of the specified month.

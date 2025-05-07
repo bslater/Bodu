@@ -574,11 +574,11 @@ namespace Bodu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resulting DateTime is outside the valid range..
+        ///   Looks up a localized string similar to The resulting value is outside the supported range for {0}..
         /// </summary>
-        internal static string Arg_OutOfRange_ResultingDateTimeOutOfRange {
+        internal static string Arg_OutOfRange_ResultingValueOutOfRangeForType {
             get {
-                return ResourceManager.GetString("Arg_OutOfRange_ResultingDateTimeOutOfRange", resourceCulture);
+                return ResourceManager.GetString("Arg_OutOfRange_ResultingValueOutOfRangeForType", resourceCulture);
             }
         }
         

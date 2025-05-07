@@ -55,7 +55,8 @@ namespace Bodu.Extensions
 			long ticks = baseTicks - offsetTicks;
 
 			if (ticks < DateTime.MinValue.Ticks || ticks > DateTime.MaxValue.Ticks)
-				throw new ArgumentOutOfRangeException(nameof(dateTime), ResourceStrings.Arg_OutOfRange_ResultingDateTimeOutOfRange);
+				throw new ArgumentOutOfRangeException(nameof(dateTime),
+					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
 
 			return new DateTime(ticks, dateTime.Kind);
 		}

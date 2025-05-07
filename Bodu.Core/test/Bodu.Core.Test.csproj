@@ -2,7 +2,7 @@
   <Import Project="..\..\bld\Bodu.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -10,15 +10,7 @@
     <AssemblyName>Bodu.CoreLib.Test</AssemblyName>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-
-    <RunConfigurationTargetFramework>net8.0</RunConfigurationTargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Collections.Generic.Concurrent\**" />
-    <EmbeddedResource Remove="Collections.Generic.Concurrent\**" />
-    <None Remove="Collections.Generic.Concurrent\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4">
@@ -29,11 +21,15 @@
     <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
   </ItemGroup>
 
-  <!-- Exclude files that are incompatible with netstandard2.0 -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="Buffers\PooledBufferBuilderTests*.cs" />
-    <Compile Remove="ThrowHelperTests.ThrowIf*Span*.cs" />
+  <!-- Exclude files that are not supported in .net standards -->
+
+  <ItemGroup>
+    <Compile Remove="Collections.Generic.Concurrent\**" />
+    <EmbeddedResource Remove="Collections.Generic.Concurrent\**" />
+    <None Remove="Collections.Generic.Concurrent\**" />
   </ItemGroup>
+
+  <!-- Exclude files that are incompatible with netstandard2.0 -->
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />

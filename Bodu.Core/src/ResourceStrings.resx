@@ -399,8 +399,8 @@
   <data name="Arg_Invalid_OrdinalDoesNotExistForMonth" xml:space="preserve">
     <value>The ordinal '{0}' does not exist for {1} in {2}."</value>
   </data>
-  <data name="Arg_OutOfRange_ResultingDateTimeOutOfRange" xml:space="preserve">
-    <value>Resulting DateTime is outside the valid range.</value>
+  <data name="Arg_OutOfRange_ResultingValueOutOfRangeForType" xml:space="preserve">
+    <value>The resulting value is outside the supported range for {0}.</value>
   </data>
   <data name="Arg_OutOfRange_InvalidMonthNumber" xml:space="preserve">
     <value>The month number must be between 1 and 12.</value>
