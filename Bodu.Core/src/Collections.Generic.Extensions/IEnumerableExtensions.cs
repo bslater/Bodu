@@ -1,8 +1,10 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="IEnumerableExtensions.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
 
 namespace Bodu.Collections.Generic.Extensions
 {

@@ -1,10 +1,13 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
+﻿// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="EvictingDictionary.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Bodu.Collections.Generic
 {

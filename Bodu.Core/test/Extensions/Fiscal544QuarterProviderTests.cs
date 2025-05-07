@@ -49,10 +49,10 @@ namespace Bodu.Extensions
 			yield return new object[] { SaturdayProvider, new DateTime(2023, 11, 11), 4, new DateTime(2023, 10, 28), new DateTime(2024, 1, 26) };
 
 			// Saturday start (2025-07-05)
-			yield return new object[] { SaturdayProvider, new DateTime(2025, 7, 12), 1, new DateTime(2025, 7, 5), new DateTime(2025, 10, 4) };
-			yield return new object[] { SaturdayProvider, new DateTime(2025, 11, 1), 2, new DateTime(2025, 10, 5), new DateTime(2026, 1, 3) };
-			yield return new object[] { SaturdayProvider, new DateTime(2026, 2, 15), 3, new DateTime(2026, 1, 4), new DateTime(2026, 4, 4) };
-			yield return new object[] { SaturdayProvider, new DateTime(2026, 5, 30), 4, new DateTime(2026, 4, 5), new DateTime(2026, 7, 4) };
+			yield return new object[] { AlternateProvider, new DateTime(2025, 7, 12), 1, new DateTime(2025, 7, 5), new DateTime(2025, 10, 3) };
+			yield return new object[] { AlternateProvider, new DateTime(2025, 11, 1), 2, new DateTime(2025, 10, 4), new DateTime(2026, 1, 2) };
+			yield return new object[] { AlternateProvider, new DateTime(2026, 2, 15), 3, new DateTime(2026, 1, 3), new DateTime(2026, 4, 3) };
+			yield return new object[] { AlternateProvider, new DateTime(2026, 5, 30), 4, new DateTime(2026, 4, 4), new DateTime(2026, 7, 3) };
 		}
 	}
 }

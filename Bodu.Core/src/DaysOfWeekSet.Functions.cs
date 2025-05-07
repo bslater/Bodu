@@ -1,8 +1,10 @@
 ﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DaysOfWeekSet.Comparable.cs" company="PlaceholderCompany">
+// <copyright file="DaysOfWeekSet.Functions.cs" company="PlaceholderCompany">
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu
 {

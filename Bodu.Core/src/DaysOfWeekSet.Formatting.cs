@@ -3,7 +3,8 @@
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
-using System.Text;
+
+using System;
 
 namespace Bodu
 {
@@ -15,7 +16,7 @@ namespace Bodu
 		/// <returns>
 		/// A string representing the selected days in Sunday-to-Saturday order, using underscore ( <c>'_'</c>) for unselected days.
 		/// </returns>
-		public override string ToString() => this.ToString("S", null!);
+		public override string ToString() => ToString("S", null!);
 
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the specified format.
@@ -77,7 +78,7 @@ namespace Bodu
 		/// <returns>A formatted string representing the selected days.</returns>
 		/// <exception cref="ArgumentException">Thrown if the <paramref name="format" /> is invalid.</exception>
 		public string ToString(string format) =>
-			this.ToString(format, null!);
+			ToString(format, null!);
 
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the default format and the specified
@@ -88,7 +89,7 @@ namespace Bodu
 		/// A string representing the selected days in Sunday-to-Saturday order using underscore ( <c>'_'</c>) for unselected days.
 		/// </returns>
 		public string ToString(IFormatProvider provider) =>
-			this.ToString("S", provider);
+			ToString("S", provider);
 
 		/// <summary>
 		/// Returns a string representation of the current <see cref="DaysOfWeekSet" /> using the specified format and culture-specific

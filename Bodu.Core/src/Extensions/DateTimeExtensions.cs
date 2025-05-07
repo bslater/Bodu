@@ -1,8 +1,11 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
+﻿// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeExtensions.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Bodu.Extensions
 {
@@ -162,6 +165,7 @@ namespace Bodu.Extensions
 		/// <see cref="DateTime" /> range.
 		/// </para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long GetDateAsTicks(long ticks)
 			=> ticks - (ticks % DateTimeExtensions.TicksPerDay);
 
@@ -186,58 +190,61 @@ namespace Bodu.Extensions
 		/// </remarks>
 		internal static void GetDateParts(this DateTime dateTime, out int year, out int month, out int day)
 		{
-			long ticks = dateTime.Ticks;
+			var ticks = dateTime.Ticks;
 
-			// n = number of days since 1/1/0001
+			// Cache local constants for Gregorian calendar cycles
+			const int daysPerYear = 365;
+			const int daysPer4Years = (daysPerYear * 4) + 1;         // 1461
+			const int daysPer100Years = (daysPer4Years * 25) - 1;    // 36524
+			const int daysPer400Years = (daysPer100Years * 4) + 1;   // 146097
+
+			// Convert ticks to total days since 0001-01-01
 			int n = (int)(ticks / TicksPerDay);
 
-			// y400 = number of whole 400-year periods since 1/1/0001
-			int y400 = n / DateTimeExtensions.DaysPer400Years;
+			// Calculate number of whole 400-year periods
+			int y400 = n / daysPer400Years;
+			n -= y400 * daysPer400Years;
 
-			// n = day number within 400-year period
-			n -= y400 * DateTimeExtensions.DaysPer400Years;
+			// Calculate number of whole 100-year periods within the current 400-year block
+			int y100 = n / daysPer100Years;
 
-			// y100 = number of whole 100-year periods within 400-year period
-			int y100 = n / DateTimeExtensions.DaysPer100Years;
+			// Cap at 3 to avoid overflow into next 400-year block (i.e., max is 300 years)
+			if (y100 == 4)
+				y100 = 3;
+			n -= y100 * daysPer100Years;
 
-			// Last 100-year period has an extra day, so decrement result if 4
-			if (y100 == 4) y100 = 3;
+			// Calculate number of whole 4-year periods within the current 100-year block
+			int y4 = n / daysPer4Years;
+			n -= y4 * daysPer4Years;
 
-			// n = day number within 100-year period
-			n -= y100 * DateTimeExtensions.DaysPer100Years;
+			// Calculate number of whole years within the current 4-year block
+			int y1 = n / daysPerYear;
 
-			// y4 = number of whole 4-year periods within 100-year period
-			int y4 = n / DateTimeExtensions.DaysPer4Years;
+			// Cap at 3 to avoid overflow into next 4-year block (max is 3 years)
+			if (y1 == 4)
+				y1 = 3;
+			n -= y1 * daysPerYear;
 
-			// n = day number within 4-year period
-			n -= y4 * DateTimeExtensions.DaysPer4Years;
-
-			// y1 = number of whole years within 4-year period
-			int y1 = n / DateTimeExtensions.DaysPerYear;
-
-			// Last year has an extra day, so decrement result if 4
-			if (y1 == 4) y1 = 3;
-
-			// compute year
+			// Final computed year
 			year = (y400 * 400) + (y100 * 100) + (y4 * 4) + y1 + 1;
 
-			// n = day number within year
-			n -= y1 * DateTimeExtensions.DaysPerYear;
+			// Determine leap year using reduced logic (does not rely on IsLeapYear) Only the final year of a 4-year cycle is leap if the
+			// 100-year and 400-year rules are satisfied
+			bool isLeap = (y1 == 3) && ((y4 != 24) || (y100 == 3));
 
-			// dayOfYear = n + 1; Leap year calculation looks different from IsLeapYear since y1, y4, and y100 are relative to year 1, not
-			// year 0
-			bool leapYear = y1 == 3 && (y4 != 24 || y100 == 3);
-			int[] days = leapYear ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
+			// Choose correct month day table
+			int[] daysToMonth = isLeap ? DaysToMonth366 : DaysToMonth365;
 
-			// All months have less than 32 days, so n >> 5 is a good conservative estimate for the month
+			// Estimate month (right shift by 5 ~ divide by 32, since all months have < 32 days)
 			int m = (n >> 5) + 1;
 
-			// m = 1-based month number
-			while (n >= days[m]) m++;
+			// Correct for any overshoot in estimate
+			while (n >= daysToMonth[m])
+				m++;
 
-			// compute month and day
+			// Compute month and day
 			month = m;
-			day = n - days[m - 1] + 1;
+			day = n - daysToMonth[m - 1] + 1;
 		}
 
 		/// <summary>
@@ -258,6 +265,7 @@ namespace Bodu.Extensions
 		/// valid within the supported <see cref="DateTime" /> range.
 		/// </para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static DayOfWeek GetDayOfWeekFromTicks(long ticks)
 			=> (DayOfWeek)(((ticks / DateTimeExtensions.TicksPerDay) + 1) % 7);
 
@@ -282,7 +290,14 @@ namespace Bodu.Extensions
 		/// </para>
 		/// </remarks>
 		internal static long GetDaysToTicks(double days)
-			=> ((long)((days * (DateTimeExtensions.TicksPerDay / 10000)) + ((days >= 0.0) ? 0.5 : (-0.5)))) * 10000;
+		{
+			// Precompute the scaling factor to reduce rounding errors: TicksPerDay / 10000 = number of 10000-tick units in one day = 86_400_000
+			const double units = DateTimeExtensions.TicksPerDay / 10000.0;
+
+			// Multiply days by 86_400_000 to convert to 10000-tick units, then add 0.5 (or subtract 0.5 for negatives) to apply midpoint
+			// rounding, then truncate to long to get the integer part, and finally scale back to ticks by multiplying by 10000.
+			return ((long)((days * units) + (days >= 0.0 ? 0.5 : -0.5))) * 10000;
+		}
 
 		/// <summary>
 		/// Returns the tick count between the <paramref name="dateTime" /> and next <paramref name="dayOfWeek" />.
@@ -293,6 +308,7 @@ namespace Bodu.Extensions
 		/// The number of ticks that represent the date and time difference between the specified <paramref name="dateTime" /> and the
 		/// specified next <paramref name="dayOfWeek" />. The value is between <see cref="System.TimeSpan.MinValue" /> and <see cref="System.TimeSpan.MaxValue" />.
 		/// </returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long GetNextDayOfWeekAsTicks(DateTime dateTime, DayOfWeek dayOfWeek)
 			=> DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)dateTime.DayOfWeek + 7) % 7);
 
@@ -314,8 +330,9 @@ namespace Bodu.Extensions
 		/// This method performs no validation and assumes that <paramref name="dayOfWeek" /> is a valid <see cref="System.DayOfWeek" /> value.
 		/// </para>
 		/// </remarks>
-		internal static long GetPreviousDayOfWeekAsTicks(DateTime dateTime, DayOfWeek dayOfWeek)
-			=> DateTimeExtensions.TicksPerDay * (((((int)dayOfWeek - (int)dateTime.DayOfWeek) - 7) % 7 - 7) % 7);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static long GetPreviousDayOfWeekAsTicks(DateTime dateTime, DayOfWeek dayOfWeek) =>
+			DateTimeExtensions.TicksPerDay * (((((int)dayOfWeek - (int)dateTime.DayOfWeek) - 7) % 7 - 7) % 7);
 
 		/// <summary>
 		/// Returns the number of ticks representing the date portion (midnight) of the specified <see cref="DateTime" />.
@@ -332,8 +349,9 @@ namespace Bodu.Extensions
 		/// optimized for internal use.
 		/// </para>
 		/// </remarks>
-		internal static long GetDateTicks(DateTime dateTime)
-		=> dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static long GetDateTicks(DateTime dateTime) =>
+			dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
 
 		/// <summary>
 		/// Returns the number of ticks at midnight on the specified year, month, and day.
@@ -435,6 +453,7 @@ namespace Bodu.Extensions
 		/// <paramref name="dayOfWeek" /> are within valid ranges and form a valid calendar month.
 		/// </para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long GetFirstDayOfWeekInMonthTicks(int year, int month, DayOfWeek dayOfWeek)
 		{
 			long ticks = DateTimeExtensions.GetTicksForDate(year, month, 1);
@@ -489,6 +508,7 @@ namespace Bodu.Extensions
 		/// <para>The result is a tick value normalized to midnight and avoids object allocation.</para>
 		/// <para>No validation is performed; the caller is responsible for ensuring all parameters are within valid calendar ranges.</para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long GetLastDayOfWeekInMonthAsTicks(int year, int month, DayOfWeek dayOfWeek)
 		{
 			long ticks = DateTimeExtensions.GetTicksForDate(year, month, DateTime.DaysInMonth(year, month));
@@ -516,6 +536,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>This method performs no argument validation and assumes that <paramref name="ticks" /> is within the valid range for <see cref="System.DateTime" />.</para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long GetNextDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
 		{
 			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
@@ -545,6 +566,7 @@ namespace Bodu.Extensions
 		/// <see cref="System.DateTime" /> range, and that <paramref name="dayOfWeek" /> is a valid <see cref="System.DayOfWeek" /> enum value.
 		/// </para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long GetPreviousDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
 		{
 			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
@@ -597,6 +619,7 @@ namespace Bodu.Extensions
 		/// corresponding to the time of day. It is equivalent to <c>dateTime.TimeOfDay.Ticks</c> but avoids allocations.
 		/// </para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long GetTimeTicks(DateTime dateTime)
 			=> dateTime.Ticks % DateTimeExtensions.TicksPerDay;
 	}

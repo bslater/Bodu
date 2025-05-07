@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.IsWeekend.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.IsWeekend.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -23,8 +25,12 @@ namespace Bodu.Extensions
 		/// <see cref="CalendarWeekendDefinition" /> rule.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
-		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> value that defines which days are considered part of the weekend.</param>
-		/// <param name="provider">An optional custom <see cref="IWeekendDefinitionProvider" /> used when <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" />.</param>
+		/// <param name="weekend">
+		/// The <see cref="CalendarWeekendDefinition" /> value that defines which days are considered part of the weekend.
+		/// </param>
+		/// <param name="provider">
+		/// An optional custom <see cref="IWeekendDefinitionProvider" /> used when <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" />.
+		/// </param>
 		/// <returns>
 		/// <see langword="true" /> if the <paramref name="dateTime" /> occurs on a weekend day according to the specified rule or custom
 		/// provider; otherwise, <see langword="false" />.

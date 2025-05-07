@@ -1,10 +1,12 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
+﻿// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="CircularBuffer.ICollection.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
+using System.Threading;
 
 namespace Bodu.Collections.Generic
 {
@@ -15,7 +17,7 @@ namespace Bodu.Collections.Generic
 		private object? syncRoot;
 
 		/// <inheritdoc />
-		public int Count => this.count;
+		public int Count => count;
 
 		/// <summary>
 		/// Gets a value indicating whether access to the <see cref="CircularBuffer{T}" /> is synchronized (thread safe).
@@ -66,7 +68,7 @@ namespace Bodu.Collections.Generic
 			ThrowHelper.ThrowIfNull(array);
 			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
 			ThrowHelper.ThrowIfArrayIsNotZeroBased(array);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, this.count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, count);
 
 			try
 			{

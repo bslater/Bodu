@@ -3,5 +3,31 @@
     <Authors>Bodu Pty. Ltd.</Authors>
     <Company>Bodu Pty. Ltd.</Company>
     <Copyright>&#169; Bodu Pty. Ltd.  All rights reserved.</Copyright>
+
+    <Product>Bodu</Product>
+    <!--<PackageProjectUrl>https://www.bodu.com.au/</PackageProjectUrl>-->
+
+    <RepositoryUrl>https://github.com/bodu/bodu</RepositoryUrl>
+
+    <RepositoryType>git</RepositoryType>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <PackageTags>bodu;utilities;library</PackageTags>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <LangVersion>latest</LangVersion>
+
+    <!-- Ensures deterministic builds -->
+    <Deterministic>true</Deterministic>
+
+    <!-- Missing XML docs -->
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591;CS1570;CS1571;CS1572;CS1573;CS1574;CS1580;CS1581;CS1584;CS1587;CS1589;CS1590;CS1710;CS1711;CS1712;CS1713;CS1714</WarningsAsErrors>
+
+    <!-- Useful for avoiding duplicate metadata conflicts -->
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 </Project>

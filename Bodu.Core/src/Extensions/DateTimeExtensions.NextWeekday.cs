@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.NextWeekday.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.NextWeekday.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -49,8 +51,8 @@ namespace Bodu.Extensions
 		/// <param name="dateTime">The starting <see cref="DateTime" /> from which to search forward.</param>
 		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that defines the default pattern of weekend days.</param>
 		/// <param name="provider">
-		/// An optional <see cref="IWeekendDefinitionProvider" /> that can override the weekend definition with custom logic. If <c>null</c>,
-		/// the default behavior based on <paramref name="weekend" /> is used.
+		/// An optional <see cref="IWeekendDefinitionProvider" /> that can override the weekend definition with custom logic. If
+		/// <c>null</c>, the default behavior based on <paramref name="weekend" /> is used.
 		/// </param>
 		/// <returns>
 		/// A <see cref="DateTime" /> with the same time-of-day and <see cref="DateTime.Kind" /> as <paramref name="dateTime" />,

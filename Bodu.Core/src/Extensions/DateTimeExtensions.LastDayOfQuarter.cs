@@ -1,8 +1,8 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
+﻿// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -94,7 +94,7 @@ namespace Bodu.Extensions
 		/// date, as defined by the selected quarter structure.
 		/// </param>
 		/// <param name="definition">
-		/// The quarter definition to apply. This may be month-aligned (e.g., <see cref="CalendarQuarterDefinition.CalendarYear" />) or
+		/// The quarter definition to apply. This may be month-aligned (e.g., <see cref="CalendarQuarterDefinition.JanuaryDecember" />) or
 		/// day-aligned (e.g., <see cref="CalendarQuarterDefinition.April6ToApril5" />).
 		/// </param>
 		/// <returns>

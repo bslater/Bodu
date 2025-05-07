@@ -1,8 +1,10 @@
-// // --------------------------------------------------------------------------------------------------------------- //
+// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="DateTimeExtensions.LastDayOfMonth.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -21,13 +23,13 @@ namespace Bodu.Extensions
 		/// for February. The time component is normalized to midnight (00:00:00).
 		/// </remarks>
 		public static DateTime LastDayOfMonth(this DateTime dateTime)
-			=> new DateTime(DateTimeExtensions.GetLastDayOfMonthTicks(dateTime), dateTime.Kind);
+			=> new(DateTimeExtensions.GetLastDayOfMonthTicks(dateTime), dateTime.Kind);
 
 		/// <summary>
 		/// Returns a <see cref="DateTime" /> representing midnight on the last day of the specified year and month.
 		/// </summary>
-		/// <param name="year">The year component of the date. Must be between <see cref="DateTime.MinValue.Year" /> and <see cref="DateTime.MaxValue.Year" />.</param>
-		/// <param name="month">The month component of the date (1–12).</param>
+		/// <param name="year">The year component of the date. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="month">The month component of the date. Must be between 1 and 12, inclusive.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> set to 00:00:00 on the last day of the specified month and year, with
 		/// <see cref="DateTimeKind.Unspecified" /> as its kind.

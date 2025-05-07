@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.GetFirstDateOfWeek.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.GetFirstDateOfWeek.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 using System.Globalization;
 
@@ -32,7 +34,7 @@ namespace Bodu.Extensions
 			DateTimeFormatInfo dfi = culture.DateTimeFormat;
 			Calendar calendar = dfi.Calendar;
 
-			DateTime firstDayOfYear = new DateTime(year, 1, 1);
+			DateTime firstDayOfYear = new(year, 1, 1);
 			int daysOffset = dfi.FirstDayOfWeek - firstDayOfYear.DayOfWeek;
 			if (daysOffset > 0) daysOffset -= 7;
 
@@ -49,8 +51,8 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the first day of the specified week in a given year, using the <see cref="CalendarWeekendDefinition" /> definition to infer the
-		/// start of the week.
+		/// Returns the first day of the specified week in a given year, using the <see cref="CalendarWeekendDefinition" /> definition to
+		/// infer the start of the week.
 		/// </summary>
 		/// <param name="year">The target year (e.g., 2024).</param>
 		/// <param name="week">The 1-based week number (e.g., 1–53).</param>
@@ -69,7 +71,7 @@ namespace Bodu.Extensions
 			DayOfWeek firstDay = GetWeekStartDay(weekend);
 			Calendar calendar = CultureInfo.InvariantCulture.Calendar;
 
-			DateTime firstDayOfYear = new DateTime(year, 1, 1);
+			DateTime firstDayOfYear = new(year, 1, 1);
 			int offset = firstDay - firstDayOfYear.DayOfWeek;
 			if (offset > 0) offset -= 7;
 

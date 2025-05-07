@@ -1,10 +1,13 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="EvictingDictionary.IDictionary.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="EvictingDictionary.IDictionary.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bodu.Collections.Generic
 {
@@ -140,7 +143,7 @@ namespace Bodu.Collections.Generic
 			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
 			ThrowHelper.ThrowIfArrayIsNotZeroBased(array);
 			ThrowHelper.ThrowIfLessThan(index, 0);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, this.Count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, Count);
 
 			foreach (var kvp in GetOrderedItems())
 			{

@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.GetIso8601WeekOfYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.GetIso8601WeekOfYear.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 using System.Globalization;
 

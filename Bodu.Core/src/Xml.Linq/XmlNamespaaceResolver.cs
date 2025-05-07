@@ -1,9 +1,11 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="XmlNamespaaceResolver.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="XmlNamespaaceResolver.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Bodu.Xml.Linq
@@ -13,7 +15,7 @@ namespace Bodu.Xml.Linq
 	/// </summary>
 	public sealed class XmlNamespaceResolver
 	{
-		private readonly XNamespace _namespace;
+		private readonly XNamespace xNamespace;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="XmlNamespaceResolver" /> class with the specified root element.
@@ -24,7 +26,7 @@ namespace Bodu.Xml.Linq
 		{
 			ThrowHelper.ThrowIfNull(root);
 
-			_namespace = root.Name.Namespace ?? throw new InvalidOperationException("Missing XML namespace on root element.");
+			xNamespace = root.Name.Namespace ?? throw new InvalidOperationException("Missing XML xNamespace on root element.");
 		}
 
 		/// <summary>
@@ -32,7 +34,8 @@ namespace Bodu.Xml.Linq
 		/// </summary>
 		/// <param name="localName">The local (unqualified) element or attribute name.</param>
 		/// <returns>The namespaced XName.</returns>
-		public XName Name(string localName) => _namespace + localName;
+		public XName Name(string localName) =>
+			xNamespace + localName;
 
 		/// <summary>
 		/// Safely gets a child element with the specified local name in the current namespace.
@@ -40,7 +43,8 @@ namespace Bodu.Xml.Linq
 		/// <param name="parent">The parent element.</param>
 		/// <param name="localName">The local name of the child element.</param>
 		/// <returns>The matching child XElement, or null if not found.</returns>
-		public XElement? Element(XElement parent, string localName) => parent.Element(Name(localName));
+		public XElement? Element(XElement parent, string localName) =>
+			parent.Element(Name(localName));
 
 		/// <summary>
 		/// Safely gets all child elements with the specified local name in the current namespace.
@@ -48,6 +52,7 @@ namespace Bodu.Xml.Linq
 		/// <param name="parent">The parent element.</param>
 		/// <param name="localName">The local name of the child elements.</param>
 		/// <returns>An enumerable of matching XElement objects.</returns>
-		public IEnumerable<XElement> Elements(XElement parent, string localName) => parent.Elements(Name(localName));
+		public IEnumerable<XElement> Elements(XElement parent, string localName) =>
+			parent.Elements(Name(localName));
 	}
 }

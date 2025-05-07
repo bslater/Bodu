@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.FirstDayOfYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.FirstDayOfYear.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -21,6 +23,6 @@ namespace Bodu.Extensions
 		/// within the same calendar year as the original <paramref name="dateTime" />.
 		/// </remarks>
 		public static DateTime FirstDayOfYear(this DateTime dateTime)
-			=> new DateTime(DateTimeExtensions.GetTicksForDate(dateTime.Year, 1, 1), dateTime.Kind);
+			=> new(DateTimeExtensions.GetTicksForDate(dateTime.Year, 1, 1), dateTime.Kind);
 	}
 }

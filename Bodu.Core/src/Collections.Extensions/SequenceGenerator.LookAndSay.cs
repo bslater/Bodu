@@ -1,9 +1,11 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="SequenceGenerator.LookAndSay.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="SequenceGenerator.LookAndSay.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Bodu.Collections.Extensions

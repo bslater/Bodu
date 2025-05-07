@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.ToMidday.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.ToMidday.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -20,6 +22,6 @@ namespace Bodu.Extensions
 		/// This method sets the time-of-day component to exactly 12:00 PM (midday), while preserving the original date and <see cref="DateTime.Kind" />.
 		/// </remarks>
 		public static DateTime ToMidday(this DateTime dateTime)
-			=> new DateTime(dateTime.Date.Ticks + (DateTimeExtensions.TicksPerHour * 12), dateTime.Kind);
+			=> new(dateTime.Date.Ticks + (DateTimeExtensions.TicksPerHour * 12), dateTime.Kind);
 	}
 }

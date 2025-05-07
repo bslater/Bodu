@@ -1,10 +1,11 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
+﻿// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="CircularBuffer.IEnumerable.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Bodu.Collections.Generic
 {
@@ -24,7 +25,7 @@ namespace Bodu.Collections.Generic
 		/// <para><b>Note:</b> This type is not thread-safe. If thread safety is required, consider using <see cref="Bodu.Collections.Generic.Concurrent.ConcurrentCircularBuffer{T}" />.</para>
 		/// </remarks>
 		public Enumerator GetEnumerator()
-			=> new CircularBuffer<T>.Enumerator(this);
+			=> new(this);
 
 		/// <inheritdoc />
 		IEnumerator<T> IEnumerable<T>.GetEnumerator()

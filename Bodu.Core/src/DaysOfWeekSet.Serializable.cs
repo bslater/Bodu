@@ -3,6 +3,8 @@
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Runtime.Serialization;
 
 namespace Bodu
@@ -21,11 +23,11 @@ namespace Bodu
 		{
 			ThrowHelper.ThrowIfNull(info);
 
-			int data = info.GetByte(nameof(this.selectedDays));
+			int data = info.GetByte(nameof(selectedDays));
 			if (data < MinValue || data > MaxValue)
 				throw new SerializationException(string.Format(ResourceStrings.SerializationException_InvalidState, nameof(DaysOfWeekSet)));
 
-			this.selectedDays = (byte)data;
+			selectedDays = (byte)data;
 		}
 
 		/// <summary>
@@ -38,7 +40,7 @@ namespace Bodu
 		{
 			ThrowHelper.ThrowIfNull(info);
 
-			info.AddValue(nameof(this.selectedDays), this.selectedDays);
+			info.AddValue(nameof(selectedDays), selectedDays);
 		}
 	}
 }

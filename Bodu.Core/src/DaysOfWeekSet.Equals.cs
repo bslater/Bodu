@@ -3,6 +3,7 @@
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
+
 namespace Bodu
 {
 	public partial struct DaysOfWeekSet
@@ -21,7 +22,7 @@ namespace Bodu
 		/// <param name="other">The <see cref="DaysOfWeekSet" /> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="DaysOfWeekSet" /> has the same selected days; otherwise, <c>false</c>.</returns>
 		public bool Equals(DaysOfWeekSet other) =>
-			this.selectedDays == other.selectedDays;
+			selectedDays == other.selectedDays;
 
 		/// <summary>
 		/// Determines whether the specified <see cref="byte" /> value is equal to the current <see cref="DaysOfWeekSet" />.
@@ -29,13 +30,13 @@ namespace Bodu
 		/// <param name="other">The <see cref="byte" /> value to compare with this instance.</param>
 		/// <returns><c>true</c> if the bit pattern matches; otherwise, <c>false</c>.</returns>
 		public bool Equals(byte other) =>
-			this.selectedDays == other;
+			selectedDays == other;
 
 		/// <summary>
 		/// Returns the hash code for this instance.
 		/// </summary>
 		/// <returns>A 32-bit signed integer hash code representing the current <see cref="DaysOfWeekSet" />.</returns>
 		public override int GetHashCode() =>
-			this.selectedDays.GetHashCode();
+			selectedDays.GetHashCode();
 	}
 }

@@ -1,6 +1,8 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="BufferConverter.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {

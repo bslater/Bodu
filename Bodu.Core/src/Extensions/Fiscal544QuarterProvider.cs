@@ -1,8 +1,10 @@
 ﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright>
+// <copyright file="Fiscal544QuarterProvider.cs" company="PlaceholderCompany">
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -44,7 +46,7 @@ namespace Bodu.Extensions
 	public sealed class Fiscal544QuarterProvider : IQuarterDefinitionProvider
 	{
 		private readonly DayOfWeek firstDayOfWeek;
-		private readonly DateTime fiscalYearStart;
+		private readonly long fiscalYearStartTicks;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fiscal544QuarterProvider" /> class.
@@ -58,163 +60,109 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(firstDayOfWeek);
 
-			this.fiscalYearStart = AlignToStartOfWeek(fiscalYearStart.Date, firstDayOfWeek);
+			fiscalYearStartTicks = AlignToStartOfWeek(fiscalYearStart.Date, firstDayOfWeek).Ticks;
 			this.firstDayOfWeek = firstDayOfWeek;
 		}
 
 		/// <inheritdoc />
-		/// <remarks>
-		/// This method is used by <see cref="DateTimeExtensions.LastDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> to compute the
-		/// final calendar date of the quarter containing the specified date.
-		/// <para>The end date is calculated as 13 weeks (91 days) after the start of the fiscal quarter, minus 1 day to ensure inclusivity.</para>
-		/// </remarks>
-		/// <param name="dateTime">A <see cref="DateTime" /> within the fiscal year to resolve to a quarter end date.</param>
-		/// <returns>
-		/// A <see cref="DateTime" /> representing the final day of the quarter, preserving the <paramref name="dateTime" /> kind.
-		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="dateTime" /> is outside the configured fiscal year.</exception>
 		public DateTime GetEndDate(DateTime dateTime)
 		{
-			var alignedDate = ValidateDateInFiscalYear(dateTime);
-			long deltaWeeks = (alignedDate.Ticks - fiscalYearStart.Ticks) / DateTimeExtensions.TicksPerWeek;
-			long startTicks = fiscalYearStart.Ticks + ((deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek);
-			long endTicks = startTicks + (13L * DateTimeExtensions.TicksPerWeek) - DateTimeExtensions.TicksPerDay;
+			ValidateDateInFiscalYear(dateTime);
+			long deltaWeeks = (dateTime.Ticks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerWeek;
+			long startTicks = fiscalYearStartTicks + (deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek;
+			long endTicks = startTicks + 13L * DateTimeExtensions.TicksPerWeek - DateTimeExtensions.TicksPerDay;
 
 			endTicks = DateTimeExtensions.GetDateAsTicks(endTicks);
 			return new DateTime(endTicks, dateTime.Kind);
 		}
 
 		/// <inheritdoc />
-		/// <remarks>Calculates the final day of the specified quarter by adding 13 weeks (91 days) to the quarter's start date, inclusive.</remarks>
-		/// <param name="quarter">The fiscal quarter number (1–4).</param>
-		/// <returns>A <see cref="DateTime" /> representing the last day of the quarter, normalized to 00:00:00 and <see cref="DateTimeKind.Unspecified" />.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is less than 1 or greater than 4.</exception>
 		public DateTime GetEndDate(int quarter)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(quarter, 1, 4);
+			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 
 			long startTicks = GetStartDate(quarter).Ticks;
-			long endTicks = startTicks + (13L * DateTimeExtensions.TicksPerWeek) - DateTimeExtensions.TicksPerDay;
+			long endTicks = startTicks + 13L * DateTimeExtensions.TicksPerWeek - DateTimeExtensions.TicksPerDay;
 
 			endTicks = DateTimeExtensions.GetDateAsTicks(endTicks);
-
 			return new DateTime(endTicks, DateTimeKind.Unspecified);
 		}
 
 		/// <inheritdoc />
-		/// <remarks>
-		/// This method is used by <see cref="DateTimeExtensions.Quarter(DateTime, IQuarterDefinitionProvider)" /> to determine the 1-based
-		/// fiscal quarter for the specified date.
-		/// <para>
-		/// Each quarter spans 13 weeks, beginning from the aligned fiscal year anchor. The method calculates the number of full weeks
-		/// between the input date and the fiscal year start and returns the corresponding quarter number (1–4).
-		/// </para>
-		/// <para>Throws <see cref="ArgumentOutOfRangeException" /> if the date falls outside the supported fiscal year.</para>
-		/// </remarks>
 		public int GetQuarter(DateTime dateTime)
 		{
-			var alignedDate = ValidateDateInFiscalYear(dateTime);
-			int totalWeeks = (int)((alignedDate.Ticks - fiscalYearStart.Ticks) / DateTimeExtensions.TicksPerWeek);
+			ValidateDateInFiscalYear(dateTime);
+			int totalWeeks = (int)((dateTime.Ticks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerWeek);
 			return Math.Min((totalWeeks / 13) + 1, 4);
 		}
 
 		/// <inheritdoc />
-		/// <remarks>
-		/// This method is used by <see cref="DateTimeExtensions.FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> to compute the
-		/// starting calendar date of the quarter containing the specified date.
-		/// <para>
-		/// The start date is calculated by aligning the input date to the beginning of its fiscal week and determining the corresponding
-		/// fiscal quarter (1–4), then offsetting from the fiscal anchor date by a multiple of 13 weeks (91 days).
-		/// </para>
-		/// </remarks>
-		/// <param name="dateTime">A <see cref="DateTime" /> within the fiscal year to resolve to a quarter start date.</param>
-		/// <returns>A <see cref="DateTime" /> representing the start of the quarter, preserving the <paramref name="dateTime" /> kind.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="dateTime" /> is outside the configured fiscal year.</exception>
 		public DateTime GetStartDate(DateTime dateTime)
 		{
-			var alignedDate = ValidateDateInFiscalYear(dateTime);
-			long deltaWeeks = (alignedDate.Ticks - fiscalYearStart.Ticks) / DateTimeExtensions.TicksPerWeek;
-			long startTicks = fiscalYearStart.Ticks + ((deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek);
+			ValidateDateInFiscalYear(dateTime);
+			long deltaWeeks = (dateTime.Ticks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerWeek;
+			long startTicks = fiscalYearStartTicks + (deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek;
 
 			startTicks = DateTimeExtensions.GetDateAsTicks(startTicks);
 			return new DateTime(startTicks, dateTime.Kind);
 		}
 
 		/// <inheritdoc />
-		/// <remarks>
-		/// Calculates the start date of the specified quarter by offsetting the aligned fiscal year start date by a multiple of 13 weeks.
-		/// </remarks>
-		/// <param name="quarter">The fiscal quarter number (1–4).</param>
-		/// <returns>A <see cref="DateTime" /> representing the first day of the quarter, normalized to 00:00:00 and <see cref="DateTimeKind.Unspecified" />.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is less than 1 or greater than 4.</exception>
 		public DateTime GetStartDate(int quarter)
 		{
-			ThrowHelper.ThrowIfNotBetweenInclusive(quarter, 1, 4);
+			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 
 			long offsetTicks = (quarter - 1) * 13L * DateTimeExtensions.TicksPerWeek;
-			long startTicks = fiscalYearStart.Ticks + offsetTicks;
+			long startTicks = fiscalYearStartTicks + offsetTicks;
 
 			startTicks = DateTimeExtensions.GetDateAsTicks(startTicks);
-
 			return new DateTime(startTicks, DateTimeKind.Unspecified);
 		}
 
 		/// <summary>
 		/// Gets the total number of weeks in the fiscal year (52 or 53).
 		/// </summary>
-		/// <returns>The number of weeks in the fiscal year.</returns>
 		public int GetWeeksInFiscalYear() => Is53WeekFiscalYear() ? 53 : 52;
 
 		/// <summary>
 		/// Determines whether the configured fiscal year has 53 weeks instead of the standard 52 weeks.
 		/// </summary>
-		/// <returns><see langword="true" /> if the fiscal year includes 53 weeks; otherwise, <see langword="false" />.</returns>
 		public bool Is53WeekFiscalYear()
 		{
-			var nextFiscalStart = fiscalYearStart.AddYears(1);
-			var alignedNextFiscalStart = AlignToStartOfWeek(nextFiscalStart, firstDayOfWeek);
-			var daysInYear = (alignedNextFiscalStart - fiscalYearStart).TotalDays;
+			const int DaysIn52Weeks = 364;
 
-			return daysInYear > 364; // 364 days = 52 weeks
-		}
+			// Tentative next fiscal start (after 52 weeks)
+			var unalignedNextYearTicks = fiscalYearStartTicks + (DateTimeExtensions.TicksPerDay * DaysIn52Weeks);
 
-		/// <summary>
-		/// Aligns a date to the start of its week based on the configured start day.
-		/// </summary>
-		/// <param name="date">The date to align.</param>
-		/// <param name="weekStart">The starting day of the week.</param>
-		/// <returns>A <see cref="DateTime" /> aligned to the beginning of the week.</returns>
-		private static DateTime AlignToStartOfWeek(DateTime date, DayOfWeek weekStart)
-		{
-			long ticks = date.Date.Ticks - DateTimeExtensions.GetPreviousDayOfWeekTicksFrom(date.Date.Ticks, weekStart);
-			return new DateTime(ticks, date.Kind);
+			// Align forward to the next fiscal week start
+			var alignedNextYearTicks = unalignedNextYearTicks + DateTimeExtensions.GetNextDayOfWeekTicksFrom(unalignedNextYearTicks, firstDayOfWeek);
+
+			var daysInYear = (alignedNextYearTicks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerDay;
+			return daysInYear > DaysIn52Weeks;
 		}
 
 		/// <summary>
 		/// Validates that the specified date falls within the configured fiscal year range.
 		/// </summary>
-		/// <param name="dateTime">The date to validate.</param>
-		/// <returns>A <see cref="DateTime" /> aligned to the beginning of the fiscal week that contains <paramref name="dateTime" />.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="dateTime" /> is earlier than the fiscal year start, or more than 52 or 53 weeks (depending on
-		/// configuration) from it.
-		/// </exception>
-		/// <remarks>
-		/// This method is used internally by all methods that compute fiscal quarters based on dates. It ensures the input is within the
-		/// valid range of the configured fiscal year and normalizes the date to its week's start boundary.
-		/// </remarks>
-		private DateTime ValidateDateInFiscalYear(DateTime dateTime)
+		private void ValidateDateInFiscalYear(DateTime dateTime)
 		{
-			var alignedDate = AlignToStartOfWeek(dateTime.Date, firstDayOfWeek);
-			long deltaWeeks = (alignedDate.Ticks - fiscalYearStart.Ticks) / DateTimeExtensions.TicksPerWeek;
+			var alignedDate = dateTime.Date.Ticks - DateTimeExtensions.GetPreviousDayOfWeekTicksFrom(dateTime.Date.Ticks, firstDayOfWeek);
+			int fiscalYearLengthDays = Is53WeekFiscalYear() ? 371 : 364;
 
-			int maxWeeks = Is53WeekFiscalYear() ? 53 : 52;
+			long deltaDays = (alignedDate - fiscalYearStartTicks) / TimeSpan.TicksPerDay;
 
-			if (deltaWeeks < 0 || deltaWeeks >= maxWeeks)
+			if (deltaDays < 0 || deltaDays >= fiscalYearLengthDays)
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
-					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, fiscalYearStart));
+					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, new DateTime(fiscalYearStartTicks)));
+		}
 
-			return alignedDate;
+		/// <summary>
+		/// Aligns a date to the start of its week based on the configured start day.
+		/// </summary>
+		private static DateTime AlignToStartOfWeek(DateTime date, DayOfWeek weekStart)
+		{
+			long ticks = date.Date.Ticks - DateTimeExtensions.GetPreviousDayOfWeekTicksFrom(date.Date.Ticks, weekStart);
+			return new DateTime(ticks, date.Kind);
 		}
 	}
 }

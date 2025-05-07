@@ -1,5 +1,10 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="BufferConverter.Read.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Bodu.Extensions

@@ -1,11 +1,14 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
+﻿// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="CircularBuffer.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Bodu.Collections.Generic
 {
@@ -107,12 +110,12 @@ namespace Bodu.Collections.Generic
 #else
 			ThrowHelper.ThrowIfOutOfRange(capacity, 1, MaxArrayLength);
 #endif
-			this.array = new T[capacity];
+			array = new T[capacity];
 			this.capacity = capacity;
-			this.AllowOverwrite = allowOverwrite;
-			this.count = 0;
-			this.head = 0;
-			this.tail = 0;
+			AllowOverwrite = allowOverwrite;
+			count = 0;
+			head = 0;
+			tail = 0;
 		}
 
 		/// <summary>
@@ -178,24 +181,24 @@ namespace Bodu.Collections.Generic
 			if (items.Length > capacity && !allowOverwrite)
 				throw new InvalidOperationException(ResourceStrings.Arg_Invalid_ArrayLengthExceedsCapacity);
 
-			this.array = new T[capacity];
+			array = new T[capacity];
 			this.capacity = capacity;
-			this.AllowOverwrite = allowOverwrite;
+			AllowOverwrite = allowOverwrite;
 
 			if (items.Length > capacity)
 			{
 				// Retain the most recent elements that fit in the buffer.
-				Array.Copy(items, items.Length - capacity, this.array, 0, capacity);
-				this.count = capacity;
+				Array.Copy(items, items.Length - capacity, array, 0, capacity);
+				count = capacity;
 			}
 			else
 			{
-				Array.Copy(items, this.array, items.Length);
-				this.count = items.Length;
+				Array.Copy(items, array, items.Length);
+				count = items.Length;
 			}
 
-			this.head = 0;
-			this.tail = this.count % capacity;
+			head = 0;
+			tail = count % capacity;
 		}
 
 		/// <summary>
@@ -287,7 +290,7 @@ namespace Bodu.Collections.Generic
 		/// </para>
 		/// <para>To reduce memory usage after elements are removed, use <see cref="TrimExcess" /> to shrink the buffer.</para>
 		/// </remarks>
-		public int Capacity => this.capacity;
+		public int Capacity => capacity;
 
 		/// <summary>
 		/// Gets the element at the specified zero-based index from the oldest to the newest element.
@@ -312,9 +315,9 @@ namespace Bodu.Collections.Generic
 			get
 			{
 				ThrowHelper.ThrowIfLessThan(index, 0);
-				ThrowHelper.ThrowIfGreaterThanOrEqual(index, this.count);
+				ThrowHelper.ThrowIfGreaterThanOrEqual(index, count);
 
-				int actualIndex = (this.head + index) % this.capacity;
+				int actualIndex = (head + index) % capacity;
 				return array[actualIndex];
 			}
 		}
@@ -334,21 +337,21 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public void Clear()
 		{
-			if (this.count > 0)
+			if (count > 0)
 			{
-				if (this.head < this.tail)
+				if (head < tail)
 				{
-					Array.Clear(this.array, this.head, this.count);
+					Array.Clear(array, head, count);
 				}
 				else
 				{
-					Array.Clear(this.array, this.head, this.capacity - this.head);
-					Array.Clear(this.array, 0, this.tail);
+					Array.Clear(array, head, capacity - head);
+					Array.Clear(array, 0, tail);
 				}
 
-				this.head = 0;
-				this.tail = 0;
-				this.count = 0;
+				head = 0;
+				tail = 0;
+				count = 0;
 			}
 		}
 
@@ -363,15 +366,15 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public bool Contains(T item)
 		{
-			int index = this.head;
+			int index = head;
 			var comparer = EqualityComparer<T>.Default;
 
-			for (int i = 0; i < this.count; i++)
+			for (int i = 0; i < count; i++)
 			{
-				if (comparer.Equals(this.array[index], item))
+				if (comparer.Equals(array[index], item))
 					return true;
 
-				index = (index + 1) % this.capacity;
+				index = (index + 1) % capacity;
 			}
 
 			return false;
@@ -397,7 +400,7 @@ namespace Bodu.Collections.Generic
 		public void CopyTo(T[] array, int index)
 		{
 			ThrowHelper.ThrowIfNull(array);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, this.count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, count);
 			CopyToCore(array, index, isTypedArray: true);
 		}
 
@@ -460,20 +463,20 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public (ArraySegment<T> FirstSegment, ArraySegment<T> SecondSegment) GetSegments()
 		{
-			if (this.count == 0)
+			if (count == 0)
 				return (new ArraySegment<T>(Array.Empty<T>()), new ArraySegment<T>(Array.Empty<T>()));
 
-			if (this.head < this.tail)
+			if (head < tail)
 			{
 				// Single continuous segment
-				return (new ArraySegment<T>(this.array, this.head, this.count), new ArraySegment<T>(Array.Empty<T>()));
+				return (new ArraySegment<T>(array, head, count), new ArraySegment<T>(Array.Empty<T>()));
 			}
 			else
 			{
 				// Wrapped segments
-				int firstLength = this.capacity - this.head;
-				var firstSegment = new ArraySegment<T>(this.array, this.head, firstLength);
-				var secondSegment = new ArraySegment<T>(this.array, 0, this.tail);
+				int firstLength = capacity - head;
+				var firstSegment = new ArraySegment<T>(array, head, firstLength);
+				var secondSegment = new ArraySegment<T>(array, 0, tail);
 
 				return (firstSegment, secondSegment);
 			}
@@ -490,10 +493,10 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public T Peek()
 		{
-			if (this.count == 0)
+			if (count == 0)
 				throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionEmpty);
 
-			return this.array[head];
+			return array[head];
 		}
 
 		/// <summary>
@@ -515,8 +518,8 @@ namespace Bodu.Collections.Generic
 		/// </example>
 		public T[] ToArray()
 		{
-			T[] result = new T[this.count];
-			if (this.count > 0)
+			T[] result = new T[count];
+			if (count > 0)
 			{
 				CopyToCore(result, 0, isTypedArray: true);
 			}
@@ -549,17 +552,17 @@ namespace Bodu.Collections.Generic
 		/// </example>
 		public void TrimExcess()
 		{
-			if (this.count == this.capacity)
+			if (count == capacity)
 				return;
 
-			int newCapacity = Math.Max(this.count, 1); // prevent zero-sized array
+			int newCapacity = Math.Max(count, 1); // prevent zero-sized array
 			T[] trimmed = new T[newCapacity];
 			CopyTo(trimmed, 0);
 
-			this.array = trimmed;
-			this.capacity = newCapacity;
-			this.head = this.tail = 0;
-			this.version++;
+			array = trimmed;
+			capacity = newCapacity;
+			head = tail = 0;
+			version++;
 		}
 
 		/// <summary>
@@ -650,7 +653,7 @@ namespace Bodu.Collections.Generic
 				return false;
 			}
 
-			item = this.array[head];
+			item = array[head];
 			return true;
 		}
 
@@ -686,9 +689,9 @@ namespace Bodu.Collections.Generic
 				return false;
 			}
 
-			item = this.array[head];
-			this.array[head] = default!;
-			this.head = (head + 1) % this.capacity;
+			item = array[head];
+			array[head] = default!;
+			head = (head + 1) % capacity;
 			count--;
 
 			return true;
@@ -721,7 +724,7 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		private bool TryEnqueueInternal(T item, bool throwIfFull)
 		{
-			if (this.capacity == 0)
+			if (capacity == 0)
 			{
 				if (throwIfFull)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CapacityExhausted);
@@ -731,7 +734,7 @@ namespace Bodu.Collections.Generic
 
 			if (count == array.Length)
 			{
-				if (!this.AllowOverwrite)
+				if (!AllowOverwrite)
 				{
 					if (throwIfFull)
 						throw new InvalidOperationException(ResourceStrings.InvalidOperation_CapacityExhausted);
@@ -740,21 +743,21 @@ namespace Bodu.Collections.Generic
 				}
 
 				T overwritten = array[tail];
-				this.ItemEvicting?.Invoke(overwritten);
+				ItemEvicting?.Invoke(overwritten);
 
-				this.array[tail] = item;
-				this.head = this.tail = (this.tail + 1) % this.capacity;
+				array[tail] = item;
+				head = tail = (tail + 1) % capacity;
 
 				ItemEvicted?.Invoke(overwritten);
 			}
 			else
 			{
-				this.array[tail] = item;
-				this.tail = (this.tail + 1) % this.capacity;
+				array[tail] = item;
+				tail = (tail + 1) % capacity;
 				count++;
 			}
 
-			this.version++;
+			version++;
 
 			return true;
 		}
@@ -792,18 +795,18 @@ namespace Bodu.Collections.Generic
 		/// </exception>
 		private void CopyToCore(Array destination, int destinationIndex, bool isTypedArray)
 		{
-			if (this.count == 0)
+			if (count == 0)
 				return;
 
-			if (this.head < this.tail)
+			if (head < tail)
 			{
-				Array.Copy(this.array, this.head, destination, destinationIndex, this.count);
+				Array.Copy(array, head, destination, destinationIndex, count);
 			}
 			else
 			{
-				int firstSegmentLength = this.array.Length - this.head;
-				Array.Copy(this.array, this.head, destination, destinationIndex, firstSegmentLength);
-				Array.Copy(this.array, 0, destination, destinationIndex + firstSegmentLength, this.tail);
+				int firstSegmentLength = array.Length - head;
+				Array.Copy(array, head, destination, destinationIndex, firstSegmentLength);
+				Array.Copy(array, 0, destination, destinationIndex + firstSegmentLength, tail);
 			}
 
 			// Type check for non-generic CopyTo to ensure type safety

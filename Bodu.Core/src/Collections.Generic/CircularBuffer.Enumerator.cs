@@ -1,8 +1,10 @@
-// // --------------------------------------------------------------------------------------------------------------- //
+// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="CircularBuffer.Enumerator.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Collections.Generic
 {
@@ -35,37 +37,37 @@ namespace Bodu.Collections.Generic
 			internal Enumerator(CircularBuffer<T> circularBuffer)
 			{
 				this.circularBuffer = circularBuffer;
-				this.version = circularBuffer.version;
-				this.currentIndex = -1;
-				this.current = default!;
-				this.iteratedCount = 0;
+				version = circularBuffer.version;
+				currentIndex = -1;
+				current = default!;
+				iteratedCount = 0;
 			}
 
 			/// <inheritdoc />
 			public T Current =>
-				this.currentIndex == -1
+				currentIndex == -1
 					? throw new InvalidOperationException(ResourceStrings.InvalidOperation_EnumeratorNotOnElement)
-					: this.current;
+					: current;
 
 			/// <inheritdoc />
-			object System.Collections.IEnumerator.Current => this.Current!;
+			object System.Collections.IEnumerator.Current => Current!;
 
 			/// <inheritdoc />
 			public bool MoveNext()
 			{
-				if (this.version != this.circularBuffer.version)
+				if (version != circularBuffer.version)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionModified);
 
-				if (this.iteratedCount >= this.circularBuffer.count)
+				if (iteratedCount >= circularBuffer.count)
 				{
-					this.current = default!;
-					this.currentIndex = -1; // Ended
+					current = default!;
+					currentIndex = -1; // Ended
 					return false;
 				}
 
-				this.currentIndex = (this.circularBuffer.head + this.iteratedCount) % this.circularBuffer.capacity;
-				this.current = this.circularBuffer.array[this.currentIndex];
-				this.iteratedCount++;
+				currentIndex = (circularBuffer.head + iteratedCount) % circularBuffer.capacity;
+				current = circularBuffer.array[currentIndex];
+				iteratedCount++;
 
 				return true;
 			}
@@ -73,12 +75,12 @@ namespace Bodu.Collections.Generic
 			/// <inheritdoc />
 			public void Reset()
 			{
-				if (this.version != this.circularBuffer.version)
+				if (version != circularBuffer.version)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionModified);
 
-				this.currentIndex = -1;
-				this.current = default!;
-				this.iteratedCount = 0;
+				currentIndex = -1;
+				current = default!;
+				iteratedCount = 0;
 			}
 
 			/// <inheritdoc />

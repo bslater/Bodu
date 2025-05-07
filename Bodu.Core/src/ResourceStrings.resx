@@ -273,9 +273,6 @@
   <data name="InvalidOperation_TimeoutAlreadyEstablished" xml:space="preserve">
     <value>The timeout cannot be changed after the lock has already been established.</value>
   </data>
-  <data name="NotSupported_CryptoTransform_UnableToTransformMultipleBlocks" xml:space="preserve">
-    <value>HashAlgorithm does not support transforming multiple blocks.</value>
-  </data>
   <data name="Overflow_NegatingTwosComplementNumber" xml:space="preserve">
     <value>Negating the minimum value of a two's complement number is invalid.</value>
   </data>
@@ -443,5 +440,8 @@
   </data>
   <data name="Arg_Required_ProviderInterface" xml:space="preserve">
     <value>Custom definitions require an external provider that implements {0}.</value>
+  </data>
+  <data name="Arg_Invalid_MustBeComparableType" xml:space="preserve">
+    <value>Object must be of type {0} to be compared.</value>
   </data>
 </root>

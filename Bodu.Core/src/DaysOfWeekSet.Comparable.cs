@@ -4,6 +4,8 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Bodu
 {
 	public partial struct DaysOfWeekSet
@@ -32,11 +34,22 @@ namespace Bodu
 		/// </list>
 		/// </returns>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="obj" /> is not a <see cref="DaysOfWeekSet" /> or <see cref="byte" />.</exception>
-		public int CompareTo(object? obj) =>
-			 ReferenceEquals(obj, null) ? 1 :
-			 obj is DaysOfWeekSet otherSet ? CompareTo(otherSet) :
-			 obj is byte otherByte ? CompareTo(otherByte) :
-			 throw new ArgumentException($"Object must be of type {nameof(DaysOfWeekSet)} or {nameof(Byte)}.", nameof(obj));
+		/// <inheritdoc />
+		public int CompareTo(object? obj)
+		{
+			if (obj is null)
+				return 1;
+
+			if (obj is DaysOfWeekSet otherSet)
+				return CompareTo(otherSet);
+
+			if (obj is byte otherByte)
+				return CompareTo(otherByte);
+
+			throw new ArgumentException(
+				string.Format(ResourceStrings.Arg_Invalid_MustBeComparableType, string.Join(" or ", nameof(DaysOfWeekSet), nameof(Byte))),
+				nameof(obj));
+		}
 
 		/// <summary>
 		/// Compares this instance to a specified <see cref="DaysOfWeekSet" /> and returns an indication of their relative values.
@@ -56,7 +69,8 @@ namespace Bodu
 		/// </item>
 		/// </list>
 		/// </returns>
-		public int CompareTo(DaysOfWeekSet other) => this.selectedDays.CompareTo(other.selectedDays);
+		public int CompareTo(DaysOfWeekSet other) =>
+			selectedDays.CompareTo(other.selectedDays);
 
 		/// <summary>
 		/// Compares this instance to a specified <see cref="byte" /> and returns an indication of their relative values.
@@ -76,6 +90,7 @@ namespace Bodu
 		/// </item>
 		/// </list>
 		/// </returns>
-		public int CompareTo(byte other) => this.selectedDays.CompareTo(other);
+		public int CompareTo(byte other) =>
+			selectedDays.CompareTo(other);
 	}
 }

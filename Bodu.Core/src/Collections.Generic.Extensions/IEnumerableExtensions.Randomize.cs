@@ -1,14 +1,18 @@
-// // --------------------------------------------------------------------------------------------------------------- //
+// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 #if !NETSTANDARD2_0
 
 using Bodu.Buffers;
 
 #endif
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bodu.Collections.Generic.Extensions
 {
@@ -57,7 +61,7 @@ namespace Bodu.Collections.Generic.Extensions
 		public SystemRandomAdapter(Random random) => this.random = random ?? throw new ArgumentNullException(nameof(random));
 
 		/// <inheritdoc />
-		public int Next(int maxValue) => this.random.Next(maxValue);
+		public int Next(int maxValue) => random.Next(maxValue);
 	}
 
 	public static partial class IEnumerableExtensions
@@ -119,9 +123,9 @@ namespace Bodu.Collections.Generic.Extensions
 			int availableCount;
 
 #if NETSTANDARD2_0
-	var list = source is ICollection<T> col ? new List<T>(col) : new List<T>(source);
-	buffer = list;
-	availableCount = list.Count;
+			var list = source is ICollection<T> col ? new List<T>(col) : new List<T>(source);
+			buffer = list;
+			availableCount = list.Count;
 #else
 			using var builder = new PooledBufferBuilder<T>();
 

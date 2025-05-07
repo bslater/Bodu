@@ -259,6 +259,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Object must be of type {0} to be compared..
+        /// </summary>
+        internal static string Arg_Invalid_MustBeComparableType {
+            get {
+                return ResourceManager.GetString("Arg_Invalid_MustBeComparableType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Object must be of type {0}..
         /// </summary>
         internal static string Arg_Invalid_MustBeOfType {
@@ -822,15 +831,6 @@ namespace Bodu {
         internal static string IO_Error_StreamReadBeyondEnd {
             get {
                 return ResourceManager.GetString("IO_Error_StreamReadBeyondEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to HashAlgorithm does not support transforming multiple blocks..
-        /// </summary>
-        internal static string NotSupported_CryptoTransform_UnableToTransformMultipleBlocks {
-            get {
-                return ResourceManager.GetString("NotSupported_CryptoTransform_UnableToTransformMultipleBlocks", resourceCulture);
             }
         }
         

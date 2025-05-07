@@ -1,9 +1,10 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="XorShiftRandom.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="XorShiftRandom.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Bodu
@@ -44,15 +45,15 @@ namespace Bodu
 		public XorShiftRandom(uint seed)
 		{
 			// Initialize four internal states with XOR-variations of the seed for better distribution
-			this.x = seed;
-			this.y = seed ^ 0x6C8E9CF5U;
-			this.z = seed ^ 0x94D049BBU;
-			this.w = seed ^ 0x5A17D7F9U;
+			x = seed;
+			y = seed ^ 0x6C8E9CF5U;
+			z = seed ^ 0x94D049BBU;
+			w = seed ^ 0x5A17D7F9U;
 		}
 
 		/// <inheritdoc />
 		public override int Next()
-			=> this.Next(int.MaxValue);
+			=> Next(int.MaxValue);
 
 		/// <inheritdoc />
 		public override int Next(int maxValue)

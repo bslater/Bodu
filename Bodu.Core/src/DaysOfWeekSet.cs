@@ -52,7 +52,7 @@ namespace Bodu
 		/// </exception>
 		public DaysOfWeekSet(params DayOfWeek[] daysOfWeek)
 		{
-			this.selectedDays = 0;
+			selectedDays = 0;
 			if (daysOfWeek != null)
 			{
 				foreach (var day in daysOfWeek)
@@ -78,7 +78,7 @@ namespace Bodu
 		{
 			ThrowHelper.ThrowIfOutOfRange(value, MinValue, MaxValue);
 
-			this.selectedDays = (byte)value;
+			selectedDays = (byte)value;
 		}
 
 		/// <summary>
@@ -115,32 +115,32 @@ namespace Bodu
 
 		private bool this[int dayOfWeek]
 		{
-			get => (this.selectedDays >> (6 - dayOfWeek) & 1) == 1;
+			get => (selectedDays >> (6 - dayOfWeek) & 1) == 1;
 
 			set
 			{
 				int realBit = 6 - dayOfWeek;
 				byte mask = (byte)(ShiftValue << realBit);
-				this.selectedDays = value
-					? (byte)(this.selectedDays | mask)
-					: (byte)(this.selectedDays & ~mask);
+				selectedDays = value
+					? (byte)(selectedDays | mask)
+					: (byte)(selectedDays & ~mask);
 			}
 		}
 
 		/// <summary>
 		/// Clears all selected days.
 		/// </summary>
-		public void Clear() => this.selectedDays = 0;
+		public void Clear() => selectedDays = 0;
 
 		/// <summary>
 		/// Gets the number of days currently selected.
 		/// </summary>
-		public int Count => ((this.selectedDays >> 0) & 1)
-						  + ((this.selectedDays >> 1) & 1)
-						  + ((this.selectedDays >> 2) & 1)
-						  + ((this.selectedDays >> 3) & 1)
-						  + ((this.selectedDays >> 4) & 1)
-						  + ((this.selectedDays >> 5) & 1)
-						  + ((this.selectedDays >> 6) & 1);
+		public int Count => ((selectedDays >> 0) & 1)
+						  + ((selectedDays >> 1) & 1)
+						  + ((selectedDays >> 2) & 1)
+						  + ((selectedDays >> 3) & 1)
+						  + ((selectedDays >> 4) & 1)
+						  + ((selectedDays >> 5) & 1)
+						  + ((selectedDays >> 6) & 1);
 	}
 }

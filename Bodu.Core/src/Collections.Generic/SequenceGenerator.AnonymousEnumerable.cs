@@ -1,34 +1,12 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="SequenceGenerator.AnonymousEnumerable.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
-
-
-/* Unmerged change from project 'Bodu.Core (net7.0)'
-Before:
-using System.Collections.Generic;
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="SequenceGenerator.AnonymousEnumerable.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections;
-After:
-using System;
-using System.Collections;
 using System.Collections.Generic;
-*/
-
-/* Unmerged change from project 'Bodu.Core (net6.0)'
-Before:
-using System.Collections.Generic;
-
-using System;
-using System.Collections;
-After:
-using System;
-using System.Collections;
-using System.Collections.Generic;
-*/
-using System.Collections;
 using System.Diagnostics;
 
 namespace Bodu.Collections.Generic
@@ -54,10 +32,10 @@ namespace Bodu.Collections.Generic
 			}
 
 			/// <inheritdoc />
-			public IEnumerator<TResult> GetEnumerator() => this.createEnumerator();
+			public IEnumerator<TResult> GetEnumerator() => createEnumerator();
 
 			/// <inheritdoc />
-			IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 		}
 	}
 }

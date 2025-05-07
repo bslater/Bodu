@@ -1,10 +1,12 @@
-// // --------------------------------------------------------------------------------------------------------------- //
+// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Collections.Extensions;
+using System;
+using System.Collections.Generic;
 
 namespace Bodu.Collections.Generic.Extensions
 {
@@ -336,10 +338,10 @@ namespace Bodu.Collections.Generic.Extensions
 			/// <param name="depth">The recursive depth level at exit.</param>
 			public void RequestExit(object element, int index, int depth)
 			{
-				this.ExitRequested = true;
-				this.ExitTriggeringElement = element;
-				this.ExitTriggeredAtIndex = index;
-				this.ExitDepth = depth;
+				ExitRequested = true;
+				ExitTriggeringElement = element;
+				ExitTriggeredAtIndex = index;
+				ExitDepth = depth;
 			}
 		}
 	}

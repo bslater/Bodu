@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.LastDayOfTheYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.LastDayOfYear.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -18,6 +20,6 @@ namespace Bodu.Extensions
 		/// </returns>
 		/// <remarks>This method uses the Gregorian calendar and normalizes the time component to 00:00:00 (midnight).</remarks>
 		public static DateTime LastDayOfYear(this DateTime dateTime)
-			=> new DateTime(DateTimeExtensions.GetTicksForDate(dateTime.Year, 12, 31), dateTime.Kind);
+			=> new(DateTimeExtensions.GetTicksForDate(dateTime.Year, 12, 31), dateTime.Kind);
 	}
 }

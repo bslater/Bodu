@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.ToDateTimeOffset.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.ToDateTimeOffset.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -37,7 +39,7 @@ namespace Bodu.Extensions
 		/// </list>
 		/// </remarks>
 		public static DateTimeOffset ToDateTimeOffset(this DateTime dateTime)
-			=> new DateTimeOffset(dateTime);
+			=> new(dateTime);
 
 		/// <summary>
 		/// Converts the specified <see cref="DateTime" /> to a <see cref="DateTimeOffset" /> using the provided UTC offset.
@@ -60,6 +62,6 @@ namespace Bodu.Extensions
 		/// <paramref name="offset" /> must be within ±14 hours.
 		/// </remarks>
 		public static DateTimeOffset ToDateTimeOffset(this DateTime dateTime, TimeSpan offset)
-			=> new DateTimeOffset(dateTime, offset);
+			=> new(dateTime, offset);
 	}
 }

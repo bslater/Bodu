@@ -1,8 +1,11 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="ComparableHelper.Clamp.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="ComparableHelper.Clamp.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
 
 namespace Bodu.Extensions
 {
@@ -22,7 +25,7 @@ namespace Bodu.Extensions
 		/// </returns>
 		/// <remarks>If <paramref name="min" /> or <paramref name="max" /> is <c>null</c>, the bound is considered unbounded.</remarks>
 		public static T? Clamp<T>(T? value, T? min, T? max) where T : IComparable<T> =>
-			value is null ? default(T)
+			value is null ? default
 			: (min is not null && value.CompareTo(min) < 0) ? min
 			: (max is not null && value.CompareTo(max) > 0) ? max
 			: value;
@@ -48,7 +51,7 @@ namespace Bodu.Extensions
 		public static T? Clamp<T>(T? value, T? min, T? max, IComparer<T> comparer) =>
 			comparer is null
 				? throw new ArgumentNullException(nameof(comparer))
-				: value is null ? default(T)
+				: value is null ? default
 				: (min is not null && comparer.Compare(value, min) < 0) ? min
 				: (max is not null && comparer.Compare(value, max) > 0) ? max
 				: value;

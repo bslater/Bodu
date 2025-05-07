@@ -1,10 +1,13 @@
-// // --------------------------------------------------------------------------------------------------------------- //
+// ---------------------------------------------------------------------------------------------------------------
 // <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+//     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bodu.Collections.Extensions
 {
@@ -40,7 +43,7 @@ namespace Bodu.Collections.Extensions
 		/// };
 		///
 		/// var flattened = root.RecursiveSelect(n => ((Node)n).Children);
-		/// // Yields: A, B, C, D
+		/// Yields: A, B, C, D
 		///]]>
 		/// </code>
 		/// </example>
@@ -78,7 +81,7 @@ namespace Bodu.Collections.Extensions
 		/// };
 		///
 		/// var names = root.RecursiveSelect(n => ((Node)n).Children, n => ((Node)n).Name);
-		/// // Yields: "A", "B", "C", "D"
+		/// Yields: "A", "B", "C", "D"
 		///]]>
 		/// </code>
 		/// </example>
@@ -120,7 +123,7 @@ namespace Bodu.Collections.Extensions
 		/// };
 		///
 		/// var labeled = root.RecursiveSelect(n => ((Node)n).Children, (n, i) => $"{i}: {((Node)n).Name}");
-		/// // Yields: "0: A", "1: B", "2: C", "3: D"
+		/// Yields: "0: A", "1: B", "2: C", "3: D"
 		///]]>
 		/// </code>
 		/// </example>
@@ -164,11 +167,11 @@ namespace Bodu.Collections.Extensions
 		/// var structured = root.RecursiveSelect(n => ((Node)n).Children,
 		///     (n, i, depth) => new { ((Node)n).Name, Index = i, Depth = depth });
 		///
-		/// // Yields:
-		/// // { Name = "A", Index = 0, Depth = 0 }
-		/// // { Name = "B", Index = 1, Depth = 1 }
-		/// // { Name = "C", Index = 2, Depth = 1 }
-		/// // { Name = "D", Index = 3, Depth = 0 }
+		/// Yields:
+		/// { Name = "A", Index = 0, Depth = 0 }
+		/// { Name = "B", Index = 1, Depth = 1 }
+		/// { Name = "C", Index = 2, Depth = 1 }
+		/// { Name = "D", Index = 3, Depth = 0 }
 		///]]>
 		/// </code>
 		/// </example>
@@ -220,7 +223,7 @@ namespace Bodu.Collections.Extensions
 		///         ? RecursiveSelectControl.YieldAndRecurse
 		///         : RecursiveSelectControl.YieldOnly);
 		///
-		/// // Yields: "A", "B", "C", "D"
+		/// Yields: "A", "B", "C", "D"
 		///]]>
 		/// </code>
 		/// </example>

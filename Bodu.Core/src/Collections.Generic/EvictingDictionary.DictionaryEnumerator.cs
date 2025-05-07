@@ -1,10 +1,11 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="EvictingDictionary.DictionaryEnumerator.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="EvictingDictionary.DictionaryEnumerator.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Bodu.Collections.Generic
 {
@@ -14,13 +15,10 @@ namespace Bodu.Collections.Generic
 		/// Enumerates the elements of a <see cref="EvictingDictionary{TKey, TValue}" />.
 		/// </summary>
 		/// <remarks>
+		/// <para>Use the <see langword="foreach" /> statement to simplify the enumeration process instead of directly using this enumerator.</para>
 		/// <para>
-		/// Use the <see langword="foreach" /> statement to simplify the enumeration process instead
-		/// of directly using this enumerator.
-		/// </para>
-		/// <para>
-		/// The enumerator provides read-only access to the dictionary's elements. Modifying the
-		/// underlying dictionary while enumerating invalidates the enumerator.
+		/// The enumerator provides read-only access to the dictionary's elements. Modifying the underlying dictionary while enumerating
+		/// invalidates the enumerator.
 		/// </para>
 		/// </remarks>
 		public struct DictionaryEnumerator : IDictionaryEnumerator
@@ -35,7 +33,7 @@ namespace Bodu.Collections.Generic
 			public DictionaryEnumerator(EvictingDictionary<TKey, TValue> dictionary)
 			{
 				this.dictionary = dictionary;
-				this.inner = dictionary.GetEnumerator(); // Assume internal method to access the entry sequence
+				inner = dictionary.GetEnumerator(); // Assume internal method to access the entry sequence
 			}
 
 			/// <inheritdoc />

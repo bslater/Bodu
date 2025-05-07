@@ -10,15 +10,17 @@ namespace Bodu.Extensions
 	{
 		private static IEnumerable<object[]> GetIs53WeekYearTestData()
 		{
-			yield return new object[] { new DateTime(2023, 1, 29), DayOfWeek.Sunday, true };
-			yield return new object[] { new DateTime(2024, 1, 28), DayOfWeek.Sunday, true };
-			yield return new object[] { new DateTime(2028, 1, 30), DayOfWeek.Sunday, true };
-			yield return new object[] { new DateTime(2030, 1, 27), DayOfWeek.Sunday, true };
-			yield return new object[] { new DateTime(2035, 1, 28), DayOfWeek.Sunday, true };
+			// Sunday week starts
+			yield return new object[] { new DateTime(2023, 1, 29), DayOfWeek.Sunday, false }; // ends 2024-01-27
+			yield return new object[] { new DateTime(2024, 1, 28), DayOfWeek.Sunday, false }; // ends 2025-01-25
+			yield return new object[] { new DateTime(2028, 1, 30), DayOfWeek.Sunday, true }; // ends 2029-02-03 (aligned forward)
+			yield return new object[] { new DateTime(2030, 1, 27), DayOfWeek.Sunday, false }; // ends 2031-01-25
+			yield return new object[] { new DateTime(2035, 1, 28), DayOfWeek.Sunday, false }; // ends 2036-01-26
 
-			yield return new object[] { new DateTime(2023, 1, 30), DayOfWeek.Monday, true };
-			yield return new object[] { new DateTime(2024, 1, 29), DayOfWeek.Monday, true };
-			yield return new object[] { new DateTime(2025, 1, 27), DayOfWeek.Monday, true };
+			// Monday week starts
+			yield return new object[] { new DateTime(2023, 1, 30), DayOfWeek.Monday, false }; // ends 2024-01-28
+			yield return new object[] { new DateTime(2024, 1, 29), DayOfWeek.Monday, false }; // ends 2025-01-27
+			yield return new object[] { new DateTime(2025, 1, 27), DayOfWeek.Monday, true }; // ends 2026-02-02 (aligned forward)
 		}
 
 		/// <summary>

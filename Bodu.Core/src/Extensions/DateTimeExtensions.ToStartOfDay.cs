@@ -1,8 +1,10 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.StartOfDay.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
-// // ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.ToStartOfDay.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Bodu.Extensions
 {
@@ -19,6 +21,6 @@ namespace Bodu.Extensions
 		/// </returns>
 		/// <remarks>This method is functionally similar to accessing <c>dateTime.Date</c>, but explicitly retains the original <see cref="DateTime.Kind" />.</remarks>
 		public static DateTime ToStartOfDay(this DateTime dateTime)
-			=> new DateTime(DateTimeExtensions.GetDateTicks(dateTime), dateTime.Kind);
+			=> new(DateTimeExtensions.GetDateTicks(dateTime), dateTime.Kind);
 	}
 }
