@@ -20,7 +20,7 @@
 
   <!-- Exclude files that are not supported in .net standards -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="Buffers\PooledBufferBuilder.cs" />
+    <Compile Remove="Buffers\PooledBufferBuilder*.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
     <Compile Remove="Extensions\DateOnly*.cs" />
@@ -37,10 +37,6 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Bodu.Globalization.Calendar</_Parameter1>
     </AssemblyAttribute>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="GlobalUsings.cs" />
   </ItemGroup>
 
   <ItemGroup>
