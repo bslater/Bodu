@@ -9,7 +9,10 @@
           ]
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "netstandard2.0;netstandard2.1;net8.0"
+      }
     }
   ],
   "build": {
@@ -44,6 +47,8 @@
     "keepFileLink": false,
     "noLangKeyword": false,
     "disableDefaultFilter": true,
+    "enumSortOrder": "declaringOrder",
+    "memberLayout": "separatePages",
     "globalMetadata": {
       "_appName": "Bodu",
       "_appTitle": "Bodu Documentation",
