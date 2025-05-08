@@ -13,7 +13,7 @@
       "memberLayout": "separatePages",
       "enumSortOrder": "declaringOrder",
       "globalNamespaceId": "global",
-      "disableDefaultFilter": flase,
+      "disableDefaultFilter": false,
       "properties": {
         "TargetFramework": "net8.0"
       }
