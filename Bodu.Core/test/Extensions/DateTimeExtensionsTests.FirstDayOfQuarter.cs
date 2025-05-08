@@ -13,7 +13,7 @@ namespace Bodu.Extensions
 	{
 
 		public static IEnumerable<object[]> GetFirstDayOfQuarterWithDefinitionTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Select(e => new object[] { e.Date, e.Definition,e.StartDate });
 
 		[DataTestMethod]
@@ -25,7 +25,7 @@ namespace Bodu.Extensions
 		}
 
 		public static IEnumerable<object[]> GetFirstDayOfQuarterTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
 				.Select(e => new object[] { e.Date, e.StartDate });
 
@@ -38,7 +38,7 @@ namespace Bodu.Extensions
 		}
 
 		public static IEnumerable<object[]> GetFirstDayOfQuarterWithQuarterAndDefinitionTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Select(e => new object[] { e.Date, e.Definition, e.Quarter,e.StartDate });
 
 		[DataTestMethod]
@@ -51,7 +51,7 @@ namespace Bodu.Extensions
 		}
 
 		public static IEnumerable<object[]> GetFirstDayOfQuarterWithQuarterTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
 				.Select(e => new object[] { e.Date, e.Quarter,e.StartDate });
 

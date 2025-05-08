@@ -18,7 +18,7 @@ namespace Bodu.Extensions
 		[DataRow("2024-04-15", "en-US", "2024-04-20")] // Monday → Saturday
 		[DataRow("2024-04-14", "en-US", "2024-04-20")] // Sunday → Saturday
 		[DataRow("2024-04-15", "fr-FR", "2024-04-21")] // Monday → Sunday
-		public void LastDayOfTheWeek_WithCulture_ShouldReturnExpected(string inputDate, string cultureName, string expectedDate)
+		public void LastDayOfWeek_WithCulture_ShouldReturnExpected(string inputDate, string cultureName, string expectedDate)
 		{
 			DateOnly input = DateOnly.Parse(inputDate);
 			CultureInfo culture = new CultureInfo(cultureName);
@@ -29,7 +29,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheWeek_WhenCultureIsNull_ShouldUseCurrentCulture()
+		public void LastDayOfWeek_WhenCultureIsNull_ShouldUseCurrentCulture()
 		{
 			var originalCulture = CultureInfo.CurrentCulture;
 			try
@@ -51,7 +51,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheWeek_WhenUsingMinValue_ShouldSucceed()
+		public void LastDayOfWeek_WhenUsingMinValue_ShouldSucceed()
 		{
 			DateOnly input = DateOnly.MinValue;
 			DateOnly result = input.LastDayOfWeek(CultureInfo.InvariantCulture);
@@ -61,7 +61,7 @@ namespace Bodu.Extensions
 
 
 		[TestMethod]
-		public void LastDayOfTheWeek_WhenMinValueAndCultureIsUS_ShouldReturnThrowArgumentOutOfRangeException()
+		public void LastDayOfWeek_WhenMinValueAndCultureIsUS_ShouldReturnThrowArgumentOutOfRangeException()
 		{
 			DateOnly min = DateOnly.MaxValue;
 			var culture = new CultureInfo("en-US");// Sunday is first day
@@ -73,12 +73,69 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheWeek_WhenUsingMaxValue_ShouldSucceed()
+		public void LastDayOfWeek_WhenUsingMaxValue_ShouldSucceed()
 		{
 			DateOnly max = DateOnly.MaxValue;
 			var result = max.LastDayOfWeek(new CultureInfo("fa-IR")); // Friday is last day of week
 
 			Assert.AreEqual(max, result);
+		}
+
+
+		/// <summary>
+		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> returns the expected result based on the specified weekend definition.
+		/// </summary>
+		[DataTestMethod]
+		[DynamicData(nameof(DateTimeExtensionsTests.FirstAndLastDayOfWeekTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Property)]
+		public void LastDayOfWeek_WhenUsingWeekendDefinition_ShouldReturnExpectedEnd(DateTime dateTimeInput, CalendarWeekendDefinition weekend, DateTime _, DateTime dateTimeExpected)
+		{
+			var input = DateOnly.FromDateTime(dateTimeInput);
+			var expected = DateOnly.FromDateTime(dateTimeExpected);
+			var actual = input.LastDayOfWeek(weekend);
+			Assert.AreEqual(expected, actual);
+		}
+
+		/// <summary>
+		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> throws when given an undefined <see cref="CalendarWeekendDefinition"/>.
+		/// </summary>
+		[TestMethod]
+		public void LastDayOfWeek_WhenWeekendIsUndefined_ShouldThrowArgumentOutOfRangeException()
+		{
+			var date = new DateOnly(2024, 1, 1);
+			var invalidWeekend = (CalendarWeekendDefinition)(-5);
+
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			{
+				_ = date.LastDayOfWeek(invalidWeekend);
+			});
+		}
+
+		/// <summary>
+		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> throws if the calculated result exceeds <see cref="DateTime.MaxValue"/>.
+		/// </summary>
+		[TestMethod]
+		public void LastDayOfWeek_WhenResultExceedsMaxValue_ShouldThrowArgumentOutOfRangeException()
+		{
+			var nearMax = DateOnly.MaxValue.AddDays(-1); // e.g., Dec 30, 9999
+			var weekend = CalendarWeekendDefinition.SaturdaySunday; // Start of week = Monday → end = Sunday
+
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			{
+				_ = nearMax.LastDayOfWeek(weekend);
+			});
+		}
+
+		/// <summary>
+		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> works near <see cref="DateTime.MaxValue"/> without throwing.
+		/// </summary>
+		[TestMethod]
+		public void LastDayOfWeek_WhenNearMaxValue_ShouldReturnValidResult()
+		{
+			var date = DateTime.MaxValue.AddDays(-6); // 9999-12-25
+			var result = date.LastDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
+
+			Assert.IsTrue(result <= DateTime.MaxValue);
+			Assert.AreEqual(DayOfWeek.Sunday, result.DayOfWeek);
 		}
 	}
 }

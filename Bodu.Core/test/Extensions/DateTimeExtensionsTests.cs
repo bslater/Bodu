@@ -11,6 +11,63 @@ namespace Bodu.Extensions
 	{
 		private static readonly DateTime UnixEpochUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
+		public static IEnumerable<object[]> FirstAndLastDayOfWeekTestData => new[]
+		{
+			// === Saturday–Sunday weekend => week starts Monday (2024-01-01), ends Sunday (2024-01-07)
+			new object[] { new DateTime(2024, 1, 1), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 2), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 3), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 4), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 5), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 6), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 7), CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+
+			// === Friday–Saturday weekend => week starts Sunday (2023-12-31), ends Saturday (2024-01-06)
+			new object[] { new DateTime(2023, 12, 31), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+			new object[] { new DateTime(2024, 1, 1), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+			new object[] { new DateTime(2024, 1, 2), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+			new object[] { new DateTime(2024, 1, 3), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+			new object[] { new DateTime(2024, 1, 4), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+			new object[] { new DateTime(2024, 1, 5), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+			new object[] { new DateTime(2024, 1, 6), CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31), new DateTime(2024, 1, 6) },
+
+			// === Thursday–Friday weekend => week starts Saturday (2024-01-06), ends Friday (2024-01-12)
+			new object[] { new DateTime(2024, 1, 6), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+			new object[] { new DateTime(2024, 1, 7), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+			new object[] { new DateTime(2024, 1, 8), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+			new object[] { new DateTime(2024, 1, 9), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+			new object[] { new DateTime(2024, 1, 10), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+			new object[] { new DateTime(2024, 1, 11), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+			new object[] { new DateTime(2024, 1, 12), CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6), new DateTime(2024, 1, 12) },
+
+			// === Friday only weekend => week starts Saturday (2023-12-30), ends Friday (2024-01-05)
+			new object[] { new DateTime(2023, 12, 30), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+			new object[] { new DateTime(2023, 12, 31), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+			new object[] { new DateTime(2024, 1, 1), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+			new object[] { new DateTime(2024, 1, 2), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+			new object[] { new DateTime(2024, 1, 3), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+			new object[] { new DateTime(2024, 1, 4), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+			new object[] { new DateTime(2024, 1, 5), CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30), new DateTime(2024, 1, 5) },
+
+			// === Sunday only weekend => week starts Monday (2024-01-01), ends Sunday (2024-01-07)
+			new object[] { new DateTime(2024, 1, 1), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 2), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 3), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 4), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 5), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 6), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 7), CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+
+			// === None => defaults to Monday–Sunday
+			new object[] { new DateTime(2024, 1, 1), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 2), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 3), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 4), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 5), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 6), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+			new object[] { new DateTime(2024, 1, 7), CalendarWeekendDefinition.None, new DateTime(2024, 1, 1), new DateTime(2024, 1, 7) },
+		};
+
 		public static CultureInfo TestCulture
 		{
 			get

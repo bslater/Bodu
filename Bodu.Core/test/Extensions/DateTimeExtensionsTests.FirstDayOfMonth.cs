@@ -17,7 +17,7 @@ namespace Bodu.Extensions
 		[DataRow("2024-02-29T23:59:59", "2024-02-01T00:00:00")] // leap day
 		[DataRow("2023-12-31T15:00:00", "2023-12-01T00:00:00")] // 31-day month
 		[DataRow("2023-06-15T06:30:00", "2023-06-01T00:00:00")] // mid-month
-		public void FirstDayOfTheMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, string expectedDate)
+		public void FirstDayOfMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			var expectedt = DateTime.Parse(expectedDate);
@@ -27,7 +27,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheMonth_ShouldPreserveDateTimeKind()
+		public void FirstDayOfMonth_ShouldPreserveDateTimeKind()
 		{
 			var utc = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Utc);
 			var local = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Local);
@@ -39,7 +39,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheMonth_WhenMinValue_ShouldReturnExpected()
+		public void FirstDayOfMonth_WhenMinValue_ShouldReturnExpected()
 		{
 			DateTime result = DateTime.MinValue.FirstDayOfMonth();
 
@@ -47,7 +47,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheMonth_WhenMaxValue_ShouldReturnStartOfMaxMonth()
+		public void FirstDayOfMonth_WhenMaxValue_ShouldReturnStartOfMaxMonth()
 		{
 			var maxDate = DateTime.MaxValue.Date; // 9999-12-31
 			DateTime result = maxDate.FirstDayOfMonth();

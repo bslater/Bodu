@@ -30,7 +30,7 @@ namespace Bodu.Extensions
 		}
 
 
-		private static readonly QuarterData[] quarterData = new[]
+		private static readonly QuarterData[] QuarterTestData = new[]
 		{
 			// January–December
 			new QuarterData(new DateTime(2024, 01, 01), CalendarQuarterDefinition.JanuaryDecember, 1, new DateTime(2024, 01, 01), new DateTime(2024, 03, 31)),
@@ -121,108 +121,8 @@ namespace Bodu.Extensions
 			new QuarterData(new DateTime(2025, 04, 05), CalendarQuarterDefinition.April6ToApril5, 4, new DateTime(2025, 01, 06), new DateTime(2025, 04, 05)),
 		};
 
-
-		//public static IEnumerable<object[]> CalendarQuarterDefinitionTestData =>
-		//	DateTimeExtensionsTests.QuarterDefinitionTestData
-		//		.Where(e => e.Length >= 2 && e[1] is CalendarQuarterDefinition q && q == CalendarQuarterDefinition.JanuaryDecember);
-
-		//public static IEnumerable<object[]> QuarterDefinitionTestData
-		//{
-		//	get
-		//	{
-		//		// Calendar Year (Jan–Mar = Q1, Apr–Jun = Q2, Jul–Sep = Q3, Oct–Dec = Q4)
-		//		yield return new object[] { new DateTime(2024, 01, 01), CalendarQuarterDefinition.JanuaryDecember, 1, new DateTime(2024, 01, 01), new DateTime(2024, 03, 31) };
-		//		yield return new object[] { new DateTime(2024, 02, 01), CalendarQuarterDefinition.JanuaryDecember, 1, new DateTime(2024, 01, 01), new DateTime(2024, 03, 31) };
-		//		yield return new object[] { new DateTime(2024, 03, 01), CalendarQuarterDefinition.JanuaryDecember, 1, new DateTime(2024, 01, 01), new DateTime(2024, 03, 31) };
-		//		yield return new object[] { new DateTime(2024, 04, 01), CalendarQuarterDefinition.JanuaryDecember, 2, new DateTime(2024, 04, 01), new DateTime(2024, 06, 30) };
-		//		yield return new object[] { new DateTime(2024, 05, 01), CalendarQuarterDefinition.JanuaryDecember, 2, new DateTime(2024, 04, 01), new DateTime(2024, 06, 30) };
-		//		yield return new object[] { new DateTime(2024, 06, 01), CalendarQuarterDefinition.JanuaryDecember, 2, new DateTime(2024, 04, 01), new DateTime(2024, 06, 30) };
-		//		yield return new object[] { new DateTime(2024, 07, 01), CalendarQuarterDefinition.JanuaryDecember, 3, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 08, 01), CalendarQuarterDefinition.JanuaryDecember, 3, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 09, 01), CalendarQuarterDefinition.JanuaryDecember, 3, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 10, 01), CalendarQuarterDefinition.JanuaryDecember, 4, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 11, 01), CalendarQuarterDefinition.JanuaryDecember, 4, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 12, 01), CalendarQuarterDefinition.JanuaryDecember, 4, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-
-		//		// July (Jul–Sep = Q1, Oct–Dec = Q2, Jan–Mar = Q3, Apr–Jun = Q4)
-		//		yield return new object[] { new DateTime(2024, 07, 01), CalendarQuarterDefinition.JulyToJune, 1, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 08, 01), CalendarQuarterDefinition.JulyToJune, 1, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 09, 01), CalendarQuarterDefinition.JulyToJune, 1, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 10, 01), CalendarQuarterDefinition.JulyToJune, 2, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 11, 01), CalendarQuarterDefinition.JulyToJune, 2, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 12, 01), CalendarQuarterDefinition.JulyToJune, 2, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2025, 01, 01), CalendarQuarterDefinition.JulyToJune, 3, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 02, 01), CalendarQuarterDefinition.JulyToJune, 3, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 03, 01), CalendarQuarterDefinition.JulyToJune, 3, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 04, 01), CalendarQuarterDefinition.JulyToJune, 4, new DateTime(2025, 04, 01), new DateTime(2025, 06, 30) };
-		//		yield return new object[] { new DateTime(2025, 05, 01), CalendarQuarterDefinition.JulyToJune, 4, new DateTime(2025, 04, 01), new DateTime(2025, 06, 30) };
-		//		yield return new object[] { new DateTime(2025, 06, 01), CalendarQuarterDefinition.JulyToJune, 4, new DateTime(2025, 04, 01), new DateTime(2025, 06, 30) };
-
-		//		// April (Apr–Jun = Q1, Jul–Sep = Q2, Oct–Dec = Q3, Jan–Mar = Q4)
-		//		yield return new object[] { new DateTime(2024, 04, 01), CalendarQuarterDefinition.AprilToMarch, 1, new DateTime(2024, 04, 01), new DateTime(2024, 06, 30) };
-		//		yield return new object[] { new DateTime(2024, 05, 01), CalendarQuarterDefinition.AprilToMarch, 1, new DateTime(2024, 04, 01), new DateTime(2024, 06, 30) };
-		//		yield return new object[] { new DateTime(2024, 06, 01), CalendarQuarterDefinition.AprilToMarch, 1, new DateTime(2024, 04, 01), new DateTime(2024, 06, 30) };
-		//		yield return new object[] { new DateTime(2024, 07, 01), CalendarQuarterDefinition.AprilToMarch, 2, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 08, 01), CalendarQuarterDefinition.AprilToMarch, 2, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 09, 01), CalendarQuarterDefinition.AprilToMarch, 2, new DateTime(2024, 07, 01), new DateTime(2024, 09, 30) };
-		//		yield return new object[] { new DateTime(2024, 10, 01), CalendarQuarterDefinition.AprilToMarch, 3, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 11, 01), CalendarQuarterDefinition.AprilToMarch, 3, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 12, 01), CalendarQuarterDefinition.AprilToMarch, 3, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2025, 01, 01), CalendarQuarterDefinition.AprilToMarch, 4, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 02, 01), CalendarQuarterDefinition.AprilToMarch, 4, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 03, 01), CalendarQuarterDefinition.AprilToMarch, 4, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-
-		//		// October (Oct–Dec = Q1, Jan–Mar = Q2, Apr–Jun = Q3, Jul–Sep = Q4)
-		//		yield return new object[] { new DateTime(2024, 10, 01), CalendarQuarterDefinition.OctoberToSeptember, 1, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 11, 01), CalendarQuarterDefinition.OctoberToSeptember, 1, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2024, 12, 01), CalendarQuarterDefinition.OctoberToSeptember, 1, new DateTime(2024, 10, 01), new DateTime(2024, 12, 31) };
-		//		yield return new object[] { new DateTime(2025, 01, 01), CalendarQuarterDefinition.OctoberToSeptember, 2, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 02, 01), CalendarQuarterDefinition.OctoberToSeptember, 2, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 03, 01), CalendarQuarterDefinition.OctoberToSeptember, 2, new DateTime(2025, 01, 01), new DateTime(2025, 03, 31) };
-		//		yield return new object[] { new DateTime(2025, 04, 01), CalendarQuarterDefinition.OctoberToSeptember, 3, new DateTime(2025, 04, 01), new DateTime(2025, 06, 30) };
-		//		yield return new object[] { new DateTime(2025, 05, 01), CalendarQuarterDefinition.OctoberToSeptember, 3, new DateTime(2025, 04, 01), new DateTime(2025, 06, 30) };
-		//		yield return new object[] { new DateTime(2025, 06, 01), CalendarQuarterDefinition.OctoberToSeptember, 3, new DateTime(2025, 04, 01), new DateTime(2025, 06, 30) };
-		//		yield return new object[] { new DateTime(2025, 07, 01), CalendarQuarterDefinition.OctoberToSeptember, 4, new DateTime(2025, 07, 01), new DateTime(2025, 09, 30) };
-		//		yield return new object[] { new DateTime(2025, 08, 01), CalendarQuarterDefinition.OctoberToSeptember, 4, new DateTime(2025, 07, 01), new DateTime(2025, 09, 30) };
-		//		yield return new object[] { new DateTime(2025, 09, 01), CalendarQuarterDefinition.OctoberToSeptember, 4, new DateTime(2025, 07, 01), new DateTime(2025, 09, 30) };
-
-		//		// February (Feb–Apr = Q1, May–Jul = Q2, Aug–Oct = Q3, Nov–Jan = Q4)
-		//		yield return new object[] { new DateTime(2024, 02, 01), CalendarQuarterDefinition.FebruaryJanuary, 1, new DateTime(2024, 02, 01), new DateTime(2024, 04, 30) };
-		//		yield return new object[] { new DateTime(2024, 03, 01), CalendarQuarterDefinition.FebruaryJanuary, 1, new DateTime(2024, 02, 01), new DateTime(2024, 04, 30) };
-		//		yield return new object[] { new DateTime(2024, 04, 01), CalendarQuarterDefinition.FebruaryJanuary, 1, new DateTime(2024, 02, 01), new DateTime(2024, 04, 30) };
-		//		yield return new object[] { new DateTime(2024, 05, 01), CalendarQuarterDefinition.FebruaryJanuary, 2, new DateTime(2024, 05, 01), new DateTime(2024, 07, 31) };
-		//		yield return new object[] { new DateTime(2024, 06, 01), CalendarQuarterDefinition.FebruaryJanuary, 2, new DateTime(2024, 05, 01), new DateTime(2024, 07, 31) };
-		//		yield return new object[] { new DateTime(2024, 07, 01), CalendarQuarterDefinition.FebruaryJanuary, 2, new DateTime(2024, 05, 01), new DateTime(2024, 07, 31) };
-		//		yield return new object[] { new DateTime(2024, 08, 01), CalendarQuarterDefinition.FebruaryJanuary, 3, new DateTime(2024, 08, 01), new DateTime(2024, 10, 31) };
-		//		yield return new object[] { new DateTime(2024, 09, 01), CalendarQuarterDefinition.FebruaryJanuary, 3, new DateTime(2024, 08, 01), new DateTime(2024, 10, 31) };
-		//		yield return new object[] { new DateTime(2024, 10, 01), CalendarQuarterDefinition.FebruaryJanuary, 3, new DateTime(2024, 08, 01), new DateTime(2024, 10, 31) };
-		//		yield return new object[] { new DateTime(2024, 11, 01), CalendarQuarterDefinition.FebruaryJanuary, 4, new DateTime(2024, 11, 01), new DateTime(2025, 01, 31) };
-		//		yield return new object[] { new DateTime(2024, 12, 01), CalendarQuarterDefinition.FebruaryJanuary, 4, new DateTime(2024, 11, 01), new DateTime(2025, 01, 31) };
-		//		yield return new object[] { new DateTime(2025, 01, 01), CalendarQuarterDefinition.FebruaryJanuary, 4, new DateTime(2024, 11, 01), new DateTime(2025, 01, 31) };
-
-		//		// April 6 (6Apr–5Jul = Q1, 7Jul–5Oct= Q2, 6Oct–5Jan = Q3, 6Jan–5Apr = Q4)
-		//		yield return new object[] { new DateTime(2024, 04, 06), CalendarQuarterDefinition.April6ToApril5, 1, new DateTime(2024, 04, 06), new DateTime(2024, 07, 05) };
-		//		yield return new object[] { new DateTime(2024, 05, 06), CalendarQuarterDefinition.April6ToApril5, 1, new DateTime(2024, 04, 06), new DateTime(2024, 07, 05) };
-		//		yield return new object[] { new DateTime(2024, 06, 06), CalendarQuarterDefinition.April6ToApril5, 1, new DateTime(2024, 04, 06), new DateTime(2024, 07, 05) };
-		//		yield return new object[] { new DateTime(2024, 07, 06), CalendarQuarterDefinition.April6ToApril5, 2, new DateTime(2024, 07, 06), new DateTime(2024, 10, 05) };
-		//		yield return new object[] { new DateTime(2024, 08, 06), CalendarQuarterDefinition.April6ToApril5, 2, new DateTime(2024, 07, 06), new DateTime(2024, 10, 05) };
-		//		yield return new object[] { new DateTime(2024, 09, 06), CalendarQuarterDefinition.April6ToApril5, 2, new DateTime(2024, 07, 06), new DateTime(2024, 10, 05) };
-		//		yield return new object[] { new DateTime(2024, 10, 06), CalendarQuarterDefinition.April6ToApril5, 3, new DateTime(2024, 10, 06), new DateTime(2025, 01, 05) };
-		//		yield return new object[] { new DateTime(2024, 11, 01), CalendarQuarterDefinition.April6ToApril5, 3, new DateTime(2024, 10, 06), new DateTime(2025, 01, 05) };
-		//		yield return new object[] { new DateTime(2024, 12, 06), CalendarQuarterDefinition.April6ToApril5, 3, new DateTime(2024, 10, 06), new DateTime(2025, 01, 05) };
-		//		yield return new object[] { new DateTime(2025, 01, 06), CalendarQuarterDefinition.April6ToApril5, 4, new DateTime(2025, 01, 06), new DateTime(2025, 04, 05) };
-		//		yield return new object[] { new DateTime(2025, 02, 06), CalendarQuarterDefinition.April6ToApril5, 4, new DateTime(2025, 01, 06), new DateTime(2025, 04, 05) };
-		//		yield return new object[] { new DateTime(2025, 03, 06), CalendarQuarterDefinition.April6ToApril5, 4, new DateTime(2025, 01, 06), new DateTime(2025, 04, 05) };
-		//		// last day of quarter
-		//		yield return new object[] { new DateTime(2024, 07, 05), CalendarQuarterDefinition.April6ToApril5, 1, new DateTime(2024, 04, 06), new DateTime(2024, 07, 05) };
-		//		yield return new object[] { new DateTime(2024, 10, 05), CalendarQuarterDefinition.April6ToApril5, 2, new DateTime(2024, 07, 06), new DateTime(2024, 10, 05) };
-		//		yield return new object[] { new DateTime(2025, 01, 05), CalendarQuarterDefinition.April6ToApril5, 3, new DateTime(2024, 10, 06), new DateTime(2025, 01, 05) };
-		//		yield return new object[] { new DateTime(2025, 04, 05), CalendarQuarterDefinition.April6ToApril5, 4, new DateTime(2025, 01, 06), new DateTime(2025, 04, 05) };
-		//	}
-		//}
-
 		public static IEnumerable<object[]> GetQuarterWithDefinitionTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Select(e => new object[] { e.Date, e.Definition, e.Quarter });
 
 		[DataTestMethod]
@@ -235,7 +135,7 @@ namespace Bodu.Extensions
 		}
 
 		public static IEnumerable<object[]> GetQuarterTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
 				.Select(e => new object[] { e.Date, e.Quarter });
 

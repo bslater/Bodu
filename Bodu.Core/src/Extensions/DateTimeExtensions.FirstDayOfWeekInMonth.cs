@@ -28,7 +28,7 @@ namespace Bodu.Extensions
 		/// The search begins from the 1st day of the month, and the result will always fall within the same month and year as
 		/// <paramref name="dateTime" />. The time component is reset to midnight (00:00:00), and the <see cref="DateTime.Kind" /> is preserved.
 		/// </remarks>
-		public static DateTime FirstWeekdayInMonth(this DateTime dateTime, DayOfWeek dayOfWeek)
+		public static DateTime FirstDayOfWeekInMonth(this DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 

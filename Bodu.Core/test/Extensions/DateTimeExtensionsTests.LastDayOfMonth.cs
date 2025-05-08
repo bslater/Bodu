@@ -25,7 +25,7 @@ namespace Bodu.Extensions
 		[DataRow(2024, 10, 31)]  // October
 		[DataRow(2024, 11, 30)]  // November
 		[DataRow(2024, 12, 31)]  // December
-		public void LastDayOfTheMonth_WhenCalled_ShouldReturnExpectedDay(int year, int month, int expectedDay)
+		public void LastDayOfMonth_WhenCalled_ShouldReturnExpectedDay(int year, int month, int expectedDay)
 		{
 			DateTime input = new DateTime(year, month, 15, 13, 45, 30); // arbitrary middle-of-month time
 			var expected = new DateTime(year, month, expectedDay, 0, 0, 0, input.Kind);
@@ -36,7 +36,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheMonth_WhenKindIsUtc_ShouldPreserveKind()
+		public void LastDayOfMonth_WhenKindIsUtc_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 6, 10, 12, 0, 0, DateTimeKind.Utc);
 			DateTime result = input.LastDayOfMonth();
@@ -45,7 +45,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheMonth_WhenKindIsLocal_ShouldPreserveKind()
+		public void LastDayOfMonth_WhenKindIsLocal_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 6, 10, 12, 0, 0, DateTimeKind.Local);
 			DateTime result = input.LastDayOfMonth();
@@ -54,7 +54,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheMonth_WhenMinValue_ShouldReturnJanuary31OfYear1()
+		public void LastDayOfMonth_WhenMinValue_ShouldReturnJanuary31OfYear1()
 		{
 			DateTime result = DateTime.MinValue.LastDayOfMonth();
 
@@ -62,7 +62,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheMonth_WhenMaxValue_ShouldReturnLastDayOfThatMonth()
+		public void LastDayOfMonth_WhenMaxValue_ShouldReturnLastDayOfThatMonth()
 		{
 			DateTime max = DateTime.MaxValue;
 			DateTime result = max.LastDayOfMonth();

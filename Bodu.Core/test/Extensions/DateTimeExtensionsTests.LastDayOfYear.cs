@@ -18,7 +18,7 @@ namespace Bodu.Extensions
 		[DataRow("1900-07-01", "1900-12-31")]
 		[DataRow("2000-02-29", "2000-12-31")] // Leap year
 		[DataRow("2100-06-30", "2100-12-31")] // Common century year
-		public void LastDayOfTheYear_WhenCalled_ShouldReturnDecember31(string inputDate, string expectedDate)
+		public void LastDayOfYear_WhenCalled_ShouldReturnDecember31(string inputDate, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			DateTime expected = DateTime.Parse(expectedDate).Date;
@@ -30,7 +30,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheYear_WhenKindIsUtc_ShouldPreserveKind()
+		public void LastDayOfYear_WhenKindIsUtc_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 5, 5, 10, 0, 0, DateTimeKind.Utc);
 			DateTime result = input.LastDayOfYear();
@@ -39,7 +39,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheYear_WhenKindIsLocal_ShouldPreserveKind()
+		public void LastDayOfYear_WhenKindIsLocal_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 5, 5, 10, 0, 0, DateTimeKind.Local);
 			DateTime result = input.LastDayOfYear();
@@ -48,7 +48,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheYear_WhenMinValue_ShouldReturnEndOfYear1()
+		public void LastDayOfYear_WhenMinValue_ShouldReturnEndOfYear1()
 		{
 			DateTime input = DateTime.MinValue;
 			DateTime result = input.LastDayOfYear();
@@ -58,7 +58,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheYear_WhenMaxValue_ShouldReturnItself()
+		public void LastDayOfYear_WhenMaxValue_ShouldReturnItself()
 		{
 			DateTime input = DateTime.MaxValue;
 			DateTime result = input.LastDayOfYear();

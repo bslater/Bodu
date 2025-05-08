@@ -28,7 +28,7 @@ namespace Bodu.Extensions
 		/// The returned <see cref="DateTime" /> is always within the same calendar year as <paramref name="dateTime" />, starting from
 		/// January 1. The time component is normalized to 00:00:00, and the <see cref="DateTime.Kind" /> is retained from the original <paramref name="dateTime" />.
 		/// </remarks>
-		public static DateTime FirstWeekdayInYear(this DateTime dateTime, DayOfWeek dayOfWeek)
+		public static DateTime FirstDayOfWeekInYear(this DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 

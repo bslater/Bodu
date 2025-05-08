@@ -18,11 +18,11 @@ namespace Bodu.Extensions
 		[DataRow("2023-02-15", DayOfWeek.Tuesday, "2023-02-28")]   // Non-leap year
 		[DataRow("2024-12-01", DayOfWeek.Saturday, "2024-12-28")]
 		[DataRow("2024-06-10", DayOfWeek.Sunday, "2024-06-30")]
-		public void LastWeekdayInMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek dayOfWeek, string expectedDate)
+		public void LastDayOfWeekInMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek dayOfWeek, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			DateTime expected = DateTime.Parse(expectedDate);
-			DateTime result = input.LastWeekdayInMonth(dayOfWeek);
+			DateTime result = input.LastDayOfWeekInMonth(dayOfWeek);
 
 			Assert.AreEqual(expected, result);
 			Assert.AreEqual(input.Kind, result.Kind);
@@ -30,47 +30,41 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastWeekdayInMonth_WhenInvalidDayOfWeek_ShouldThrowExactly()
+		public void LastDayOfWeekInMonth_WhenInvalidDayOfWeek_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 4, 1);
 			var invalidDay = (DayOfWeek)999;
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = input.LastWeekdayInMonth(invalidDay);
+				_ = input.LastDayOfWeekInMonth(invalidDay);
 			});
 		}
 
-		[TestMethod]
-		public void LastWeekdayInMonth_WhenKindIsUtc_ShouldPreserveKind()
+		[DataTestMethod]
+		[DataRow(DateTimeKind.Unspecified)]
+		[DataRow(DateTimeKind.Utc)]
+		[DataRow(DateTimeKind.Local)]
+		public void LastDayOfWeekInMonth_WhenKindIsLocal_ShouldPreserveKind(DateTimeKind kind)
 		{
-			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, DateTimeKind.Utc);
-			DateTime result = input.LastWeekdayInMonth(DayOfWeek.Sunday);
+			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
+			DateTime result = input.LastDayOfWeekInMonth(DayOfWeek.Saturday);
 
-			Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+			Assert.AreEqual(kind, result.Kind);
 		}
 
 		[TestMethod]
-		public void LastWeekdayInMonth_WhenKindIsLocal_ShouldPreserveKind()
+		public void LastDayOfWeekInMonth_WhenMinValue_ShouldReturnValidResult()
 		{
-			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, DateTimeKind.Local);
-			DateTime result = input.LastWeekdayInMonth(DayOfWeek.Saturday);
-
-			Assert.AreEqual(DateTimeKind.Local, result.Kind);
-		}
-
-		[TestMethod]
-		public void LastWeekdayInMonth_WhenMinValue_ShouldReturnValidResult()
-		{
-			DateTime result = DateTime.MinValue.LastWeekdayInMonth(DayOfWeek.Monday);
+			DateTime result = DateTime.MinValue.LastDayOfWeekInMonth(DayOfWeek.Monday);
 
 			Assert.IsTrue(result >= DateTime.MinValue && result <= DateTime.MinValue.AddMonths(1).AddDays(-1));
 		}
 
 		[TestMethod]
-		public void LastWeekdayInMonth_WhenMaxValue_ShouldReturnValidResult()
+		public void LastDayOfWeekInMonth_WhenMaxValue_ShouldReturnValidResult()
 		{
-			DateTime result = DateTime.MaxValue.LastWeekdayInMonth(DayOfWeek.Friday);
+			DateTime result = DateTime.MaxValue.LastDayOfWeekInMonth(DayOfWeek.Friday);
 
 			Assert.IsTrue(result <= DateTime.MaxValue);
 		}

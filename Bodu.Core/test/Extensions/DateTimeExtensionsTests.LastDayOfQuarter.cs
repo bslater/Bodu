@@ -13,7 +13,7 @@ namespace Bodu.Extensions
 	{
 
 		public static IEnumerable<object[]> GetLastDayOfQuarterWithDefinitionTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Select(e => new object[] { e.Date, e.Definition, e.EndDate });
 
 		[DataTestMethod]
@@ -25,7 +25,7 @@ namespace Bodu.Extensions
 		}
 
 		public static IEnumerable<object[]> GetLastDayOfQuarterTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
 				.Select(e => new object[] { e.Date,  e.EndDate });
 
@@ -39,7 +39,7 @@ namespace Bodu.Extensions
 
 
 		public static IEnumerable<object[]> GetLastDayOfQuarterWithQuarterAndDefinitionTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Select(e => new object[] { e.Date, e.Definition, e.Quarter,e.EndDate });
 
 		[DataTestMethod]
@@ -52,7 +52,7 @@ namespace Bodu.Extensions
 		}
 
 		public static IEnumerable<object[]> GetLastDayOfQuarterWithQuarterTestData =>
-			DateTimeExtensionsTests.quarterData
+			DateTimeExtensionsTests.QuarterTestData
 				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
 				.Select(e => new object[] { e.Date,  e.Quarter,e.EndDate });
 

@@ -25,7 +25,7 @@ namespace Bodu.Extensions
 		[DataRow(2024, 10, 31)]  // October
 		[DataRow(2024, 11, 30)]  // November
 		[DataRow(2024, 12, 31)]  // December
-		public void LastDayOfTheMonth_WhenCalled_ShouldReturnExpectedDay(int year, int month, int expectedDay)
+		public void LastDayOfMonth_WhenCalled_ShouldReturnExpectedDay(int year, int month, int expectedDay)
 		{
 			DateOnly input = new DateOnly(year, month, 15); // arbitrary middle-of-month time
 			var expected = new DateOnly(year, month, expectedDay);
@@ -35,7 +35,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheMonth_WhenMinValue_ShouldReturnJanuary31OfYear1()
+		public void LastDayOfMonth_WhenMinValue_ShouldReturnJanuary31OfYear1()
 		{
 			DateOnly result = DateOnly.MinValue.LastDayOfMonth();
 
@@ -43,7 +43,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfTheMonth_WhenMaxValue_ShouldReturnLastDayOfThatMonth()
+		public void LastDayOfMonth_WhenMaxValue_ShouldReturnLastDayOfThatMonth()
 		{
 			DateOnly max = DateOnly.MaxValue;
 			DateOnly result = max.LastDayOfMonth();

@@ -17,11 +17,11 @@ namespace Bodu.Extensions
 		[DataRow("2022-09-01", DayOfWeek.Monday, "2022-12-26")]
 		[DataRow("1900-07-15", DayOfWeek.Wednesday, "1900-12-26")]
 		[DataRow("2000-02-29", DayOfWeek.Friday, "2000-12-29")]    // Leap year
-		public void LastWeekdayInYear_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek dayOfWeek, string expectedDate)
+		public void LastDayOfWeekInYear_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek dayOfWeek, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			var expected = DateTime.Parse(expectedDate);
-			DateTime result = input.LastWeekdayInYear(dayOfWeek);
+			DateTime result = input.LastDayOfWeekInYear(dayOfWeek);
 
 			Assert.AreEqual(expected, result);
 			Assert.AreEqual(input.Kind, result.Kind);
@@ -29,50 +29,50 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastWeekdayInYear_WhenDayOfWeekIsInvalid_ShouldThrowExactly()
+		public void LastDayOfWeekInYear_WhenDayOfWeekIsInvalid_ShouldThrowExactly()
 		{
 			DateTime input = new DateTime(2024, 1, 1);
 			var invalidDay = (DayOfWeek)999;
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = input.LastWeekdayInYear(invalidDay);
+				_ = input.LastDayOfWeekInYear(invalidDay);
 			});
 		}
 
 		[TestMethod]
-		public void LastWeekdayInYear_WhenKindIsUtc_ShouldPreserveKind()
+		public void LastDayOfWeekInYear_WhenKindIsUtc_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 3, 10, 12, 0, 0, DateTimeKind.Utc);
-			DateTime result = input.LastWeekdayInYear(DayOfWeek.Thursday);
+			DateTime result = input.LastDayOfWeekInYear(DayOfWeek.Thursday);
 
 			Assert.AreEqual(DateTimeKind.Utc, result.Kind);
 		}
 
 		[TestMethod]
-		public void LastWeekdayInYear_WhenKindIsLocal_ShouldPreserveKind()
+		public void LastDayOfWeekInYear_WhenKindIsLocal_ShouldPreserveKind()
 		{
 			DateTime input = new DateTime(2024, 3, 10, 12, 0, 0, DateTimeKind.Local);
-			DateTime result = input.LastWeekdayInYear(DayOfWeek.Monday);
+			DateTime result = input.LastDayOfWeekInYear(DayOfWeek.Monday);
 
 			Assert.AreEqual(DateTimeKind.Local, result.Kind);
 		}
 
 		[TestMethod]
-		public void LastWeekdayInYear_WhenUsingMinValue_ShouldReturnInYear1()
+		public void LastDayOfWeekInYear_WhenUsingMinValue_ShouldReturnInYear1()
 		{
 			DateTime input = DateTime.MinValue;
-			DateTime result = input.LastWeekdayInYear(DayOfWeek.Monday);
+			DateTime result = input.LastDayOfWeekInYear(DayOfWeek.Monday);
 
 			Assert.IsTrue(result.Year == 1);
 			Assert.IsTrue(result <= new DateTime(1, 12, 31));
 		}
 
 		[TestMethod]
-		public void LastWeekdayInYear_WhenUsingMaxValue_ShouldReturnValidDate()
+		public void LastDayOfWeekInYear_WhenUsingMaxValue_ShouldReturnValidDate()
 		{
 			DateTime input = DateTime.MaxValue;
-			DateTime result = input.LastWeekdayInYear(DayOfWeek.Friday);
+			DateTime result = input.LastDayOfWeekInYear(DayOfWeek.Friday);
 
 			Assert.IsTrue(result <= DateTime.MaxValue);
 		}

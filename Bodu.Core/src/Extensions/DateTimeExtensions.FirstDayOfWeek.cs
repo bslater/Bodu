@@ -60,5 +60,42 @@ namespace Bodu.Extensions
 
 			return new DateTime(ticks, dateTime.Kind);
 		}
+
+		/// <summary>
+		/// Returns the first day of the week that contains the specified <see cref="DateTime" />, using the inferred start-of-week day from
+		/// the provided <see cref="CalendarWeekendDefinition" />.
+		/// </summary>
+		/// <param name="date">The input <see cref="DateTime" /> whose week context is evaluated.</param>
+		/// <param name="weekend">A <see cref="CalendarWeekendDefinition" /> value used to infer the start of the week.</param>
+		/// <returns>
+		/// A <see cref="DateTime" /> value representing the first day of the week that contains <paramref name="date" />. The returned
+		/// value has a time component of 00:00:00 and preserves the <see cref="DateTime.Kind" /> of the input.
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="weekend" /> is not a defined <see cref="CalendarWeekendDefinition" /> value.
+		/// </exception>
+		/// <remarks>
+		/// This method uses the specified <paramref name="weekend" /> to infer the first day of the week. For example, if
+		/// <see cref="CalendarWeekendDefinition.SaturdaySunday" /> is provided, the start of the week is Monday.
+		/// <para>
+		/// If <paramref name="weekend" /> is set to <see cref="CalendarWeekendDefinition.None" />, the method defaults to using
+		/// <see cref="DayOfWeek.Monday" /> as the start of the week.
+		/// </para>
+		/// The returned date is normalized to midnight and may fall before or on the specified <paramref name="date" />.
+		/// </remarks>
+		public static DateTime FirstDayOfWeek(this DateTime date, CalendarWeekendDefinition weekend)
+		{
+			ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
+			DayOfWeek startOfWeek = GetWeekStartDay(weekend);
+
+			int offsetDays = ((7 + (date.DayOfWeek - startOfWeek)) % 7);
+			long dayTicks = date.Ticks - offsetDays * DateTimeExtensions.TicksPerDay;
+
+			if (dayTicks < DateTimeExtensions.MinTicks || dayTicks > DateTimeExtensions.MaxTicks)
+				throw new ArgumentOutOfRangeException(nameof(date),
+					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
+
+			return new DateTime(dayTicks, date.Kind);
+		}
 	}
 }

@@ -646,5 +646,23 @@ namespace Bodu.Extensions
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long GetTimeTicks(DateTime dateTime)
 			=> dateTime.Ticks % DateTimeExtensions.TicksPerDay;
+
+		/// <summary>
+		/// Returns the day of the week considered the start of the week for a given <see cref="CalendarWeekendDefinition" /> definition.
+		/// </summary>
+		/// <param name="weekend">The weekend configuration to evaluate.</param>
+		/// <returns>The inferred <see cref="DayOfWeek" /> that begins the week.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the provided <paramref name="weekend" /> is not supported.</exception>
+		internal static DayOfWeek GetWeekStartDay(CalendarWeekendDefinition weekend) => weekend switch
+		{
+			CalendarWeekendDefinition.SaturdaySunday => DayOfWeek.Monday,
+			CalendarWeekendDefinition.ThursdayFriday => DayOfWeek.Saturday,
+			CalendarWeekendDefinition.FridaySaturday => DayOfWeek.Sunday,
+			CalendarWeekendDefinition.SundayOnly => DayOfWeek.Monday,
+			CalendarWeekendDefinition.FridayOnly => DayOfWeek.Saturday,
+			CalendarWeekendDefinition.None => DayOfWeek.Monday,
+			_ => throw new ArgumentOutOfRangeException(nameof(weekend),
+				$"Unsupported {nameof(CalendarWeekendDefinition)} selectedDays: {weekend}")
+		};
 	}
 }

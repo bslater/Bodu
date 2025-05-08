@@ -18,52 +18,52 @@ namespace Bodu.Extensions
 		[DataRow(2024, DayOfWeek.Thursday, "2024-01-04")]
 		[DataRow(2024, DayOfWeek.Friday, "2024-01-05")]
 		[DataRow(2024, DayOfWeek.Saturday, "2024-01-06")]
-		public void FirstWeekdayInYear_ShouldReturnExpectedDay(int year, DayOfWeek targetDay, string expected)
+		public void FirstDayOfWeekInYear_ShouldReturnExpectedDay(int year, DayOfWeek targetDay, string expected)
 		{
 			var input = new DateTime(year, 4, 1); // Any date in that year
 			var expectedDate = DateTime.Parse(expected);
-			DateTime result = input.FirstWeekdayInYear(targetDay);
+			DateTime result = input.FirstDayOfWeekInYear(targetDay);
 
 			Assert.AreEqual(expectedDate, result);
 		}
 
 		[TestMethod]
-		public void FirstWeekdayInYear_ShouldPreserveDateTimeKind()
+		public void FirstDayOfWeekInYear_ShouldPreserveDateTimeKind()
 		{
 			var inputUtc = new DateTime(2024, 4, 1, 0, 0, 0, DateTimeKind.Utc);
 			var inputLocal = new DateTime(2024, 4, 1, 0, 0, 0, DateTimeKind.Local);
 			var inputUnspecified = new DateTime(2024, 4, 1, 0, 0, 0, DateTimeKind.Unspecified);
 
-			Assert.AreEqual(DateTimeKind.Utc, inputUtc.FirstWeekdayInYear(DayOfWeek.Monday).Kind);
-			Assert.AreEqual(DateTimeKind.Local, inputLocal.FirstWeekdayInYear(DayOfWeek.Monday).Kind);
-			Assert.AreEqual(DateTimeKind.Unspecified, inputUnspecified.FirstWeekdayInYear(DayOfWeek.Monday).Kind);
+			Assert.AreEqual(DateTimeKind.Utc, inputUtc.FirstDayOfWeekInYear(DayOfWeek.Monday).Kind);
+			Assert.AreEqual(DateTimeKind.Local, inputLocal.FirstDayOfWeekInYear(DayOfWeek.Monday).Kind);
+			Assert.AreEqual(DateTimeKind.Unspecified, inputUnspecified.FirstDayOfWeekInYear(DayOfWeek.Monday).Kind);
 		}
 
 		[TestMethod]
-		public void FirstWeekdayInYear_WhenEnumInvalid_ShouldThrowExactly()
+		public void FirstDayOfWeekInYear_WhenEnumInvalid_ShouldThrowExactly()
 		{
 			var input = new DateTime(2024, 1, 1);
 			var invalidDay = (DayOfWeek)999;
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = input.FirstWeekdayInYear(invalidDay);
+				_ = input.FirstDayOfWeekInYear(invalidDay);
 			});
 		}
 
 		[TestMethod]
-		public void FirstWeekdayInYear_WhenMinValue_ShouldReturnValidDate()
+		public void FirstDayOfWeekInYear_WhenMinValue_ShouldReturnValidDate()
 		{
-			DateTime result = DateTime.MinValue.FirstWeekdayInYear(DayOfWeek.Monday);
+			DateTime result = DateTime.MinValue.FirstDayOfWeekInYear(DayOfWeek.Monday);
 
 			Assert.AreEqual(new DateTime(1, 1, 1), result); // 0001-01-01 is a Monday
 		}
 
 		[TestMethod]
-		public void FirstWeekdayInYear_WhenMaxYear_ShouldReturnExpected()
+		public void FirstDayOfWeekInYear_WhenMaxYear_ShouldReturnExpected()
 		{
 			DateTime input = new DateTime(9999, 12, 31);
-			DateTime result = input.FirstWeekdayInYear(DayOfWeek.Saturday); // 9999-01-02 is a Saturday
+			DateTime result = input.FirstDayOfWeekInYear(DayOfWeek.Saturday); // 9999-01-02 is a Saturday
 
 			Assert.AreEqual(new DateTime(9999, 1, 2), result);
 		}

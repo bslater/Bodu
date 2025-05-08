@@ -28,7 +28,7 @@ namespace Bodu.Extensions
 		/// The search begins from December 31 of the given year and proceeds backward until the specified <paramref name="dayOfWeek" /> is
 		/// found. The time component is normalized to 00:00:00 (midnight), and the <see cref="DateTime.Kind" /> is preserved.
 		/// </remarks>
-		public static DateTime LastWeekdayInYear(this DateTime dateTime, DayOfWeek dayOfWeek)
+		public static DateTime LastDayOfWeekInYear(this DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 

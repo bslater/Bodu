@@ -17,7 +17,7 @@ namespace Bodu.Extensions
 		[DataRow("2024-02-29", "2024-02-01")] // leap day
 		[DataRow("2023-12-31", "2023-12-01")] // 31-day month
 		[DataRow("2023-06-15", "2023-06-01")] // mid-month
-		public void FirstDayOfTheMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, string expectedDate)
+		public void FirstDayOfMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, string expectedDate)
 		{
 			DateOnly input = DateOnly.Parse(inputDate);
 			var expectedt = DateOnly.Parse(expectedDate);
@@ -27,7 +27,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheMonth_WhenMinValue_ShouldReturnExpected()
+		public void FirstDayOfMonth_WhenMinValue_ShouldReturnExpected()
 		{
 			DateOnly result = DateOnly.MinValue.FirstDayOfMonth();
 
@@ -35,7 +35,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheMonth_WhenMaxValue_ShouldReturnStartOfMaxMonth()
+		public void FirstDayOfMonth_WhenMaxValue_ShouldReturnStartOfMaxMonth()
 		{
 			var maxDate = DateOnly.MaxValue; // 9999-12-31
 			DateOnly result = maxDate.FirstDayOfMonth();

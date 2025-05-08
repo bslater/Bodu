@@ -16,7 +16,7 @@ namespace Bodu.Extensions
 		[DataRow("2024-01-01", "2024-01-01")] // Already Jan 1
 		[DataRow("2023-12-31", "2023-01-01")] // End of year
 		[DataRow("2020-02-29", "2020-01-01")] // Leap year
-		public void FirstDayOfTheYear_WhenCalled_ShouldReturnExpectedStartOfYear(string inputDate, string expectedDate)
+		public void FirstDayOfYear_WhenCalled_ShouldReturnExpectedStartOfYear(string inputDate, string expectedDate)
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			DateTime expected = DateTime.Parse(expectedDate);
@@ -26,7 +26,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheYear_ShouldPreserveDateTimeKind()
+		public void FirstDayOfYear_ShouldPreserveDateTimeKind()
 		{
 			DateTime local = new DateTime(2024, 4, 18, 12, 0, 0, DateTimeKind.Local);
 			DateTime utc = new DateTime(2024, 4, 18, 12, 0, 0, DateTimeKind.Utc);
@@ -38,7 +38,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheYear_WhenMinValue_ShouldReturnExpected()
+		public void FirstDayOfYear_WhenMinValue_ShouldReturnExpected()
 		{
 			DateTime min = DateTime.MinValue; // 0001-01-01
 			DateTime result = min.FirstDayOfYear();
@@ -47,7 +47,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void FirstDayOfTheYear_WhenMaxValue_ShouldReturnExpected()
+		public void FirstDayOfYear_WhenMaxValue_ShouldReturnExpected()
 		{
 			DateTime max = DateTime.MaxValue; // 9999-12-31
 			DateTime result = max.FirstDayOfYear();

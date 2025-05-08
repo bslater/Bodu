@@ -44,7 +44,7 @@ namespace Bodu.Extensions
 					return new DateTime(DateTimeExtensions.GetFirstDayOfWeekInMonthTicks(dateTime, dayOfWeek), dateTime.Kind);
 
 				case Extensions.WeekOfMonthOrdinal.Last:
-					return dateTime.LastWeekdayInMonth(dayOfWeek);
+					return dateTime.LastDayOfWeekInMonth(dayOfWeek);
 
 				default:
 					var result = new DateTime(DateTimeExtensions.GetFirstDayOfWeekInMonthTicks(dateTime, dayOfWeek) + ((int)ordinal * DateTimeExtensions.TicksPerWeek), dateTime.Kind);
