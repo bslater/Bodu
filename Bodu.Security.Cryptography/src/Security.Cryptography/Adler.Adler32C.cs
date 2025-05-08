@@ -30,7 +30,7 @@ namespace Bodu.Security.Cryptography
 		: Adler
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Adler32" /> class using the standard Adler-32 modulus (65521).
+		/// Initializes a new instance of the <see cref="Adler32" /> class using the standard Adler-32 modulus (65536).
 		/// </summary>
 		public Adler32C()
 			: base(Adler32C_Modulo)
