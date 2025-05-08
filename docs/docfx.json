@@ -8,7 +8,6 @@
         }
       ],
       "dest": "api",
-      "namespaceLayout": "nested",
       "includePrivateMembers": false,
       "memberLayout": "separatePages",
       "enumSortOrder": "declaringOrder",
