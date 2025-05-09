@@ -24,15 +24,13 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Quarters are based on a year beginning on 1 July.
 		/// <para>Q1 = 1 Jul–30 Sep, Q2 = 1 Oct–31 Dec, Q3 = 1 Jan–31 Mar, Q4 = 1 Apr–30 Jun.</para>
-		/// Common in Southern Hemisphere regional calendars.
 		/// </summary>
 		JulyToJune = 701,
 
 		/// <summary>
 		/// Quarters are based on a year beginning on 1 April.
 		/// <para>Q1 = 1 Apr–30 Jun, Q2 = 1 Jul–30 Sep, Q3 = 1 Oct–31 Dec, Q4 = 1 Jan–31 Mar.</para>
-		/// Common in government, education, and fiscal planning contexts.
-		/// </summary>
+	        /// </summary>
 		AprilToMarch = 401,
 
 		/// <summary>
@@ -44,21 +42,18 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Quarters are based on a historical civil calendar year beginning on 25 March (Lady Day).
 		/// <para>Q1 = 25 Mar–24 Jun, Q2 = 25 Jun–24 Sep, Q3 = 25 Sep–24 Dec, Q4 = 25 Dec–24 Mar.</para>
-		/// Used historically in the UK prior to 1752.
 		/// </summary>
 		March25ToMarch24 = 325,
 
 		/// <summary>
 		/// Quarters are based on a year beginning on 1 October.
 		/// <para>Q1 = 1 Oct–31 Dec, Q2 = 1 Jan–31 Mar, Q3 = 1 Apr–30 Jun, Q4 = 1 Jul–30 Sep.</para>
-		/// Used in various administrative and budget planning cycles.
 		/// </summary>
 		OctoberToSeptember = 1001,
 
 		/// <summary>
 		/// Quarters are based on a year beginning on 1 February.
 		/// <para>Q1 = 1 Feb–30 Apr, Q2 = 1 May–31 Jul, Q3 = 1 Aug–31 Oct, Q4 = 1 Nov–31 Jan.</para>
-		/// Used in some seasonal business cycles and alternate fiscal structures.
 		/// </summary>
 		FebruaryJanuary = 201,
 
