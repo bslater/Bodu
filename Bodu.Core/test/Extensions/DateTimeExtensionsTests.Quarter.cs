@@ -148,9 +148,13 @@ namespace Bodu.Extensions
 			Assert.AreEqual(expected, result);
 		}
 
+		public static IEnumerable<object[]> GetQuarterWithCustomProviderTestData =>
+			DateTimeExtensionsTests.ValidQuarterProvider.QuarterTestData
+				.Select(e => new object[] { e.Date, e.Quarter });
+
 		[DataTestMethod]
-		[DynamicData(nameof(DateTimeExtensionsTests.ValidQuarterProvider.QuarterDefinitionTestData), typeof(DateTimeExtensionsTests.ValidQuarterProvider))]
-		public void GetQuarter_WhenUsingValidProvider_ShouldReturnExpectedQuarter(DateTime input, int expected, DateTime _, DateTime __)
+		[DynamicData(nameof(GetQuarterWithCustomProviderTestData), DynamicDataSourceType.Property)]
+		public void GetQuarter_WhenUsingValidProvider_ShouldReturnExpectedQuarter(DateTime input, int expected)
 		{
 			var provider = new DateTimeExtensionsTests.ValidQuarterProvider();
 			int result = input.Quarter(provider);

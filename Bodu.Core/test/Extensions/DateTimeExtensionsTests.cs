@@ -134,24 +134,21 @@ namespace Bodu.Extensions
 
 		private sealed class ValidQuarterProvider : IQuarterDefinitionProvider
 		{
-			public static IEnumerable<object[]> QuarterDefinitionTestData
+			public static readonly QuarterData[] QuarterTestData = new[]
 			{
-				get
-				{
-					yield return new object[] { new DateTime(2024, 01, 01), 1, new DateTime(2023, 12, 01), new DateTime(2024, 02, 29) };
-					yield return new object[] { new DateTime(2024, 02, 01), 1, new DateTime(2023, 12, 01), new DateTime(2024, 02, 29) };
-					yield return new object[] { new DateTime(2024, 03, 01), 2, new DateTime(2024, 03, 01), new DateTime(2024, 05, 31) };
-					yield return new object[] { new DateTime(2024, 04, 01), 2, new DateTime(2024, 03, 01), new DateTime(2024, 05, 31) };
-					yield return new object[] { new DateTime(2024, 05, 01), 2, new DateTime(2024, 03, 01), new DateTime(2024, 05, 31) };
-					yield return new object[] { new DateTime(2024, 06, 01), 3, new DateTime(2024, 06, 01), new DateTime(2024, 08, 31) };
-					yield return new object[] { new DateTime(2024, 07, 01), 3, new DateTime(2024, 06, 01), new DateTime(2024, 08, 31) };
-					yield return new object[] { new DateTime(2024, 08, 01), 3, new DateTime(2024, 06, 01), new DateTime(2024, 08, 31) };
-					yield return new object[] { new DateTime(2024, 09, 01), 4, new DateTime(2024, 09, 01), new DateTime(2024, 11, 30) };
-					yield return new object[] { new DateTime(2024, 10, 01), 4, new DateTime(2024, 09, 01), new DateTime(2024, 11, 30) };
-					yield return new object[] { new DateTime(2024, 11, 01), 4, new DateTime(2024, 09, 01), new DateTime(2024, 11, 30) };
-					yield return new object[] { new DateTime(2023, 12, 01), 1, new DateTime(2023, 12, 01), new DateTime(2024, 02, 29) };
-				}
-			}
+				new QuarterData( new DateTime(2024, 01, 01),CalendarQuarterDefinition.Custom, 1, new DateTime(2023, 12, 01), new DateTime(2024, 02, 29) ),
+				new QuarterData( new DateTime(2024, 02, 01),CalendarQuarterDefinition.Custom,  1, new DateTime(2023, 12, 01), new DateTime(2024, 02, 29) ),
+				new QuarterData( new DateTime(2024, 03, 01),CalendarQuarterDefinition.Custom,  2, new DateTime(2024, 03, 01), new DateTime(2024, 05, 31) ),
+				new QuarterData( new DateTime(2024, 04, 01),CalendarQuarterDefinition.Custom,  2, new DateTime(2024, 03, 01), new DateTime(2024, 05, 31) ),
+				new QuarterData( new DateTime(2024, 05, 01),CalendarQuarterDefinition.Custom,  2, new DateTime(2024, 03, 01), new DateTime(2024, 05, 31) ),
+				new QuarterData( new DateTime(2024, 06, 01),CalendarQuarterDefinition.Custom,  3, new DateTime(2024, 06, 01), new DateTime(2024, 08, 31) ),
+				new QuarterData( new DateTime(2024, 07, 01),CalendarQuarterDefinition.Custom,  3, new DateTime(2024, 06, 01), new DateTime(2024, 08, 31) ),
+				new QuarterData( new DateTime(2024, 08, 01),CalendarQuarterDefinition.Custom,  3, new DateTime(2024, 06, 01), new DateTime(2024, 08, 31) ),
+				new QuarterData( new DateTime(2024, 09, 01),CalendarQuarterDefinition.Custom,  4, new DateTime(2024, 09, 01), new DateTime(2024, 11, 30) ),
+				new QuarterData( new DateTime(2024, 10, 01),CalendarQuarterDefinition.Custom,  4, new DateTime(2024, 09, 01), new DateTime(2024, 11, 30) ),
+				new QuarterData( new DateTime(2024, 11, 01),CalendarQuarterDefinition.Custom,  4, new DateTime(2024, 09, 01), new DateTime(2024, 11, 30) ),
+				new QuarterData( new DateTime(2023, 12, 01),CalendarQuarterDefinition.Custom,  1, new DateTime(2023, 12, 01), new DateTime(2024, 02, 29) )
+			};
 
 			public int GetQuarter(DateTime dateTime)
 			{

@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Bodu.Extensions
 {
@@ -93,10 +94,7 @@ namespace Bodu.Extensions
 		/// The <see cref="DateTime" /> to evaluate. The returned value will be the final calendar day of the quarter that contains this
 		/// date, as defined by the selected quarter structure.
 		/// </param>
-		/// <param name="definition">
-		/// The quarter definition to apply. This may be month-aligned (e.g., <see cref="CalendarQuarterDefinition.JanuaryDecember" />) or
-		/// day-aligned (e.g., <see cref="CalendarQuarterDefinition.April6ToApril5" />).
-		/// </param>
+		/// <param name="definition">Specifies the quarter definition used to determine the last date of the quarter.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the last day of the determined quarter, with the time component normalized to midnight
 		/// (00:00:00) and the original <see cref="DateTime.Kind" /> preserved.
@@ -124,43 +122,14 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			// Enum is format MMDD Extract the anchor month and day
-			uint def = (uint)definition;
-			uint defMonth = def / 100U;
-			uint defDay = def - defMonth * 100U;
-
-			// Get the quarter number (1–4) for the given date
-			int quarter = Quarter(dateTime, definition);
-
-			// Compute the starting month of this quarter (zero-based quarter offset * 3 months + anchor month), modulo 12 to wrap, then +1
-			// to get 1-based month
-			uint nextQuarterMonth = (((uint)(quarter - 1) * 3U + defMonth - 1U) % 12U) + 1U;
-
-			// Determine the anchor year of the current quarter's start
-			int thisQuarterYear = dateTime.Year;
-			if (nextQuarterMonth > dateTime.Month)
-				thisQuarterYear--; // Quarter start is in the previous calendar year
-
-			// Compute the starting month of the next quarter
-			uint thisQuarterMonth = (((uint)(quarter) * 3U + defMonth - 1U) % 12U) + 1U;
-
-			// If the next quarter wraps around to the same or earlier month, it's in the next year
-			if (thisQuarterMonth <= nextQuarterMonth)
-				thisQuarterYear++;
-
-			// Construct the final date: one day before the start of the next quarter
-			return new DateTime(
-				DateTimeExtensions.GetTicksForDate(thisQuarterYear, (int)thisQuarterMonth, (int)defDay) - DateTimeExtensions.TicksPerDay,
-				dateTime.Kind);
+			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
+			return new DateTime(ComputeQuarterEndTicks(year, quarter, GetQuarterDefinition(definition)), dateTime.Kind);
 		}
 
 		/// <summary>
 		/// Returns the first day of the specified <paramref name="quarter" /> in the given <paramref name="year" />, based on the provided <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="definition">
-		/// The quarter definition to apply. This can be a month-aligned definition (e.g.,
-		/// <see cref="CalendarQuarterDefinition.JanuaryDecember" />) or a day-aligned definition (e.g., <see cref="CalendarQuarterDefinition.April6ToApril5" />).
-		/// </param>
+		/// <param name="definition">Specifies the quarter definition used to determine the last date of the quarter.</param>
 		/// <param name="quarter">
 		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
 		/// </param>
@@ -199,30 +168,7 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			// Enum is format MMDD Extract the anchor month and day
-			uint def = (uint)definition;
-			uint defMonth = def / 100U;
-			uint defDay = def % 100U;
-
-			// Start month of the current quarter
-			uint startMonth = (((uint)(quarter - 1) * 3U + defMonth - 1U) % 12U) + 1U;
-
-			// Start month of the next quarter
-			uint nextStartMonth = (((uint)(quarter) * 3U + defMonth - 1U) % 12U) + 1U;
-
-			// Determine the correct anchor year of the quarter start
-			int quarterStartYear = year;
-			if (startMonth < defMonth)
-				quarterStartYear++;
-
-			// Determine the year in which the next quarter starts
-			int nextStartYear = quarterStartYear;
-			if (nextStartMonth <= startMonth)
-				nextStartYear++;
-
-			// Return one day before the next quarter's anchor day
-			return new DateTime(DateTimeExtensions.GetTicksForDate(nextStartYear, (int)nextStartMonth, (int)defDay) - DateTimeExtensions.TicksPerDay,
-				DateTimeKind.Unspecified);
+			return new DateTime(ComputeQuarterEndTicks(year, quarter, GetQuarterDefinition(definition)), DateTimeKind.Unspecified);
 		}
 
 		/// <summary>

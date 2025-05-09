@@ -32,81 +32,6 @@ namespace Bodu.Extensions
 			Assert.AreEqual(expected, result);
 		}
 
-		public static IEnumerable<object[]> WeekendBasedTestCases => new[]
-		{
-			// Year 2024 (leap year)
-			new object[] { 2024, 1, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 1, 1) },   // Mon-start
-			new object[] { 2024, 9, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 2, 26) },
-			new object[] { 2024, 52, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2024, 12, 23) },
-
-			new object[] { 2024, 1, CalendarWeekendDefinition.FridaySaturday, new DateTime(2024, 1, 7) },   // Sun-start
-			new object[] { 2024, 9, CalendarWeekendDefinition.FridaySaturday, new DateTime(2024, 3, 3) },
-			new object[] { 2024, 52, CalendarWeekendDefinition.FridaySaturday, new DateTime(2024, 12, 29) },
-
-			new object[] { 2024, 1, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 1, 6) },   // Sat-start
-			new object[] { 2024, 9, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 3, 2) },
-			new object[] { 2024, 52, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2024, 12, 28) },
-
-			new object[] { 2024, 1, CalendarWeekendDefinition.FridayOnly, new DateTime(2024, 1, 6) },        // Sat-start
-			new object[] { 2024, 9, CalendarWeekendDefinition.FridayOnly, new DateTime(2024, 3, 2) },
-			new object[] { 2024, 52, CalendarWeekendDefinition.FridayOnly, new DateTime(2024, 12, 28) },
-
-			new object[] { 2024, 1, CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 1, 1) },        // Mon-start
-			new object[] { 2024, 9, CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 2, 26) },
-			new object[] { 2024, 52, CalendarWeekendDefinition.SundayOnly, new DateTime(2024, 12, 23) },
-
-			// Year 2020 (leap year)
-			new object[] { 2020, 1, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2019, 12, 30) },
-			new object[] { 2020, 9, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2020, 2, 24) },
-			new object[] { 2020, 53, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2020, 12, 28) },
-
-			new object[] { 2020, 1, CalendarWeekendDefinition.FridaySaturday, new DateTime(2020, 1, 5) },
-			new object[] { 2020, 9, CalendarWeekendDefinition.FridaySaturday, new DateTime(2020, 3, 1) },
-			new object[] { 2020, 53, CalendarWeekendDefinition.FridaySaturday, new DateTime(2021, 1, 3) },
-
-			new object[] { 2020, 1, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2020, 1, 4) },
-			new object[] { 2020, 9, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2020, 2, 29) },
-			new object[] { 2020, 53, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2021, 1, 2) },
-
-			new object[] { 2020, 1, CalendarWeekendDefinition.FridayOnly, new DateTime(2020, 1, 4) },
-			new object[] { 2020, 9, CalendarWeekendDefinition.FridayOnly, new DateTime(2020, 2, 29) },
-			new object[] { 2020, 53, CalendarWeekendDefinition.FridayOnly, new DateTime(2021, 1, 2) },
-
-			new object[] { 2020, 1, CalendarWeekendDefinition.SundayOnly, new DateTime(2019, 12, 30) },
-			new object[] { 2020, 9, CalendarWeekendDefinition.SundayOnly, new DateTime(2020, 2, 24) },
-			new object[] { 2020, 53, CalendarWeekendDefinition.SundayOnly, new DateTime(2020, 12, 28) },
-
-			// Year 2023 (non-leap, 52-week year)
-			new object[] { 2023, 1, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2023, 1, 2) },
-			new object[] { 2023, 10, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2023, 3, 6) },
-			new object[] { 2023, 52, CalendarWeekendDefinition.SaturdaySunday, new DateTime(2023, 12, 25) },
-
-			new object[] { 2023, 1, CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 1, 8) },
-			new object[] { 2023, 10, CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 3, 12) },
-			new object[] { 2023, 52, CalendarWeekendDefinition.FridaySaturday, new DateTime(2023, 12, 31) },
-
-			new object[] { 2023, 1, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2023, 1, 7) },
-			new object[] { 2023, 10, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2023, 3, 11) },
-			new object[] { 2023, 52, CalendarWeekendDefinition.ThursdayFriday, new DateTime(2023, 12, 30) },
-
-			new object[] { 2023, 1, CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 1, 7) },
-			new object[] { 2023, 10, CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 3, 11) },
-			new object[] { 2023, 52, CalendarWeekendDefinition.FridayOnly, new DateTime(2023, 12, 30) },
-
-			new object[] { 2023, 1, CalendarWeekendDefinition.SundayOnly, new DateTime(2023, 1, 2) },
-			new object[] { 2023, 10, CalendarWeekendDefinition.SundayOnly, new DateTime(2023, 3, 6) },
-			new object[] { 2023, 52, CalendarWeekendDefinition.SundayOnly, new DateTime(2023, 12, 25) }
-		};
-
-		[TestMethod]
-		[DynamicData(nameof(WeekendBasedTestCases))]
-		public void GetStartDateOfWeek_WithStandardWeekend_ShouldReturnExpectedDate(int year, int week, CalendarWeekendDefinition weekend, DateTime expected)
-		{
-			DateTime result = DateTimeExtensions.GetStartDateOfWeek(year, week, weekend);
-
-			Assert.AreEqual(expected, result);
-		}
-
 		[TestMethod]
 		public void GetStartDateOfWeek_WithInvalidWeekNumber_ShouldThrowExactly()
 		{
@@ -116,17 +41,6 @@ namespace Bodu.Extensions
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				DateTimeExtensions.GetStartDateOfWeek(2024, 54, culture);
-			});
-		}
-
-		[TestMethod]
-		public void GetStartDateOfWeek_WithInvalidWeekendEnum_ShouldThrowExactly()
-		{
-			CalendarWeekendDefinition invalid = (CalendarWeekendDefinition)999;
-
-			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
-			{
-				DateTimeExtensions.GetStartDateOfWeek(2024, 1, invalid);
 			});
 		}
 

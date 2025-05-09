@@ -1,1 +1,88 @@
+// ---------------------------------------------------------------------------------------------------------------
+// <copyright file="DateTimeExtensions.IsFirstDayOfQuarter.cs" company="PlaceholderCompany">
+//     Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------------------------------------------------
 
+using System;
+
+namespace Bodu.Extensions
+{
+	public static partial class DateTimeExtensions
+	{
+		/// <summary>
+		/// Determines whether the current <see cref="DateTime" /> instance represents the first day of its calendar quarter.
+		/// </summary>
+		/// <param name="dateTime">The date to evaluate.</param>
+		/// <returns><see langword="true" /> if the <paramref name="dateTime" /> is the first day of its quarter; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="dateTime" /> corresponds to
+		/// the first day of the quarter based on the standard calendar year definition (January–March as Q1, etc.). The comparison is
+		/// performed using the <see cref="DateTime.Date" /> property to normalize the time to midnight before evaluating the boundary.
+		/// </remarks>
+		public static bool IsFirstDayOfQuarter(this DateTime dateTime)
+		{
+			var(year, quarter) = GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryDecember, referenceDate: dateTime);
+			return dateTime.Date.Ticks == ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
+		}
+
+		/// <summary>
+		/// Determines whether the current <see cref="DateTime" /> instance represents the first day of its calendar quarter based on a
+		/// specified <see cref="CalendarQuarterDefinition" />.
+		/// </summary>
+		/// <param name="dateTime">The date to evaluate.</param>
+		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
+		/// <returns>
+		/// <see langword="true" /> if the <paramref name="dateTime" /> is the first day of its quarter based on the specified
+		/// <paramref name="definition" />; otherwise, <see langword="false" />.
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="definition" /> is not a valid member of the <see cref="CalendarQuarterDefinition" /> enumeration.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the
+		/// <see cref="IsFirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> overload with a custom
+		/// <see cref="IQuarterDefinitionProvider" /> implementation in this case.
+		/// </exception>
+		/// <remarks>
+		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="dateTime" /> corresponds to
+		/// the first day of the quarter based on the provided <paramref name="definition" />. The comparison is performed using the
+		/// <see cref="DateTime.Date" /> property to normalize the time to midnight before evaluating the boundary.
+		/// </remarks>
+		public static bool IsFirstDayOfQuarter(this DateTime dateTime, CalendarQuarterDefinition definition)
+		{
+			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
+
+			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
+			return dateTime.Date.Ticks == ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition));
+		}
+
+		/// <summary>
+		/// Determines whether the current <see cref="DateTime" /> instance represents the first day of its calendar quarter based on a
+		/// custom quarter definition provided by an <see cref="IQuarterDefinitionProvider" />.
+		/// </summary>
+		/// <param name="dateTime">The date to evaluate.</param>
+		/// <param name="provider">
+		/// An implementation of <see cref="IQuarterDefinitionProvider" /> that defines how quarter boundaries are determined.
+		/// </param>
+		/// <returns>
+		/// <see langword="true" /> if the <paramref name="dateTime" /> is the first day of its quarter according to the rules of the
+		/// specified <paramref name="provider" />; otherwise, <see langword="false" />.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <c>null</c>.</exception>
+		/// <remarks>
+		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="dateTime" /> corresponds to
+		/// the first day of the quarter, using the logic defined by the specified <paramref name="provider" />. The comparison is performed
+		/// using the <see cref="DateTime.Date" /> property to normalize the time to midnight before evaluating the boundary.
+		/// </remarks>
+		public static bool IsFirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
+		{
+			ThrowHelper.ThrowIfNull(provider);
+			return dateTime.Date.Ticks == provider.GetStartDate(dateTime).Date.Ticks;
+		}
+	}
+}

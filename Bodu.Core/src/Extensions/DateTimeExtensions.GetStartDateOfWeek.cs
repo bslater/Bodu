@@ -56,48 +56,5 @@ namespace Bodu.Extensions
 
 			return result.Date;
 		}
-
-		/// <summary>
-		/// Returns the start date of the specified week in the given year, based on the inferred week structure from the provided <see cref="CalendarWeekendDefinition" />.
-		/// </summary>
-		/// <param name="year">The target year (e.g., 2024).</param>
-		/// <param name="week">The 1-based week number (1–53).</param>
-		/// <param name="weekend">A <see cref="CalendarWeekendDefinition" /> value used to infer the first day of the week.</param>
-		/// <returns>
-		/// A <see cref="DateTime" /> set to midnight (00:00:00.000) on the first day of the specified week, with
-		/// <see cref="DateTimeKind.Unspecified" /> as its kind.
-		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="week" /> is less than 1, or if <paramref name="weekend" /> is not a supported value.
-		/// </exception>
-		/// <remarks>
-		/// This method does not follow ISO 8601 or locale-based week rules. It assumes a simple week numbering model, where weeks are
-		/// counted from the first occurrence of the inferred start-of-week day in the target year. The result is constructed using
-		/// ticks-based arithmetic and does not allocate intermediate <see cref="DateTime" /> objects.
-		/// </remarks>
-		public static DateTime GetStartDateOfWeek(int year, int week, CalendarWeekendDefinition weekend)
-		{
-			ThrowHelper.ThrowIfLessThan(week, 1, nameof(week));
-			ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
-
-			DayOfWeek firstDayOfWeek = GetWeekStartDay(weekend);
-
-			// Get ticks at midnight on Jan 1st of the year
-			long jan1Ticks = DateTimeExtensions.GetTicksForDate(year, 1, 1);
-			DayOfWeek jan1DayOfWeek = DateTimeExtensions.GetDayOfWeekFromTicks(jan1Ticks);
-
-			// Calculate tick offset to the first occurrence of the target week start
-			int offsetDays = ((int)firstDayOfWeek - (int)jan1DayOfWeek + 7) % 7;
-			if (offsetDays > 0)
-				offsetDays -= 7;
-
-			long targetTicks = jan1Ticks + ((offsetDays + ((week - 1) * 7)) * DateTimeExtensions.TicksPerDay);
-
-			if (targetTicks < DateTimeExtensions.MinTicks || targetTicks > DateTimeExtensions.MaxTicks)
-				throw new ArgumentOutOfRangeException(nameof(week),
-					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
-
-			return new DateTime(targetTicks, DateTimeKind.Unspecified);
-		}
 	}
 }

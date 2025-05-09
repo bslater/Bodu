@@ -87,12 +87,16 @@ namespace Bodu.Extensions
 			});
 		}
 
+		public static IEnumerable<object[]> GetFirstDayOfQuarterWithCustomProviderTestData =>
+			DateTimeExtensionsTests.ValidQuarterProvider.QuarterTestData
+				.Select(e => new object[] { e.Date, e.Quarter, e.StartDate });
+
 		/// <summary>
 		/// Verifies that FirstDayOfQuarter returns the correct date using a valid quarter provider.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(ValidQuarterProvider.QuarterDefinitionTestData), typeof(ValidQuarterProvider))]
-		public void FirstDayOfQuarter_WhenUsingValidQuarterProvider_ShouldReturnExpectedDate(DateTime input, int quarter, DateTime expectedFirstDay, DateTime _)
+		[DynamicData(nameof(GetFirstDayOfQuarterWithCustomProviderTestData), DynamicDataSourceType.Property)]
+		public void FirstDayOfQuarter_WhenUsingValidQuarterProvider_ShouldReturnExpectedDate(DateTime input, int quarter, DateTime expectedFirstDay)
 		{
 			var provider = new ValidQuarterProvider();
 			var actual = input.FirstDayOfQuarter(provider);

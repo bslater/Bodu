@@ -93,7 +93,7 @@ namespace Bodu.Extensions
 		/// The <see cref="DateTime" /> to evaluate. The returned value will be the first calendar day of the quarter that contains this
 		/// date, according to the selected definition.
 		/// </param>
-		/// <param name="definition">The quarter definition to apply.</param>
+		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the first day of the identified quarter, with the time component normalized to midnight
 		/// (00:00:00) and the original <see cref="DateTime.Kind" /> preserved.
@@ -123,34 +123,14 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			// Enum is format MMDD Extract the anchor month and day
-			uint def = (uint)definition;
-			uint defMonth = def / 100U;
-			uint defDay = def - defMonth * 100U;
-
-			// Get the quarter number (1–4) for the given date
-			int quarter = Quarter(dateTime, definition);
-
-			// Compute the starting month of the quarter (zero-based quarter offset * 3 months + anchor month), modulo 12 to wrap, then +1
-			// for 1-based month
-			uint startMonth = (((uint)(quarter - 1) * 3U + defMonth - 1U) % 12U) + 1U;
-
-			// Determine the correct year for the quarter start
-			int year = dateTime.Year;
-			if (startMonth > dateTime.Month)
-				year--; // Quarter start is in the previous calendar year
-
-			// Return the computed quarter start date using the original DateTime.Kind
-			return new DateTime(year, (int)startMonth, (int)defDay, 0, 0, 0, dateTime.Kind);
+			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
+			return new DateTime(ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition)), dateTime.Kind);
 		}
 
 		/// <summary>
 		/// Returns the first day of the specified <paramref name="quarter" /> in the given <paramref name="year" />, based on the provided <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="definition">
-		/// The quarter definition to apply. This can be a month-aligned definition (e.g.,
-		/// <see cref="CalendarQuarterDefinition.JanuaryDecember" />) or a day-aligned definition (e.g., <see cref="CalendarQuarterDefinition.April6ToApril5" />).
-		/// </param>
+		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
 		/// <param name="quarter">
 		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
 		/// </param>
@@ -189,19 +169,7 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			// Enum is format MMDD Extract the anchor month and day
-			uint def = (uint)definition;
-			uint defMonth = def / 100U;
-			uint defDay = def - defMonth * 100U;
-
-			// Compute the starting month of the requested quarter
-			uint startMonth = (((uint)(quarter - 1) * 3U + defMonth - 1U) % 12U) + 1U;
-
-			// If start month wraps to a lower calendar month, it's in the following calendar year
-			if (startMonth < defMonth)
-				year++;
-
-			return new DateTime(year, (int)startMonth, (int)defDay, 0, 0, 0, DateTimeKind.Unspecified);
+			return new DateTime(ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition)), DateTimeKind.Unspecified);
 		}
 
 		/// <summary>

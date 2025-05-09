@@ -8,9 +8,6 @@ using System;
 
 namespace Bodu.Extensions
 {
-	/// <summary>
-	/// Provides extension methods for evaluating whether <see cref="DateTime" /> values fall within a specified range.
-	/// </summary>
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
