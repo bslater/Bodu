@@ -11,38 +11,55 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Calculates the age in full years between the specified <see cref="DateTime" /> and today.
+		/// Calculates the age in full calendar years as at today’s date ( <see cref="DateTime.Today" />).
 		/// </summary>
-		/// <param name="dateTime">The date to calculate the age from, typically a date of birth or historical reference.</param>
-		/// <returns>The number of full calendar years between <paramref name="dateTime" /> and <see cref="DateTime.Today" />.</returns>
+		/// <param name="dateTime">The earlier date to calculate from, typically representing a birth date or historical reference.</param>
+		/// <returns>
+		/// The number of full calendar years that have elapsed between <paramref name="dateTime" /> and <see cref="DateTime.Today" />.
+		/// Returns 0 if <paramref name="dateTime" /> occurs after today.
+		/// </returns>
 		/// <remarks>
-		/// If <paramref name="dateTime" /> is February 29 in a leap year and the current year is not a leap year, February 28 is used as
-		/// the comparison point.
+		/// <para>
+		/// If <paramref name="dateTime" /> is February 29 in a leap year and today is not a leap year, the age is calculated as if the
+		/// birthday were on February 28.
+		/// </para>
+		/// <para>The result is clamped to 0 to avoid returning negative values for future dates.</para>
+		/// <para><b>Note:</b> The <see cref="DateTime.Kind" /> property is ignored when calculating the result.</para>
 		/// </remarks>
 		public static int Age(this DateTime dateTime)
 			=> dateTime.Age(DateTime.Today);
 
 		/// <summary>
-		/// Calculates the age in full years between two <see cref="DateTime" /> values.
+		/// Calculates the age in full calendar years as at a specified reference date.
 		/// </summary>
-		/// <param name="firstDate">The earlier date to calculate from, typically a date of birth or historical reference.</param>
-		/// <param name="secondDate">The later date to calculate to. This is usually the current date or another reference point.</param>
-		/// <returns>The number of full calendar years that have elapsed between <paramref name="firstDate" /> and <paramref name="secondDate" />.</returns>
+		/// <param name="dateTime">The earlier date to calculate from, typically representing a birth date or historical reference.</param>
+		/// <param name="atDate">The later date to calculate to, representing the point in time at which the age is evaluated.</param>
+		/// <returns>
+		/// The number of full calendar years that have elapsed between <paramref name="dateTime" /> and <paramref name="atDate" />. Returns
+		/// 0 if <paramref name="atDate" /> occurs before <paramref name="dateTime" />.
+		/// </returns>
 		/// <remarks>
-		/// If <paramref name="firstDate" /> is February 29 in a leap year and <paramref name="secondDate" /> occurs in a non-leap year, the
-		/// age is calculated based on February 28.
+		/// <para>
+		/// If <paramref name="dateTime" /> is February 29 in a leap year and <paramref name="atDate" /> occurs in a non-leap year, the age
+		/// is calculated as if the birthday were on February 28.
+		/// </para>
+		/// <para>The result is clamped to 0 to avoid returning negative values for future dates.</para>
+		/// <para><b>Note:</b> The <see cref="DateTime.Kind" /> property is ignored when calculating the result.</para>
 		/// </remarks>
-		public static int Age(this DateTime firstDate, DateTime secondDate)
+		public static int Age(this DateTime dateTime, DateTime atDate)
 		{
-			// if the first date is a leap day and the second date is not a leap year compute age based on 28-Feb
-			if (firstDate.IsLeapYear() && firstDate.Month == 2 && firstDate.Day == 29 && !secondDate.IsLeapYear()) firstDate = firstDate.AddDays(-1);
+			dateTime.GetDateParts(out int birthYear, out int birthMonth, out int birthDay);
+			atDate.GetDateParts(out int atYear, out int atMonth, out int atDay);
 
-			int age = secondDate.Year - firstDate.Year;
+			if (birthMonth == 2 && birthDay == 29 && !DateTime.IsLeapYear(atYear))
+				birthDay = 28;
 
-			// compensate for partial years
-			if (age > 0 && secondDate.AddYears(-age) < firstDate) age--;
-			if (age < 0 && secondDate.AddYears(-age) > firstDate) age++;
-			return age;
+			int age = atYear - birthYear;
+
+			if (atMonth < birthMonth || (atMonth == birthMonth && atDay < birthDay))
+				age--;
+
+			return age < 0 ? 0 : age; // Clamp to 0
 		}
 	}
 }
