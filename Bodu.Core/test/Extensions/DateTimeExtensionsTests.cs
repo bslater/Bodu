@@ -79,12 +79,12 @@ namespace Bodu.Extensions
 			}
 		}
 
-		private sealed class FridayOnlyWeekendProvider : IWeekendDefinitionProvider
+		public sealed class FridayOnlyWeekendProvider : IWeekendDefinitionProvider
 		{
 			public bool IsWeekend(DayOfWeek dayOfWeek) => dayOfWeek == DayOfWeek.Friday;
 		}
 
-		private sealed class InValidQuarterProvider : IQuarterDefinitionProvider
+		public sealed class InValidQuarterProvider : IQuarterDefinitionProvider
 		{
 			/// <summary>
 			/// Always returns an invalid quarter number (outside the expected range of 1–4).
@@ -130,9 +130,34 @@ namespace Bodu.Extensions
 			{
 				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
 			}
+
+			public int GetQuarter(DateOnly dateOnly)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateOnly GetStartDate(DateOnly dateOnly)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateOnly GetStartDateAsDateOnly(int quarter)
+			{
+				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateOnly GetEndDate(DateOnly dateOnly)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateOnly GetEndDateAsDateOnly(int quarter)
+			{
+				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
+			}
 		}
 
-		private sealed class ValidQuarterProvider : IQuarterDefinitionProvider
+		public sealed class ValidQuarterProvider : IQuarterDefinitionProvider
 		{
 			public static readonly QuarterData[] QuarterTestData = new[]
 			{
@@ -213,6 +238,16 @@ namespace Bodu.Extensions
 					_ => throw new ArgumentOutOfRangeException(nameof(quarter))
 				};
 			}
+
+			public int GetQuarter(DateOnly dateOnly) => GetQuarter(dateOnly.ToDateTime(TimeOnly.MinValue));
+
+			public DateOnly GetStartDate(DateOnly dateOnly) => GetStartDate(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
+
+			public DateOnly GetStartDateAsDateOnly(int quarter) => GetStartDate(GetStartDate(quarter).ToDateOnly());
+
+			public DateOnly GetEndDate(DateOnly dateOnly) => GetEndDate(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
+
+			public DateOnly GetEndDateAsDateOnly(int quarter) => GetEndDate(GetEndDate(quarter).ToDateOnly());
 		}
 	}
 }

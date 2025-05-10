@@ -69,5 +69,15 @@ namespace Bodu.Extensions.Tests
 
 			Assert.AreEqual(24, birth.Age(atDate));
 		}
+
+		/// <summary>
+		/// Verifies that minimum and maximum supported dates do not throw.
+		/// </summary>
+		[TestMethod]
+		public void Age_WhenUsingMinAndMaxDateOnly_ShouldNotThrow()
+		{
+			int age = DateOnly.MinValue.Age(DateOnly.MaxValue);
+			Assert.IsTrue(age > 0);
+		}
 	}
 }

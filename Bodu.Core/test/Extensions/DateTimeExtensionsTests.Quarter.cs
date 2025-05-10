@@ -11,7 +11,7 @@ namespace Bodu.Extensions
 {
 	public partial class DateTimeExtensionsTests
 	{
-		private struct QuarterData
+		public struct QuarterData
 		{
 			public DateTime Date { get;  }
 			public CalendarQuarterDefinition Definition { get;  }
@@ -30,7 +30,7 @@ namespace Bodu.Extensions
 		}
 
 
-		private static readonly QuarterData[] QuarterTestData = new[]
+		public static readonly QuarterData[] QuarterTestData = new[]
 		{
 			// January–December
 			new QuarterData(new DateTime(2024, 01, 01), CalendarQuarterDefinition.JanuaryDecember, 1, new DateTime(2024, 01, 01), new DateTime(2024, 03, 31)),

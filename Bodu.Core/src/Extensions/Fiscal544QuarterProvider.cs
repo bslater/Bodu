@@ -46,7 +46,23 @@ namespace Bodu.Extensions
 	public sealed class Fiscal544QuarterProvider : IQuarterDefinitionProvider
 	{
 		private readonly DayOfWeek firstDayOfWeek;
-		private readonly long fiscalYearStartTicks;
+		private readonly int fiscalYearStartDayNumber;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Fiscal544QuarterProvider" /> class.
+		/// </summary>
+		/// <param name="fiscalYearStart">
+		/// The anchor date representing the start of the fiscal year (e.g., the Sunday nearest to February 1). This date will be aligned to
+		/// the start of the fiscal week using <paramref name="firstDayOfWeek" />.
+		/// </param>
+		/// <param name="firstDayOfWeek">The day of the week on which the fiscal week begins (typically Sunday or Monday).</param>
+		public Fiscal544QuarterProvider(DateOnly fiscalYearStart, DayOfWeek firstDayOfWeek = DayOfWeek.Sunday)
+		{
+			ThrowHelper.ThrowIfEnumValueIsUndefined(firstDayOfWeek);
+
+			fiscalYearStartDayNumber = AlignToStartOfWeek(fiscalYearStart, firstDayOfWeek).DayNumber;
+			this.firstDayOfWeek = firstDayOfWeek;
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fiscal544QuarterProvider" /> class.
@@ -57,24 +73,12 @@ namespace Bodu.Extensions
 		/// </param>
 		/// <param name="firstDayOfWeek">The day of the week on which the fiscal week begins (typically Sunday or Monday).</param>
 		public Fiscal544QuarterProvider(DateTime fiscalYearStart, DayOfWeek firstDayOfWeek = DayOfWeek.Sunday)
-		{
-			ThrowHelper.ThrowIfEnumValueIsUndefined(firstDayOfWeek);
-
-			fiscalYearStartTicks = AlignToStartOfWeek(fiscalYearStart.Date, firstDayOfWeek).Ticks;
-			this.firstDayOfWeek = firstDayOfWeek;
-		}
+			: this(fiscalYearStart.ToDateOnly(), firstDayOfWeek)
+		{ }
 
 		/// <inheritdoc />
-		public DateTime GetEndDate(DateTime dateTime)
-		{
-			ValidateDateInFiscalYear(dateTime);
-			long deltaWeeks = (dateTime.Ticks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerWeek;
-			long startTicks = fiscalYearStartTicks + (deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek;
-			long endTicks = startTicks + 13L * DateTimeExtensions.TicksPerWeek - DateTimeExtensions.TicksPerDay;
-
-			endTicks = DateTimeExtensions.GetDateAsTicks(endTicks);
-			return new DateTime(endTicks, dateTime.Kind);
-		}
+		public DateTime GetEndDate(DateTime dateTime) =>
+			this.GetEndDate(dateTime.ToDateOnly()).ToDateTime(TimeOnly.MinValue)
 
 		/// <inheritdoc />
 		public DateTime GetEndDate(int quarter)
@@ -92,7 +96,7 @@ namespace Bodu.Extensions
 		public int GetQuarter(DateTime dateTime)
 		{
 			ValidateDateInFiscalYear(dateTime);
-			int totalWeeks = (int)((dateTime.Ticks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerWeek);
+			int totalWeeks = (int)((dateTime.Ticks - fiscalYearStartDayNumber) / DateTimeExtensions.TicksPerWeek);
 			return Math.Min((totalWeeks / 13) + 1, 4);
 		}
 
@@ -100,8 +104,8 @@ namespace Bodu.Extensions
 		public DateTime GetStartDate(DateTime dateTime)
 		{
 			ValidateDateInFiscalYear(dateTime);
-			long deltaWeeks = (dateTime.Ticks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerWeek;
-			long startTicks = fiscalYearStartTicks + (deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek;
+			long deltaWeeks = (dateTime.Ticks - fiscalYearStartDayNumber) / DateTimeExtensions.TicksPerWeek;
+			long startTicks = fiscalYearStartDayNumber + (deltaWeeks / 13) * 13L * DateTimeExtensions.TicksPerWeek;
 
 			startTicks = DateTimeExtensions.GetDateAsTicks(startTicks);
 			return new DateTime(startTicks, dateTime.Kind);
@@ -113,7 +117,7 @@ namespace Bodu.Extensions
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 
 			long offsetTicks = (quarter - 1) * 13L * DateTimeExtensions.TicksPerWeek;
-			long startTicks = fiscalYearStartTicks + offsetTicks;
+			long startTicks = fiscalYearStartDayNumber + offsetTicks;
 
 			startTicks = DateTimeExtensions.GetDateAsTicks(startTicks);
 			return new DateTime(startTicks, DateTimeKind.Unspecified);
@@ -132,37 +136,74 @@ namespace Bodu.Extensions
 			const int DaysIn52Weeks = 364;
 
 			// Tentative next fiscal start (after 52 weeks)
-			var unalignedNextYearTicks = fiscalYearStartTicks + (DateTimeExtensions.TicksPerDay * DaysIn52Weeks);
+			var unalignedNextYearTicks = fiscalYearStartDayNumber + (DateTimeExtensions.TicksPerDay * DaysIn52Weeks);
 
 			// Align forward to the next fiscal week start
 			var alignedNextYearTicks = unalignedNextYearTicks + DateTimeExtensions.GetNextDayOfWeekTicksFrom(unalignedNextYearTicks, firstDayOfWeek);
 
-			var daysInYear = (alignedNextYearTicks - fiscalYearStartTicks) / DateTimeExtensions.TicksPerDay;
+			var daysInYear = (alignedNextYearTicks - fiscalYearStartDayNumber) / DateTimeExtensions.TicksPerDay;
 			return daysInYear > DaysIn52Weeks;
 		}
 
 		/// <summary>
 		/// Validates that the specified date falls within the configured fiscal year range.
 		/// </summary>
-		private void ValidateDateInFiscalYear(DateTime dateTime)
+		private void ValidateDateInFiscalYear(DateOnly date)
 		{
-			var alignedDate = dateTime.Date.Ticks - DateTimeExtensions.GetPreviousDayOfWeekTicksFrom(dateTime.Date.Ticks, firstDayOfWeek);
+			var alignedDate = date.DayNumber - DateOnlyExtensions.GetPreviousDayOfWeekFromDayNumber(date.DayNumber, firstDayOfWeek);
 			int fiscalYearLengthDays = Is53WeekFiscalYear() ? 371 : 364;
 
-			long deltaDays = (alignedDate - fiscalYearStartTicks) / TimeSpan.TicksPerDay;
+			int deltaDays = (alignedDate - fiscalYearStartDayNumber);
 
 			if (deltaDays < 0 || deltaDays >= fiscalYearLengthDays)
-				throw new ArgumentOutOfRangeException(nameof(dateTime),
-					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, new DateTime(fiscalYearStartTicks)));
+				throw new ArgumentOutOfRangeException(nameof(date),
+					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, date, DateOnly.FromDayNumber(fiscalYearStartDayNumber)));
 		}
 
 		/// <summary>
 		/// Aligns a date to the start of its week based on the configured start day.
 		/// </summary>
-		private static DateTime AlignToStartOfWeek(DateTime date, DayOfWeek weekStart)
+		private static DateOnly AlignToStartOfWeek(DateOnly date, DayOfWeek weekStart)
 		{
-			long ticks = date.Date.Ticks - DateTimeExtensions.GetPreviousDayOfWeekTicksFrom(date.Date.Ticks, weekStart);
-			return new DateTime(ticks, date.Kind);
+			int dayNumber = date.DayNumber - DateOnlyExtensions.GetPreviousDayOfWeekFromDayNumber(date.DayNumber, weekStart);
+			return DateOnly.FromDayNumber(dayNumber);
+		}
+
+		/// <inheritdoc />
+		public int GetQuarter(DateOnly dateOnly)
+		{
+			ValidateDateInFiscalYear(dateOnly);
+			int totalWeeks = ((dateOnly.DayNumber - fiscalYearStartDayNumber) / 7);
+			return Math.Min((totalWeeks / 13) + 1, 4);
+		}
+
+		/// <inheritdoc />
+		public DateOnly GetStartDate(DateOnly dateOnly)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public DateOnly GetStartDateAsDateOnly(int quarter)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <inheritdoc />
+		public DateOnly GetEndDate(DateOnly dateOnly)
+		{
+			ValidateDateInFiscalYear(dateOnly);
+			int deltaWeeks = (dateOnly.DayNumber - fiscalYearStartDayNumber) / 7;
+			int startDayNumber = fiscalYearStartDayNumber + (deltaWeeks / 13) * 13;
+			int endDayNumber = startDayNumber + 13 - 1;
+
+			return DateOnly.FromDayNumber(endDayNumber);
+		}
+
+		/// <inheritdoc />
+		public DateOnly GetEndDateAsDateOnly(int quarter)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

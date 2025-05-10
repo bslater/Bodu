@@ -111,7 +111,7 @@ namespace Bodu.Extensions
 
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> returns the expected result based on the specified weekend definition.
+		/// Verifies that <see cref="DateOnlyExtensions.FirstDayOfWeek"/> returns the expected result based on the specified weekend definition.
 		/// </summary>
 		[DataTestMethod]
 		[DynamicData(nameof(DateTimeExtensionsTests.FirstAndLastDayOfWeekTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Property)]
@@ -124,7 +124,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> throws when given an undefined <see cref="CalendarWeekendDefinition"/>.
+		/// Verifies that <see cref="DateOnlyExtensions.FirstDayOfWeek"/> throws when given an undefined <see cref="CalendarWeekendDefinition"/>.
 		/// </summary>
 		[TestMethod]
 		public void FirstDayOfWeek_WhenWeekendIsUndefined_ShouldThrowArgumentOutOfRangeException()
@@ -139,7 +139,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> throws if the calculated result underflows <see cref="DateTime.MinValue"/>.
+		/// Verifies that <see cref="DateOnlyExtensions.FirstDayOfWeek"/> throws if the calculated result underflows <see cref="DateOnly.MinValue"/>.
 		/// </summary>
 		[TestMethod]
 		public void FirstDayOfWeek_WhenResultUnderflowsMinValue_ShouldThrowArgumentOutOfRangeException()
@@ -154,7 +154,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> works near <see cref="DateTime.MinValue"/> without throwing.
+		/// Verifies that <see cref="DateOnlyExtensions.FirstDayOfWeek"/> works near <see cref="DateOnly.MinValue"/> without throwing.
 		/// </summary>
 		[TestMethod]
 		public void FirstDayOfWeek_WhenNearMinValue_ShouldReturnValidResult()

@@ -111,7 +111,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> throws if the calculated result exceeds <see cref="DateTime.MaxValue"/>.
+		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> throws if the calculated result exceeds <see cref="DateOnly.MaxValue"/>.
 		/// </summary>
 		[TestMethod]
 		public void LastDayOfWeek_WhenResultExceedsMaxValue_ShouldThrowArgumentOutOfRangeException()
@@ -126,15 +126,15 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> works near <see cref="DateTime.MaxValue"/> without throwing.
+		/// Verifies that <see cref="DateOnlyExtensions.LastDayOfWeek"/> works near <see cref="DateOnly.MaxValue"/> without throwing.
 		/// </summary>
 		[TestMethod]
 		public void LastDayOfWeek_WhenNearMaxValue_ShouldReturnValidResult()
 		{
-			var date = DateTime.MaxValue.AddDays(-6); // 9999-12-25
+			var date = DateOnly.MaxValue.AddDays(-6); // 9999-12-25
 			var result = date.LastDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
 
-			Assert.IsTrue(result <= DateTime.MaxValue);
+			Assert.IsTrue(result <= DateOnly.MaxValue);
 			Assert.AreEqual(DayOfWeek.Sunday, result.DayOfWeek);
 		}
 	}
