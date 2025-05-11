@@ -59,26 +59,26 @@ namespace Bodu.Extensions
 				? 0
 				: DateTimeExtensions.GetNextDayOfWeekAsTicks(dateTime, lastDayOfWeek);
 
-			long ticks = baseTicks + offsetTicks;
+			long dateTicks = baseTicks + offsetTicks;
 
-			if (ticks < DateTime.MinValue.Ticks || ticks > DateTime.MaxValue.Ticks)
+			if ((ulong)dateTicks > (ulong)DateTime.MaxValue.Ticks)
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
 					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
 
-			return new DateTime(ticks, dateTime.Kind);
+			return new DateTime(dateTicks, dateTime.Kind);
 		}
 
 		/// <summary>
 		/// Returns the last day of the week that contains the specified <see cref="DateTime" />, using the inferred start-of-week day from
 		/// the provided <see cref="CalendarWeekendDefinition" />.
 		/// </summary>
-		/// <param name="date">The input <see cref="DateTime" /> whose week context is evaluated.</param>
+		/// <param name="dateTime">The input <see cref="DateTime" /> whose week context is evaluated.</param>
 		/// <param name="weekend">
 		/// A <see cref="CalendarWeekendDefinition" /> value used to infer the start of the week and determine the week's structure.
 		/// </param>
 		/// <returns>
-		/// A <see cref="DateTime" /> value representing the last day of the week that contains <paramref name="date" />. The returned value
-		/// has a time component of 00:00:00 and preserves the <see cref="DateTime.Kind" /> of the input.
+		/// A <see cref="DateTime" /> value representing the last day of the week that contains <paramref name="dateTime" />. The returned
+		/// value has a time component of 00:00:00 and preserves the <see cref="DateTime.Kind" /> of the input.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="weekend" /> is not a defined <see cref="CalendarWeekendDefinition" /> value.
@@ -92,20 +92,20 @@ namespace Bodu.Extensions
 		/// </para>
 		/// The result is offset forward up to 6 days from the input date, and is normalized to midnight.
 		/// </remarks>
-		public static DateTime LastDayOfWeek(this DateTime date, CalendarWeekendDefinition weekend)
+		public static DateTime LastDayOfWeek(this DateTime dateTime, CalendarWeekendDefinition weekend)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
 			DayOfWeek startOfWeek = GetWeekStartDay(weekend);
 			DayOfWeek endOfWeek = (DayOfWeek)(((int)startOfWeek + 6) % 7);
 
-			int offsetDays = ((int)endOfWeek - (int)date.DayOfWeek + 7) % 7;
-			long dayTicks = date.Ticks + offsetDays * DateTimeExtensions.TicksPerDay;
+			int offsetDays = ((int)endOfWeek - (int)dateTime.DayOfWeek + 7) % 7;
+			long dateTicks = dateTime.Ticks + offsetDays * DateTimeExtensions.TicksPerDay;
 
-			if (dayTicks < DateTimeExtensions.MinTicks || dayTicks > DateTimeExtensions.MaxTicks)
-				throw new ArgumentOutOfRangeException(nameof(date),
+			if ((ulong)dateTicks > (ulong)DateTime.MaxValue.Ticks)
+				throw new ArgumentOutOfRangeException(nameof(dateTime),
 					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
 
-			return new DateTime(dayTicks, date.Kind);
+			return new DateTime(dateTicks, dateTime.Kind);
 		}
 	}
 }

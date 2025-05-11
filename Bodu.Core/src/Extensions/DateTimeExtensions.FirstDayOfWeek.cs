@@ -54,7 +54,7 @@ namespace Bodu.Extensions
 
 			long ticks = baseTicks - offsetTicks;
 
-			if (ticks < DateTime.MinValue.Ticks || ticks > DateTime.MaxValue.Ticks)
+			if ((ulong)ticks > (ulong)DateTime.MaxValue.Ticks)
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
 					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
 
@@ -65,10 +65,10 @@ namespace Bodu.Extensions
 		/// Returns the first day of the week that contains the specified <see cref="DateTime" />, using the inferred start-of-week day from
 		/// the provided <see cref="CalendarWeekendDefinition" />.
 		/// </summary>
-		/// <param name="date">The input <see cref="DateTime" /> whose week context is evaluated.</param>
+		/// <param name="dateTime">The input <see cref="DateTime" /> whose week context is evaluated.</param>
 		/// <param name="weekend">A <see cref="CalendarWeekendDefinition" /> value used to infer the start of the week.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> value representing the first day of the week that contains <paramref name="date" />. The returned
+		/// A <see cref="DateTime" /> value representing the first day of the week that contains <paramref name="dateTime" />. The returned
 		/// value has a time component of 00:00:00 and preserves the <see cref="DateTime.Kind" /> of the input.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -81,21 +81,21 @@ namespace Bodu.Extensions
 		/// If <paramref name="weekend" /> is set to <see cref="CalendarWeekendDefinition.None" />, the method defaults to using
 		/// <see cref="DayOfWeek.Monday" /> as the start of the week.
 		/// </para>
-		/// The returned date is normalized to midnight and may fall before or on the specified <paramref name="date" />.
+		/// The returned date is normalized to midnight and may fall before or on the specified <paramref name="dateTime" />.
 		/// </remarks>
-		public static DateTime FirstDayOfWeek(this DateTime date, CalendarWeekendDefinition weekend)
+		public static DateTime FirstDayOfWeek(this DateTime dateTime, CalendarWeekendDefinition weekend)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(weekend);
 			DayOfWeek startOfWeek = GetWeekStartDay(weekend);
 
-			int offsetDays = ((7 + (date.DayOfWeek - startOfWeek)) % 7);
-			long dayTicks = date.Ticks - offsetDays * DateTimeExtensions.TicksPerDay;
+			int offsetDays = ((7 + (dateTime.DayOfWeek - startOfWeek)) % 7);
+			long dateTicks = dateTime.Ticks - offsetDays * DateTimeExtensions.TicksPerDay;
 
-			if (dayTicks < DateTimeExtensions.MinTicks || dayTicks > DateTimeExtensions.MaxTicks)
-				throw new ArgumentOutOfRangeException(nameof(date),
+			if ((ulong)dateTicks > (ulong)DateTime.MaxValue.Ticks)
+				throw new ArgumentOutOfRangeException(nameof(dateTime),
 					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
 
-			return new DateTime(dayTicks, date.Kind);
+			return new DateTime(dateTicks, dateTime.Kind);
 		}
 	}
 }
