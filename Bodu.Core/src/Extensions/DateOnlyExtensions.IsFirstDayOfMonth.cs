@@ -13,10 +13,10 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Determines whether the current <see cref="DateOnly" /> instance represents the first day of its month.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
-		/// <returns><see langword="true" /> if the <paramref name="dateTime" /> is the first day of its month; otherwise, <see langword="false" />.</returns>
-		/// <remarks>This method checks whether the day component of the <paramref name="dateTime" /> is equal to 1.</remarks>
-		public static bool IsFirstDayOfMonth(this DateOnly dateTime) =>
-			dateTime.Day == 1;
+		/// <param name="date">The date to evaluate.</param>
+		/// <returns><see langword="true" /> if the <paramref name="date" /> is the first day of its month; otherwise, <see langword="false" />.</returns>
+		/// <remarks>This method checks whether the day component of the <paramref name="date" /> is equal to 1.</remarks>
+		public static bool IsFirstDayOfMonth(this DateOnly date) =>
+			date.Day == 1;
 	}
 }

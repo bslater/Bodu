@@ -15,8 +15,8 @@ namespace Bodu.Extensions
 		/// Returns the quarter number (1–4) of the year for the specified <see cref="DateOnly" />, using the standard calendar quarter
 		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryDecember" />).
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> value to evaluate.</param>
-		/// <returns>An integer between 1 and 4 representing the calendar quarter that includes <paramref name="dateTime" />.</returns>
+		/// <param name="date">The <see cref="DateOnly" /> value to evaluate.</param>
+		/// <returns>An integer between 1 and 4 representing the calendar quarter that includes <paramref name="date" />.</returns>
 		/// <remarks>
 		/// This method uses the standard Gregorian calendar quarter structure aligned to the calendar year:
 		/// <list type="bullet">
@@ -37,18 +37,18 @@ namespace Bodu.Extensions
 		/// <description>1 October – 31 December</description>
 		/// </item>
 		/// </list>
-		/// The quarter number returned is based on the month of <paramref name="dateTime" />, regardless of the day or time.
+		/// The quarter number returned is based on the month of <paramref name="date" />, regardless of the day or time.
 		/// </remarks>
-		public static int Quarter(this DateOnly dateTime)
-			=> Quarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);
+		public static int Quarter(this DateOnly date)
+			=> Quarter(date, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns the quarter number (1–4) for the specified <see cref="DateOnly" />, using the given
 		/// <see cref="CalendarQuarterDefinition" /> to determine the fiscal calendar structure.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> value to evaluate.</param>
+		/// <param name="date">The <see cref="DateOnly" /> value to evaluate.</param>
 		/// <param name="definition">Specifies the quarter definition used to determine the quarter.</param>
-		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
+		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="date" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="definition" /> is not a valid value of the <see cref="CalendarQuarterDefinition" /> enum, or if it is
 		/// <see cref="CalendarQuarterDefinition.Custom" />. Use the <see cref="Quarter(DateOnly, IQuarterDefinitionProvider)" /> overload
@@ -58,7 +58,7 @@ namespace Bodu.Extensions
 		/// This method supports predefined quarter structures aligned to calendar or financial years. The result is based on adjusting the
 		/// input month by the definition offset and mapping the result to a 1-based quarter.
 		/// </remarks>
-		public static int Quarter(this DateOnly dateTime, CalendarQuarterDefinition definition)
+		public static int Quarter(this DateOnly date, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 
@@ -66,18 +66,18 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			return GetQuarterForDate(dateTime, GetQuarterDefinition(definition));
+			return GetQuarterForDate(date, GetQuarterDefinition(definition));
 		}
 
 		/// <summary>
 		/// Returns the quarter number (1–4) for the specified <see cref="DateOnly" />, using a custom
 		/// <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> value to evaluate.</param>
+		/// <param name="date">The <see cref="DateOnly" /> value to evaluate.</param>
 		/// <param name="provider">
 		/// An implementation of <see cref="IQuarterDefinitionProvider" /> that determines the quarter based on custom logic.
 		/// </param>
-		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
+		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="date" />.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if the quarter value returned by the provider is outside the valid range of 1 through 4.
@@ -91,11 +91,11 @@ namespace Bodu.Extensions
 		/// <see cref="LastDayOfQuarter(DateOnly, IQuarterDefinitionProvider)" /> for complete custom quarter boundary resolution.
 		/// </para>
 		/// </remarks>
-		public static int Quarter(this DateOnly dateTime, IQuarterDefinitionProvider provider)
+		public static int Quarter(this DateOnly date, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
 
-			int quarter = provider.GetQuarter(dateTime);
+			int quarter = provider.GetQuarter(date);
 
 			if (quarter is < 1 or > 4)
 				throw new ArgumentOutOfRangeException(nameof(provider), ResourceStrings.Arg_OutOfRange_InvalidQuarterNumber);
@@ -202,17 +202,17 @@ namespace Bodu.Extensions
 		/// Determines the fiscal or calendar quarter number (1–4) that contains the specified <see cref="DateOnly" />, based on the
 		/// supplied quarter definition anchor.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
+		/// <param name="date">The date to evaluate.</param>
 		/// <param name="definition">
 		/// A tuple representing the anchor month and day (e.g., (4, 1) for April 1) that defines the start of Q1.
 		/// </param>
 		/// <returns>An integer in the range [1, 4] representing the resolved quarter number.</returns>
 		/// <remarks>If the date falls on the first month of a quarter but before the anchor day, it is assigned to the previous quarter.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static int GetQuarterForDate(this DateOnly dateTime, (uint defMonth, uint defDay) definition)
+		private static int GetQuarterForDate(this DateOnly date, (uint defMonth, uint defDay) definition)
 		{
 			// Compute quarter number using modular offset from anchor month
-			int quarter = ((dateTime.Month + 12 - (int)definition.defMonth) % 12) / 3 + 1;
+			int quarter = ((date.Month + 12 - (int)definition.defMonth) % 12) / 3 + 1;
 
 			// If anchor day is not the 1st, check if we are in the quarter's start month but still before the anchor day — in that case, we
 			// belong to the previous quarter
@@ -222,7 +222,7 @@ namespace Bodu.Extensions
 				uint quarterStartMonth = (((uint)(quarter - 1) * 3U + definition.defMonth - 1U) % 12U) + 1U;
 
 				// If we're in the quarter's start month but before the anchor day, back up a quarter
-				if ((uint)dateTime.Month == quarterStartMonth && (uint)dateTime.Day < definition.defDay)
+				if ((uint)date.Month == quarterStartMonth && (uint)date.Day < definition.defDay)
 					quarter = quarter == 1 ? 4 : quarter - 1;
 			}
 

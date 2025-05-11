@@ -13,13 +13,13 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Determines whether the current <see cref="DateOnly" /> instance represents the last day of its month.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
-		/// <returns><see langword="true" /> if the <paramref name="dateTime" /> is the last day of its month; otherwise, <see langword="false" />.</returns>
+		/// <param name="date">The date to evaluate.</param>
+		/// <returns><see langword="true" /> if the <paramref name="date" /> is the last day of its month; otherwise, <see langword="false" />.</returns>
 		/// <remarks>
-		/// This method compares the day component of the <paramref name="dateTime" /> with the total number of days in its month,
-		/// accounting for variations such as leap years.
+		/// This method compares the day component of the <paramref name="date" /> with the total number of days in its month, accounting
+		/// for variations such as leap years.
 		/// </remarks>
-		public static bool IsLastDayOfMonth(this DateOnly dateTime) =>
-			dateTime.Day == DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+		public static bool IsLastDayOfMonth(this DateOnly date) =>
+			date.Day == DateTime.DaysInMonth(date.Year, date.Month);
 	}
 }

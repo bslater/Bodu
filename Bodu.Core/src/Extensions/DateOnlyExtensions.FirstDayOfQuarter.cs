@@ -11,10 +11,10 @@ namespace Bodu.Extensions
 	public static partial class DateOnlyExtensions
 	{
 		/// <summary>
-		/// Returns a <see cref="DateOnly" /> representing the first day of the calendar quarter for the specified <paramref name="dateTime" />.
+		/// Returns a <see cref="DateOnly" /> representing the first day of the calendar quarter for the specified <paramref name="date" />.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> whose quarter is evaluated.</param>
-		/// <returns>A <see cref="DateOnly" /> value representing the first day of the quarter that includes <paramref name="dateTime" />.</returns>
+		/// <param name="date">The <see cref="DateOnly" /> whose quarter is evaluated.</param>
+		/// <returns>A <see cref="DateOnly" /> value representing the first day of the quarter that includes <paramref name="date" />.</returns>
 		/// <remarks>
 		/// This method uses the standard calendar quarter definition:
 		/// <list type="bullet">
@@ -36,8 +36,8 @@ namespace Bodu.Extensions
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static DateOnly FirstDayOfQuarter(this DateOnly dateTime)
-			=> FirstDayOfQuarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);
+		public static DateOnly FirstDayOfQuarter(this DateOnly date)
+			=> FirstDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the first day of the specified <paramref name="quarter" /> in the given
@@ -81,9 +81,9 @@ namespace Bodu.Extensions
 			=> FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
 
 		/// <summary>
-		/// Returns the first day of the quarter that includes the specified <paramref name="dateTime" />, based on the provided <see cref="CalendarQuarterDefinition" />.
+		/// Returns the first day of the quarter that includes the specified <paramref name="date" />, based on the provided <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="dateTime">
+		/// <param name="date">
 		/// The <see cref="DateOnly" /> to evaluate. The returned value will be the first calendar day of the quarter that contains this
 		/// date, according to the selected definition.
 		/// </param>
@@ -106,7 +106,7 @@ namespace Bodu.Extensions
 		/// overload with a custom implementation of <see cref="IQuarterDefinitionProvider" />.
 		/// </para>
 		/// </remarks>
-		public static DateOnly FirstDayOfQuarter(this DateOnly dateTime, CalendarQuarterDefinition definition)
+		public static DateOnly FirstDayOfQuarter(this DateOnly date, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 
@@ -114,7 +114,7 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
+			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: date);
 			return DateOnly.FromDayNumber(ComputeQuarterStartDayNumber(year, quarter, GetQuarterDefinition(definition)));
 		}
 
@@ -163,7 +163,7 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the first day of the quarter based on a custom <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> value whose quarter is being evaluated.</param>
+		/// <param name="date">The <see cref="DateOnly" /> value whose quarter is being evaluated.</param>
 		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> that defines custom quarter logic.</param>
 		/// <returns>A <see cref="DateOnly" /> representing the first calendar day of the applicable custom quarter.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
@@ -172,10 +172,10 @@ namespace Bodu.Extensions
 		/// This method supports advanced or domain-specific definitions of quarters by delegating logic to the specified
 		/// <paramref name="provider" />, such as 4-4-5 fiscal calendars or regional fiscal systems.
 		/// </remarks>
-		public static DateOnly FirstDayOfQuarter(this DateOnly dateTime, IQuarterDefinitionProvider provider)
+		public static DateOnly FirstDayOfQuarter(this DateOnly date, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetStartDate(dateTime);
+			return provider.GetStartDate(date);
 		}
 	}
 }

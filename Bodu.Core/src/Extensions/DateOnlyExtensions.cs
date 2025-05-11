@@ -65,5 +65,41 @@ namespace Bodu.Extensions
 			DayOfWeek day = GetDayOfWeekFromDayNumber(days);
 			return (((int)dayOfWeek - (int)day - 7) % 7);
 		}
+
+		/// <summary>
+		/// Calculates the day number of the first occurrence of the specified <see cref="DayOfWeek" /> within a given month and year,
+		/// without creating a <see cref="DateOnly" /> instance.
+		/// </summary>
+		/// <param name="year">The calendar year.</param>
+		/// <param name="month">The calendar month (1 through 12).</param>
+		/// <param name="dayOfWeek">
+		/// The <see cref="DayOfWeek" /> to locate (e.g., <see cref="DayOfWeek.Monday" /> for the first Monday of the month).
+		/// </param>
+		/// <returns>
+		/// An integer representing the day number (days since 0001-01-01) of the first occurrence of <paramref name="dayOfWeek" /> in the
+		/// specified month and year.
+		/// </returns>
+		/// <remarks>This method performs date arithmetic directly and avoids constructing <see cref="DateOnly" /> objects for performance.</remarks>
+		internal static int GetFirstDayOfWeekInMonthDayNumber(int year, int month, DayOfWeek dayOfWeek) =>
+			GetDayNumber(year, month, 1)
+				+ (((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(GetDayNumber(year, month, 1)) + 7) % 7);
+
+		/// <summary>
+		/// Calculates the day number of the last occurrence of the specified <see cref="DayOfWeek" /> within a given month and year,
+		/// without creating a <see cref="DateOnly" /> instance.
+		/// </summary>
+		/// <param name="year">The calendar year.</param>
+		/// <param name="month">The calendar month (1 through 12).</param>
+		/// <param name="dayOfWeek">
+		/// The <see cref="DayOfWeek" /> to locate (e.g., <see cref="DayOfWeek.Friday" /> for the last Friday of the month).
+		/// </param>
+		/// <returns>
+		/// An integer representing the day number (days since 0001-01-01) of the last occurrence of <paramref name="dayOfWeek" /> in the
+		/// specified month and year.
+		/// </returns>
+		/// <remarks>This method performs date arithmetic directly and avoids constructing <see cref="DateOnly" /> objects for performance.</remarks>
+		internal static int GetLastDayOfWeekInMonthDayNumber(int year, int month, DayOfWeek dayOfWeek) =>
+			GetDayNumber(year, month, DateTime.DaysInMonth(year, month))
+				- (((int)GetDayOfWeekFromDayNumber(GetDayNumber(year, month, DateTime.DaysInMonth(year, month))) - (int)dayOfWeek + 7) % 7);
 	}
 }

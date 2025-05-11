@@ -15,13 +15,13 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the number of days in the month of the specified <see cref="DateOnly" />, using the Gregorian calendar.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> whose month and year are used to determine the number of days.</param>
-		/// <returns>The total number of days in the month for the given <paramref name="dateTime" />, based on the <see cref="GregorianCalendar" />.</returns>
+		/// <param name="date">The <see cref="DateOnly" /> whose month and year are used to determine the number of days.</param>
+		/// <returns>The total number of days in the month for the given <paramref name="date" />, based on the <see cref="GregorianCalendar" />.</returns>
 		/// <remarks>
 		/// This method always evaluates the number of days using the proleptic Gregorian calendar, regardless of the current culture or
 		/// calendar settings.
 		/// </remarks>
-		public static int DaysInMonth(this DateOnly dateTime)
-			=> DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+		public static int DaysInMonth(this DateOnly date)
+			=> DateTime.DaysInMonth(date.Year, date.Month);
 	}
 }

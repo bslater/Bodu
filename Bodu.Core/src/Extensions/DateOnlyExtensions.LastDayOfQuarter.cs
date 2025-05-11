@@ -12,10 +12,10 @@ namespace Bodu.Extensions
 	public static partial class DateOnlyExtensions
 	{
 		/// <summary>
-		/// Returns a <see cref="DateOnly" /> representing the last day of the calendar quarter for the specified <paramref name="dateTime" />.
+		/// Returns a <see cref="DateOnly" /> representing the last day of the calendar quarter for the specified <paramref name="date" />.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> whose quarter is evaluated.</param>
-		/// <returns>A <see cref="DateOnly" /> value representing the last day of the quarter that includes <paramref name="dateTime" />.</returns>
+		/// <param name="date">The <see cref="DateOnly" /> whose quarter is evaluated.</param>
+		/// <returns>A <see cref="DateOnly" /> value representing the last day of the quarter that includes <paramref name="date" />.</returns>
 		/// <remarks>
 		/// This method uses the standard calendar quarter definition:
 		/// <list type="bullet">
@@ -37,8 +37,8 @@ namespace Bodu.Extensions
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static DateOnly LastDayOfQuarter(this DateOnly dateTime)
-			=> LastDayOfQuarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);
+		public static DateOnly LastDayOfQuarter(this DateOnly date)
+			=> LastDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the last day of the specified <paramref name="quarter" /> in the given
@@ -82,9 +82,9 @@ namespace Bodu.Extensions
 			=> LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
 
 		/// <summary>
-		/// Returns the last day of the quarter that includes the specified <paramref name="dateTime" />, based on the provided <see cref="CalendarQuarterDefinition" />.
+		/// Returns the last day of the quarter that includes the specified <paramref name="date" />, based on the provided <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="dateTime">
+		/// <param name="date">
 		/// The <see cref="DateOnly" /> to evaluate. The returned value will be the final calendar day of the quarter that contains this
 		/// date, as defined by the selected quarter structure.
 		/// </param>
@@ -105,7 +105,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>For non-standard quarter systems (e.g., 4-4-5 or 13-week models), use the provider-based overload <see cref="LastDayOfQuarter(DateOnly, IQuarterDefinitionProvider)" />.</para>
 		/// </remarks>
-		public static DateOnly LastDayOfQuarter(this DateOnly dateTime, CalendarQuarterDefinition definition)
+		public static DateOnly LastDayOfQuarter(this DateOnly date, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 
@@ -113,7 +113,7 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
+			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: date);
 			return DateOnly.FromDayNumber(ComputeQuarterEndDayNumber(year, quarter, GetQuarterDefinition(definition)));
 		}
 
@@ -158,7 +158,7 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the last day of the quarter based on a custom <see cref="IQuarterDefinitionProvider" /> implementation.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateOnly" /> value whose quarter is being evaluated.</param>
+		/// <param name="date">The <see cref="DateOnly" /> value whose quarter is being evaluated.</param>
 		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> that defines custom quarter logic.</param>
 		/// <returns>A <see cref="DateOnly" /> representing the last calendar day of the applicable custom quarter.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
@@ -167,10 +167,10 @@ namespace Bodu.Extensions
 		/// This method supports advanced quarter systems such as 4-4-5 accounting or domain-specific fiscal quarters by delegating logic to
 		/// the specified <paramref name="provider" />.
 		/// </remarks>
-		public static DateOnly LastDayOfQuarter(this DateOnly dateTime, IQuarterDefinitionProvider provider)
+		public static DateOnly LastDayOfQuarter(this DateOnly date, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetEndDate(dateTime);
+			return provider.GetEndDate(date);
 		}
 	}
 }
