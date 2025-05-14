@@ -1,10 +1,9 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.NthDayOfWeekInMonth.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.NthDayOfWeekInMonth.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
-using Microsoft.VisualBasic;
 using System;
 
 namespace Bodu.Extensions
@@ -51,10 +50,9 @@ namespace Bodu.Extensions
 					return date.LastDayOfWeekInMonth(dayOfWeek);
 
 				default:
+					int dayNumber = GetDayNumber(date.Year, date.Month, 1);
 					var result = DateOnly.FromDayNumber(
-						GetDayNumber(date.Year, date.Month, 1)
-						+ (((int)dayOfWeek - (int)new DateOnly(date.Year, date.Month, 1).DayOfWeek + 7) % 7)
-						+ ((int)ordinal - 1) * 7
+						dayNumber + (((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(dayNumber) + 7) % 7) + (((int)ordinal - 1) * 7)
 					);
 
 					if (result.Month != date.Month)
@@ -89,7 +87,7 @@ namespace Bodu.Extensions
 		/// For <see cref="WeekOfMonthOrdinal.Last" />, the last matching day of the week in the month is returned. For other ordinal
 		/// values, the method starts from the first matching day and adds full weeks to locate the Nth occurrence.
 		/// </remarks>
-		internal static DateOnly NthDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek, WeekOfMonthOrdinal ordinal)
+		public static DateOnly NthDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek, WeekOfMonthOrdinal ordinal)
 		{
 			ThrowHelper.ThrowIfOutOfRange(year, DateOnly.MinValue.Year, DateOnly.MaxValue.Year);
 			ThrowHelper.ThrowIfOutOfRange(month, 1, 12);
@@ -105,7 +103,7 @@ namespace Bodu.Extensions
 					return DateOnly.FromDayNumber(DateOnlyExtensions.GetLastDayOfWeekInMonthDayNumber(year, month, dayOfWeek));
 
 				default:
-					var result = DateOnly.FromDayNumber(DateOnlyExtensions.GetFirstDayOfWeekInMonthDayNumber(year, month, dayOfWeek) + ((int)ordinal * 7));
+					var result = DateOnly.FromDayNumber(DateOnlyExtensions.GetFirstDayOfWeekInMonthDayNumber(year, month, dayOfWeek) + (((int)ordinal - 1) * 7));
 
 					if (result.Month != month)
 						throw new ArgumentOutOfRangeException(nameof(ordinal),

@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 #if !NETSTANDARD2_0
 
@@ -104,7 +104,7 @@ namespace Bodu.Collections.Generic.Extensions
 					? throw new ArgumentException(
 						string.Format(ResourceStrings.Arg_Required_ParameterRequiredIf, nameof(count), nameof(mode), nameof(RandomizationMode.LazyShuffle)), nameof(count))
 					: LazyShuffle(source, rng, count.Value),
-				_ => throw new ArgumentOutOfRangeException(nameof(mode), string.Format(ResourceStrings.Arg_Invalid_EnumValue, nameof(RandomizationMode)))
+				_ => throw new ArgumentOutOfRangeException(nameof(mode), string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, nameof(RandomizationMode)))
 			};
 		}
 

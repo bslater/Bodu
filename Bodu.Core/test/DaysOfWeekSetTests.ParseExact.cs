@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -17,8 +12,8 @@ namespace Bodu
 		[DynamicData(nameof(DaysOfWeekSetTests.GetAllBitmaskPermutationTestData), typeof(DaysOfWeekSetTests))]
 		public void ParseExact_WhenValidSundaySymbolInput_ShouldReturnExpected(byte expected, string input, string _)
 		{
-			var result = DaysOfWeekSet.ParseExact(input, "S");
-			Assert.AreEqual(expected, result);
+			var actual = DaysOfWeekSet.ParseExact(input, "S");
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>
@@ -31,8 +26,8 @@ namespace Bodu
 		[DynamicData(nameof(DaysOfWeekSetTests.GetAllBitmaskPermutationWithMondaySymbolsTestData), typeof(DaysOfWeekSetTests))]
 		public void ParseExact_WhenValidMondaySymbolInput_ShouldReturnExpected(byte expected, string input, string _)
 		{
-			var result = DaysOfWeekSet.ParseExact(input, "M");
-			Assert.AreEqual(expected, result);
+			var actual = DaysOfWeekSet.ParseExact(input, "M");
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>
@@ -45,8 +40,8 @@ namespace Bodu
 		[DynamicData(nameof(DaysOfWeekSetTests.GetAllBitmaskPermutationTestData), typeof(DaysOfWeekSetTests))]
 		public void ParseExact_WhenValidBinaryInput_ShouldReturnExpected(byte expected, string _, string input)
 		{
-			var result = DaysOfWeekSet.ParseExact(input, "B");
-			Assert.AreEqual(expected, result);
+			var actual = DaysOfWeekSet.ParseExact(input, "B");
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>

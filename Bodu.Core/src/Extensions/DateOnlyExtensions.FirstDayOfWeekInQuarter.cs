@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.FirstWeekdayInMonth.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.FirstDayOfWeekInQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -49,14 +49,14 @@ namespace Bodu.Extensions
 		/// Returns the first occurrence of the specified <see cref="DayOfWeek" /> within the given calendar quarter and year, using the
 		/// provided <see cref="CalendarQuarterDefinition" /> to determine quarter boundaries.
 		/// </summary>
-		/// <param name="definition">
-		/// The <see cref="CalendarQuarterDefinition" /> that defines how quarters are segmented, such as calendar year or fiscal year.
-		/// </param>
-		/// <param name="quarter">The 1-based quarter number (1 through 4).</param>
 		/// <param name="year">The calendar year in which the specified quarter occurs.</param>
+		/// <param name="quarter">The 1-based quarter number (1 through 4).</param>
 		/// <param name="dayOfWeek">
 		/// The <see cref="DayOfWeek" /> value to locate within the quarter. For example, <see cref="DayOfWeek.Monday" /> returns the first
 		/// Monday in the quarter.
+		/// </param>
+		/// <param name="definition">
+		/// The <see cref="CalendarQuarterDefinition" /> that defines how quarters are segmented, such as calendar year or fiscal year.
 		/// </param>
 		/// <returns>
 		/// A <see cref="DateOnly" /> representing the first occurrence of <paramref name="dayOfWeek" /> within the specified quarter and
@@ -73,7 +73,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>The returned value is based on <see cref="DateOnly" /> and does not include any time or kind component.</para>
 		/// </remarks>
-		public static DateOnly FirstDayOfWeekInQuarter(CalendarQuarterDefinition definition, int quarter, int year, DayOfWeek dayOfWeek)
+		public static DateOnly FirstDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);

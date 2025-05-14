@@ -13,41 +13,15 @@ namespace Bodu.Extensions
 	public partial class DateTimeExtensionsTests
 	{
 
-		private static IEnumerable<object[]> WeekendTestData
-		{
-			get
-			{
-				yield return new object[] { new DateTime(2024,04,20), CalendarWeekendDefinition.SaturdaySunday, null, true}; // Saturday
-				yield return new object[] { new DateTime(2024,04,21), CalendarWeekendDefinition.SaturdaySunday, null, true}; // Sunday
-				yield return new object[] { new DateTime(2024,04,22), CalendarWeekendDefinition.SaturdaySunday, null, false}; // Monday
-
-				yield return new object[] { new DateTime(2024,04,19), CalendarWeekendDefinition.FridaySaturday, null, true}; // Friday
-				yield return new object[] { new DateTime(2024,04,20), CalendarWeekendDefinition.FridaySaturday, null, true}; // Saturday
-				yield return new object[] { new DateTime(2024,04,21), CalendarWeekendDefinition.FridaySaturday, null, false}; // Sunday
-
-				yield return new object[] { new DateTime(2024,04,18), CalendarWeekendDefinition.ThursdayFriday, null, true}; // Thursday
-				yield return new object[] { new DateTime(2024,04,19), CalendarWeekendDefinition.ThursdayFriday, null, true}; // Friday
-				yield return new object[] { new DateTime(2024,04,20), CalendarWeekendDefinition.ThursdayFriday, null, false}; // Saturday
-
-				yield return new object[] { new DateTime(2024,04,21), CalendarWeekendDefinition.SundayOnly, null, true}; // Sunday
-				yield return new object[] { new DateTime(2024,04,22), CalendarWeekendDefinition.SundayOnly, null, false}; // Monday
-
-				yield return new object[] { new DateTime(2024,04,19), CalendarWeekendDefinition.FridayOnly, null, true}; // Friday
-				yield return new object[] { new DateTime(2024,04,20), CalendarWeekendDefinition.FridayOnly, null, false}; // Saturday
-
-				yield return new object[] { new DateTime(2024,04,19), CalendarWeekendDefinition.Custom, typeof(FridayOnlyWeekendProvider), true};
-				yield return new object[] { new DateTime(2024,04,20), CalendarWeekendDefinition.Custom, typeof(FridayOnlyWeekendProvider), false};
-			}
-		}
 
 		[DataTestMethod]
-		[DynamicData(nameof(WeekendTestData), typeof(DateTimeExtensionsTests))]
+		[DynamicData(nameof(WeekendTestData), DynamicDataSourceType.Method)]
 		public void IsWeekend_WhenUsingStandardWeekend_ShouldReturnExpected(DateTime input, CalendarWeekendDefinition weekend, Type? providerType, bool expected)
 		{
 			IWeekendDefinitionProvider? provider = providerType is null ? null : (IWeekendDefinitionProvider)Activator.CreateInstance(providerType)!;
 
-			bool result = input.IsWeekend(weekend, provider);
-			Assert.AreEqual(expected, result, $"Failed for {input} with weekend {weekend}");
+			bool actual = input.IsWeekend(weekend, provider);
+			Assert.AreEqual(expected, actual, $"Failed for {input} with weekend {weekend}");
 		}
 
 		[TestMethod]

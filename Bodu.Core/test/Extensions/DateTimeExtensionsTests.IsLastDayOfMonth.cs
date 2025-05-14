@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace Bodu.Extensions
+﻿namespace Bodu.Extensions
 {
 	public partial class DateTimeExtensionsTests
 	{
@@ -10,15 +7,12 @@ namespace Bodu.Extensions
 		/// day of the month.
 		/// </summary>
 		[DataTestMethod]
-		[DataRow("2024-01-31")]
-		[DataRow("2024-02-29")] // leap year
-		[DataRow("2023-02-28")] // non-leap year
-		[DataRow("2024-04-30")]
-		[DataRow("2024-12-31")]
-		public void IsLastDayOfMonth_WhenDateIsLastDay_ShouldReturnTrue(string dateString)
+		[DynamicData(nameof(DateTimeExtensionsTests.IsLastDayOfMonthDataTestData), DynamicDataSourceType.Method)]
+		public void IsLastDayOfMonth_WhenDateIsLastDay_ShouldReturnTrue(DateTime input)
 		{
-			var date = DateTime.Parse(dateString);
-			Assert.IsTrue(date.IsLastDayOfMonth());
+			var actual = input.IsLastDayOfMonth();
+
+			Assert.IsTrue(actual);
 		}
 
 		/// <summary>
@@ -26,15 +20,12 @@ namespace Bodu.Extensions
 		/// the last day of the month.
 		/// </summary>
 		[DataTestMethod]
-		[DataRow("2024-01-30")]
-		[DataRow("2024-02-28")] // leap year, not last day
-		[DataRow("2023-02-27")]
-		[DataRow("2024-04-15")]
-		[DataRow("2024-12-01")]
-		public void IsLastDayOfMonth_WhenDateIsNotLastDay_ShouldReturnFalse(string dateString)
+		[DynamicData(nameof(DateTimeExtensionsTests.IsNotLastDayOfMonthTestData), DynamicDataSourceType.Method)]
+		public void IsLastDayOfMonth_WhenDateIsNotLastDay_ShouldReturnFalse(DateTime input)
 		{
-			var date = DateTime.Parse(dateString);
-			Assert.IsFalse(date.IsLastDayOfMonth());
+			var actual = input.IsLastDayOfMonth();
+
+			Assert.IsFalse(actual);
 		}
 	}
 }

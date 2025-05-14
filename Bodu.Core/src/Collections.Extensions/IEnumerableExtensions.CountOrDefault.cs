@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.CountOrDefault.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="IEnumerableExtensions.CountOrDefault.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections;

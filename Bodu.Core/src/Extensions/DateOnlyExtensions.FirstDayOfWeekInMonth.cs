@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.FirstWeekdayInMonth.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.FirstDayOfWeekInMonth.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -31,10 +31,8 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			int dayNumber = GetDayNumber(date.Year, date.Month, 1);
-			dayNumber += (((int)dayOfWeek - dayNumber + 7) % 7);
-
-			return DateOnly.FromDayNumber(dayNumber);
+			int baseDayNumber = GetDayNumber(date.Year, date.Month, 1);
+			return DateOnly.FromDayNumber(baseDayNumber + ((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(baseDayNumber) + 7) % 7);
 		}
 	}
 }

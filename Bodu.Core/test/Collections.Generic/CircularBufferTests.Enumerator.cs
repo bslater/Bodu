@@ -17,9 +17,9 @@ namespace Bodu.Collections.Generic
 			buffer.Dequeue();         // 20 removed
 			buffer.Enqueue(50);       // wrap again
 
-			var result = buffer.ToList();
+			var actual = buffer.ToList();
 
-			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, result);
+			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, actual);
 		}
 
 		/// <summary>
@@ -41,9 +41,9 @@ namespace Bodu.Collections.Generic
 
 			// Final state: buffer contains [30, 40, 50] in circular order Head is now at 0, and this triggers the head - 1 = -1 logic in
 			// old design
-			var result = buffer.ToList();
+			var actual = buffer.ToList();
 
-			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, result);
+			CollectionAssert.AreEqual(new[] { 30, 40, 50 }, actual);
 		}
 
 		/// <summary>
@@ -73,8 +73,8 @@ namespace Bodu.Collections.Generic
 			buffer.Enqueue(null);
 			buffer.Enqueue("Y");
 
-			var result = buffer.ToArray();
-			CollectionAssert.AreEqual(new[] { "X", null, "Y" }, result);
+			var actual = buffer.ToArray();
+			CollectionAssert.AreEqual(new[] { "X", null, "Y" }, actual);
 		}
 
 		/// <summary>
@@ -87,9 +87,9 @@ namespace Bodu.Collections.Generic
 			buffer.Enqueue("A");
 			buffer.Enqueue(null);
 
-			var result = buffer.ToArray();
-			Assert.AreEqual("A", result[0]);
-			Assert.IsNull(result[1]);
+			var actual = buffer.ToArray();
+			Assert.AreEqual("A", actual[0]);
+			Assert.IsNull(actual[1]);
 		}
 
 		/// <summary>
@@ -131,8 +131,8 @@ namespace Bodu.Collections.Generic
 			buffer.Dequeue();       // remove 1
 			buffer.Enqueue(4);      // wraps around
 
-			var result = buffer.ToList();
-			CollectionAssert.AreEqual(new[] { 2, 3, 4 }, result);
+			var actual = buffer.ToList();
+			CollectionAssert.AreEqual(new[] { 2, 3, 4 }, actual);
 		}
 
 		/// <summary>

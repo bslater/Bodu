@@ -38,8 +38,8 @@
 		[DynamicData(nameof(GetIsOutsideTestData), DynamicDataSourceType.Method)]
 		public void IsOutside_WhenValueOutsideBounds_ShouldReturnTrue(SimpleTestObject? value, SimpleTestObject? lower, SimpleTestObject? upper, bool expected)
 		{
-			var result = ComparableHelper.IsOutside(value, lower, upper);
-			Assert.AreEqual(expected, result);
+			var actual = ComparableHelper.IsOutside(value, lower, upper);
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

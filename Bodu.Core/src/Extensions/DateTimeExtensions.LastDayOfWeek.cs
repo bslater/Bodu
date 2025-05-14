@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.LastDayOfWeek.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.LastDayOfWeek.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Globalization.Extensions;
 using System;

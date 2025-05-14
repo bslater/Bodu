@@ -4,9 +4,6 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
 namespace Bodu.Core.Test
 {
 	public sealed partial class ThrowHelperTests

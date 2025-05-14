@@ -12,10 +12,10 @@ namespace Bodu.Collections.Generic
 			buffer.Enqueue(5);
 			buffer.Enqueue(10);
 
-			var success = buffer.TryPeek(out int result);
+			var success = buffer.TryPeek(out int actual);
 
 			Assert.IsTrue(success);
-			Assert.AreEqual(5, result);
+			Assert.AreEqual(5, actual);
 		}
 
 		/// <summary>
@@ -26,10 +26,10 @@ namespace Bodu.Collections.Generic
 		{
 			var buffer = new CircularBuffer<string>(2);
 
-			var success = buffer.TryPeek(out string result);
+			var success = buffer.TryPeek(out string actual);
 
 			Assert.IsFalse(success);
-			Assert.IsNull(result);
+			Assert.IsNull(actual);
 		}
 
 		/// <summary>
@@ -41,10 +41,10 @@ namespace Bodu.Collections.Generic
 			var buffer = new CircularBuffer<string>(1);
 			buffer.Enqueue(null);
 
-			var success = buffer.TryPeek(out var result);
+			var success = buffer.TryPeek(out var actual);
 
 			Assert.IsTrue(success);
-			Assert.IsNull(result);
+			Assert.IsNull(actual);
 		}
 	}
 }

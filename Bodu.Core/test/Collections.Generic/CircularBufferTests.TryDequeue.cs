@@ -13,10 +13,10 @@ namespace Bodu.Collections.Generic
 			buffer.Enqueue(100);
 			buffer.Enqueue(200);
 
-			var success = buffer.TryDequeue(out int result);
+			var success = buffer.TryDequeue(out int actual);
 
 			Assert.IsTrue(success);
-			Assert.AreEqual(100, result);
+			Assert.AreEqual(100, actual);
 			Assert.AreEqual(1, buffer.Count);
 		}
 
@@ -45,10 +45,10 @@ namespace Bodu.Collections.Generic
 		{
 			var buffer = new CircularBuffer<object>(1);
 
-			var success = buffer.TryDequeue(out object result);
+			var success = buffer.TryDequeue(out object actual);
 
 			Assert.IsFalse(success);
-			Assert.IsNull(result);
+			Assert.IsNull(actual);
 		}
 
 		/// <summary>
@@ -60,10 +60,10 @@ namespace Bodu.Collections.Generic
 			var buffer = new CircularBuffer<object>(1);
 			buffer.Enqueue(null);
 
-			var success = buffer.TryDequeue(out var result);
+			var success = buffer.TryDequeue(out var actual);
 
 			Assert.IsTrue(success);
-			Assert.IsNull(result);
+			Assert.IsNull(actual);
 		}
 
 		/// <summary>
@@ -81,9 +81,9 @@ namespace Bodu.Collections.Generic
 			buffer.ItemEvicting += item => events.Add("Evicting:" + item);
 			buffer.ItemEvicted += item => events.Add("Evicted:" + item);
 
-			var result = buffer.TryDequeue(out string item);
+			var actual = buffer.TryDequeue(out string item);
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.AreEqual("A", item);
 			CollectionAssert.AreEqual(Array.Empty<string>(), events);
 			CollectionAssert.AreEqual(new[] { "B" }, buffer.ToArray());

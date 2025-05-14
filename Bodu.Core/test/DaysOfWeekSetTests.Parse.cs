@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -19,8 +12,8 @@ namespace Bodu
 		[DynamicData(nameof(DaysOfWeekSetTests.GetAllBitmaskPermutationTestData), typeof(DaysOfWeekSetTests))]
 		public void Parse_WhenValidSundaySymbolInput_ShouldReturnExpected(byte expected, string input, string _)
 		{
-			var result = DaysOfWeekSet.Parse(input);
-			Assert.AreEqual(expected, result);
+			var actual = DaysOfWeekSet.Parse(input);
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>
@@ -39,8 +32,8 @@ namespace Bodu
 				return; // gracefully skip this test case
 			}
 
-			var result = DaysOfWeekSet.Parse(input);
-			Assert.AreEqual(expected, result);
+			var actual = DaysOfWeekSet.Parse(input);
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>
@@ -53,8 +46,8 @@ namespace Bodu
 		[DynamicData(nameof(DaysOfWeekSetTests.GetAllBitmaskPermutationTestData), typeof(DaysOfWeekSetTests))]
 		public void Parse_WhenValidBinaryInput_ShouldReturnExpected(byte expected, string _, string input)
 		{
-			var result = DaysOfWeekSet.Parse(input);
-			Assert.AreEqual(expected, result);
+			var actual = DaysOfWeekSet.Parse(input);
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>

@@ -8,8 +8,8 @@
 		[TestMethod]
 		public void Repeat_WhenCalled_ShouldReturnInfiniteSequence()
 		{
-			var result = SequenceGenerator.Repeat("A").Take(3).ToArray();
-			CollectionAssert.AreEqual(new[] { "A", "A", "A" }, result);
+			var actual = SequenceGenerator.Repeat("A").Take(3).ToArray();
+			CollectionAssert.AreEqual(new[] { "A", "A", "A" }, actual);
 		}
 
 		/// <summary>
@@ -18,8 +18,8 @@
 		[TestMethod]
 		public void Repeat_WhenCountIsPositive_ShouldReturnFixedSequence()
 		{
-			var result = SequenceGenerator.Repeat("Z", 4).ToArray();
-			CollectionAssert.AreEqual(new[] { "Z", "Z", "Z", "Z" }, result);
+			var actual = SequenceGenerator.Repeat("Z", 4).ToArray();
+			CollectionAssert.AreEqual(new[] { "Z", "Z", "Z", "Z" }, actual);
 		}
 
 		/// <summary>
@@ -40,8 +40,8 @@
 		[TestMethod]
 		public void Repeat_WhenCountIsZero_ShouldReturnEmptySequence()
 		{
-			var result = SequenceGenerator.Repeat("A", 0).ToArray();
-			Assert.AreEqual(0, result.Length);
+			var actual = SequenceGenerator.Repeat("A", 0).ToArray();
+			Assert.AreEqual(0, actual.Length);
 		}
 
 		/// <summary>

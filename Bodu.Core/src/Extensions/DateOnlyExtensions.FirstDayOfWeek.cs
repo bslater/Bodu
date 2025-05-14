@@ -1,14 +1,12 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.FirstDayOfWeek.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.FirstDayOfWeek.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
-using Microsoft.VisualBasic;
 using System;
 
 using System.Globalization;
-using System.Security.Cryptography;
 using System.Threading;
 
 namespace Bodu.Extensions

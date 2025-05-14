@@ -13,10 +13,10 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_Array_ShouldReturnExpectedSubset()
 		{
 			var buffer = Enumerable.Range(1, 10).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 5).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 5).ToArray();
 
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, buffer);
+			Assert.AreEqual(5, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, buffer);
 		}
 
 #if !NETSTANDARD2_0
@@ -29,10 +29,10 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_Span_ShouldReturnExpectedSubset()
 		{
 			var span = Enumerable.Range(1, 10).ToArray().AsSpan();
-			var result = ShuffleHelpers.ShuffleAndYield<int>(span, new XorShiftRandom(), 4).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield<int>(span, new XorShiftRandom(), 4).ToArray();
 
-			Assert.AreEqual(4, result.Length);
-			CollectionAssert.IsSubsetOf(result, span.ToArray());
+			Assert.AreEqual(4, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, span.ToArray());
 		}
 
 		/// <summary>
@@ -43,10 +43,10 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_Memory_ShouldReturnExpectedSubset()
 		{
 			var memory = Enumerable.Range(1, 8).ToArray().AsMemory();
-			var result = ShuffleHelpers.ShuffleAndYield(memory, new XorShiftRandom(), 3).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(memory, new XorShiftRandom(), 3).ToArray();
 
-			Assert.AreEqual(3, result.Length);
-			CollectionAssert.IsSubsetOf(result, memory.ToArray());
+			Assert.AreEqual(3, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, memory.ToArray());
 		}
 
 		/// <summary>
@@ -70,13 +70,13 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingSpan()
 		{
 			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsSpan(), new XorShiftRandom(), 5).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield<Person>(source.AsSpan(), new XorShiftRandom(), 5).ToArray();
 
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
+			Assert.AreEqual(5, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, source.ToArray());
 
 			// Ensure the references point to the original objects
-			foreach (var person in result)
+			foreach (var person in actual)
 			{
 				Assert.IsTrue(source.Contains(person));
 			}
@@ -89,13 +89,13 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingMemory()
 		{
 			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield<Person>(source.AsMemory(), new XorShiftRandom(), 5).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield<Person>(source.AsMemory(), new XorShiftRandom(), 5).ToArray();
 
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
+			Assert.AreEqual(5, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, source.ToArray());
 
 			// Ensure the references point to the original objects
-			foreach (var person in result)
+			foreach (var person in actual)
 			{
 				Assert.IsTrue(source.Contains(person));
 			}
@@ -110,10 +110,10 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_IEnumerable_ShouldReturnExpectedSubset()
 		{
 			var source = Enumerable.Range(1, 10);
-			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 3).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 3).ToArray();
 
-			Assert.AreEqual(3, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
+			Assert.AreEqual(3, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, source.ToArray());
 		}
 
 		/// <summary>
@@ -125,10 +125,10 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_WhenEmptyOrZeroCount_ShouldReturnEmpty(int bufferSize, int count)
 		{
 			var buffer = Enumerable.Range(1, bufferSize).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), count).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), count).ToArray();
 
 			if (count == 0 || bufferSize == 0)
-				Assert.AreEqual(0, result.Length);
+				Assert.AreEqual(0, actual.Length);
 		}
 
 		/// <summary>
@@ -172,9 +172,9 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_ShouldWorkWithDuplicates()
 		{
 			var buffer = new[] { 5, 5, 5, 5, 5 };
-			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 3).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), 3).ToArray();
 
-			CollectionAssert.AreEqual(new[] { 5, 5, 5 }, result);
+			CollectionAssert.AreEqual(new[] { 5, 5, 5 }, actual);
 		}
 
 		/// <summary>
@@ -198,10 +198,10 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_Array_WhenCountEqualsLength_ShouldReturnAllUniqueItems()
 		{
 			var buffer = Enumerable.Range(1, 10).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), buffer.Length).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(buffer, new XorShiftRandom(), buffer.Length).ToArray();
 
-			CollectionAssert.AreEquivalent(buffer, result);
-			CollectionAssert.AllItemsAreUnique(result);
+			CollectionAssert.AreEquivalent(buffer, actual);
+			CollectionAssert.AllItemsAreUnique(actual);
 		}
 
 		/// <summary>
@@ -215,14 +215,14 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_IEnumerable_ShouldReturnExpectedCount(int count)
 		{
 			var source = Enumerable.Range(1, 10);
-			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), count).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), count).ToArray();
 
-			Assert.AreEqual(count, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
+			Assert.AreEqual(count, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, source.ToArray());
 		}
 
 		/// <summary>
-		/// Verifies that ShuffleAndYield only begins enumeration when the result is iterated.
+		/// Verifies that ShuffleAndYield only begins enumeration when the actual is iterated.
 		/// </summary>
 		[TestMethod]
 		public void ShuffleAndYield_IEnumerable_ShouldEnumerateOnIteration()
@@ -245,13 +245,13 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingArray()
 		{
 			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).ToArray();
-			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
 
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, source);
+			Assert.AreEqual(5, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, source);
 
 			// Ensure the references point to the original objects
-			foreach (var person in result)
+			foreach (var person in actual)
 			{
 				Assert.IsTrue(source.Contains(person));
 			}
@@ -264,13 +264,13 @@ namespace Bodu.Collections.Generic
 		public void ShuffleAndYield_WithReferenceTypes_ShouldReturnExpectedSubset_UsingEnumerable()
 		{
 			var source = Enumerable.Range(1, 10).Select(i => new Person(id: i, name: $"Person {i}")).AsEnumerable();
-			var result = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
+			var actual = ShuffleHelpers.ShuffleAndYield(source, new XorShiftRandom(), 5).ToArray();
 
-			Assert.AreEqual(5, result.Length);
-			CollectionAssert.IsSubsetOf(result, source.ToArray());
+			Assert.AreEqual(5, actual.Length);
+			CollectionAssert.IsSubsetOf(actual, source.ToArray());
 
 			// Ensure the references point to the original objects
-			foreach (var person in result)
+			foreach (var person in actual)
 			{
 				Assert.IsTrue(source.Contains(person));
 			}

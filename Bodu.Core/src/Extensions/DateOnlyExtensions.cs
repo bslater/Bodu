@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Runtime.CompilerServices;
@@ -23,6 +23,10 @@ namespace Bodu.Extensions
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static int GetDayNumber(DateTime dateTime) =>
+			(int)((ulong)dateTime.Ticks / DateTimeExtensions.TicksPerDay);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static int GetDayNumber(int year, int month, int day)
 		{
 			bool isLeap = DateTime.IsLeapYear(year);
@@ -35,6 +39,16 @@ namespace Bodu.Extensions
 				+ (year - 1) / 400
 				+ days[month - 1]
 				+ day - 1); // Subtract 1 to match DateOnly.DayNumber origin
+		}
+
+		/// <summary>
+		/// Returns the tick count that represents the date nearest to the specified <paramref name="dayOfWeek" /> relative to the provided
+		/// <paramref name="dayNumber" /> value.
+		/// </summary>
+		internal static int GetNearestDayOfWeek(int dayNumber, DayOfWeek dayOfWeek)
+		{
+			int delta = ((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(dayNumber) + 7) % 7;
+			return dayNumber + (delta > 3 ? delta - 7 : delta);
 		}
 
 		/// <summary>
@@ -57,7 +71,7 @@ namespace Bodu.Extensions
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static DayOfWeek GetDayOfWeekFromDayNumber(int days)
-		=> (DayOfWeek)((days + 1) % 7);
+			=> (DayOfWeek)((days + 1) % 7);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static int GetPreviousDayOfWeekFromDayNumber(int days, DayOfWeek dayOfWeek)

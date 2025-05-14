@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Bodu.Extensions;
 
 namespace Bodu.Extensions
 {
@@ -10,33 +6,44 @@ namespace Bodu.Extensions
 	{
 		[DataTestMethod]
 		[DynamicData(nameof(GetAddTestCases), DynamicDataSourceType.Method)]
-		public void Add_WhenValidInputsProvided_ShouldReturnExpectedResult(string inputDate, int years, int months, double days, string expectedStr)
+		public void Add_WhenValidInputsProvided_ShouldReturnExpectedResult(DateTime input, int years, int months, double days, DateTime expected)
 		{
-			DateTime input = DateTime.Parse(inputDate);
-			DateTime expected = DateTime.Parse(expectedStr);
 			DateTime actual = input.Add(years, months, days);
 			Assert.AreEqual(expected, actual);
 		}
 
-		public static IEnumerable<object[]> GetAddTestCases()
+		public static IEnumerable<object[]> GetAddTestCases() => new[]
 		{
-			yield return new object[] { "2024-01-01", 1, 0, 0, "2025-01-01" };
-			yield return new object[] { "2024-01-01", 0, 1, 0, "2024-02-01" };
-			yield return new object[] { "2024-01-01", 0, 0, 1, "2024-01-02" };
-			yield return new object[] { "2024-01-01", -1, 0, 0, "2023-01-01" };
-			yield return new object[] { "2024-01-01", 0, -1, 0, "2023-12-01" };
-			yield return new object[] { "2024-01-01", 0, 0, -1, "2023-12-31" };
-			yield return new object[] { "2024-01-31", 0, 1, 0, "2024-02-29" };
-			yield return new object[] { "2023-01-31", 0, 1, 0, "2023-02-28" };
-			yield return new object[] { "2024-02-29", 1, 0, 0, "2025-02-28" };
-			yield return new object[] { "2025-05-01", -1, -2, -1, "2024-02-29" };
-			yield return new object[] { "2024-01-01", 0, 0, 1.5, "2024-01-02T12:00:00" };
-			yield return new object[] { "2024-01-01", 0, 0, 0.25, "2024-01-01T06:00:00" };
-			yield return new object[] { "0001-01-01", 0, 0, 0, "0001-01-01" };
-			yield return new object[] { "9999-12-31", 0, 0, 0, "9999-12-31" };
-			yield return new object[] { "2024-01-01T00:00:00", 0, 0, 1.0 / 86400000.0, "2024-01-01T00:00:00.001" };
-			yield return new object[] { "2024-01-01T00:00:00", 0, 0, 1.0 / 86400000, "2024-01-01T00:00:00.001" };
-		}
+			// Basic date increments
+			new object[] { new DateTime(2024, 01, 01), 1, 0, 0, new DateTime(2025, 01, 01) },
+			new object[] { new DateTime(2024, 01, 01), 0, 1, 0, new DateTime(2024, 02, 01) },
+			new object[] { new DateTime(2024, 01, 01), 0, 0, 1, new DateTime(2024, 01, 02) },
+
+			// Basic date decrements
+			new object[] { new DateTime(2024, 01, 01), -1, 0, 0, new DateTime(2023, 01, 01) },
+			new object[] { new DateTime(2024, 01, 01), 0, -1, 0, new DateTime(2023, 12, 01) },
+			new object[] { new DateTime(2024, 01, 01), 0, 0, -1, new DateTime(2023, 12, 31) },
+
+			// End-of-month alignment with leap year handling
+			new object[] { new DateTime(2024, 01, 31), 0, 1, 0, new DateTime(2024, 02, 29) },
+			new object[] { new DateTime(2023, 01, 31), 0, 1, 0, new DateTime(2023, 02, 28) },
+			new object[] { new DateTime(2024, 02, 29), 1, 0, 0, new DateTime(2025, 02, 28) },
+
+			// Composite negative offsets
+			new object[] { new DateTime(2025, 05, 01), -1, -2, -1, new DateTime(2024, 02, 29) },
+
+			// Fractional day offsets
+			new object[] { new DateTime(2024, 01, 01), 0, 0, 1.5, new DateTime(2024, 01, 02, 12, 0, 0) },
+			new object[] { new DateTime(2024, 01, 01), 0, 0, 0.25, new DateTime(2024, 01, 01, 6, 0, 0) },
+
+			// Boundary conditions
+			new object[] { DateTime.MinValue, 0, 0, 0, DateTime.MinValue },
+			new object[] { DateTime.MaxValue, 0, 0, 0, DateTime.MaxValue },
+
+			// Smallest valid time addition: 1 millisecond
+			new object[] { new DateTime(2024, 01, 01, 0, 0, 0), 0, 0, 1.0 / 86400000.0, new DateTime(2024, 01, 01, 0, 0, 0, 1) },
+			new object[] { new DateTime(2024, 01, 01, 0, 0, 0), 0, 0, 1.0 / 86400000, new DateTime(2024, 01, 01, 0, 0, 0, 1) },
+		};
 
 		[DataTestMethod]
 		[DynamicData(nameof(GetAddExceptionCases), DynamicDataSourceType.Method)]
@@ -56,32 +63,32 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void Add_WhenAllParametersZero_ShouldReturnSameDate()
 		{
-			DateTime input = new DateTime(2024, 1, 1, 12, 0, 0);
+			DateTime input = new(2024, 1, 1, 12, 0, 0);
 			Assert.AreEqual(input, input.Add(0, 0, 0));
 		}
 
 		[TestMethod]
 		public void Add_WhenAddingNegativeFractionalDay_ShouldSubtractAccurately()
 		{
-			DateTime input = new DateTime(2024, 1, 2, 12, 0, 0);
-			DateTime expected = new DateTime(2024, 1, 2, 6, 0, 0);
+			DateTime input = new(2024, 1, 2, 12, 0, 0);
+			DateTime expected = new(2024, 1, 2, 6, 0, 0);
 			Assert.AreEqual(expected, input.Add(0, 0, -0.25));
 		}
 
 		[TestMethod]
 		public void Add_WhenDaysIsLessThanEpsilon_ShouldBeIgnored()
 		{
-			DateTime input = new DateTime(2024, 1, 1, 0, 0, 0);
-			DateTime result = input.Add(0, 0, 1e-12); // Below epsilon
-			Assert.AreEqual(input, result);
+			DateTime input = new(2024, 1, 1, 0, 0, 0);
+			DateTime actual = input.Add(0, 0, 1e-12); // Below epsilon
+			Assert.AreEqual(input, actual);
 		}
 
 		[TestMethod]
 		public void Add_WhenAddingToFeb28LeapYear_ShouldIncludeFeb29()
 		{
-			DateTime input = new DateTime(2024, 2, 28);
-			DateTime result = input.Add(0, 0, 1);
-			Assert.AreEqual(new DateTime(2024, 2, 29), result);
+			DateTime input = new(2024, 2, 28);
+			DateTime actual = input.Add(0, 0, 1);
+			Assert.AreEqual(new DateTime(2024, 2, 29), actual);
 		}
 
 		[DataTestMethod]

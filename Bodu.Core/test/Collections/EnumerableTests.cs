@@ -23,13 +23,13 @@ namespace Bodu.Collections
 				onEnumerate: () => wasEnumerated = true
 			);
 
-			var result = invokeExtensionMethod(source);
+			var actual = invokeExtensionMethod(source);
 
 			Assert.IsFalse(wasEnumerated, $"[{methodName}] should defer execution.");
 		}
 
 		/// <summary>
-		/// Asserts that the extension method triggers enumeration only when the result is actually enumerated.
+		/// Asserts that the extension method triggers enumeration only when the actual is actually enumerated.
 		/// </summary>
 		/// <typeparam name="TSource">The type of input elements.</typeparam>
 		/// <param name="methodName">The name of the method being tested (used for assertion messaging).</param>
@@ -46,25 +46,25 @@ namespace Bodu.Collections
 				onEnumerate: () => wasEnumerated = true
 			);
 
-			var result = invokeExtensionMethod(source);
+			var actual = invokeExtensionMethod(source);
 
 			// Trigger enumeration
-			_ = result.GetEnumerator().MoveNext();
+			_ = actual.GetEnumerator().MoveNext();
 
 			Assert.IsTrue(wasEnumerated, $"[{methodName}] should begin enumeration when enumerated.");
 		}
 
 		/// <summary>
-		/// Asserts that invoking an extension method on the given source returns the expected results, with optional result transformation.
+		/// Asserts that invoking an extension method on the given source returns the expected results, with optional actual transformation.
 		/// </summary>
 		/// <typeparam name="TSource">The type of input elements.</typeparam>
-		/// <typeparam name="TResult">The type of result elements.</typeparam>
+		/// <typeparam name="TResult">The type of actual elements.</typeparam>
 		/// <param name="methodName">The name of the method under test.</param>
 		/// <param name="invokeExtensionMethod">The extension method to invoke on the source.</param>
 		/// <param name="source">The input sequence.</param>
-		/// <param name="expected">The expected result sequence.</param>
+		/// <param name="expected">The expected actual sequence.</param>
 		/// <param name="selector">
-		/// Optional projection to convert elements from the result to <typeparamref name="TResult" />. If not specified, elements are cast
+		/// Optional projection to convert elements from the actual to <typeparamref name="TResult" />. If not specified, elements are cast
 		/// to <typeparamref name="TResult" />.
 		/// </param>
 		//protected static void AssertExecutionReturnsExpectedResults<TSource, TResult>(
@@ -81,15 +81,15 @@ namespace Bodu.Collections
 			IEnumerable<TResult> expected,
 			Func<TSource, TResult> resultSelector)
 		{
-			// Evaluate result with optional selector or cast
-			var result = invokeExtensionMethod(source)
+			// Evaluate actual with optional selector or cast
+			var actual = invokeExtensionMethod(source)
 				.Cast<object>()
 				.Select(e => resultSelector != null ? resultSelector((TSource)e) : (TResult)e)
 				.ToList();
 
 			var expectedList = expected.ToList();
 
-			CollectionAssert.AreEqual(expectedList, result);
+			CollectionAssert.AreEqual(expectedList, actual);
 		}
 	}
 }

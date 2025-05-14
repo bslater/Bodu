@@ -122,9 +122,9 @@
 		public void Next_WhenMaxValueIsPositive_ShouldReturnValueInRange()
 		{
 			var rng = new XorShiftRandom();
-			int result = rng.Next(100);
+			int actual = rng.Next(100);
 
-			Assert.IsTrue(result >= 0 && result < 100, $"Result {result} is out of expected range.");
+			Assert.IsTrue(actual >= 0 && actual < 100, $"Result {actual} is out of expected range.");
 		}
 
 		/// <summary>
@@ -155,8 +155,8 @@
 			var rng = new XorShiftRandom();
 			for (int i = 0; i < 1000; i++)
 			{
-				int result = rng.Next(100);
-				Assert.IsTrue(result >= 0 && result < 100);
+				int actual = rng.Next(100);
+				Assert.IsTrue(actual >= 0 && actual < 100);
 			}
 		}
 
@@ -175,8 +175,8 @@
 			var rng = new XorShiftRandom();
 			for (int i = 0; i < 1000; i++)
 			{
-				int result = rng.Next(10, 20);
-				Assert.IsTrue(result >= 10 && result < 20);
+				int actual = rng.Next(10, 20);
+				Assert.IsTrue(actual >= 10 && actual < 20);
 			}
 		}
 

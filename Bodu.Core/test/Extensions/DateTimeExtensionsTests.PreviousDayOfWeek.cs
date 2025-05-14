@@ -13,26 +13,18 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("2024-04-18T14:30:00", DayOfWeek.Monday, "2024-04-15T14:30:00"	)]
-		[DataRow("2024-04-21T05:00:00", DayOfWeek.Tuesday, "2024-04-16T05:00:00")]
-		[DataRow("2024-04-21T05:00:00", DayOfWeek.Wednesday, "2024-04-17T05:00:00")]
-		[DataRow("2024-04-18T14:30:00", DayOfWeek.Thursday, "2024-04-11T14:30:00")]
-		[DataRow("2024-04-19T03:00:00", DayOfWeek.Friday, "2024-04-12T03:00:00"	)]
-		[DataRow("2024-04-19T03:00:00", DayOfWeek.Saturday, "2024-04-13T03:00:00")]
-		[DataRow("2024-04-15T23:59:59", DayOfWeek.Sunday, "2024-04-14T23:59:59")]
-		public void PreviousWeekday_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek targetDay, string expectedDate)
+		[DynamicData(nameof(PreviousDayOfWeekTestData), DynamicDataSourceType.Method)]
+		public void PreviousDayOfWeek_WhenCalled_ShouldReturnExpectedDate(DateTime input, DayOfWeek targetDay, DateTime expected)
 		{
-			DateTime input = DateTime.Parse(inputDate);
-			DateTime expected = DateTime.Parse(expectedDate);
-			DateTime result = input.PreviousDayOfWeek(targetDay);
+			DateTime actual = input.PreviousDayOfWeek(targetDay);
 
-			Assert.AreEqual(expected, result, "Expected date mismatch.");
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
-		public void PreviousWeekday_WhenEnumIsInvalid_ShouldThrowExactly()
+		public void PreviousDayOfWeek_WhenEnumIsInvalid_ShouldThrowExactly()
 		{
-			DateTime input = new DateTime(2024, 4, 18);
+			var input = new DateTime(2024, 4, 18);
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
@@ -40,48 +32,46 @@ namespace Bodu.Extensions
 			});
 		}
 
-		[TestMethod]
-		public void PreviousWeekday_WhenKindIsUtc_ShouldPreserveKind()
-		{
-			DateTime input = new DateTime(2024, 4, 20, 11, 30, 0, DateTimeKind.Utc);
-			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Tuesday);
 
-			Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+		[DataTestMethod]
+		[DataRow(DateTimeKind.Unspecified)]
+		[DataRow(DateTimeKind.Utc)]
+		[DataRow(DateTimeKind.Local)]
+		public void PreviousDayOfWeek_WhenKindIsSet_ShouldPreserveKind(DateTimeKind kind)
+		{
+			DateTime input = new DateTime(2024, 4, 18, 10, 0, 0, kind);
+			DateTime actual = input.PreviousDayOfWeek(DayOfWeek.Wednesday);
+
+			Assert.AreEqual(kind, actual.Kind);
 		}
 
 		[TestMethod]
-		public void PreviousWeekday_WhenKindIsLocal_ShouldPreserveKind()
+		public void PreviousDayOfWeek_WhenTimeIsSet_ShouldPreserveTimed()
 		{
-			DateTime input = new DateTime(2024, 4, 20, 11, 30, 0, DateTimeKind.Local);
-			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Sunday);
+			var time = new TimeSpan(0, 12, 32, 55, 34, 903);
+			var input =new DateTime(2024, 4, 18).Add(time);
 
-			Assert.AreEqual(DateTimeKind.Local, result.Kind);
+			var actual = input.PreviousDayOfWeek(DayOfWeek.Monday).TimeOfDay;
+
+			Assert.AreEqual(time , actual);
+		}
+
+
+		[TestMethod]
+		public void PreviousDayOfWeek_WhenUsingMinValue_ShouldReturnSameOrGreater()
+		{
+			var actual = DateTime.MinValue.AddDays(7).PreviousDayOfWeek(DayOfWeek.Monday);
+
+			Assert.IsTrue(actual >= DateTime.MinValue);
 		}
 
 		[TestMethod]
-		public void PreviousWeekday_WhenKindIsUnspecified_ShouldPreserveKind()
+		public void PreviousDayOfWeek_WhenUsingMaxValue_ShouldSucceed()
 		{
-			DateTime input = new DateTime(2024, 4, 20, 11, 30, 0, DateTimeKind.Unspecified);
-			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Monday);
+			var input = DateTime.MaxValue;
+			var actual = input.PreviousDayOfWeek(DayOfWeek.Saturday);
 
-			Assert.AreEqual(DateTimeKind.Unspecified, result.Kind);
-		}
-
-		[TestMethod]
-		public void PreviousWeekday_WhenUsingMinValue_ShouldReturnSameOrGreater()
-		{
-			DateTime result = DateTime.MinValue.AddDays(7).PreviousDayOfWeek(DayOfWeek.Monday);
-
-			Assert.IsTrue(result >= DateTime.MinValue);
-		}
-
-		[TestMethod]
-		public void PreviousWeekday_WhenUsingMaxValue_ShouldSucceed()
-		{
-			DateTime input = DateTime.MaxValue;
-			DateTime result = input.PreviousDayOfWeek(DayOfWeek.Saturday);
-
-			Assert.IsTrue(result <= DateTime.MaxValue);
+			Assert.IsTrue(actual <= DateTime.MaxValue);
 		}
 	}
 }

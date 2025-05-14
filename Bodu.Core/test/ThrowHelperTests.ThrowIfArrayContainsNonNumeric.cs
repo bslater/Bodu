@@ -4,10 +4,6 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-
 namespace Bodu
 {
 	public partial class ThrowHelperTests
@@ -33,7 +29,7 @@ namespace Bodu
 		{
 			yield return new object[] { new object[] { 1, 2.0, "string" } };   // includes string
 			yield return new object[] { new object[] { "abc" } };              // only string
-			yield return new object[] { new object[] { new object() } };       // object instance
+			yield return new object[] { new object[] { new() } };       // object instance
 		}
 
 		private static IEnumerable<object[]> GetNumericArrayTestData()

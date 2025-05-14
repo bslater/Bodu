@@ -12,59 +12,42 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("2024-01-01", "2024-12-31")]
-		[DataRow("2024-12-31", "2024-12-31")]
-		[DataRow("2023-03-15", "2023-12-31")]
-		[DataRow("1900-07-01", "1900-12-31")]
-		[DataRow("2000-02-29", "2000-12-31")] // Leap year
-		[DataRow("2100-06-30", "2100-12-31")] // Common century year
-		public void LastDayOfYear_WhenCalled_ShouldReturnDecember31(string inputDate, string expectedDate)
+		[DynamicData(nameof(LastDayOfYearTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfYear_WhenCalled_ShouldReturnDecember31(DateTime input, DateTime expected)
 		{
-			DateTime input = DateTime.Parse(inputDate);
-			DateTime expected = DateTime.Parse(expectedDate).Date;
-			DateTime result = input.LastDayOfYear();
+			DateTime actual = input.LastDayOfYear();
 
-			Assert.AreEqual(expected, result);
-			Assert.AreEqual(input.Kind, result.Kind);
-			Assert.AreEqual(TimeSpan.Zero, result.TimeOfDay);
+			Assert.AreEqual(expected, actual);
 		}
 
-		[TestMethod]
-		public void LastDayOfYear_WhenKindIsUtc_ShouldPreserveKind()
+		[DataTestMethod]
+		[DataRow(DateTimeKind.Unspecified)]
+		[DataRow(DateTimeKind.Utc)]
+		[DataRow(DateTimeKind.Local)]
+		public void LastDayOfYear_WhenKindIsSet_ShouldPreserveKind(DateTimeKind kind)
 		{
-			DateTime input = new DateTime(2024, 5, 5, 10, 0, 0, DateTimeKind.Utc);
-			DateTime result = input.LastDayOfYear();
+			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
+			DateTime actual = input.LastDayOfYear();
 
-			Assert.AreEqual(DateTimeKind.Utc, result.Kind);
-		}
-
-		[TestMethod]
-		public void LastDayOfYear_WhenKindIsLocal_ShouldPreserveKind()
-		{
-			DateTime input = new DateTime(2024, 5, 5, 10, 0, 0, DateTimeKind.Local);
-			DateTime result = input.LastDayOfYear();
-
-			Assert.AreEqual(DateTimeKind.Local, result.Kind);
+			Assert.AreEqual(kind, actual.Kind);
 		}
 
 		[TestMethod]
 		public void LastDayOfYear_WhenMinValue_ShouldReturnEndOfYear1()
 		{
 			DateTime input = DateTime.MinValue;
-			DateTime result = input.LastDayOfYear();
+			DateTime actual = input.LastDayOfYear();
 
-			Assert.AreEqual(new DateTime(1, 12, 31), result);
-			Assert.AreEqual(input.Kind, result.Kind);
+			Assert.AreEqual(new DateTime(DateTime.MinValue.Year, 12, 31), actual);
 		}
 
 		[TestMethod]
 		public void LastDayOfYear_WhenMaxValue_ShouldReturnItself()
 		{
 			DateTime input = DateTime.MaxValue;
-			DateTime result = input.LastDayOfYear();
+			DateTime actual = input.LastDayOfYear();
 
-			Assert.AreEqual(new DateTime(9999, 12, 31), result);
-			Assert.AreEqual(input.Kind, result.Kind);
+			Assert.AreEqual(DateTime.MaxValue.Date, actual);
 		}
 	}
 }

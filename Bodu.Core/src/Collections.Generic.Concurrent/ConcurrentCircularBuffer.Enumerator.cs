@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="ConcurrentCircularBuffer.Enumerator.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="ConcurrentCircularBuffer.Enumerator.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections;

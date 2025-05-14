@@ -16,7 +16,7 @@ namespace Bodu.Extensions
 		{
 			get
 			{
-				// Format: start, interval, after, expected result
+				// Format: start, interval, after, expected actual
 
 				// Exact match: next occurrence is 'start' itself + interval
 				yield return new object[] { new DateTime(2024, 1, 1, 0, 0, 0), TimeSpan.FromDays(1), new DateTime(2024, 1, 2, 0, 0, 0), new DateTime(2024, 1, 2, 0, 0, 0) };
@@ -38,16 +38,16 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.NextOccurrence(DateTime, TimeSpan, DateTime)"/> returns the expected result
+		/// Verifies that <see cref="DateTimeExtensions.NextOccurrence(DateTime, TimeSpan, DateTime)"/> returns the expected actual
 		/// for valid combinations of start, interval, and after values.
 		/// </summary>
 		[DataTestMethod]
 		[DynamicData(nameof(NextOccurrenceTestData), typeof(DateTimeExtensionsTests))]
 		public void NextOccurrence_WhenValid_ShouldReturnExpected(DateTime start, TimeSpan interval, DateTime after, DateTime? expected)
 		{
-			DateTime result = start.NextOccurrence(interval, after);
+			DateTime actual = start.NextOccurrence(interval, after);
 
-			Assert.AreEqual(expected, result, $"Expected next occurrence from {start} every {interval} after {after} to be {expected}");
+			Assert.AreEqual(expected, actual, $"Expected next occurrence from {start} every {interval} after {after} to be {expected}");
 		}
 
 		[DataTestMethod]

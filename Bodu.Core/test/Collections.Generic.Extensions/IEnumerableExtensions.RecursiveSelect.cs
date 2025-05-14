@@ -328,8 +328,8 @@ namespace Bodu.Collections.Generic.Extensions
 		public void RecursiveSelect_WithEmptySource_ShouldReturnEmpty()
 		{
 			object[] source = Array.Empty<object>();
-			var result = source.RecursiveSelect(n => Array.Empty<object>()).ToList();
-			Assert.AreEqual(0, result.Count);
+			var actual = source.RecursiveSelect(n => Array.Empty<object>()).ToList();
+			Assert.AreEqual(0, actual.Count);
 		}
 
 		/// <summary>
@@ -339,10 +339,10 @@ namespace Bodu.Collections.Generic.Extensions
 		public void RecursiveSelect_WhenChildSelectorReturnsNull_ShouldSkipChildren()
 		{
 			var root = new Node { Name = "Root", Children = null! };
-			var result = new object[] { root }.RecursiveSelect(n => (n as Node).Children).ToList();
+			var actual = new object[] { root }.RecursiveSelect(n => (n as Node).Children).ToList();
 
-			Assert.AreEqual(1, result.Count);
-			Assert.AreEqual("Root", (result[0] as Node).Name);
+			Assert.AreEqual(1, actual.Count);
+			Assert.AreEqual("Root", (actual[0] as Node).Name);
 		}
 
 		/// <summary>

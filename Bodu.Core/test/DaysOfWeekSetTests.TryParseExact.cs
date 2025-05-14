@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -16,16 +10,16 @@ namespace Bodu
 		[DynamicData(nameof(GetTryParseExactTestData), typeof(DaysOfWeekSetTests))]
 		public void TryParseExact_WhenGivenInputAndFormat_ShouldReturnExpectedResultAndParsedValue(string input, string format, byte expected, bool isValid)
 		{
-			bool success = DaysOfWeekSet.TryParseExact(input, format, out var result);
+			bool success = DaysOfWeekSet.TryParseExact(input, format, out var actual);
 			Assert.AreEqual(isValid, success);
 
 			if (success)
 			{
-				Assert.AreEqual(expected, result);
+				Assert.AreEqual(expected, actual);
 			}
 			else
 			{
-				Assert.AreEqual(DaysOfWeekSet.Empty, result);
+				Assert.AreEqual(DaysOfWeekSet.Empty, actual);
 			}
 		}
 	}

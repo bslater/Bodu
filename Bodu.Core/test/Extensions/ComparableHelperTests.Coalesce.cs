@@ -16,8 +16,8 @@
 		[DynamicData(nameof(GetCoalesceTestData), DynamicDataSourceType.Method)]
 		public void Coalesce_WhenEvaluatingValues_ShouldReturnExpectedResult(int? first, int? second, int? expected)
 		{
-			var result = ComparableHelper.Coalesce(first, second);
-			Assert.AreEqual(expected, result);
+			var actual = ComparableHelper.Coalesce(first, second);
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

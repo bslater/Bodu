@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -12,8 +6,8 @@ namespace Bodu
 		public void CompareToObject_WhenNull_ShouldReturnGreaterThanZero()
 		{
 			var set = new DaysOfWeekSet(DayOfWeek.Monday);
-			int result = set.CompareTo((object?)null);
-			Assert.IsTrue(result > 0);
+			int actual = set.CompareTo(null);
+			Assert.IsTrue(actual > 0);
 		}
 
 		[DataTestMethod]
@@ -28,9 +22,9 @@ namespace Bodu
 			var set1 = DaysOfWeekSet.FromByte(first);
 			var set2 = DaysOfWeekSet.FromByte(second);
 
-			int result = set1.CompareTo((object)set2);
+			int actual = set1.CompareTo((object)set2);
 
-			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(result));
+			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(actual));
 		}
 
 		[DataTestMethod]
@@ -42,16 +36,16 @@ namespace Bodu
 		{
 			var set = DaysOfWeekSet.FromByte(first);
 
-			int result = set.CompareTo((object)second);
+			int actual = set.CompareTo((object)second);
 
-			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(result));
+			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(actual));
 		}
 
 		public static IEnumerable<object[]> InvalidTypesForCompareTo => new[]
 		{
 			new object[] { "invalid" },
 			new object[] { DateTime.Now },
-			new object[] { new object() }
+			new object[] { new() }
 		};
 
 		[TestMethod]
@@ -72,9 +66,9 @@ namespace Bodu
 			var set1 = DaysOfWeekSet.FromByte(first);
 			var set2 = DaysOfWeekSet.FromByte(second);
 
-			int result = set1.CompareTo(set2);
+			int actual = set1.CompareTo(set2);
 
-			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(result));
+			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(actual));
 		}
 
 		[DataTestMethod]
@@ -88,9 +82,9 @@ namespace Bodu
 		{
 			var set = DaysOfWeekSet.FromByte(first);
 
-			int result = set.CompareTo(second);
+			int actual = set.CompareTo(second);
 
-			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(result));
+			Assert.AreEqual(Math.Sign(expectedSign), Math.Sign(actual));
 		}
 	}
 }

@@ -19,8 +19,8 @@
 		[DynamicData(nameof(GetClampTestData), DynamicDataSourceType.Method)]
 		public void Clamp_WhenValueOutsideBounds_ShouldReturnBound(SimpleTestObject? value, SimpleTestObject? min, SimpleTestObject? max, SimpleTestObject? expected)
 		{
-			var result = ComparableHelper.Clamp(value, min, max);
-			Assert.AreEqual(expected, result);
+			var actual = ComparableHelper.Clamp(value, min, max);
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

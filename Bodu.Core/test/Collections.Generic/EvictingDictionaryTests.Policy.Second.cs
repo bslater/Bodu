@@ -49,9 +49,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
 			dictionary.Add("key", 42);
 
-			var result = dictionary.Touch("key");
+			var actual = dictionary.Touch("key");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 		}
 
 		/// <summary>

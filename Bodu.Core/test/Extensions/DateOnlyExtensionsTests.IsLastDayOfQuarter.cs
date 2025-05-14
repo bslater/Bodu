@@ -1,39 +1,20 @@
-﻿using System;
-using System.Globalization;
-
-namespace Bodu.Extensions
+﻿namespace Bodu.Extensions
 {
 	public partial class DateOnlyExtensionsTests
 	{
-		private static IEnumerable<object[]> GetIsLastDayOfQuarterTestData() =>
-			DateTimeExtensionsTests.QuarterTestData
-				.Where(e => DateOnly.FromDateTime(e.Date) == DateOnly.FromDateTime(e.EndDate))
-				.Select(e => new object[] { e.Date, e.Definition, e.EndDate });
-
-		private static IEnumerable<object[]> GetIsLastDayOfQuarterJanuaryDecemberTestData() =>
-			DateTimeExtensionsTests.QuarterTestData
-				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
-				.Select(e => new object[] { e.Date, e.Definition, e.EndDate });
-
 		/// <summary>
 		/// Verifies that <see cref="DateOnlyExtensions.IsFirstDayOfQuarter(DateOnly)" /> returns <c>true</c> only when the date is the
 		/// first day of a quarter based on the <see cref="CalendarQuarterDefinition.JanuaryDecember" /> structure.
 		/// </summary>
 		[DataTestMethod]
-		[DynamicData(nameof(GetIsLastDayOfQuarterJanuaryDecemberTestData), DynamicDataSourceType.Method)]
-		public void GetIsLastDayOfQuarter_WhenUsingJanuaryDecemberDefinition_ShouldMatchExpectedResult(DateTime inputDate, CalendarQuarterDefinition definition, DateTime expectedDate)
+		[DynamicData(nameof(DateTimeExtensionsTests.IsLastDayOfQuarterJanuaryDecemberTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		public void IsLastDayOfQuarter_WhenDateIsQuarterStartAndDefaultDefinition_ShouldReturnTrue(DateTime inputDateTime, bool expected)
 		{
-			var input = DateOnly.FromDateTime(inputDate);
-			bool result = input.IsLastDayOfQuarter();
+			var input = DateOnly.FromDateTime(inputDateTime);
 
-			if (inputDate == expectedDate)
-			{
-				Assert.IsTrue(result);
-			}
-			else
-			{
-				Assert.IsFalse(result);
-			}
+			bool actual = input.IsLastDayOfQuarter();
+
+			Assert.AreEqual(actual, expected);
 		}
 
 		/// <summary>
@@ -41,31 +22,26 @@ namespace Bodu.Extensions
 		/// when the input date equals the computed start of the quarter.
 		/// </summary>
 		[DataTestMethod]
-		[DynamicData(nameof(GetIsLastDayOfQuarterTestData), DynamicDataSourceType.Method)]
-		public void IsLastDayOfQuarter_WhenComparedToExpectedStart_ShouldReturnExpectedResult(DateTime inputDate, CalendarQuarterDefinition definition, DateTime expectedDate)
+		[DynamicData(nameof(DateTimeExtensionsTests.IsLastDayOfQuarterTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		public void IsLastDayOfQuarter_WhenComparedToExpectedStart_ShouldReturnExpectedResult(DateTime inputDateTime, CalendarQuarterDefinition definition)
 		{
-			var input = DateOnly.FromDateTime(inputDate);
-			bool result = input.IsLastDayOfQuarter(definition);
+			var input = DateOnly.FromDateTime(inputDateTime);
+			bool actual = input.IsLastDayOfQuarter(definition);
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 		}
-
-		private static IEnumerable<object[]> GetNotLastDayOfQuarterTestData() =>
-			DateTimeExtensionsTests.QuarterTestData
-				.Where(e => DateOnly.FromDateTime(e.Date) != DateOnly.FromDateTime(e.EndDate))
-				.Select(e => new object[] { e.Date, e.Definition, e.EndDate });
 
 		/// <summary>
 		/// Verifies that <see cref="DateOnlyExtensions.IsLastDayOfQuarter(DateOnly, CalendarQuarterDefinition)" /> returns <c>false</c>
 		/// when the input date is not the first day of the quarter.
 		/// </summary>
 		[DataTestMethod]
-		[DynamicData(nameof(GetNotLastDayOfQuarterTestData), DynamicDataSourceType.Method)]
-		public void IsLastDayOfQuarter_WhenDateIsNotStartOfQuarter_ShouldReturnFalse(DateTime inputDate, CalendarQuarterDefinition definition, DateTime expectedDate)
+		[DynamicData(nameof(DateTimeExtensionsTests.IsNotLastDayOfQuarterTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		public void IsLastDayOfQuarter_WhenDateIsNotStartOfQuarter_ShouldReturnFalse(DateTime inputDateTime, CalendarQuarterDefinition definition)
 		{
-			var input = DateOnly.FromDateTime(inputDate);
-			bool result = input.IsLastDayOfQuarter(definition);
-			Assert.IsFalse(result);
+			var input = DateOnly.FromDateTime(inputDateTime);
+			bool actual = input.IsLastDayOfQuarter(definition);
+			Assert.IsFalse(actual);
 		}
 
 		[TestMethod]
@@ -91,19 +67,16 @@ namespace Bodu.Extensions
 			});
 		}
 
-		public static IEnumerable<object[]> GetIsLastDayOfQuarterWithCustomProviderTestData =>
-			DateTimeExtensionsTests.ValidQuarterProvider.QuarterTestData
-				.Where(e => e.Date == e.StartDate)
-				.Select(e => new object[] { e.EndDate });
-
 		[TestMethod]
-		[DynamicData(nameof(GetIsLastDayOfQuarterWithCustomProviderTestData), DynamicDataSourceType.Property)]
-		public void IsLastDayOfQuarter_WhenUsingValidQuarterProvider_ShouldReturnExpectedDate(DateTime inputDate)
+		[DynamicData(nameof(DateTimeExtensionsTests.ValidQuarterProvider.IsLastDayOfQuarterTestData), typeof(DateTimeExtensionsTests.ValidQuarterProvider), DynamicDataSourceType.Method)]
+		public void IsLastDayOfQuarter_WhenUsingValidQuarterProvider_ShouldReturnExpectedDate(DateTime inputDateTime, bool expected)
 		{
-			var input = DateOnly.FromDateTime(inputDate);
+			var input = DateOnly.FromDateTime(inputDateTime);
 			var provider = new DateTimeExtensionsTests.ValidQuarterProvider();
-			var result = input.IsLastDayOfQuarter(provider);
-			Assert.IsTrue(result);
+
+			var actual = input.IsLastDayOfQuarter(provider);
+
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

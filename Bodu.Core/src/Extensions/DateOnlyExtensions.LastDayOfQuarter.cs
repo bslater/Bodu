@@ -1,11 +1,10 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Bodu.Extensions
 {
@@ -170,7 +169,7 @@ namespace Bodu.Extensions
 		public static DateOnly LastDayOfQuarter(this DateOnly date, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetEndDate(date);
+			return provider.GetQuarterEndDate(date);
 		}
 	}
 }

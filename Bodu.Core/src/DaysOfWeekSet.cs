@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
+﻿// // --------------------------------------------------------------------------------------------------------------- //
 // <copyright file="DaysOfWeekSet.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
 // </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -16,6 +16,21 @@ namespace Bodu
 	/// <see cref="DaysOfWeekSet" /> provides a compact bitmask representation of selected days, supporting parsing, formatting, comparison,
 	/// and serialization.
 	/// </para>
+	/// <code language="csharp">
+	///<![CDATA[
+	/// // Create a set with Monday, Wednesday, and Friday selected
+	/// var days = new DaysOfWeekSet(DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday);
+	///
+	/// // Check if Friday is selected:
+	/// bool isFridayIncluded = days[DayOfWeek.Friday]; // true
+	///
+	/// // Add Sunday to the set
+	/// days[DayOfWeek.Sunday] = true;
+	///
+	/// // Count the number of selected days
+	/// int selectedCount = days.Count; //  4
+	///]]>
+	/// </code>
 	/// </remarks>
 	[Serializable]
 	public partial struct DaysOfWeekSet
@@ -50,6 +65,20 @@ namespace Bodu
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if any provided day is outside the valid <see cref="DayOfWeek" /> range.
 		/// </exception>
+		/// <example>
+		/// <code language="csharp">
+		///<![CDATA[
+		/// // Create a set with Monday, Wednesday, and Friday marked as selected
+		/// var workdays = new DaysOfWeekSet(DayOfWeek.Monday, DayOfWeek.Wednesday, DayOfWeek.Friday);
+		///
+		/// // Check if a specific day is selected
+		/// bool isFridaySelected = workdays[DayOfWeek.Friday]; // true
+		///
+		/// // Get the total number of selected days
+		/// int count = workdays.Count; // 3
+		///]]>
+		/// </code>
+		/// </example>
 		public DaysOfWeekSet(params DayOfWeek[] daysOfWeek)
 		{
 			selectedDays = 0;
@@ -70,6 +99,23 @@ namespace Bodu
 		/// <remarks>
 		/// This constructor behaves the same as <see cref="Parse(string)" />, automatically inferring the format from the input string.
 		/// </remarks>
+		/// <example>
+		/// <code language="csharp">
+		///<![CDATA[
+		/// // Parse a string where 'M', 'T', 'W', 'T', 'F' represent selected days, '-' means unselected
+		/// var weekdays = new DaysOfWeekSet("MTWTF--");
+		///
+		/// // Check if Thursday is selected
+		/// bool thursdayIncluded = weekdays[DayOfWeek.Thursday]; // true
+		///
+		/// // Check if Sunday is selected
+		/// bool sundayIncluded = weekdays[DayOfWeek.Sunday]; // false
+		///
+		/// // Count the number of selected days
+		/// int count = weekdays.Count; // 5
+		///]]>
+		/// </code>
+		/// </example>
 		public DaysOfWeekSet(string input)
 			: this(Parse(input)) // delegates to the implicit copy constructor from static method
 		{ }

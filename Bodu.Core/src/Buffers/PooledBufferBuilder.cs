@@ -1,7 +1,7 @@
-﻿// // --------------------------------------------------------------------------------------------------------------- //
-// <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
-//     // Copyright (c) PlaceholderCompany. All rights reserved. //
-// </copyright>
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -40,7 +40,7 @@ namespace Bodu.Buffers
 		/// <returns><c>true</c> if copied using <c>CopyTo</c> otherwise, use <see cref="AppendRange" />.</returns>
 		public bool TryCopyFrom(IReadOnlyCollection<T> source)
 		{
-			this.ThrowIfDisposed();
+			ThrowIfDisposed();
 			ThrowHelper.ThrowIfNull(source);
 
 			if (source is ICollection<T> col)
@@ -61,7 +61,7 @@ namespace Bodu.Buffers
 		/// <param name="item">The item to append.</param>
 		public void Append(T item)
 		{
-			this.ThrowIfDisposed();
+			ThrowIfDisposed();
 
 			if (count >= buffer.Length)
 				Grow();
@@ -75,7 +75,7 @@ namespace Bodu.Buffers
 		/// <param name="source">The input sequence.</param>
 		public void AppendRange(IEnumerable<T> source)
 		{
-			this.ThrowIfDisposed();
+			ThrowIfDisposed();
 			ThrowHelper.ThrowIfNull(source);
 
 			foreach (T item in source)
@@ -92,8 +92,8 @@ namespace Bodu.Buffers
 		/// </summary>
 		public Span<T> AsSpan()
 		{
-			this.ThrowIfDisposed();
-			return this.buffer.AsSpan(0, this.count);
+			ThrowIfDisposed();
+			return buffer.AsSpan(0, count);
 		}
 
 		/// <summary>
@@ -101,8 +101,8 @@ namespace Bodu.Buffers
 		/// </summary>
 		public T[] AsArray()
 		{
-			this.ThrowIfDisposed();
-			return this.buffer;
+			ThrowIfDisposed();
+			return buffer;
 		}
 
 		/// <summary>
@@ -112,8 +112,8 @@ namespace Bodu.Buffers
 		{
 			get
 			{
-				this.ThrowIfDisposed();
-				return this.count;
+				ThrowIfDisposed();
+				return count;
 			}
 		}
 
@@ -122,19 +122,19 @@ namespace Bodu.Buffers
 		/// </summary>
 		public void Dispose()
 		{
-			if (!this.disposed)
+			if (!disposed)
 			{
-				this.ReturnBufferIfNeeded();
-				this.buffer = Array.Empty<T>();
-				this.count = 0;
-				this.disposed = true;
+				ReturnBufferIfNeeded();
+				buffer = Array.Empty<T>();
+				count = 0;
+				disposed = true;
 			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ThrowIfDisposed()
 		{
-			if (this.disposed)
+			if (disposed)
 				throw new ObjectDisposedException(nameof(PooledBufferBuilder<T>), "Cannot access buffer after it has been disposed.");
 		}
 

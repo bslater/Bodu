@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	[TestClass]
 	public partial class DaysOfWeekSetTests
@@ -58,8 +52,8 @@ namespace Bodu
 					binaryBuilder[i] = bitSet ? '1' : '0';
 				}
 
-				string symbol = new string(symbolBuilder);
-				string binary = new string(binaryBuilder);
+				string symbol = new(symbolBuilder);
+				string binary = new(binaryBuilder);
 
 				yield return new object[] { (byte)mask, symbol, binary };
 			}

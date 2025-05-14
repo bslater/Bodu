@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.IsWeekend.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.IsWeekend.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -69,7 +69,7 @@ namespace Bodu.Extensions
 				CalendarWeekendDefinition.Custom when provider is not null => provider.IsWeekend(dayOfWeek),
 				_ => throw new ArgumentOutOfRangeException(
 					nameof(weekend),
-					string.Format(ResourceStrings.Arg_Invalid_EnumValue, typeof(CalendarWeekendDefinition).Name))
+					string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, weekend, nameof(CalendarWeekendDefinition)))
 			};
 		}
 	}

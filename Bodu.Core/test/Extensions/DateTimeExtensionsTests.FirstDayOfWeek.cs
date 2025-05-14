@@ -13,28 +13,21 @@ namespace Bodu.Extensions
 {
 	public partial class DateTimeExtensionsTests
 	{
-		[DataTestMethod]
-		[DataRow("2024-04-14", "2024-04-14", "en-US")] // Sunday is first day
-		[DataRow("2024-04-15", "2024-04-14", "en-US")] // Monday
-		[DataRow("2024-04-16", "2024-04-14", "en-US")] // Tuesday
 
-		[DataRow("2024-04-14", "2024-04-08", "en-GB")] // GB: Monday is first day
-		[DataRow("2024-04-15", "2024-04-15", "en-GB")] // GB: Monday
-		[DataRow("2024-04-20", "2024-04-15", "en-GB")] // GB: Saturday
-		public void FirstDayOfWeek_WhenUsingCulture_ShouldReturnExpectedStart(string inputDate, string expectedDate, string cultureName)
+
+		[DataTestMethod]
+		[DynamicData(nameof(FirstDayOfWeekCultureInfoTestData), DynamicDataSourceType.Method)]
+		public void FirstDayOfWeek_WhenCurrentCultureSet_ShouldReturnExpectedStart(DateTime input, CultureInfo culture, DateTime expected)
 		{
 			var originalCulture = CultureInfo.CurrentCulture;
 
 			try
 			{
-				CultureInfo.CurrentCulture = new CultureInfo(cultureName);
+				CultureInfo.CurrentCulture = culture;
 
-				DateTime input = DateTime.Parse(inputDate, CultureInfo.CurrentCulture);
-				DateTime expected = DateTime.Parse(expectedDate, CultureInfo.CurrentCulture);
+				DateTime actual = input.FirstDayOfWeek();
 
-				DateTime result = input.FirstDayOfWeek();
-
-				Assert.AreEqual(expected, result, $"Failed for culture: {cultureName}");
+				Assert.AreEqual(expected, actual, $"Failed for culture: {culture.Name}");
 			}
 			finally
 			{
@@ -43,19 +36,12 @@ namespace Bodu.Extensions
 		}
 
 		[DataTestMethod]
-		[DataRow("2024-04-14", "2024-04-08")] // Sunday → previous Monday
-		[DataRow("2024-04-15", "2024-04-15")] // Monday (start of week)
-		[DataRow("2024-04-17", "2024-04-15")] // Wednesday
-		[DataRow("2024-04-21", "2024-04-15")] // Sunday
-		public void FirstDayOfWeek_WhenUsingFrenchCulture_ShouldReturnExpectedStart(string inputDate, string expectedDate)
+		[DynamicData(nameof(FirstDayOfWeekCultureInfoTestData), DynamicDataSourceType.Method)]
+		public void FirstDayOfWeek_WhenCulture_ShouldReturnExpectedStart(DateTime input, CultureInfo culture, DateTime expected)
 		{
-			CultureInfo frenchCulture = new CultureInfo("fr-FR");
+			DateTime actual = input.FirstDayOfWeek(culture);
 
-			DateTime input = DateTime.Parse(inputDate);
-			DateTime expected = DateTime.Parse(expectedDate);
-			DateTime result = input.FirstDayOfWeek(frenchCulture);
-
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -65,14 +51,13 @@ namespace Bodu.Extensions
 			try
 			{
 				CultureInfo.CurrentCulture = DateTimeExtensionsTests.TestCulture;
-
 				DateTime input = new DateTime(2024, 4, 18); // Thursday
 															// Backtrack to previous Wednesday → 2024-04-17
 				DateTime expected = new DateTime(2024, 4, 17);
 
-				DateTime result = input.FirstDayOfWeek(null!);
+				DateTime actual = input.FirstDayOfWeek(null!);
 
-				Assert.AreEqual(expected, result, "Expected fallback to CultureInfo.CurrentCulture with Wednesday as start of week.");
+				Assert.AreEqual(expected, actual, "Expected fallback to CultureInfo.CurrentCulture with Wednesday as start of week.");
 			}
 			finally
 			{
@@ -87,8 +72,8 @@ namespace Bodu.Extensions
 		public void FirstDayOfWeek_WhenUsingDefaultOverload_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			var original = new DateTime(2024, 1, 3, 0, 0, 0, kind);
-			var result = original.FirstDayOfWeek();
-			Assert.AreEqual(kind, result.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
+			var actual = original.FirstDayOfWeek();
+			Assert.AreEqual(kind, actual.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
 		}
 
 		[DataTestMethod]
@@ -98,17 +83,18 @@ namespace Bodu.Extensions
 		public void FirstDayOfWeek_WhenUsingCulture_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			var original = new DateTime(2024, 1, 3, 0, 0, 0, kind);
-			var result = original.FirstDayOfWeek(CultureInfo.CurrentCulture);
-			Assert.AreEqual(kind, result.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
+			var actual = original.FirstDayOfWeek(CultureInfo.CurrentCulture);
+
+			Assert.AreEqual(kind, actual.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
 		}
 
 		[TestMethod]
 		public void FirstDayOfWeek_WhenUsingMinValue_ShouldReturnMin()
 		{
 			DateTime min = DateTime.MinValue;
-			DateTime result = min.FirstDayOfWeek(new CultureInfo("en-GB")); // Monday is first day
+			DateTime actual = min.FirstDayOfWeek(new CultureInfo("en-GB")); // Monday is first day
 
-			Assert.AreEqual(min.Date, result);
+			Assert.AreEqual(min.Date, actual);
 		}
 
 		[TestMethod]
@@ -127,20 +113,21 @@ namespace Bodu.Extensions
 		public void FirstDayOfWeek_WhenUsingMaxValue_ShouldReturnValidStart()
 		{
 			DateTime max = DateTime.MaxValue.Date;
-			DateTime result = max.FirstDayOfWeek(new CultureInfo("en-US"));
+			DateTime actual = max.FirstDayOfWeek(new CultureInfo("en-US"));
 
-			Assert.IsTrue(result <= max);
+			Assert.IsTrue(actual <= max);
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> returns the expected result based on the specified weekend definition.
+		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> returns the expected actual based on the specified weekend definition.
 		/// </summary>
 		[DataTestMethod]
-		[DynamicData(nameof(FirstAndLastDayOfWeekTestData), DynamicDataSourceType.Property)]
-		public void FirstDayOfWeek_WhenUsingWeekendDefinition_ShouldReturnExpectedStart(DateTime input, CalendarWeekendDefinition weekend, DateTime expectedStart, DateTime _)
+		[DynamicData(nameof(FirstDayOfWeekDefinitionTestData), DynamicDataSourceType.Method)]
+		public void FirstDayOfWeek_WhenUsingWeekendDefinition_ShouldReturnExpectedStart(DateTime input, CalendarWeekendDefinition weekend, DateTime expected)
 		{
 			var actual = input.FirstDayOfWeek(weekend);
-			Assert.AreEqual(expectedStart, actual);
+
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>
@@ -159,7 +146,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> throws if the calculated result underflows <see cref="DateTime.MinValue"/>.
+		/// Verifies that <see cref="DateTimeExtensions.FirstDayOfWeek"/> throws if the calculated actual underflows <see cref="DateTime.MinValue"/>.
 		/// </summary>
 		[TestMethod]
 		public void FirstDayOfWeek_WhenResultWouldUnderflowMinValue_ShouldThrowExactly()
@@ -174,7 +161,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that the result of <see cref="DateTimeExtensions.FirstDayOfWeek"/> preserves the <see cref="DateTime.Kind" />.
+		/// Verifies that the actual of <see cref="DateTimeExtensions.FirstDayOfWeek"/> preserves the <see cref="DateTime.Kind" />.
 		/// </summary>
 		[DataTestMethod]
 		[DataRow(DateTimeKind.Unspecified)]
@@ -183,8 +170,8 @@ namespace Bodu.Extensions
 		public void FirstDayOfWeek_WhenUsingSaturdaySunday_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			var original = new DateTime(2024, 1, 3, 0, 0, 0, kind);
-			var result = original.FirstDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
-			Assert.AreEqual(kind, result.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
+			var actual = original.FirstDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
+			Assert.AreEqual(kind, actual.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
 		}
 
 		/// <summary>
@@ -194,10 +181,22 @@ namespace Bodu.Extensions
 		public void FirstDayOfWeek_WhenNearMinValue_ShouldReturnExpectedStart()
 		{
 			var date = DateTime.MinValue.AddDays(6); // 0001-01-07
-			var result = date.FirstDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
+			var actual = date.FirstDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
 
-			Assert.IsTrue(result >= DateTime.MinValue);
-			Assert.AreEqual(DayOfWeek.Monday, result.DayOfWeek);
+			Assert.IsTrue(actual >= DateTime.MinValue);
+			Assert.AreEqual(DayOfWeek.Monday, actual.DayOfWeek);
+		}
+
+
+		[DataTestMethod]
+		[DynamicData(nameof(CalendarWeekendDefinitionDateTimeKindTestData), DynamicDataSourceType.Method)]
+		public void FirstDayOfWeek_WhengWeekendDefinitionAndKindIsSet_ShouldPreserveKind(CalendarWeekendDefinition definition, DateTimeKind kind)
+		{
+			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
+			DateTime actual = input.FirstDayOfWeek(definition);
+
+			Assert.AreEqual(kind, actual.Kind);
+
 		}
 	}
 }

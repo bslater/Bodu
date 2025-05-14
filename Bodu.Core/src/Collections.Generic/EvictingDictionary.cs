@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
+﻿// // --------------------------------------------------------------------------------------------------------------- //
 // <copyright file="EvictingDictionary.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
 // </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,37 @@ namespace Bodu.Collections.Generic
 	/// <see cref="EvictingDictionary{TKey, TValue}" /> allows <see langword="null" /> keys and values (for reference types) and supports
 	/// custom key equality via <see cref="System.Collections.Generic.IEqualityComparer{T}" />.
 	/// </para>
+	/// <example>
+	/// <code language="csharp">
+	/// <![CDATA[
+	/// // Create an evicting dictionary with capacity for 2 items
+	/// var cache = new EvictingDictionary&lt;string, int&gt;(capacity: 2)
+	/// {
+	///     Policy = EvictionPolicy.LeastRecentlyUsed
+	/// };
+	///
+	/// // Add two entries
+	/// cache["A"] = 1;
+	/// cache["B"] = 2;
+	///
+	/// // Touch "A" to mark it as recently used
+	/// cache.Touch("A");
+	///
+	/// // Add a third entry; "B" is now the least recently used and will be evicted
+	/// cache["C"] = 3;
+	///
+	/// // Dictionary now contains: { "A": 1, "C": 3 }
+	///
+	/// // Display current entries
+	/// foreach (var kvp in cache)
+	///     Console.WriteLine($"{kvp.Key} = {kvp.Value}");
+	///
+	/// // Output:
+	/// // A = 1
+	/// // C = 3
+	///]]>
+	/// </code>
+	/// </example>
 	/// </remarks>
 	[DebuggerDisplay("Count: {Count}, Capacity: {capacity}, Policy: {policy}")]
 	[DebuggerTypeProxy(typeof(EvictingDictionaryDebugView<,>))]

@@ -38,8 +38,8 @@
 		[DynamicData(nameof(GetIsBetweenTestData), DynamicDataSourceType.Method)]
 		public void IsBetween_WhenValueWithinBounds_ShouldReturnTrue(SimpleTestObject? value, SimpleTestObject? lower, SimpleTestObject? upper, bool expected)
 		{
-			var result = ComparableHelper.IsBetween(value, lower, upper);
-			Assert.AreEqual(expected, result);
+			var actual = ComparableHelper.IsBetween(value, lower, upper);
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

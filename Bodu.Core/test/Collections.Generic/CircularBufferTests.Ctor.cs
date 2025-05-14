@@ -177,7 +177,7 @@ namespace Bodu.Collections.Generic
 		{
 			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
-				_ = new CircularBuffer<object>((IEnumerable<object>)null!);
+				_ = new CircularBuffer<object>(null!);
 			});
 		}
 

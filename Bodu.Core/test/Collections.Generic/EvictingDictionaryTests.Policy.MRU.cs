@@ -114,7 +114,7 @@ namespace Bodu.Collections.Generic
 			dictionary.Add("c", 3); // newest
 			dictionary.Touch("a");  // now "a" is most recent
 
-			var result = dictionary.ToArray();
+			var actual = dictionary.ToArray();
 			var expected = new[]
 			{
 				new KeyValuePair<string, int>("a", 1),
@@ -122,7 +122,7 @@ namespace Bodu.Collections.Generic
 				new KeyValuePair<string, int>("b", 2),
 			};
 
-			CollectionAssert.AreEqual(expected, result);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		/// <summary>

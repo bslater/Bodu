@@ -4,44 +4,20 @@ namespace Bodu.Extensions
 {
 	public partial class DateTimeExtensionsTests
 	{
-		public static IEnumerable<object[]> GetUnifiedWeekOfMonthTestCases()
+		[DataTestMethod]
+		[DynamicData(nameof(WeekOfMonthCalendarWeekRuleTestData), DynamicDataSourceType.Method)]
+		public void WeekOfMonth_WithCalendarWeekAndRule_ShouldReturnExpected(DateTime input, CalendarWeekRule rule, DayOfWeek firstDay, int expected)
 		{
-			// Culture-specific tests
-			yield return new object[] { new DateTime(2024, 01, 01), "en-US", CalendarWeekRule.FirstDay, DayOfWeek.Sunday, 1 };
-			yield return new object[] { new DateTime(2024, 01, 07), "en-US", CalendarWeekRule.FirstDay, DayOfWeek.Sunday, 2 };
-			yield return new object[] { new DateTime(2024, 01, 31), "en-US", CalendarWeekRule.FirstDay, DayOfWeek.Sunday, 5 };
-			yield return new object[] { new DateTime(2024, 03, 31), "en-US", CalendarWeekRule.FirstDay, DayOfWeek.Monday, 5 };
-			yield return new object[] { new DateTime(2024, 06, 30), "en-US", CalendarWeekRule.FirstDay, DayOfWeek.Sunday, 6 };
-
-			yield return new object[] { new DateTime(2024, 01, 01), "fr-FR", CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday, 1 };
-			yield return new object[] { new DateTime(2024, 01, 08), "fr-FR", CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday, 2 };
-
-			yield return new object[] { new DateTime(2024, 01, 01), "ar-SA", CalendarWeekRule.FirstDay, DayOfWeek.Saturday, 1 };
-			yield return new object[] { new DateTime(2024, 01, 07), "ar-SA", CalendarWeekRule.FirstDay, DayOfWeek.Saturday, 2 };
-
-			// Culture-agnostic (null means use current)
-			yield return new object[] { new DateTime(2024, 01, 01), null!, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday, 1 };
-			yield return new object[] { new DateTime(2024, 01, 10), null!, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday, 2 };
+			int actual = input.WeekOfMonth(rule, firstDay);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[DataTestMethod]
-		[DynamicData(nameof(GetUnifiedWeekOfMonthTestCases), DynamicDataSourceType.Method)]
-		public void WeekOfMonth_WithVariousCultureAndRules_ShouldReturnExpected(
-			DateTime date,
-			string? cultureName,
-			CalendarWeekRule rule,
-			DayOfWeek firstDay,
-			int expectedWeek)
+		[DynamicData(nameof(WeekOfMonthCultureTestData), DynamicDataSourceType.Method)]
+		public void WeekOfMonth_WithCulture_ShouldReturnExpected(DateTime input, CultureInfo culture, int expected)
 		{
-			CultureInfo culture = cultureName != null
-				? new CultureInfo(cultureName)
-				: (CultureInfo)CultureInfo.CurrentCulture.Clone();
-
-			culture.DateTimeFormat.FirstDayOfWeek = firstDay;
-			culture.DateTimeFormat.CalendarWeekRule = rule;
-
-			int result = date.WeekOfMonth(culture);
-			Assert.AreEqual(expectedWeek, result, $"Failed for {date:yyyy-MM-dd}, culture={cultureName ?? "Current"}, rule={rule}, firstDay={firstDay}");
+			int actual = input.WeekOfMonth(culture);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -50,8 +26,8 @@ namespace Bodu.Extensions
 			var date = new DateTime(2024, 05, 15);
 			var culture = new CultureInfo("en-US") { DateTimeFormat = { FirstDayOfWeek = DayOfWeek.Sunday } };
 			var expected = date.WeekOfMonth(culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
-			var result = date.WeekOfMonth(culture);
-			Assert.AreEqual(expected, result);
+			var actual = date.WeekOfMonth(culture);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -60,8 +36,8 @@ namespace Bodu.Extensions
 			var date = new DateTime(2024, 05, 15);
 			var expected = date.WeekOfMonth(CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,
 											CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
-			var result = date.WeekOfMonth();
-			Assert.AreEqual(expected, result);
+			var actual = date.WeekOfMonth();
+			Assert.AreEqual(expected, actual);
 		}
 
 		[DataTestMethod]
@@ -76,8 +52,8 @@ namespace Bodu.Extensions
 			var date = new DateTime(2024, 04, 05);
 			var culture = new CultureInfo(cultureName);
 			var expected = date.WeekOfMonth(culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
-			var result = date.WeekOfMonth(culture);
-			Assert.AreEqual(expected, result, $"Culture: {cultureName}");
+			var actual = date.WeekOfMonth(culture);
+			Assert.AreEqual(expected, actual, $"Culture: {cultureName}");
 		}
 
 		[TestMethod]
@@ -87,7 +63,7 @@ namespace Bodu.Extensions
 			try
 			{
 				CultureInfo.CurrentCulture = new CultureInfo("fr-FR"); // Starts week on Monday
-				DateTime input = new DateTime(2024, 01, 08); // 2nd Monday of Jan 2024
+				DateTime input = new(2024, 01, 08); // 2nd Monday of Jan 2024
 				int week = input.WeekOfMonth(); // Should use fr-FR's firstDayOfWeek (Monday)
 
 				Assert.AreEqual(2, week); // Jan 8 falls in 2nd full week

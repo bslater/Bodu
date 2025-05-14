@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -36,8 +30,8 @@ namespace Bodu
 		[DynamicData(nameof(GetValidParseInputTestData), typeof(DaysOfWeekSetTests))]
 		public void Constructor_WhenValidStringProvided_ShouldReturnExpected(string input, string _, byte expected)
 		{
-			var result = new DaysOfWeekSet(input);
-			Assert.AreEqual(expected, result);
+			var actual = new DaysOfWeekSet(input);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[DataTestMethod]

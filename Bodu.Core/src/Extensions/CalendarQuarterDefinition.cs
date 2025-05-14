@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="CalendarQuarterDefinition.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="CalendarQuarterDefinition.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -30,7 +30,7 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Quarters are based on a year beginning on 1 April.
 		/// <para>Q1 = 1 Apr–30 Jun, Q2 = 1 Jul–30 Sep, Q3 = 1 Oct–31 Dec, Q4 = 1 Jan–31 Mar.</para>
-	        /// </summary>
+		/// </summary>
 		AprilToMarch = 401,
 
 		/// <summary>

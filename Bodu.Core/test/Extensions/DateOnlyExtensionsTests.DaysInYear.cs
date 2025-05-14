@@ -1,26 +1,24 @@
-using System;
 using System.Globalization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Bodu.Extensions
 {
 	public partial class DateOnlyExtensionsTests
 	{
 		[DataTestMethod]
-		[DataRow("2020-01-01", 366)]
-		[DataRow("2021-01-01", 365)]
-		public void DaysInYear_WhenCalled_ShouldReturnCorrectDays(string inputDate, int expected)
+		[DynamicData(nameof(DateTimeExtensionsTests.DaysInYearGregorianCalendarTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		public void DaysInYear_WhenCalled_ShouldReturnCorrectDays(DateTime inputDateTime, int expected)
 		{
-			DateOnly input = DateOnly.Parse(inputDate);
-			Assert.AreEqual(expected, input.DaysInYear());
+			var input = DateOnly.FromDateTime(inputDateTime);
+			var actual = input.DaysInYear();
+			Assert.AreEqual(expected, actual);
 		}
 
 		[DataTestMethod]
-		[DynamicData(nameof(DateTimeExtensionsTests.GetDaysInYearTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		[DynamicData(nameof(DateTimeExtensionsTests.DaysInYearTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
 		public void DaysInYear_WhenUsingCustomCalendar_ShouldMatchExpected(int year, Calendar calendar, int expectedDays)
 		{
-			DateOnly input = new DateOnly(year, 1, 1);
-			int actual = input.DaysInYear(calendar);
+			var input = new DateOnly(year, 1, 1);
+			var actual = input.DaysInYear(calendar);
 			Assert.AreEqual(expectedDays, actual, $"{calendar.GetType().Name} returned {actual} days for year {year}.");
 		}
 
@@ -47,7 +45,7 @@ namespace Bodu.Extensions
 				customCulture.DateTimeFormat.Calendar = new UmAlQuraCalendar(); // Has non-Gregorian year lengths
 				CultureInfo.CurrentCulture = customCulture;
 
-				DateOnly input = new DateOnly(1445, 1, 1); // 1445 AH (2023-07-19 Gregorian)
+				DateOnly input = new(1445, 1, 1); // 1445 AH (2023-07-19 Gregorian)
 				int expected = customCulture.DateTimeFormat.Calendar.GetDaysInYear(1445);
 				int actual = input.DaysInYear(); // Should use current culture calendar
 

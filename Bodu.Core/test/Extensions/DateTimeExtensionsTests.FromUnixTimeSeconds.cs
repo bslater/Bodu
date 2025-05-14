@@ -12,26 +12,34 @@ namespace Bodu.Extensions
 	public partial class DateTimeExtensionsTests
 	{
 
-		[DataTestMethod]
-		[DataRow(0, "1970-01-01T00:00:00.0000000Z")]                      // Epoch
-		[DataRow(1, "1970-01-01T00:00:01.0000000Z")]                      // +1 second
-		[DataRow(60, "1970-01-01T00:01:00.0000000Z")]                     // +1 minute
-		[DataRow(3600, "1970-01-01T01:00:00.0000000Z")]                   // +1 hour
-		[DataRow(-1, "1969-12-31T23:59:59.0000000Z")]                     // -1 second (before epoch)
-		[DataRow(946684800, "2000-01-01T00:00:00.0000000Z")]              // Y2K
-		[DataRow(2147483647, "2038-01-19T03:14:07.0000000Z")]             // 32-bit signed int max
-		[DataRow(-62135596800, "0001-01-01T00:00:00.0000000Z")]           // DateTime.MinValue
-		[DataRow(253402300799, "9999-12-31T23:59:59.0000000Z")]           // DateTime.MaxValue
-		public void FromUnixTimeSeconds_WhenValidInput_ShouldReturnExpected(long input, string expectedUtcIso)
+		public static IEnumerable<object[]> FromUnixTimeSecondsTestData => new[]
 		{
-			DateTime actual = input.FromUnixTimeSeconds();
-			DateTime expected = DateTime.ParseExact(
-				expectedUtcIso,
-				"yyyy-MM-ddTHH:mm:ss.fffffffZ",
-				CultureInfo.InvariantCulture,
-				DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+			new object[] { 0L, new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) },								// Epoch
+			new object[] { 1L, new DateTime(1970, 1, 1, 0, 0, 1, DateTimeKind.Utc) },								// +1 second
+			new object[] { 60L, new DateTime(1970, 1, 1, 0, 1, 0, DateTimeKind.Utc) },								// +1 minute
+			new object[] { 3600L, new DateTime(1970, 1, 1, 1, 0, 0, DateTimeKind.Utc) },							// +1 hour
+			new object[] { -1L, new DateTime(1969, 12, 31, 23, 59, 59, DateTimeKind.Utc) },							// -1 second
+			new object[] { 946684800L, new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc) },						// Y2K
+			new object[] { 2147483647L, new DateTime(2038, 1, 19, 3, 14, 7, DateTimeKind.Utc) },					// Int32.MaxValue
+			new object[] { -62135596800L, DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc) },				// DateTime.MinValue
+			new object[] { -62135596799L, new DateTime(0001, 1, 1, 0, 0, 1, DateTimeKind.Utc) },					// MinValue + 1 second
+			new object[] { 253402300799L, new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Utc) },				// DateTime.MaxValue
+			new object[] { 253402300798L, new DateTime(9999, 12, 31, 23, 59, 58, DateTimeKind.Utc) },				// MaxValue - 1 second
+		};
+
+		[DataTestMethod]
+		[DynamicData(nameof(FromUnixTimeSecondsTestData), DynamicDataSourceType.Property)]
+		public void FromUnixTimeSeconds_WhenValidInput_ShouldReturnExpected(long input, DateTime expected)
+		{
+			DateTime actual = DateTimeExtensions.FromUnixTimeSeconds(input);
 
 			Assert.AreEqual(expected, actual);
+		}
+
+		public void FromUnixTimeSeconds_WhenCalled_ShouldReturnUtcKind()
+		{
+			DateTime actual = DateTimeExtensions.FromUnixTimeSeconds(0);
+
 			Assert.AreEqual(DateTimeKind.Utc, actual.Kind);
 		}
 
@@ -42,7 +50,7 @@ namespace Bodu.Extensions
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = belowMin.FromUnixTimeSeconds();
+				_ = DateTimeExtensions.FromUnixTimeSeconds(belowMin);
 			});
 		}
 
@@ -53,7 +61,7 @@ namespace Bodu.Extensions
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = aboveMax.FromUnixTimeSeconds();
+				_ = DateTimeExtensions.FromUnixTimeSeconds(aboveMax);
 			});
 		}
 	}

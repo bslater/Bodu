@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="BufferConverter.CopyTo.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="BufferConverter.CopyTo.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Runtime.CompilerServices;
@@ -46,8 +46,8 @@ namespace Bodu.Extensions
 			ThrowHelper.ThrowIfArrayOffsetOrCountInvalid(targetArray, targetIndex, byteCount);
 
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
-			ReadOnlySpan<byte> sourceSpan = new ReadOnlySpan<byte>(sourceArray, sourceIndex, byteCount);
-			Span<T> targetSpan = new Span<T>(targetArray, targetIndex, count);
+			ReadOnlySpan<byte> sourceSpan = new(sourceArray, sourceIndex, byteCount);
+			Span<T> targetSpan = new(targetArray, targetIndex, count);
 			MemoryMarshal.Cast<byte, T>(sourceSpan).CopyTo(targetSpan);
 #else
 			var handle = GCHandle.Alloc(targetArray, GCHandleType.Pinned);

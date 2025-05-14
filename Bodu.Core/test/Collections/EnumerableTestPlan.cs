@@ -26,7 +26,7 @@ namespace Bodu.Collections
 		public Func<IEnumerable<TSource>, IEnumerable> Invoke { get; }
 
 		/// <summary>
-		/// The expected transformed result.
+		/// The expected transformed actual.
 		/// </summary>
 		public IEnumerable<object> ExpectedResult { get; }
 

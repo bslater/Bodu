@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.FirstWeekdayInMonth.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.LastDayOfWeekInQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -48,13 +48,13 @@ namespace Bodu.Extensions
 		/// Returns the last occurrence of the specified <see cref="DayOfWeek" /> within the given calendar quarter and year, using the
 		/// provided <see cref="CalendarQuarterDefinition" /> to determine quarter boundaries.
 		/// </summary>
-		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how quarters are segmented.</param>
-		/// <param name="quarter">The 1-based quarter number (1 through 4).</param>
 		/// <param name="year">The calendar year in which the quarter occurs.</param>
+		/// <param name="quarter">The 1-based quarter number (1 through 4).</param>
 		/// <param name="dayOfWeek">
 		/// The <see cref="DayOfWeek" /> value to locate within the quarter. For example, <see cref="DayOfWeek.Friday" /> returns the last
 		/// Friday in the quarter.
 		/// </param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how quarters are segmented.</param>
 		/// <returns>
 		/// A <see cref="DateOnly" /> value representing the last occurrence of <paramref name="dayOfWeek" /> within the specified quarter
 		/// and year, as defined by <paramref name="definition" />.
@@ -70,7 +70,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>The returned value reflects a calendar date within the quarter and does not include any time or kind metadata.</para>
 		/// </remarks>
-		public static DateOnly LastDayOfWeekInQuarter(CalendarQuarterDefinition definition, int quarter, int year, DayOfWeek dayOfWeek)
+		public static DateOnly LastDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);

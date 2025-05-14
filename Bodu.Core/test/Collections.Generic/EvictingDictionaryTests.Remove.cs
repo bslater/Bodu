@@ -11,9 +11,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(5);
 			dictionary.Add("x", 42);
 
-			var result = dictionary.Remove("x");
+			var actual = dictionary.Remove("x");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.IsFalse(dictionary.ContainsKey("x"));
 			Assert.AreEqual(0, dictionary.Count);
 		}
@@ -47,9 +47,9 @@ namespace Bodu.Collections.Generic
 		public void Remove_WhenKeyDoesNotExist_ShouldReturnFalse()
 		{
 			var dictionary = new EvictingDictionary<string, int>(5);
-			var result = dictionary.Remove("missing");
+			var actual = dictionary.Remove("missing");
 
-			Assert.IsFalse(result);
+			Assert.IsFalse(actual);
 		}
 
 		/// <summary>
@@ -61,9 +61,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(5);
 			dictionary.Add("a", 1);
 
-			var result = dictionary.Remove(new KeyValuePair<string, int>("a", 1));
+			var actual = dictionary.Remove(new KeyValuePair<string, int>("a", 1));
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.IsFalse(dictionary.ContainsKey("a"));
 		}
 
@@ -76,9 +76,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(5);
 			dictionary.Add("a", 1);
 
-			var result = dictionary.Remove(new KeyValuePair<string, int>("a", 2));
+			var actual = dictionary.Remove(new KeyValuePair<string, int>("a", 2));
 
-			Assert.IsFalse(result);
+			Assert.IsFalse(actual);
 			Assert.IsTrue(dictionary.ContainsKey("a"));
 		}
 
@@ -92,9 +92,9 @@ namespace Bodu.Collections.Generic
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 
-			var result = dictionary.Remove("a");
+			var actual = dictionary.Remove("a");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.IsFalse(dictionary.ContainsKey("a"));
 			Assert.AreEqual(1, dictionary.Count);
 		}
@@ -109,9 +109,9 @@ namespace Bodu.Collections.Generic
 			dictionary.Add("x", 100);
 			dictionary.Touch("x");
 
-			var result = dictionary.Remove("x");
+			var actual = dictionary.Remove("x");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.IsFalse(dictionary.ContainsKey("x"));
 			Assert.AreEqual(0, dictionary.Count);
 		}
@@ -126,9 +126,9 @@ namespace Bodu.Collections.Generic
 			dictionary.Add("a", 10);
 			dictionary.Add("b", 10);
 
-			var result = dictionary.Remove(new KeyValuePair<string, int>("a", 10));
+			var actual = dictionary.Remove(new KeyValuePair<string, int>("a", 10));
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.IsFalse(dictionary.ContainsKey("a"));
 			Assert.IsTrue(dictionary.ContainsKey("b"));
 		}

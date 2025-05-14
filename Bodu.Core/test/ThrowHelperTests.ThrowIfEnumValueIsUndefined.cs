@@ -4,9 +4,6 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
 namespace Bodu
 {
 	public enum TestEnum

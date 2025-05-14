@@ -8,8 +8,8 @@
 		[TestMethod]
 		public void Factory_WhenEnumeratorIsValid_ShouldReturnExpectedSequence()
 		{
-			var result = SequenceGenerator.Factory(() => new List<int> { 1, 2, 3 }.GetEnumerator()).ToArray();
-			CollectionAssert.AreEqual(new[] { 1, 2, 3 }, result);
+			var actual = SequenceGenerator.Factory(() => new List<int> { 1, 2, 3 }.GetEnumerator()).ToArray();
+			CollectionAssert.AreEqual(new[] { 1, 2, 3 }, actual);
 		}
 
 		/// <summary>

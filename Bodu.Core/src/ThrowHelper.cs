@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="ThrowHelper.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="ThrowHelper.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -769,7 +769,7 @@ namespace Bodu
 			if (!Enum.IsDefined(typeof(TEnum), value))
 				throw new ArgumentOutOfRangeException(
 					paramName,
-					string.Format(ResourceStrings.Arg_Invalid_EnumValue, typeof(TEnum).Name));
+					string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, value, typeof(TEnum).Name));
 		}
 
 #endif

@@ -1,12 +1,10 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.Add.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.Add.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Extensions
 {

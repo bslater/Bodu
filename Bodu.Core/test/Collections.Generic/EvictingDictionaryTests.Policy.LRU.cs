@@ -54,9 +54,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 
-			var result = dictionary.Touch("a");
+			var actual = dictionary.Touch("a");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 		}
 
 		/// <summary>
@@ -275,7 +275,7 @@ namespace Bodu.Collections.Generic
 			dictionary.Add("c", 3);
 			dictionary.Touch("a");
 
-			var result = dictionary.ToArray(); // Iteration order reflects recency
+			var actual = dictionary.ToArray(); // Iteration order reflects recency
 			var expected = new[]
 			{
 				new KeyValuePair<string, int>("b", 2),
@@ -283,7 +283,7 @@ namespace Bodu.Collections.Generic
 				new KeyValuePair<string, int>("a", 1),
 			};
 
-			CollectionAssert.AreEqual(expected, result);
+			CollectionAssert.AreEqual(expected, actual);
 		}
 
 		/// <summary>

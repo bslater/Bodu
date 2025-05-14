@@ -92,9 +92,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastFrequentlyUsed);
 			dictionary.Add("x", 42);
 
-			var result = dictionary.Touch("x");
+			var actual = dictionary.Touch("x");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 		}
 
 		/// <summary>
@@ -157,9 +157,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
 			dictionary.Add("a", 1);
 
-			var result = dictionary.Touch("a");
+			var actual = dictionary.Touch("a");
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 		}
 
 		/// <summary>

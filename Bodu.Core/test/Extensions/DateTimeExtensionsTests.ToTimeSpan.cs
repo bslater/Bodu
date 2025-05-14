@@ -21,55 +21,55 @@ namespace Bodu.Extensions
 		{
 			DateTime input = DateTime.Parse(inputDate);
 			TimeSpan expected = new TimeSpan(0, expectedHours, expectedMinutes, expectedSeconds, expectedMilliseconds);
-			TimeSpan result = input.ToTimeSpan();
+			TimeSpan actual = input.ToTimeSpan();
 
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
 		public void ToTimeSpan_WhenKindIsUtc_ShouldStillReturnSameTime()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 10, 15, 30, DateTimeKind.Utc);
-			TimeSpan result = input.ToTimeSpan();
+			TimeSpan actual = input.ToTimeSpan();
 
-			Assert.AreEqual(new TimeSpan(10, 15, 30), result);
+			Assert.AreEqual(new TimeSpan(10, 15, 30), actual);
 		}
 
 		[TestMethod]
 		public void ToTimeSpan_WhenKindIsLocal_ShouldStillReturnSameTime()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 8, 0, 0, DateTimeKind.Local);
-			TimeSpan result = input.ToTimeSpan();
+			TimeSpan actual = input.ToTimeSpan();
 
-			Assert.AreEqual(TimeSpan.FromHours(8), result);
+			Assert.AreEqual(TimeSpan.FromHours(8), actual);
 		}
 
 		[TestMethod]
 		public void ToTimeSpan_WhenKindIsUnspecified_ShouldStillReturnSameTime()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 22, 45, 59, DateTimeKind.Unspecified);
-			TimeSpan result = input.ToTimeSpan();
+			TimeSpan actual = input.ToTimeSpan();
 
-			Assert.AreEqual(new TimeSpan(22, 45, 59), result);
+			Assert.AreEqual(new TimeSpan(22, 45, 59), actual);
 		}
 
 		[TestMethod]
 		public void ToTimeSpan_WhenUsingMinValue_ShouldReturnZero()
 		{
 			DateTime input = DateTime.MinValue; // 0001-01-01 00:00:00
-			TimeSpan result = input.ToTimeSpan();
+			TimeSpan actual = input.ToTimeSpan();
 
-			Assert.AreEqual(TimeSpan.Zero, result);
+			Assert.AreEqual(TimeSpan.Zero, actual);
 		}
 
 		[TestMethod]
 		public void ToTimeSpan_WhenUsingMaxValue_ShouldReturnExpectedTime()
 		{
 			DateTime input = DateTime.MaxValue; // 9999-12-31 23:59:59.9999999
-			TimeSpan result = input.ToTimeSpan();
+			TimeSpan actual = input.ToTimeSpan();
 
 			// Only full milliseconds are compared
-			Assert.AreEqual(new TimeSpan(0, 23, 59, 59, 999), TimeSpan.FromMilliseconds(Math.Floor(result.TotalMilliseconds)));
+			Assert.AreEqual(new TimeSpan(0, 23, 59, 59, 999), TimeSpan.FromMilliseconds(Math.Floor(actual.TotalMilliseconds)));
 		}
 	}
 }

@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -175,7 +175,7 @@ namespace Bodu.Extensions
 		public static DateOnly FirstDayOfQuarter(this DateOnly date, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetStartDate(date);
+			return provider.GetQuarterStartDate(date);
 		}
 	}
 }
