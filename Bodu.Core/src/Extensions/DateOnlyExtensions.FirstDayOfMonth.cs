@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.FirstDayOfMonth.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -13,10 +13,10 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns a new <see cref="DateOnly" /> representing the last day of the same month and year as the specified date.
 		/// </summary>
-		/// <param name="dateOnly">The input <see cref="DateOnly" /> whose month and year are used.</param>
-		/// <returns>A <see cref="DateOnly" /> value set to the last day of the same month and year as <paramref name="dateOnly" />.</returns>
-		public static DateOnly LastDayOfMonth(this DateOnly dateOnly) =>
-			DateOnly.FromDayNumber(DateTimeExtensions.GetDayNumber(dateOnly.Year, dateOnly.Month, DateTime.DaysInMonth(dateOnly.Year, dateOnly.Month)));
+		/// <param name="date">The input <see cref="DateOnly" /> whose month and year are used.</param>
+		/// <returns>A <see cref="DateOnly" /> value set to the last day of the same month and year as <paramref name="date" />.</returns>
+		public static DateOnly LastDayOfMonth(this DateOnly date) =>
+			DateOnly.FromDayNumber(DateTimeExtensions.GetDayNumber(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month)));
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the last day of the specified year and month.

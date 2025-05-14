@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.ToDateOnly.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.ToDateOnly.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -10,7 +10,7 @@ namespace Bodu.Extensions
 {
 	public static partial class DateTimeExtensions
 	{
-#if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER // Uses DateOnly for .NET 6 or greater
 
 		/// <summary>
 		/// Converts the specified <see cref="DateTime" /> to a <see cref="DateOnly" />, preserving only the year, month, and day components.
@@ -21,10 +21,8 @@ namespace Bodu.Extensions
 		/// This method is available on .NET 6.0 or later. The resulting <see cref="DateOnly" /> does not retain the time or
 		/// <see cref="DateTime.Kind" /> information.
 		/// </remarks>
-		public static DateOnly ToDateOnly(this DateTime dateTime)
-		{
-			return DateOnly.FromDateTime(dateTime);  // Uses DateOnly for .NET 6 or greater
-		}
+		public static DateOnly ToDateOnly(this DateTime dateTime) =>
+			DateOnly.FromDayNumber(DateOnlyExtensions.GetDayNumber(dateTime));
 
 #endif
 	}

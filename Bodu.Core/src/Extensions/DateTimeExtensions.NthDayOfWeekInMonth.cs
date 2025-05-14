@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.NthDayOfWeekInMonth.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.NthDayOfWeekInMonth.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -47,7 +47,7 @@ namespace Bodu.Extensions
 					return dateTime.LastDayOfWeekInMonth(dayOfWeek);
 
 				default:
-					var result = new DateTime(DateTimeExtensions.GetFirstDayOfWeekInMonthTicks(dateTime, dayOfWeek) + ((int)ordinal * DateTimeExtensions.TicksPerWeek), dateTime.Kind);
+					var result = new DateTime(DateTimeExtensions.GetFirstDayOfWeekInMonthTicks(dateTime, dayOfWeek) + (((int)ordinal - 1) * DateTimeExtensions.TicksPerWeek), dateTime.Kind);
 
 					if (result.Month != dateTime.Month)
 						throw new ArgumentOutOfRangeException(nameof(ordinal),
@@ -83,7 +83,7 @@ namespace Bodu.Extensions
 		/// For <see cref="WeekOfMonthOrdinal.Last" />, the last matching day of the week in the month is returned. For other ordinal
 		/// values, the method starts from the first matching day and adds full weeks to locate the Nth occurrence.
 		/// </remarks>
-		internal static DateTime NthDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek, WeekOfMonthOrdinal ordinal)
+		public static DateTime NthDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek, WeekOfMonthOrdinal ordinal)
 		{
 			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
 			ThrowHelper.ThrowIfOutOfRange(month, 1, 12);
@@ -99,7 +99,7 @@ namespace Bodu.Extensions
 					return new DateTime(DateTimeExtensions.GetLastDayOfWeekInMonthAsTicks(year, month, dayOfWeek), DateTimeKind.Unspecified);
 
 				default:
-					var result = new DateTime(DateTimeExtensions.GetFirstDayOfWeekInMonthTicks(year, month, dayOfWeek) + ((int)ordinal * DateTimeExtensions.TicksPerWeek), DateTimeKind.Unspecified);
+					var result = new DateTime(DateTimeExtensions.GetFirstDayOfWeekInMonthTicks(year, month, dayOfWeek) + (((int)ordinal - 1) * DateTimeExtensions.TicksPerWeek), DateTimeKind.Unspecified);
 
 					if (result.Month != month)
 						throw new ArgumentOutOfRangeException(nameof(ordinal),

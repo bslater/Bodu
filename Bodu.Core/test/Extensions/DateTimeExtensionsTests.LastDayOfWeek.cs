@@ -13,38 +13,26 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("2024-04-17", "en-US", "2024-04-20")] // Wednesday → Saturday (en-US = Sunday start)
-		[DataRow("2024-04-17", "en-GB", "2024-04-21")] // Wednesday → Sunday (en-GB = Monday start)
-		[DataRow("2024-04-15", "en-US", "2024-04-20")] // Monday → Saturday
-		[DataRow("2024-04-14", "en-US", "2024-04-20")] // Sunday → Saturday
-		[DataRow("2024-04-15", "fr-FR", "2024-04-21")] // Monday → Sunday
-		public void LastDayOfWeek_WhenUsingCulture_ShouldReturnExpectedEnd(string inputDate, string cultureName, string expectedDate)
+		[DynamicData(nameof(LastDayOfWeekCultureInfoTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfWeek_WhenCurrentCultureSet_ShouldReturnExpectedStart(DateTime input, CultureInfo culture, DateTime expected)
 		{
-			DateTime input = DateTime.Parse(inputDate);
-			CultureInfo culture = new CultureInfo(cultureName);
-			DateTime expected = DateTime.Parse(expectedDate).Date;
-			DateTime result = input.LastDayOfWeek(culture);
+			DateTime actual = input.LastDayOfWeek(culture);
 
-			Assert.AreEqual(expected, result);
-			Assert.AreEqual(input.Kind, result.Kind);
-			Assert.AreEqual(TimeSpan.Zero, result.TimeOfDay);
+			Assert.AreEqual(expected, actual);
 		}
 
-		[TestMethod]
-		public void LastDayOfWeek_WhenCultureIsNull_ShouldUseCurrentCulture()
+		[DataTestMethod]
+		[DynamicData(nameof(LastDayOfWeekCultureInfoTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfWeek_WhenCultureIsNull_ShouldUseCurrentCulture(DateTime input, CultureInfo culture, DateTime expected)
 		{
 			var originalCulture = CultureInfo.CurrentCulture;
 			try
 			{
-				CultureInfo.CurrentCulture = DateTimeExtensionsTests.TestCulture; //FirstDayOfWeek = Wednesday
+				CultureInfo.CurrentCulture = culture;
 
-				DateTime input = new DateTime(2024, 4, 18); // Thursday
-															// Forward to next Tuesday → 2024-04-23
-				DateTime expected = new DateTime(2024, 4, 23);
+				DateTime actual = input.LastDayOfWeek(null!);
 
-				DateTime result = input.LastDayOfWeek(null!);
-
-				Assert.AreEqual(expected, result, "Expected fallback to CultureInfo.CurrentCulture with Wednesday as start of week.");
+				Assert.AreEqual(expected, actual, $"Failed for culture: {culture.Name}");
 			}
 			finally
 			{
@@ -60,8 +48,8 @@ namespace Bodu.Extensions
 		public void LastDayOfWeek_WhenUsingDefaultOverload_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			var original = new DateTime(2024, 1, 3, 0, 0, 0, kind);
-			var result = original.LastDayOfWeek();
-			Assert.AreEqual(kind, result.Kind, $"Kind mismatch for LastDayOfWeek with {kind}");
+			var actual = original.LastDayOfWeek();
+			Assert.AreEqual(kind, actual.Kind, $"Kind mismatch for LastDayOfWeek with {kind}");
 		}
 
 		[DataTestMethod]
@@ -71,18 +59,18 @@ namespace Bodu.Extensions
 		public void LastDayOfWeek_WhenUsingCulture_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			var original = new DateTime(2024, 1, 3, 0, 0, 0, kind);
-			var result = original.LastDayOfWeek(CultureInfo.CurrentCulture);
-			Assert.AreEqual(kind, result.Kind, $"Kind mismatch for LastDayOfWeek with {kind}");
+			var actual = original.LastDayOfWeek(CultureInfo.CurrentCulture);
+			Assert.AreEqual(kind, actual.Kind, $"Kind mismatch for LastDayOfWeek with {kind}");
 		}
 
 		[TestMethod]
 		public void LastDayOfWeek_WhenUsingMinValue_ShouldReturnValidResult()
 		{
 			DateTime input = DateTime.MinValue;
-			DateTime result = input.LastDayOfWeek(CultureInfo.InvariantCulture);
+			DateTime actual = input.LastDayOfWeek(CultureInfo.InvariantCulture);
 
-			Assert.AreEqual(DateTimeKind.Unspecified, result.Kind);
-			Assert.IsTrue(result >= DateTime.MinValue);
+			Assert.AreEqual(DateTimeKind.Unspecified, actual.Kind);
+			Assert.IsTrue(actual >= DateTime.MinValue);
 		}
 
 
@@ -102,20 +90,25 @@ namespace Bodu.Extensions
 		public void LastDayOfWeek_WhenUsingMaxValue_ShouldReturnValidResult()
 		{
 			DateTime max = DateTime.MaxValue;
-			var result = max.LastDayOfWeek(new CultureInfo("fa-IR")); // Friday is last day of week
+			var actual = max.LastDayOfWeek(new CultureInfo("fa-IR")); // Friday is last day of week
 
-			Assert.AreEqual(max.Date, result);
+			Assert.AreEqual(max.Date, actual);
 		}
 
+		public static IEnumerable<object[]> GetLastDayOfWeekWithDefinitionTestData() =>
+			FirstAndLastDayOfWeekTestData
+				.Where(e => e.Weekend.HasValue)
+				.Select(e => new object[] { e.Input, e.Weekend.Value, e.ExpectedLast });
+
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.LastDayOfWeek"/> returns the expected result based on the specified weekend definition.
+		/// Verifies that <see cref="DateTimeExtensions.LastDayOfWeek"/> returns the expected actual based on the specified weekend definition.
 		/// </summary>
 		[DataTestMethod]
-		[DynamicData(nameof(FirstAndLastDayOfWeekTestData), DynamicDataSourceType.Property)]
-		public void LastDayOfWeek_WhenUsingWeekendDefinition_ShouldReturnExpectedEnd(DateTime input, CalendarWeekendDefinition weekend, DateTime _, DateTime expectedEnd)
+		[DynamicData(nameof(GetLastDayOfWeekWithDefinitionTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfWeek_WhenUsingWeekendDefinition_ShouldReturnExpectedEnd(DateTime input, CalendarWeekendDefinition weekend, DateTime expected)
 		{
 			var actual = input.LastDayOfWeek(weekend);
-			Assert.AreEqual(expectedEnd, actual);
+			Assert.AreEqual(expected, actual);
 		}
 
 		/// <summary>
@@ -134,7 +127,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.LastDayOfWeek"/> throws if the calculated result exceeds <see cref="DateTime.MaxValue"/>.
+		/// Verifies that <see cref="DateTimeExtensions.LastDayOfWeek"/> throws if the calculated actual exceeds <see cref="DateTime.MaxValue"/>.
 		/// </summary>
 		[TestMethod]
 		public void LastDayOfWeek_WhenResultExceedsMaxValue_ShouldThrowExactly()
@@ -149,7 +142,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Verifies that the result of <see cref="DateTimeExtensions.LastDayOfWeek"/> preserves the <see cref="DateTime.Kind" />.
+		/// Verifies that the actual of <see cref="DateTimeExtensions.LastDayOfWeek"/> preserves the <see cref="DateTime.Kind" />.
 		/// </summary>
 		[DataTestMethod]
 		[DataRow(DateTimeKind.Unspecified)]
@@ -158,8 +151,8 @@ namespace Bodu.Extensions
 		public void LastDayOfWeek_WhenUsingSaturdaySunday_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			var original = new DateTime(2024, 1, 3, 0, 0, 0, kind);
-			var result = original.LastDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
-			Assert.AreEqual(kind, result.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
+			var actual = original.LastDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
+			Assert.AreEqual(kind, actual.Kind, $"Kind mismatch for FirstDayOfWeek with {kind}");
 		}
 
 
@@ -170,10 +163,22 @@ namespace Bodu.Extensions
 		public void LastDayOfWeek_WhenNearMaxValue_ShouldReturnExpectedEnd()
 		{
 			var date = DateTime.MaxValue.AddDays(-6); // 9999-12-25
-			var result = date.LastDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
+			var actual = date.LastDayOfWeek(CalendarWeekendDefinition.SaturdaySunday);
 
-			Assert.IsTrue(result <= DateTime.MaxValue);
-			Assert.AreEqual(DayOfWeek.Sunday, result.DayOfWeek);
+			Assert.IsTrue(actual <= DateTime.MaxValue);
+			Assert.AreEqual(DayOfWeek.Sunday, actual.DayOfWeek);
 		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(CalendarWeekendDefinitionDateTimeKindTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfWeek_WhengWeekendDefinitionAndKindIsSet_ShouldPreserveKind(CalendarWeekendDefinition definition, DateTimeKind kind)
+		{
+			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
+			DateTime actual = input.LastDayOfWeek(definition);
+
+			Assert.AreEqual(kind, actual.Kind);
+
+		}
+
 	}
 }

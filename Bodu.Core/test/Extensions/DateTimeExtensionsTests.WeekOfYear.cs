@@ -13,21 +13,21 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("2024-01-01", "en-US", 1)]  // Monday, Jan 1, 2024, First week in US culture
-		[DataRow("2024-01-01", "fr-FR", 1)]  // First ISO week in French culture
-		[DataRow("2024-12-31", "en-US", 53)] // Last day 
-		[DataRow("2024-12-31", "fr-FR", 53)]  // Tuesday, Dec 31, 2024 — week #1 if ISO
-		[DataRow("2020-12-31", "en-US", 53)] // Leap year boundary (US)
-		[DataRow("2020-12-31", "de-DE", 53)] // ISO culture
-		[DataRow("2021-01-01", "de-DE", 53)] // Jan 1, 2021 still in last ISO week of 2020
-		[DataRow("2021-01-04", "de-DE", 1)]  // First full ISO week
-		public void WeekOfYear_WithCulture_ShouldReturnExpected(string inputDate, string cultureName, int expectedWeek)
+		[DynamicData(nameof(WeekOfYearCalendarWeekTestData), DynamicDataSourceType.Method)]
+		public void WeekOfYear_WithCulture_ShouldReturnExpected(DateTime input, CalendarWeekRule rule, DayOfWeek firstDay, int expected)
 		{
-			DateTime input = DateTime.Parse(inputDate, CultureInfo.InvariantCulture);
-			CultureInfo culture = new CultureInfo(cultureName);
-			int result = input.WeekOfYear(culture);
+			int actual = input.WeekOfYear(rule, firstDay);
 
-			Assert.AreEqual(expectedWeek, result, $"Week mismatch for {input:days} in {cultureName}");
+			Assert.AreEqual(expected, actual);
+		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(WeekOfYearCultureTestData), DynamicDataSourceType.Method)]
+		public void WeekOfYear_WithCalendarWeek_ShouldReturnExpected(DateTime input, CultureInfo culture, int expected)
+		{
+			int actual = input.WeekOfYear(culture);
+
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -38,9 +38,9 @@ namespace Bodu.Extensions
 				input,
 				CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,
 				CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
-			int result = input.WeekOfYear(null!);
+			int actual = input.WeekOfYear(null!);
 
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -51,20 +51,6 @@ namespace Bodu.Extensions
 			int actual = input.WeekOfYear();
 
 			Assert.AreEqual(expected, actual);
-		}
-
-		[DataTestMethod]
-		[DataRow("2023-01-01")] // Sunday - may be week 52 or 1 depending on culture
-		[DataRow("2023-01-02")] // Monday - start of new week in ISO
-		[DataRow("2023-12-31")] // Year end edge case
-		public void WeekOfYear_EdgeCaseDates_ShouldNotThrow(string isoDate)
-		{
-			DateTime input = DateTime.Parse(isoDate, CultureInfo.InvariantCulture);
-			int usWeek = input.WeekOfYear(new CultureInfo("en-US"));
-			int isoWeek = input.WeekOfYear(CultureInfo.InvariantCulture);
-
-			Assert.IsTrue(usWeek >= 1 && usWeek <= 53);
-			Assert.IsTrue(isoWeek >= 1 && isoWeek <= 53);
 		}
 	}
 }

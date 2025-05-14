@@ -12,16 +12,14 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("2023-02-15", 28)]
-		[DataRow("2024-02-15", 29)]
-		[DataRow("2023-02-15", 28)]
-        [DataRow("2023-01-01", 31)]
-        public void DaysInMonth_WhenCalled_ShouldReturnDaysInMonth(string inputDate, int expected)
-        {
-            DateOnly input = DateOnly.Parse(inputDate);
+		[DynamicData(nameof(DateTimeExtensionsTests.DaysInMonthTestData), typeof(DateTimeExtensionsTests),DynamicDataSourceType.Method)]
+		public void DaysInMonth_WhenCalled_ShouldReturnDaysInMonth(DateTime inputDateTime, int expected)
+		{
+			var input = DateOnly.FromDateTime(inputDateTime);
 
-            Assert.AreEqual(expected, input.DaysInMonth());
-        }
-        
-    }
+			var actual = input.DaysInMonth();
+			Assert.AreEqual(expected, actual);
+		}
+
+	}
 }

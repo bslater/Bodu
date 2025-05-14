@@ -11,9 +11,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(2);
 			dictionary.Add("a", 1);
 
-			var result = dictionary.Touch("missing");
+			var actual = dictionary.Touch("missing");
 
-			Assert.IsFalse(result);
+			Assert.IsFalse(actual);
 		}
 
 		/// <summary>

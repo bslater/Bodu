@@ -12,48 +12,38 @@ namespace Bodu.Extensions
 	public partial class DateOnlyExtensionsTests
 	{
 
-		public static IEnumerable<object[]> GetQuarterWithDefinitionTestData =>
-			DateTimeExtensionsTests.QuarterTestData
-				.Select(e => new object[] { e.Date, e.Definition, e.Quarter });
 
 		[DataTestMethod]
-		[DynamicData(nameof(GetQuarterWithDefinitionTestData), DynamicDataSourceType.Property)]
-		public void GetQuarter_WhenUsingQuarterDefinition_ShouldReturnExpectedQuarter(DateTime inputDate, CalendarQuarterDefinition definition, int expected)
+		[DynamicData(nameof(DateTimeExtensionsTests.QuarterTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		public void GetQuarter_WhenUsingQuarterDefinition_ShouldReturnExpectedQuarter(DateTime inputDateTime, CalendarQuarterDefinition definition, int expected)
 		{
-			var input = DateOnly.FromDateTime(inputDate);
-			int result = input.Quarter(definition);
+			var input = DateOnly.FromDateTime(inputDateTime);
 
-			Assert.AreEqual(expected, result);
+			int actual = input.Quarter(definition);
+
+			Assert.AreEqual(expected, actual);
 		}
 
-		public static IEnumerable<object[]> GetQuarterTestData =>
-			DateTimeExtensionsTests.QuarterTestData
-				.Where(e => e.Definition == CalendarQuarterDefinition.JanuaryDecember)
-				.Select(e => new object[] { e.Date, e.Quarter });
-
 		[DataTestMethod]
-		[DynamicData(nameof(GetQuarterTestData), typeof(DateOnlyExtensionsTests))]
-		public void GetQuarter_WhenOnlyDateOnly_ShouldReturnExpectedQuarter(DateTime inputDate, int expected)
+		[DynamicData(nameof(DateTimeExtensionsTests.QuarterJanuaryDecemberTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]
+		public void GetQuarter_WhenOnlyDateOnly_ShouldReturnExpectedQuarter(DateTime inputDateTime, int expected)
 		{
-			var input = DateOnly.FromDateTime(inputDate);
-			int result = input.Quarter();
+			var input = DateOnly.FromDateTime(inputDateTime);
 
-			Assert.AreEqual(expected, result);
+			int actual = input.Quarter();
+
+			Assert.AreEqual(expected, actual);
 		}
 
-		public static IEnumerable<object[]> GetQuarterWithCustomProviderTestData =>
-			DateTimeExtensionsTests.ValidQuarterProvider.QuarterTestData
-				.Select(e => new object[] { e.Date, e.Quarter });
-
 		[DataTestMethod]
-		[DynamicData(nameof(GetQuarterWithCustomProviderTestData), DynamicDataSourceType.Property)]
+		[DynamicData(nameof(DateTimeExtensionsTests.ValidQuarterProvider.QuarterTestData), typeof(DateTimeExtensionsTests.ValidQuarterProvider), DynamicDataSourceType.Method)]
 		public void GetQuarter_WhenUsingValidProvider_ShouldReturnExpectedQuarter(DateTime inputDate, int expected)
 		{
 			var input = DateOnly.FromDateTime(inputDate);
 			var provider = new DateTimeExtensionsTests.ValidQuarterProvider();
-			int result = input.Quarter(provider);
+			int actual = input.Quarter(provider);
 
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]

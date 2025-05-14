@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -46,12 +46,12 @@ namespace Bodu.Extensions
 		/// Returns a <see cref="DateTime" /> representing the first day of the specified <paramref name="quarter" /> in the given
 		/// <paramref name="year" />, based on the standard calendar quarter definition.
 		/// </summary>
+		/// <param name="year">
+		/// The calendar year in which the quarter is to be evaluated. The returned date will represent the start of the quarter within this year.
+		/// </param>
 		/// <param name="quarter">
 		/// The quarter number to evaluate (1 through 4), using the conventional calendar-based quarters: Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 =
 		/// Jul–Sep, Q4 = Oct–Dec.
-		/// </param>
-		/// <param name="year">
-		/// The calendar year in which the quarter is to be evaluated. The returned date will represent the start of the quarter within this year.
 		/// </param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the first day of the specified calendar quarter in the given year, with the time set to
@@ -79,12 +79,12 @@ namespace Bodu.Extensions
 		/// </item>
 		/// </list>
 		/// <para>
-		/// For other fiscal or custom quarter definitions, use the <see cref="FirstDayOfQuarter(CalendarQuarterDefinition, int, int)" /> or
+		/// For other fiscal or custom quarter definitions, use the <see cref="FirstDayOfQuarter(int, int, CalendarQuarterDefinition)" /> or
 		/// provider-based overloads.
 		/// </para>
 		/// </remarks>
-		public static DateTime FirstDayOfQuarter(int quarter, int year)
-			=> FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
+		public static DateTime FirstDayOfQuarter(int year, int quarter)
+			=> FirstDayOfQuarter(year, quarter, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns the first day of the quarter that includes the specified <paramref name="dateTime" />, based on the provided <see cref="CalendarQuarterDefinition" />.
@@ -130,14 +130,14 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the first day of the specified <paramref name="quarter" /> in the given <paramref name="year" />, based on the provided <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
-		/// <param name="quarter">
-		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
-		/// </param>
 		/// <param name="year">
 		/// The reference calendar year. The result will represent the start date of the specified quarter relative to this year. If the
 		/// quarter begins in the next calendar year (based on modular month arithmetic), the year will be incremented accordingly.
 		/// </param>
+		/// <param name="quarter">
+		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
+		/// </param>
+		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the first day of the specified quarter in the applicable year, with the time set to
 		/// 00:00:00 and a <see cref="DateTimeKind" /> of <see cref="DateTimeKind.Unspecified" />.
@@ -160,7 +160,7 @@ namespace Bodu.Extensions
 		/// quarters maintain the day anchor across three-month intervals.
 		/// </para>
 		/// </remarks>
-		public static DateTime FirstDayOfQuarter(CalendarQuarterDefinition definition, int quarter, int year)
+		public static DateTime FirstDayOfQuarter(int year, int quarter, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -190,7 +190,7 @@ namespace Bodu.Extensions
 		public static DateTime FirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetStartDate(dateTime);
+			return provider.GetQuarterStart(dateTime);
 		}
 	}
 }

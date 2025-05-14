@@ -12,9 +12,9 @@ namespace Bodu.Collections.Generic
 			buffer.Enqueue(1);
 			buffer.Enqueue(2);
 
-			var result = buffer.Dequeue();
+			var actual = buffer.Dequeue();
 
-			Assert.AreEqual(1, result);
+			Assert.AreEqual(1, actual);
 			Assert.AreEqual(1, buffer.Count);
 		}
 
@@ -33,9 +33,9 @@ namespace Bodu.Collections.Generic
 			buffer.Dequeue(); // 2
 			buffer.Enqueue(5);
 
-			var result = buffer.ToArray();
+			var actual = buffer.ToArray();
 
-			CollectionAssert.AreEqual(new[] { 3, 4, 5 }, result);
+			CollectionAssert.AreEqual(new[] { 3, 4, 5 }, actual);
 		}
 
 		/// <summary>

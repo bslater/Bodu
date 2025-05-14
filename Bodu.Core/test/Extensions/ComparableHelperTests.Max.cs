@@ -19,8 +19,8 @@
 		[DynamicData(nameof(GetMaxTestData), DynamicDataSourceType.Method)]
 		public void Max_WhenComparingTwoValues_ShouldReturnLarger(SimpleTestObject? first, SimpleTestObject? second, SimpleTestObject? expected)
 		{
-			var result = ComparableHelper.Max(first, second);
-			Assert.AreEqual(expected, result);
+			var actual = ComparableHelper.Max(first, second);
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

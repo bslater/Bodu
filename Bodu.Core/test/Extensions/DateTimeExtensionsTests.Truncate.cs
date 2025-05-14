@@ -24,10 +24,10 @@ namespace Bodu.Extensions
 		public void Truncate_WhenCalledWithResolution_ShouldReturnExpected(DateTimeResolution resolution, string expectedDate)
 		{
 			var expected = DateTime.Parse(expectedDate);
-			DateTime result = Sample.Truncate(resolution);
+			DateTime actual = Sample.Truncate(resolution);
 
-			Assert.AreEqual(expected, result);
-			Assert.AreEqual(Sample.Kind, result.Kind, "Kind should be preserved.");
+			Assert.AreEqual(expected, actual);
+			Assert.AreEqual(Sample.Kind, actual.Kind, "Kind should be preserved.");
 		}
 
 		[TestMethod]
@@ -46,9 +46,9 @@ namespace Bodu.Extensions
 		{
 			foreach (DateTimeResolution res in Enum.GetValues(typeof(DateTimeResolution)))
 			{
-				DateTime result = DateTime.MinValue.Truncate(res);
+				DateTime actual = DateTime.MinValue.Truncate(res);
 
-				Assert.IsTrue(result <= DateTime.MinValue.AddDays(1), $"Failed at {res}");
+				Assert.IsTrue(actual <= DateTime.MinValue.AddDays(1), $"Failed at {res}");
 			}
 		}
 
@@ -57,9 +57,9 @@ namespace Bodu.Extensions
 		{
 			foreach (DateTimeResolution res in Enum.GetValues(typeof(DateTimeResolution)))
 			{
-				DateTime result = DateTime.MaxValue.Truncate(res);
+				DateTime actual = DateTime.MaxValue.Truncate(res);
 
-				Assert.IsTrue(result <= DateTime.MaxValue, $"Failed at {res}");
+				Assert.IsTrue(actual <= DateTime.MaxValue, $"Failed at {res}");
 			}
 		}
 
@@ -70,9 +70,9 @@ namespace Bodu.Extensions
 			foreach (var kind in kinds)
 			{
 				DateTime input = DateTime.SpecifyKind(Sample, kind);
-				DateTime result = input.Truncate(DateTimeResolution.Minute);
+				DateTime actual = input.Truncate(DateTimeResolution.Minute);
 
-				Assert.AreEqual(kind, result.Kind);
+				Assert.AreEqual(kind, actual.Kind);
 			}
 		}
 	}

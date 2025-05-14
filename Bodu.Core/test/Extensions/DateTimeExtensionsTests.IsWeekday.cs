@@ -14,13 +14,13 @@ namespace Bodu.Extensions
 
 
 		[DataTestMethod]
-		[DynamicData(nameof(WeekendTestData), typeof(DateTimeExtensionsTests))]
+		[DynamicData(nameof(WeekendTestData), DynamicDataSourceType.Method)]
 		public void IsWeekday_WhenUsingStandardWeekend_ShouldReturnExpected(DateTime input, CalendarWeekendDefinition weekend, Type? providerType, bool expected)
 		{
 			IWeekendDefinitionProvider? provider = providerType is null ? null : (IWeekendDefinitionProvider)Activator.CreateInstance(providerType)!;
 
-			bool result = input.IsWeekday(weekend, provider);
-			Assert.AreEqual(!expected, result, $"Failed for {input} with weekend {weekend}");
+			bool actual = input.IsWeekday(weekend, provider);
+			Assert.AreEqual(!expected, actual, $"Failed for {input} with weekend {weekend}");
 		}
 
 		[TestMethod]

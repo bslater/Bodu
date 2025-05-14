@@ -1,10 +1,11 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 namespace Bodu.Extensions
@@ -170,60 +171,61 @@ namespace Bodu.Extensions
 			=> ticks - (ticks % DateTimeExtensions.TicksPerDay);
 
 		/// <summary>
-		/// Extracts the year, month, and day components from the specified <paramref name="dateTime" /> using tick-based computation.
+		/// Extracts the Gregorian calendar year, month, and day components from a given tick value.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="System.DateTime" /> instance whose date components are to be extracted.</param>
-		/// <param name="year">When this method returns, contains the year component of the specified <paramref name="dateTime" />.</param>
-		/// <param name="month">When this method returns, contains the month component (1–12) of the specified <paramref name="dateTime" />.</param>
-		/// <param name="day">When this method returns, contains the day component (1–31) of the specified <paramref name="dateTime" />.</param>
+		/// <param name="ticks">
+		/// The number of ticks representing the date, where one tick equals 100 nanoseconds since 0001-01-01T00:00:00.000 (Gregorian calendar).
+		/// </param>
+		/// <param name="year">When this method returns, contains the year component (1–9999) corresponding to the specified <paramref name="ticks" />.</param>
+		/// <param name="month">When this method returns, contains the month component (1–12) corresponding to the specified <paramref name="ticks" />.</param>
+		/// <param name="day">When this method returns, contains the day component (1–31) corresponding to the specified <paramref name="ticks" />.</param>
 		/// <remarks>
 		/// <para>
-		/// This method computes the date parts directly from the <see cref="DateTime.Ticks" /> value, using Gregorian calendar math. It
-		/// avoids calling the standard <see cref="DateTime.Year" />, <see cref="DateTime.Month" />, or <see cref="DateTime.Day" />
-		/// properties to reduce overhead in high-performance scenarios.
+		/// This method performs a tick-based decomposition of a date using Gregorian calendar rules, without instantiating a
+		/// <see cref="DateTime" /> object. It is intended for performance-critical scenarios where object allocations must be avoided, or
+		/// where calendar field extraction is required from raw tick values.
 		/// </para>
 		/// <para>
-		/// The result is equivalent to the values returned by the standard <see cref="DateTime" /> accessors, but the method is optimized
-		/// for scenarios where multiple components are needed and maximum efficiency is desired.
+		/// The calculation is equivalent to accessing the <see cref="DateTime.Year" />, <see cref="DateTime.Month" />, and
+		/// <see cref="DateTime.Day" /> properties, but uses optimized integer arithmetic to reduce overhead.
 		/// </para>
-		/// <para>This method assumes the input is within the valid <see cref="DateTime" /> range and uses no internal validation.</para>
+		/// <para>
+		/// The input tick value must fall within the valid range supported by <see cref="DateTime" />, which spans from
+		/// <c>DateTime.MinValue.Ticks</c> to <c>DateTime.MaxValue.Ticks</c>. No validation is performed on this input.
+		/// </para>
+		/// <para>
+		/// This method uses the standard proleptic Gregorian calendar and assumes 400-year cycles with leap years every 4 years, except
+		/// years divisible by 100 unless divisible by 400.
+		/// </para>
 		/// </remarks>
-		internal static void GetDateParts(this DateTime dateTime, out int year, out int month, out int day)
+		internal static void GetDateParts(long ticks, out int year, out int month, out int day)
 		{
-			var ticks = dateTime.Ticks;
-
-			// Cache local constants for Gregorian calendar cycles
-			const int daysPerYear = 365;
-			const int daysPer4Years = (daysPerYear * 4) + 1;         // 1461
-			const int daysPer100Years = (daysPer4Years * 25) - 1;    // 36524
-			const int daysPer400Years = (daysPer100Years * 4) + 1;   // 146097
-
 			// Convert ticks to total days since 0001-01-01
 			int n = (int)(ticks / TicksPerDay);
 
 			// Calculate number of whole 400-year periods
-			int y400 = n / daysPer400Years;
-			n -= y400 * daysPer400Years;
+			int y400 = n / DaysPer400Years;
+			n -= y400 * DaysPer400Years;
 
 			// Calculate number of whole 100-year periods within the current 400-year block
-			int y100 = n / daysPer100Years;
+			int y100 = n / DaysPer100Years;
 
 			// Cap at 3 to avoid overflow into next 400-year block (i.e., max is 300 years)
 			if (y100 == 4)
 				y100 = 3;
-			n -= y100 * daysPer100Years;
+			n -= y100 * DaysPer100Years;
 
 			// Calculate number of whole 4-year periods within the current 100-year block
-			int y4 = n / daysPer4Years;
-			n -= y4 * daysPer4Years;
+			int y4 = n / DaysPer4Years;
+			n -= y4 * DaysPer4Years;
 
 			// Calculate number of whole years within the current 4-year block
-			int y1 = n / daysPerYear;
+			int y1 = n / DaysPerYear;
 
 			// Cap at 3 to avoid overflow into next 4-year block (max is 3 years)
 			if (y1 == 4)
 				y1 = 3;
-			n -= y1 * daysPerYear;
+			n -= y1 * DaysPerYear;
 
 			// Final computed year
 			year = (y400 * 400) + (y100 * 100) + (y4 * 4) + y1 + 1;
@@ -246,6 +248,28 @@ namespace Bodu.Extensions
 			month = m;
 			day = n - daysToMonth[m - 1] + 1;
 		}
+
+		/// <summary>
+		/// Extracts the year, month, and day components from the specified <paramref name="dateTime" /> using tick-based computation.
+		/// </summary>
+		/// <param name="dateTime">The <see cref="System.DateTime" /> instance whose date components are to be extracted.</param>
+		/// <param name="year">When this method returns, contains the year component of the specified <paramref name="dateTime" />.</param>
+		/// <param name="month">When this method returns, contains the month component (1–12) of the specified <paramref name="dateTime" />.</param>
+		/// <param name="day">When this method returns, contains the day component (1–31) of the specified <paramref name="dateTime" />.</param>
+		/// <remarks>
+		/// <para>
+		/// This method computes the date parts directly from the <see cref="DateTime.Ticks" /> value, using Gregorian calendar math. It
+		/// avoids calling the standard <see cref="DateTime.Year" />, <see cref="DateTime.Month" />, or <see cref="DateTime.Day" />
+		/// properties to reduce overhead in high-performance scenarios.
+		/// </para>
+		/// <para>
+		/// The result is equivalent to the values returned by the standard <see cref="DateTime" /> accessors, but the method is optimized
+		/// for scenarios where multiple components are needed and maximum efficiency is desired.
+		/// </para>
+		/// <para>This method assumes the input is within the valid <see cref="DateTime" /> range and uses no internal validation.</para>
+		/// </remarks>
+		internal static void GetDateParts(this DateTime dateTime, out int year, out int month, out int day) =>
+			GetDateParts(dateTime.Ticks, out year, out month, out day);
 
 		/// <summary>
 		/// Calculates the <see cref="System.DayOfWeek" /> for a date represented as a tick count.
@@ -502,17 +526,33 @@ namespace Bodu.Extensions
 		/// optimized for internal calendar calculations.
 		/// </para>
 		/// </remarks>
-		private static long GetLastDayOfMonthTicks(DateTime dateTime)
-			=> DateTimeExtensions.GetTicksForDate(dateTime.Year, dateTime.Month, dateTime.DaysInMonth());
+		private static long GetLastDayOfMonthTicks(DateTime dateTime) =>
+			DateTimeExtensions.GetTicksForDate(dateTime.Year, dateTime.Month, dateTime.DaysInMonth());
 
 		/// <summary>
 		/// Returns the tick count that represents the last day of week in the current month of the <see cref="System.DateTime" />.
 		/// </summary>
-		private static long GetLastDayOfWeekInMonthAsTicks(DateTime dateTime, DayOfWeek dayOfWeek)
+		private static long GetLastDayOfWeekInMonthAsTicks(DateTime dateTime, DayOfWeek dayOfWeek) =>
+			DateTimeExtensions.GetLastDayOfWeekInMonth(DateTimeExtensions.GetLastDayOfMonthTicks(dateTime), dayOfWeek);
+
+		/// <summary>
+		/// Returns the tick count that represents the last day of week in the current month of the <see cref="System.DateTime" />.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static long GetLastDayOfWeekInMonth(long ticks, DayOfWeek dayOfWeek)
 		{
-			long ticks = DateTimeExtensions.GetLastDayOfMonthTicks(dateTime);
 			ticks += ((dayOfWeek - DateTimeExtensions.GetDayOfWeekFromTicks(ticks) - 7) % 7) * DateTimeExtensions.TicksPerDay;
 			return ticks;
+		}
+
+		/// <summary>
+		/// Returns the tick count that represents the date nearest to the specified <paramref name="dayOfWeek" /> relative to the provided
+		/// <paramref name="ticks" /> value.
+		/// </summary>
+		internal static long GetNearestDayOfWeek(long ticks, DayOfWeek dayOfWeek)
+		{
+			int delta = ((int)dayOfWeek - (int)GetDayOfWeekFromTicks(ticks) + 7) % 7;
+			return ticks + ((delta > 3 ? delta - 7 : delta) * TicksPerDay);
 		}
 
 		/// <summary>
@@ -664,5 +704,107 @@ namespace Bodu.Extensions
 			_ => throw new ArgumentOutOfRangeException(nameof(weekend),
 				$"Unsupported {nameof(CalendarWeekendDefinition)} selectedDays: {weekend}")
 		};
+
+		/// <summary>
+		/// Calculates the calendar week number of the year for the specified tick value, using the provided week rule and week start day.
+		/// </summary>
+		/// <param name="ticks">The number of ticks representing the target date (100ns intervals since 0001-01-01T00:00:00.000).</param>
+		/// <param name="rule">
+		/// A <see cref="CalendarWeekRule" /> value that determines how the first week of the year is defined (FirstDay, FirstFullWeek, FirstFourDayWeek).
+		/// </param>
+		/// <param name="firstDayOfWeek">A <see cref="DayOfWeek" /> value indicating the first day of the week (e.g., Sunday, Monday).</param>
+		/// <returns>The 1-based week number of the year that contains the specified tick value, based on the specified rule.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="rule" /> is not a valid <see cref="CalendarWeekRule" />.</exception>
+		internal static int GetWeekOfYear(long ticks, CalendarWeekRule rule, DayOfWeek firstDayOfWeek)
+		{
+			// Convert ticks into a date for computing day-of-year
+			var date = new DateTime(ticks, DateTimeKind.Unspecified);
+			int dayOfYear = date.DayOfYear - 1; // Convert to 0-based day index
+
+			return rule switch
+			{
+				CalendarWeekRule.FirstDay =>
+					GetFirstDayWeekOfYear(dayOfYear, date.DayOfWeek, (int)firstDayOfWeek),
+
+				CalendarWeekRule.FirstFullWeek =>
+					GetWeekOfYearFullDays(ticks, dayOfYear, (int)firstDayOfWeek, 7),
+
+				CalendarWeekRule.FirstFourDayWeek =>
+					GetWeekOfYearFullDays(ticks, dayOfYear, (int)firstDayOfWeek, 4),
+
+				_ => throw new ArgumentOutOfRangeException(
+						string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, rule, nameof(CalendarWeekRule),
+						nameof(rule))),
+			};
+		}
+
+		/// <summary>
+		/// Computes the week number of the year using the <see cref="CalendarWeekRule.FirstDay" /> rule.
+		/// </summary>
+		/// <param name="dayOfYear">Zero-based day index within the year (e.g., Jan 1 = 0).</param>
+		/// <param name="dayOfWeek">The day of the week of the specified date.</param>
+		/// <param name="firstDayOfWeek">The starting day of the week as an integer (0–6).</param>
+		/// <returns>The 1-based week number that contains the specified date.</returns>
+		private static int GetFirstDayWeekOfYear(int dayOfYear, DayOfWeek dayOfWeek, int firstDayOfWeek)
+		{
+			// Determine the day of the week for Jan 1 by back-calculating from the current date
+			int dayForJan1 = (int)dayOfWeek - (dayOfYear % 7);
+
+			// Calculate offset to align with the first day of the week
+			int offset = (dayForJan1 - firstDayOfWeek + 14) % 7;
+
+			// Adjust day-of-year and compute week number
+			return (dayOfYear + offset) / 7 + 1;
+		}
+
+		/// <summary>
+		/// Computes the calendar week number of the year for a given date using either <see cref="CalendarWeekRule.FirstFullWeek" /> or
+		/// <see cref="CalendarWeekRule.FirstFourDayWeek" />, depending on the <paramref name="fullDays" /> parameter.
+		/// </summary>
+		/// <param name="ticks">The tick count representing the target date.</param>
+		/// <param name="dayOfYear">Zero-based day-of-year index of the target date.</param>
+		/// <param name="firstDayOfWeek">The starting day of the week as an integer (0–6).</param>
+		/// <param name="fullDays">The minimum number of days required in the first week (7 for FirstFullWeek, 4 for FirstFourDayWeek).</param>
+		/// <returns>The 1-based week number for the date specified by <paramref name="ticks" />.</returns>
+		private static int GetWeekOfYearFullDays(long ticks, int dayOfYear, int firstDayOfWeek, int fullDays)
+		{
+			// Get the day of the week for the current date
+			int dayOfWeek = (int)DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
+
+			// Derive the day of week for Jan 1 from current date and day offset
+			int dayForJan1 = dayOfWeek - (dayOfYear % 7);
+
+			// Compute offset between Jan 1 and the first day of the week
+			int offset = (firstDayOfWeek - dayForJan1 + 14) % 7;
+
+			// If the first week has fewer than the required full days, adjust the start of the first valid week
+			if (offset != 0 && offset >= fullDays)
+				offset -= 7;
+
+			// Calculate how many days into the year the target week starts
+			int adjustedDay = dayOfYear - offset;
+
+			// If the adjusted day is non-negative, it's within the current year
+			if (adjustedDay >= 0)
+				return (adjustedDay / 7) + 1;
+
+			// Otherwise, the date falls in the last week of the previous year Shift backwards by the number of days since Jan 1 to reach
+			// last day of previous year
+			long previousTicks = ticks - ((dayOfYear + 1L) * DateTimeExtensions.TicksPerDay);
+
+			// If the adjusted date is earlier than the minimum representable tick, return week 1 as fallback
+			if (previousTicks < DateTimeExtensions.MinTicks)
+				return 1;
+
+			// Recalculate the day-of-year for the previous date using date decomposition
+			DateTimeExtensions.GetDateParts(previousTicks, out int prevYear, out int prevMonth, out int prevDay);
+
+			// Calculate 0-based day-of-year index for the previous date
+			int prevDayOfYear = DateTimeExtensions.GetDayNumber(prevYear, prevMonth, prevDay)
+				- DateTimeExtensions.GetDayNumber(prevYear, 1, 1);
+
+			// Recurse into previous year to determine final week number
+			return GetWeekOfYearFullDays(previousTicks, prevDayOfYear, firstDayOfWeek, fullDays);
+		}
 	}
 }

@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\DateOnlyExtensionsTests.NextOccurrence.cs" />
     <Compile Remove="Extensions\Fiscal544QuarterProviderTests.cs" />
     <Compile Remove="Extensions\Fiscal544QuarterProviderTests.GetEndDate.cs" />
     <Compile Remove="Extensions\Fiscal544QuarterProviderTests.GetQuarter - Copy.cs" />

@@ -1,8 +1,8 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
+﻿// // --------------------------------------------------------------------------------------------------------------- //
 // <copyright file="CircularBuffer.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
 // </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections;
@@ -43,6 +43,41 @@ namespace Bodu.Collections.Generic
 	/// <see cref="AllowOverwrite" /> is <see langword="false" />, attempts to enqueue additional elements will throw an <see cref="InvalidOperationException" />.
 	/// </para>
 	/// <para><see cref="CircularBuffer{T}" /> accepts <see langword="null" /> values (for reference types) and allows duplicate elements.</para>
+	/// <example>
+	/// <code language="csharp">
+	///<![CDATA[
+	/// // Create a circular buffer with capacity for 3 items
+	/// var buffer = new CircularBuffer<int>(capacity: 3);
+	///
+	/// // Enqueue three items
+	/// buffer.Enqueue(1);
+	/// buffer.Enqueue(2);
+	/// buffer.Enqueue(3);
+	///
+	/// // Attempt to add a fourth item (will throw if AllowOverwrite is false)
+	/// try
+	/// {
+	///     buffer.Enqueue(4); // InvalidOperationException
+	/// }
+	/// catch (InvalidOperationException ex)
+	/// {
+	///     Console.WriteLine("Buffer full: " + ex.Message);
+	/// }
+	///
+	/// // Enable overwrite mode to allow overwriting the oldest element
+	/// buffer.AllowOverwrite = true;
+	///
+	/// // Now enqueuing will overwrite the oldest item (1)
+	/// buffer.Enqueue(4); // Buffer now contains 2, 3, 4
+	///
+	/// // Dequeue all items to verify the order
+	/// while (buffer.TryDequeue(out int value))
+	/// {
+	///     Console.WriteLine(value); // Outputs: 2, 3, 4
+	/// }
+	///]]>
+	/// </code>
+	/// </example>
 	/// </remarks>
 	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(typeof(CircularBufferDebugView<>))]
@@ -75,7 +110,7 @@ namespace Bodu.Collections.Generic
 		/// </para>
 		/// </remarks>
 		public CircularBuffer()
-					: this(DefaultCapacity, allowOverwrite: true) { }
+			: this(DefaultCapacity, allowOverwrite: true) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CircularBuffer{T}" /> class with the specified capacity, allowing overwrites when full.
@@ -89,7 +124,7 @@ namespace Bodu.Collections.Generic
 		/// </para>
 		/// </remarks>
 		public CircularBuffer(int capacity)
-					: this(capacity, allowOverwrite: true) { }
+			: this(capacity, allowOverwrite: true) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CircularBuffer{T}" /> class with the specified capacity and overwrite behavior.
@@ -129,7 +164,7 @@ namespace Bodu.Collections.Generic
 		/// only the most recent items up to the buffer's capacity are retained. Older items are discarded during construction.
 		/// </remarks>
 		public CircularBuffer(IEnumerable<T> collection)
-					: this(collection, DefaultCapacity, allowOverwrite: true) { }
+			: this(collection, DefaultCapacity, allowOverwrite: true) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CircularBuffer{T}" /> class by copying elements from the specified collection and
@@ -144,7 +179,7 @@ namespace Bodu.Collections.Generic
 		/// retained. Older items are discarded during construction.
 		/// </remarks>
 		public CircularBuffer(IEnumerable<T> collection, int capacity)
-					: this(collection, capacity, allowOverwrite: true) { }
+			: this(collection, capacity, allowOverwrite: true) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CircularBuffer{T}" /> class by copying elements from the specified collection,
@@ -218,12 +253,12 @@ namespace Bodu.Collections.Generic
 		/// <example>
 		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
-		///buffer.ItemEvicted += item => Console.WriteLine($"Evicted: {item}");
+		/// var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
+		/// buffer.ItemEvicted += item => Console.WriteLine($"Evicted: {item}");
 		///
-		///buffer.Enqueue("A");
-		///buffer.Enqueue("B");
-		///buffer.Enqueue("C"); // Triggers ItemEvicted for "A"
+		/// buffer.Enqueue("A");
+		/// buffer.Enqueue("B");
+		/// buffer.Enqueue("C"); // Triggers ItemEvicted for "A"
 		///]]>
 		/// </code>
 		/// </example>
@@ -246,12 +281,12 @@ namespace Bodu.Collections.Generic
 		/// <example>
 		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
-		///buffer.ItemEvicting += item => Console.WriteLine($"Evicting: {item}");
+		/// var buffer = new CircularBuffer<string>(capacity: 2, allowOverwrite: true);
+		/// buffer.ItemEvicting += item => Console.WriteLine($"Evicting: {item}");
 		///
-		///buffer.Enqueue("A");
-		///buffer.Enqueue("B");
-		///buffer.Enqueue("C"); // Triggers ItemEvicting for "A"
+		/// buffer.Enqueue("A");
+		/// buffer.Enqueue("B");
+		/// buffer.Enqueue("C"); // Triggers ItemEvicting for "A"
 		///]]>
 		/// </code>
 		/// </example>
@@ -509,11 +544,13 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		/// <example>
 		/// <code language="csharp">
-		///var buffer = new CircularBuffer&lt;int&gt;(3);
-		///buffer.Enqueue(1);
-		///buffer.Enqueue(2);
-		///buffer.Enqueue(3);
-		///int[] copy = buffer.ToArray(); // copy = [1, 2, 3]
+		/// <![CDATA[
+		/// var buffer = new CircularBuffer<int>(3);
+		/// buffer.Enqueue(1);
+		/// buffer.Enqueue(2);
+		/// buffer.Enqueue(3);
+		/// int[] copy = buffer.ToArray(); // copy = [1, 2, 3]
+		///]]>
 		/// </code>
 		/// </example>
 		public T[] ToArray()
@@ -544,11 +581,13 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		/// <example>
 		/// <code language="csharp">
-		///var buffer = new CircularBuffer&lt;string&gt;(100);
-		///buffer.Enqueue("A");
-		///buffer.Enqueue("B");
-		///buffer.TrimExcess(); // Reduces capacity to 2
-		/// </code>
+		/// <![CDATA[
+		/// var buffer = new CircularBuffer<string>(100);
+		/// buffer.Enqueue("A");
+		/// buffer.Enqueue("B");
+		/// buffer.TrimExcess(); // Reduces capacity to 2
+		///]]>
+		///</code>
 		/// </example>
 		public void TrimExcess()
 		{
@@ -584,10 +623,10 @@ namespace Bodu.Collections.Generic
 		/// <example>
 		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(2);
-		///buffer.Enqueue("A");
-		///if (buffer.TryDequeue(out var value))
-		///Console.WriteLine($"Removed: {value}");
+		/// var buffer = new CircularBuffer<string>(2);
+		/// buffer.Enqueue("A");
+		/// if (buffer.TryDequeue(out var value))
+		///     Console.WriteLine($"Removed: {value}");
 		///]]>
 		/// </code>
 		/// </example>
@@ -612,9 +651,9 @@ namespace Bodu.Collections.Generic
 		/// <example>
 		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(2, allowOverwrite: false);
-		///if (!buffer.TryEnqueue("X"))
-		///Console.WriteLine("Item could not be added.");
+		/// var buffer = new CircularBuffer<string>(2, allowOverwrite: false);
+		/// if (!buffer.TryEnqueue("X"))
+		///     Console.WriteLine("Item could not be added.");
 		///]]>
 		/// </code>
 		/// </example>
@@ -638,10 +677,10 @@ namespace Bodu.Collections.Generic
 		/// <example>
 		/// <code language="csharp">
 		///<![CDATA[
-		///var buffer = new CircularBuffer<string>(2);
-		///buffer.Enqueue(10);
-		///if (buffer.TryPeek(out int value))
-		///Console.WriteLine($"Peeked: {value}");
+		/// var buffer = new CircularBuffer<string>(2);
+		/// buffer.Enqueue(10);
+		/// if (buffer.TryPeek(out int value))
+		///     Console.WriteLine($"Peeked: {value}");
 		///]]>
 		/// </code>
 		/// </example>

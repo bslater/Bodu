@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.Truncate.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.Truncate.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -93,7 +93,7 @@ namespace Bodu.Extensions
 
 				default:
 					throw new ArgumentException(
-						string.Format(ResourceStrings.Arg_Invalid_EnumValue, nameof(DateTimeResolution)),
+						string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, resolution, nameof(DateTimeResolution)),
 						nameof(resolution));
 			}
 		}

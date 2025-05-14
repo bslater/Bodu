@@ -10,22 +10,14 @@ namespace Bodu.Extensions
 {
 	public partial class DateTimeExtensionsTests
 	{
-		[DataTestMethod]
-		[DataRow("2024-04-01", DayOfWeek.Monday, "2024-04-01")]
-		[DataRow("2024-04-15", DayOfWeek.Sunday, "2024-04-07")]
-		[DataRow("2024-02-15", DayOfWeek.Wednesday, "2024-02-07")] // Leap year
-		[DataRow("2023-02-15", DayOfWeek.Tuesday, "2023-02-07")]   // Non-leap year
-		[DataRow("2024-12-31", DayOfWeek.Saturday, "2024-12-07")]
-		[DataRow("2024-06-30", DayOfWeek.Sunday, "2024-06-02")]
-		public void FirstDayOfWeekInMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek dayOfWeek, string expectedDate)
-		{
-			DateTime input = DateTime.Parse(inputDate);
-			DateTime expected = DateTime.Parse(expectedDate);
-			DateTime result = input.FirstDayOfWeekInMonth(dayOfWeek);
 
-			Assert.AreEqual(expected, result);
-			Assert.AreEqual(input.Kind, result.Kind);
-			Assert.AreEqual(TimeSpan.Zero, result.TimeOfDay);
+		[DataTestMethod]
+		[DynamicData(nameof(FirstDayOfWeekInMonthTestData), DynamicDataSourceType.Method)]
+		public void FirstDayOfWeekInMonth_WhenCalled_ShouldReturnExpectedDate(DateTime input, DayOfWeek dayOfWeek, DateTime expected)
+		{
+			DateTime actual = input.FirstDayOfWeekInMonth(dayOfWeek);
+
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -40,6 +32,14 @@ namespace Bodu.Extensions
 			});
 		}
 
+		public void FirstDayOfWeekInMonth_WhenCalled_ShouldTruncateTime()
+		{
+			DateTime input = new DateTime(2024, 7, 5, 10, 5, 0, DateTimeKind.Local);
+			DateTime actual = input.FirstDayOfWeekInMonth(DayOfWeek.Saturday);
+
+			Assert.AreEqual(TimeSpan.Zero, actual.TimeOfDay);
+		}
+
 		[DataTestMethod]
 		[DataRow(DateTimeKind.Unspecified)]
 		[DataRow(DateTimeKind.Utc)]
@@ -47,25 +47,25 @@ namespace Bodu.Extensions
 		public void FirstDayOfWeekInMonth_WhenCalled_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
 			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
-			DateTime result = input.FirstDayOfWeekInMonth(DayOfWeek.Saturday);
+			DateTime actual = input.FirstDayOfWeekInMonth(DayOfWeek.Saturday);
 
-			Assert.AreEqual(kind, result.Kind);
+			Assert.AreEqual(kind, actual.Kind);
 		}
 
 		[TestMethod]
 		public void FirstDayOfWeekInMonth_WhenUsingMinValue_ShouldReturnValidResult()
 		{
-			DateTime result = DateTime.MinValue.FirstDayOfWeekInMonth(DayOfWeek.Monday);
+			DateTime actual = DateTime.MinValue.FirstDayOfWeekInMonth(DayOfWeek.Monday);
 
-			Assert.IsTrue(result >= DateTime.MinValue && result <= DateTime.MinValue.AddMonths(1).AddDays(-1));
+			Assert.IsTrue(actual >= DateTime.MinValue && actual <= DateTime.MinValue.AddMonths(1).AddDays(-1));
 		}
 
 		[TestMethod]
 		public void FirstDayOfWeekInMonth_WhenUsingMaxValue_ShouldReturnValidResult()
 		{
-			DateTime result = DateTime.MaxValue.FirstDayOfWeekInMonth(DayOfWeek.Friday);
+			DateTime actual = DateTime.MaxValue.FirstDayOfWeekInMonth(DayOfWeek.Friday);
 
-			Assert.IsTrue(result <= DateTime.MaxValue);
+			Assert.IsTrue(actual <= DateTime.MaxValue);
 		}
 	}
 }

@@ -1,11 +1,10 @@
-﻿// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+﻿// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Bodu.Extensions
 {
@@ -47,12 +46,12 @@ namespace Bodu.Extensions
 		/// Returns a <see cref="DateTime" /> representing the last day of the specified <paramref name="quarter" /> in the given
 		/// <paramref name="year" />, using the standard month-aligned calendar quarter definition.
 		/// </summary>
+		/// <param name="year">
+		/// The calendar year used to evaluate the quarter. The returned date will represent the last day of the quarter relative to this year.
+		/// </param>
 		/// <param name="quarter">
 		/// The quarter number to evaluate (1 through 4), based on the conventional calendar quarters: Q1 = January–March, Q2 = April–June,
 		/// Q3 = July–September, Q4 = October–December.
-		/// </param>
-		/// <param name="year">
-		/// The calendar year used to evaluate the quarter. The returned date will represent the last day of the quarter relative to this year.
 		/// </param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the final day of the specified calendar quarter in the given year, with the time
@@ -81,11 +80,11 @@ namespace Bodu.Extensions
 		/// </list>
 		/// <para>
 		/// To evaluate alternate fiscal or day-aligned definitions, use the
-		/// <see cref="LastDayOfQuarter(CalendarQuarterDefinition, int, int)" /> or provider-based overloads.
+		/// <see cref="LastDayOfQuarter(int, int, CalendarQuarterDefinition)" /> or provider-based overloads.
 		/// </para>
 		/// </remarks>
-		public static DateTime LastDayOfQuarter(int quarter, int year)
-			=> LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
+		public static DateTime LastDayOfQuarter(int year, int quarter)
+			=> LastDayOfQuarter(year, quarter, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns the last day of the quarter that includes the specified <paramref name="dateTime" />, based on the provided <see cref="CalendarQuarterDefinition" />.
@@ -129,14 +128,14 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the first day of the specified <paramref name="quarter" /> in the given <paramref name="year" />, based on the provided <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="definition">Specifies the quarter definition used to determine the last date of the quarter.</param>
-		/// <param name="quarter">
-		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
-		/// </param>
 		/// <param name="year">
 		/// The reference calendar year. The result will represent the start date of the specified quarter relative to this year. If the
 		/// quarter begins in the next calendar year (based on modular month arithmetic), the year will be incremented accordingly.
 		/// </param>
+		/// <param name="quarter">
+		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
+		/// </param>
+		/// <param name="definition">Specifies the quarter definition used to determine the last date of the quarter.</param>
 		/// <returns>
 		/// A <see cref="DateTime" /> representing the first day of the specified quarter in the applicable year, with the time set to
 		/// 00:00:00 and a <see cref="DateTimeKind" /> of <see cref="DateTimeKind.Unspecified" />.
@@ -159,7 +158,7 @@ namespace Bodu.Extensions
 		/// quarters maintain the day anchor across three-month intervals.
 		/// </para>
 		/// </remarks>
-		public static DateTime LastDayOfQuarter(CalendarQuarterDefinition definition, int quarter, int year)
+		public static DateTime LastDayOfQuarter(int year, int quarter, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -189,7 +188,7 @@ namespace Bodu.Extensions
 		public static DateTime LastDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetEndDate(dateTime);
+			return provider.GetQuarterEnd(dateTime);
 		}
 	}
 }

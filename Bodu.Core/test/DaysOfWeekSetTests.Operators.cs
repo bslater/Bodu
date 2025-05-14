@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -12,62 +6,62 @@ namespace Bodu
 		public void OrOperator_WhenCombinedWithEmpty_ShouldReturnOriginal()
 		{
 			var original = new DaysOfWeekSet(DayOfWeek.Monday, DayOfWeek.Tuesday);
-			var result = original | DaysOfWeekSet.Empty;
-			Assert.AreEqual(original, result);
+			var actual = original | DaysOfWeekSet.Empty;
+			Assert.AreEqual(original, actual);
 		}
 
 		[TestMethod]
 		public void OrOperator_WhenCombinedWithItself_ShouldReturnSame()
 		{
 			var original = new DaysOfWeekSet(DayOfWeek.Monday);
-			var result = original | original;
-			Assert.AreEqual(original, result);
+			var actual = original | original;
+			Assert.AreEqual(original, actual);
 		}
 
 		[TestMethod]
 		public void AndOperator_WhenCombinedWithEmpty_ShouldReturnEmpty()
 		{
 			var original = new DaysOfWeekSet(DayOfWeek.Monday);
-			var result = original & DaysOfWeekSet.Empty;
-			Assert.AreEqual(DaysOfWeekSet.Empty, result);
+			var actual = original & DaysOfWeekSet.Empty;
+			Assert.AreEqual(DaysOfWeekSet.Empty, actual);
 		}
 
 		[TestMethod]
 		public void AndOperator_WhenCombinedWithItself_ShouldReturnSame()
 		{
 			var original = new DaysOfWeekSet(DayOfWeek.Wednesday);
-			var result = original & original;
-			Assert.AreEqual(original, result);
+			var actual = original & original;
+			Assert.AreEqual(original, actual);
 		}
 
 		[TestMethod]
 		public void XorOperator_WhenCombinedWithEmpty_ShouldReturnOriginal()
 		{
 			var original = new DaysOfWeekSet(DayOfWeek.Friday);
-			var result = original ^ DaysOfWeekSet.Empty;
-			Assert.AreEqual(original, result);
+			var actual = original ^ DaysOfWeekSet.Empty;
+			Assert.AreEqual(original, actual);
 		}
 
 		[TestMethod]
 		public void XorOperator_WhenCombinedWithItself_ShouldReturnEmpty()
 		{
 			var original = new DaysOfWeekSet(DayOfWeek.Thursday);
-			var result = original ^ original;
-			Assert.AreEqual(DaysOfWeekSet.Empty, result);
+			var actual = original ^ original;
+			Assert.AreEqual(DaysOfWeekSet.Empty, actual);
 		}
 
 		[TestMethod]
 		public void ComplementOperator_WhenAppliedToEmpty_ShouldReturnFullSet()
 		{
-			var result = ~DaysOfWeekSet.Empty;
-			Assert.AreEqual(DaysOfWeekSet.FromByte(0b1111111), result);
+			var actual = ~DaysOfWeekSet.Empty;
+			Assert.AreEqual(DaysOfWeekSet.FromByte(0b1111111), actual);
 		}
 
 		[TestMethod]
 		public void ComplementOperator_WhenAppliedToFullSet_ShouldReturnEmpty()
 		{
-			var result = ~DaysOfWeekSet.FromByte(0b1111111);
-			Assert.AreEqual(DaysOfWeekSet.Empty, result);
+			var actual = ~DaysOfWeekSet.FromByte(0b1111111);
+			Assert.AreEqual(DaysOfWeekSet.Empty, actual);
 		}
 
 		[DataTestMethod]

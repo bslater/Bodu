@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.PreviousDayOfWeek.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.PreviousDayOfWeek.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -34,7 +34,7 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			return date.AddDays(-(((int)(7 + date.DayOfWeek - dayOfWeek) % 7) switch { 0 => 7, int d => d }));
+			return date.AddDays(-(((7 + date.DayOfWeek - dayOfWeek) % 7) switch { 0 => 7, int d => d }));
 		}
 	}
 }

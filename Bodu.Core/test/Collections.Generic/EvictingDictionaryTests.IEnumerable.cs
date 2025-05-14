@@ -13,13 +13,13 @@ namespace Bodu.Collections.Generic
 			dictionary.Add(2, "B");
 			dictionary.Add(3, "C");
 
-			var result = new List<KeyValuePair<int, string>>();
+			var actual = new List<KeyValuePair<int, string>>();
 			foreach (var kvp in dictionary)
 			{
-				result.Add(kvp);
+				actual.Add(kvp);
 			}
 
-			CollectionAssert.AreEqual(dictionary.ToArray(), result);
+			CollectionAssert.AreEqual(dictionary.ToArray(), actual);
 		}
 
 		/// <summary>
@@ -32,16 +32,16 @@ namespace Bodu.Collections.Generic
 			dictionary.Add("x", "1");
 			dictionary.Add("y", "2");
 
-			var result = new List<KeyValuePair<string, string>>();
+			var actual = new List<KeyValuePair<string, string>>();
 			var enumerator = ((System.Collections.IEnumerable)dictionary).GetEnumerator();
 
 			while (enumerator.MoveNext())
 			{
 				Assert.IsInstanceOfType(enumerator.Current, typeof(KeyValuePair<string, string>));
-				result.Add((KeyValuePair<string, string>)enumerator.Current);
+				actual.Add((KeyValuePair<string, string>)enumerator.Current);
 			}
 
-			CollectionAssert.AreEqual(dictionary.ToArray(), result);
+			CollectionAssert.AreEqual(dictionary.ToArray(), actual);
 		}
 
 		/// <summary>

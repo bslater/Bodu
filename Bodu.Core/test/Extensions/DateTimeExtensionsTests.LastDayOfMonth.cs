@@ -12,62 +12,42 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow(2024, 1, 31)]   // January (31 days)
-		[DataRow(2024, 2, 29)]   // February in leap year
-		[DataRow(2023, 2, 28)]   // February in common year
-		[DataRow(2024, 3, 31)]   // March
-		[DataRow(2024, 4, 30)]   // April
-		[DataRow(2024, 5, 31)]   // May
-		[DataRow(2024, 6, 30)]   // June
-		[DataRow(2024, 7, 31)]   // July
-		[DataRow(2024, 8, 31)]   // August
-		[DataRow(2024, 9, 30)]   // September
-		[DataRow(2024, 10, 31)]  // October
-		[DataRow(2024, 11, 30)]  // November
-		[DataRow(2024, 12, 31)]  // December
-		public void LastDayOfMonth_WhenCalled_ShouldReturnExpectedDay(int year, int month, int expectedDay)
+		[DynamicData(nameof(DateTimeExtensionsTests.LastDayOfMonthDataTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfMonth_WhenCalled_ShouldReturnExpectedDay(DateTime input, DateTime expected)
 		{
-			DateTime input = new DateTime(year, month, 15, 13, 45, 30); // arbitrary middle-of-month time
-			var expected = new DateTime(year, month, expectedDay, 0, 0, 0, input.Kind);
-			DateTime result = input.LastDayOfMonth();
+			DateTime actual = input.LastDayOfMonth();
 
-			Assert.AreEqual(expected, result);
-			Assert.AreEqual(input.Kind, result.Kind);
+			Assert.AreEqual(expected, actual);
+			Assert.AreEqual(input.Kind, actual.Kind);
+		}
+
+		[DataTestMethod]
+		[DataRow(DateTimeKind.Unspecified)]
+		[DataRow(DateTimeKind.Utc)]
+		[DataRow(DateTimeKind.Local)]
+		public void LastDayOfMonth__WhenKindIsSet_ShouldPreserveKind(DateTimeKind kind)
+		{
+			DateTime input = new DateTime(2024, 6, 10, 12, 0, 0, kind);
+			DateTime actual = input.LastDayOfMonth();
+
+			Assert.AreEqual(kind, actual.Kind);
 		}
 
 		[TestMethod]
-		public void LastDayOfMonth_WhenKindIsUtc_ShouldPreserveKind()
+		public void LastDayOfMonth_WhenMinValue_ShouldReturnExpectedDay()
 		{
-			DateTime input = new DateTime(2024, 6, 10, 12, 0, 0, DateTimeKind.Utc);
-			DateTime result = input.LastDayOfMonth();
+			DateTime actual = DateTime.MinValue.LastDayOfMonth();
 
-			Assert.AreEqual(DateTimeKind.Utc, result.Kind);
+			Assert.AreEqual(new DateTime(1, 1, 31), actual);
 		}
 
 		[TestMethod]
-		public void LastDayOfMonth_WhenKindIsLocal_ShouldPreserveKind()
-		{
-			DateTime input = new DateTime(2024, 6, 10, 12, 0, 0, DateTimeKind.Local);
-			DateTime result = input.LastDayOfMonth();
-
-			Assert.AreEqual(DateTimeKind.Local, result.Kind);
-		}
-
-		[TestMethod]
-		public void LastDayOfMonth_WhenMinValue_ShouldReturnJanuary31OfYear1()
-		{
-			DateTime result = DateTime.MinValue.LastDayOfMonth();
-
-			Assert.AreEqual(new DateTime(1, 1, 31), result);
-		}
-
-		[TestMethod]
-		public void LastDayOfMonth_WhenMaxValue_ShouldReturnLastDayOfThatMonth()
+		public void LastDayOfMonth_WhenMaxValue_ShouldReturnExpectedDay()
 		{
 			DateTime max = DateTime.MaxValue;
-			DateTime result = max.LastDayOfMonth();
+			DateTime actual = max.LastDayOfMonth();
 
-			Assert.AreEqual(new DateTime(9999, 12, 31), result);
+			Assert.AreEqual(new DateTime(9999, 12, 31), actual);
 		}
 	}
 }

@@ -1,15 +1,14 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.FirstWeekdayInYear.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.FirstDayOfWeekInYear.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Security.Cryptography;
 
 namespace Bodu.Extensions
 {
-	public static partial class DateTimeExtensions
+	public static partial class DateOnlyExtensions
 	{
 		/// <summary>
 		/// Returns the first occurrence of the specified <see cref="DayOfWeek" /> in the calendar year of the given <see cref="DateOnly" />.
@@ -33,8 +32,7 @@ namespace Bodu.Extensions
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
 			int dayNumber = GetDayNumber(date.Year, 1, 1);
-			dayNumber += (((int)dayOfWeek - dayNumber + 7) % 7);
-			return DateOnly.FromDayNumber(dayNumber);
+			return DateOnly.FromDayNumber(dayNumber + ((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(dayNumber) + 7) % 7);
 		}
 	}
 }

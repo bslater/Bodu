@@ -12,47 +12,24 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("2024-04-18T13:45:00", "2024-04-01T00:00:00")]
-		[DataRow("2024-01-01T00:00:00", "2024-01-01T00:00:00")] // already first day
-		[DataRow("2024-02-29T23:59:59", "2024-02-01T00:00:00")] // leap day
-		[DataRow("2023-12-31T15:00:00", "2023-12-01T00:00:00")] // 31-day month
-		[DataRow("2023-06-15T06:30:00", "2023-06-01T00:00:00")] // mid-month
-		public void FirstDayOfMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, string expectedDate)
+		[DynamicData(nameof(FirstDayOfMonthDataTestData), DynamicDataSourceType.Method)]
+		public void FirstDayOfMonth_WhenCalled_ShouldReturnExpectedDate(DateTime input, DateTime expected)
 		{
-			DateTime input = DateTime.Parse(inputDate);
-			var expectedt = DateTime.Parse(expectedDate);
-			DateTime result = input.FirstDayOfMonth();
+			DateTime actual = input.FirstDayOfMonth();
 
-			Assert.AreEqual(expectedt, result);
+			Assert.AreEqual(expected, actual);
 		}
 
-		[TestMethod]
-		public void FirstDayOfMonth_ShouldPreserveDateTimeKind()
+		[DataTestMethod]
+		[DataRow(DateTimeKind.Unspecified)]
+		[DataRow(DateTimeKind.Utc)]
+		[DataRow(DateTimeKind.Local)]
+		public void FirstDayOfMonth_ShouldPreserveDateTimeKind(DateTimeKind kind)
 		{
-			var utc = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Utc);
-			var local = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Local);
-			var unspecified = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Unspecified);
+			var input = new DateTime(2024, 4, 18, 10, 0, 0, kind);
+			var actual = input.FirstDayOfMonth();
 
-			Assert.AreEqual(DateTimeKind.Utc, utc.FirstDayOfMonth().Kind);
-			Assert.AreEqual(DateTimeKind.Local, local.FirstDayOfMonth().Kind);
-			Assert.AreEqual(DateTimeKind.Unspecified, unspecified.FirstDayOfMonth().Kind);
-		}
-
-		[TestMethod]
-		public void FirstDayOfMonth_WhenMinValue_ShouldReturnExpected()
-		{
-			DateTime result = DateTime.MinValue.FirstDayOfMonth();
-
-			Assert.AreEqual(new DateTime(1, 1, 1, 0, 0, 0), result);
-		}
-
-		[TestMethod]
-		public void FirstDayOfMonth_WhenMaxValue_ShouldReturnStartOfMaxMonth()
-		{
-			var maxDate = DateTime.MaxValue.Date; // 9999-12-31
-			DateTime result = maxDate.FirstDayOfMonth();
-
-			Assert.AreEqual(new DateTime(9999, 12, 1), result);
+			Assert.AreEqual(kind, actual.Kind);
 		}
 	}
 }

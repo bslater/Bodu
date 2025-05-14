@@ -12,9 +12,9 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(2);
 			dictionary.Add("A", 1);
 
-			var result = dictionary.TryGetValue("B", out var value);
+			var actual = dictionary.TryGetValue("B", out var value);
 
-			Assert.IsFalse(result);
+			Assert.IsFalse(actual);
 			Assert.AreEqual(default, value);
 		}
 	}

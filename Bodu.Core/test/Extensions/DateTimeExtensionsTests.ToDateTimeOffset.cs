@@ -15,28 +15,28 @@ namespace Bodu.Extensions
 		public void ToDateTimeOffset_WhenKindIsUtc_ShouldReturnZeroOffset()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Utc);
-			DateTimeOffset result = input.ToDateTimeOffset();
+			DateTimeOffset actual = input.ToDateTimeOffset();
 
-			Assert.AreEqual(TimeSpan.Zero, result.Offset);
-			Assert.AreEqual(input, result.UtcDateTime);
+			Assert.AreEqual(TimeSpan.Zero, actual.Offset);
+			Assert.AreEqual(input, actual.UtcDateTime);
 		}
 
 		[TestMethod]
 		public void ToDateTimeOffset_WhenKindIsLocal_ShouldReturnLocalOffset()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Local);
-			DateTimeOffset result = input.ToDateTimeOffset();
+			DateTimeOffset actual = input.ToDateTimeOffset();
 
-			Assert.AreEqual(input, result.LocalDateTime);
+			Assert.AreEqual(input, actual.LocalDateTime);
 		}
 
 		[TestMethod]
 		public void ToDateTimeOffset_WhenKindIsUnspecified_ShouldAssumeLocal()
 		{
 			DateTime input = new DateTime(2024, 4, 18, 10, 0, 0, DateTimeKind.Unspecified);
-			DateTimeOffset result = input.ToDateTimeOffset();
+			DateTimeOffset actual = input.ToDateTimeOffset();
 
-			Assert.AreEqual(input, result.DateTime);
+			Assert.AreEqual(input, actual.DateTime);
 		}
 
 		[DataTestMethod]
@@ -49,10 +49,10 @@ namespace Bodu.Extensions
 		{
 			var offset = new TimeSpan(hours, minutes, 0);
 			DateTime input = new DateTime(2024, 4, 18, 12, 0, 0);
-			DateTimeOffset result = input.ToDateTimeOffset(offset);
+			DateTimeOffset actual = input.ToDateTimeOffset(offset);
 
-			Assert.AreEqual(offset, result.Offset);
-			Assert.AreEqual(input, result.DateTime);
+			Assert.AreEqual(offset, actual.Offset);
+			Assert.AreEqual(input, actual.DateTime);
 		}
 
 		[DataTestMethod]

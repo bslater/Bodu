@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bodu
+﻿namespace Bodu
 {
 	public partial class DaysOfWeekSetTests
 	{
@@ -12,7 +6,7 @@ namespace Bodu
 		public void EqualsObject_WhenNull_ShouldReturnFalse()
 		{
 			var set = new DaysOfWeekSet(DayOfWeek.Monday);
-			Assert.IsFalse(set.Equals((object?)null));
+			Assert.IsFalse(set.Equals(null));
 		}
 
 		[TestMethod]

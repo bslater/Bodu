@@ -165,8 +165,8 @@
   <data name="Arg_Invalid_StringNullOrEmpty" xml:space="preserve">
     <value>The string was either null or empty.</value>
   </data>
-  <data name="Arg_Invalid_EnumValue" xml:space="preserve">
-    <value>The value is not a valid member of {0}.</value>
+  <data name="Arg_OutOfRangeException_EnumValue" xml:space="preserve">
+    <value>The value '{1}' is not a defined member of the {0} enumeration.</value>
   </data>
   <data name="Arg_Invalid_WrongAction2ForCtor" xml:space="preserve">
     <value>Constructor supports only the '{string action1}' or '{string action2} actions.</value>
@@ -443,5 +443,8 @@
   </data>
   <data name="Arg_Invalid_MustBeComparableType" xml:space="preserve">
     <value>Object must be of type {0} to be compared.</value>
+  </data>
+  <data name="Arg_Invalid_ValueForOperation" xml:space="preserve">
+    <value>The value for '{0}' must be {1}, but was {2}.</value>
   </data>
 </root>

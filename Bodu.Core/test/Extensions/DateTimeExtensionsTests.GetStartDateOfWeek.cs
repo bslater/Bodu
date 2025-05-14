@@ -27,9 +27,9 @@ namespace Bodu.Extensions
 		public void GetStartDateOfWeek_WithCultureInfo_ShouldReturnExpectedDate(int year, int week, DateTime expected)
 		{
 			CultureInfo culture = CultureInfo.GetCultureInfo("en-GB"); // ISO-8601 based calendar rule
-			DateTime result = DateTimeExtensions.GetStartDateOfWeek(year, week, culture);
+			DateTime actual = DateTimeExtensions.GetStartDateOfWeek(year, week, culture);
 
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]

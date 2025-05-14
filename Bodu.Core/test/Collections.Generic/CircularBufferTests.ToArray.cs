@@ -22,9 +22,9 @@ namespace Bodu.Collections.Generic
 		public void ToArray_WhenBufferIsEmpty_ShouldReturnEmptyArray()
 		{
 			var buffer = new CircularBuffer<object>(5);
-			var result = buffer.ToArray();
+			var actual = buffer.ToArray();
 
-			Assert.AreEqual(0, result.Length, "Expected an empty array when buffer is empty.");
+			Assert.AreEqual(0, actual.Length, "Expected an empty array when buffer is empty.");
 		}
 
 		/// <summary>

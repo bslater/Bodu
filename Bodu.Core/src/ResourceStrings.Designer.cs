@@ -187,15 +187,6 @@ namespace Bodu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value is not a valid member of {0}..
-        /// </summary>
-        internal static string Arg_Invalid_EnumValue {
-            get {
-                return ResourceManager.GetString("Arg_Invalid_EnumValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid format string specified..
         /// </summary>
         internal static string Arg_Invalid_FormatSpecification {
@@ -354,6 +345,15 @@ namespace Bodu {
         internal static string Arg_Invalid_StringNullOrEmpty {
             get {
                 return ResourceManager.GetString("Arg_Invalid_StringNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value for &apos;{0}&apos; must be {1}, but was {2}..
+        /// </summary>
+        internal static string Arg_Invalid_ValueForOperation {
+            get {
+                return ResourceManager.GetString("Arg_Invalid_ValueForOperation", resourceCulture);
             }
         }
         
@@ -588,6 +588,15 @@ namespace Bodu {
         internal static string Arg_OutOfRange_SequenceRangeOverflow {
             get {
                 return ResourceManager.GetString("Arg_OutOfRange_SequenceRangeOverflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{1}&apos; is not a defined member of the {0} enumeration..
+        /// </summary>
+        internal static string Arg_OutOfRangeException_EnumValue {
+            get {
+                return ResourceManager.GetString("Arg_OutOfRangeException_EnumValue", resourceCulture);
             }
         }
         

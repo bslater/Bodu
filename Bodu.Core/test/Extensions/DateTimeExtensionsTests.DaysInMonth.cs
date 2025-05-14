@@ -11,17 +11,14 @@ namespace Bodu.Extensions
 	public partial class DateTimeExtensionsTests
 	{
 
-		[DataTestMethod]
-		[DataRow("2023-02-15", 28)]
-		[DataRow("2024-02-15", 29)]
-		[DataRow("2023-02-15", 28)]
-        [DataRow("2023-01-01", 31)]
-        public void DaysInMonth_WhenCalled_ShouldReturnDaysInMonth(string inputDate, int expected)
-        {
-            DateTime input = DateTime.Parse(inputDate);
 
-            Assert.AreEqual(expected, input.DaysInMonth());
-        }
-        
-    }
+		[DataTestMethod]
+		[DynamicData(nameof(DaysInMonthTestData), DynamicDataSourceType.Method)]
+		public void DaysInMonth_WhenCalled_ShouldReturnDaysInMonth(DateTime input, int expected)
+		{
+			var actual = input.DaysInMonth();
+			Assert.AreEqual(expected, actual);
+		}
+
+	}
 }

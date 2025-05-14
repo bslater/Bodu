@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateOnlyExtensions.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateOnlyExtensions.LastDayOfMonth.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -13,10 +13,10 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns a new <see cref="DateOnly" /> representing the first day of the same month and year as the specified date.
 		/// </summary>
-		/// <param name="dateOnly">The input <see cref="DateOnly" /> whose month and year are used.</param>
-		/// <returns>A <see cref="DateOnly" /> value set to the first day of the same month and year as <paramref name="dateOnly" />.</returns>
-		public static DateOnly FirstDayOfMonth(this DateOnly dateOnly) =>
-			DateOnly.FromDayNumber(DateTimeExtensions.GetDayNumber(dateOnly.Year, dateOnly.Month, 1));
+		/// <param name="date">The input <see cref="DateOnly" /> whose month and year are used.</param>
+		/// <returns>A <see cref="DateOnly" /> value set to the first day of the same month and year as <paramref name="date" />.</returns>
+		public static DateOnly FirstDayOfMonth(this DateOnly date) =>
+			DateOnly.FromDayNumber(DateTimeExtensions.GetDayNumber(date.Year, date.Month, 1));
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the first day of the specified year and month.

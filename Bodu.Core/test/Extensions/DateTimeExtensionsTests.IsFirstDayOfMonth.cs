@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace Bodu.Extensions
+﻿namespace Bodu.Extensions
 {
 	public partial class DateTimeExtensionsTests
 	{
@@ -10,15 +7,12 @@ namespace Bodu.Extensions
 		/// first day of the month.
 		/// </summary>
 		[DataTestMethod]
-		[DataRow("2024-01-01")]
-		[DataRow("2024-02-01")]
-		[DataRow("2024-12-01")]
-		[DataRow("2020-02-01")] // leap year
-		[DataRow("2023-04-01")]
-		public void IsFirstDayOfMonth_WhenDateIsFirstDay_ShouldReturnTrue(string dateString)
+		[DynamicData(nameof(IsFirstDayOfMonthTestData), DynamicDataSourceType.Method)]
+		public void IsFirstDayOfMonth_WhenDateIsFirstDay_ShouldReturnTrue(DateTime input)
 		{
-			var date = DateTime.Parse(dateString);
-			Assert.IsTrue(date.IsFirstDayOfMonth());
+			var actual = input.IsFirstDayOfMonth();
+
+			Assert.IsTrue(actual);
 		}
 
 		/// <summary>
@@ -26,15 +20,12 @@ namespace Bodu.Extensions
 		/// represent the first day of the month.
 		/// </summary>
 		[DataTestMethod]
-		[DataRow("2024-01-02")]
-		[DataRow("2024-02-15")]
-		[DataRow("2024-12-31")]
-		[DataRow("2020-02-29")] // leap day
-		[DataRow("2023-04-30")]
-		public void IsFirstDayOfMonth_WhenDateIsNotFirstDay_ShouldReturnFalse(string dateString)
+		[DynamicData(nameof(IsNotFirstDayOfMonthTestData), DynamicDataSourceType.Method)]
+		public void IsFirstDayOfMonth_WhenDateIsNotFirstDay_ShouldReturnFalse(DateTime input)
 		{
-			var date = DateTime.Parse(dateString);
-			Assert.IsFalse(date.IsFirstDayOfMonth());
+			var actual = input.IsFirstDayOfMonth();
+
+			Assert.IsFalse(actual);
 		}
 	}
 }

@@ -308,7 +308,7 @@
 			Assert.ThrowsExactly<ArgumentNullException>(
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
-					selector: (Func<object, int, int, object>)null!,
+					selector: null!,
 					recursionControl: _ => RecursiveSelectControl.YieldAndRecurse
 				).Cast<object>().ToList()
 			);
@@ -325,7 +325,7 @@
 				() => source.RecursiveSelect(
 					childSelector: _ => Enumerable.Empty<object>(),
 					selector: (e, i, d) => e,
-					recursionControl: (Func<object, RecursiveSelectControl>)null!
+					recursionControl: null!
 				).Cast<object>().ToList()
 			);
 		}
@@ -337,8 +337,8 @@
 		public void RecursiveSelect_WithEmptySource_ShouldReturnEmpty()
 		{
 			object[] source = Array.Empty<object>();
-			var result = source.RecursiveSelect(n => Array.Empty<object>()).Cast<object>().ToList();
-			Assert.AreEqual(0, result.Count);
+			var actual = source.RecursiveSelect(n => Array.Empty<object>()).Cast<object>().ToList();
+			Assert.AreEqual(0, actual.Count);
 		}
 
 		/// <summary>
@@ -348,10 +348,10 @@
 		public void ChildSelector_ReturnsNull_ShouldSkipChildren()
 		{
 			var root = new Node { Name = "Root", Children = null! };
-			var result = new object[] { root }.RecursiveSelect(n => (n as Node).Children).Cast<Node>().ToList();
+			var actual = new object[] { root }.RecursiveSelect(n => (n as Node).Children).Cast<Node>().ToList();
 
-			Assert.AreEqual(1, result.Count);
-			Assert.AreEqual("Root", (result[0] as Node).Name);
+			Assert.AreEqual(1, actual.Count);
+			Assert.AreEqual("Root", actual[0].Name);
 		}
 
 		/// <summary>

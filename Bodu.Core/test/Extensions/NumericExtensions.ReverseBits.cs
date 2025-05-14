@@ -15,11 +15,11 @@ namespace Bodu.Extensions
 		public void ReverseBits_Byte_ShouldReverseBits(byte value, byte expected)
 		{
 			byte reversed = value.ReverseBits();
-			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString((byte)value, 2)).PadLeft(sizeof(byte) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString((byte)expected, 2)).PadLeft(sizeof(byte) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"result  : {(Convert.ToString((byte)reversed, 2)).PadLeft(sizeof(byte) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString(value, 2)).PadLeft(sizeof(byte) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString(expected, 2)).PadLeft(sizeof(byte) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"actual  : {(Convert.ToString(reversed, 2)).PadLeft(sizeof(byte) * 8, '0')}");
 
-			Assert.AreEqual(expected, reversed, "Byte ReverseBits did not produce the correct result.");
+			Assert.AreEqual(expected, reversed, "Byte ReverseBits did not produce the correct actual.");
 		}
 
 		// UShort tests
@@ -34,9 +34,9 @@ namespace Bodu.Extensions
 			ushort reversed = value.ReverseBits();
 			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString((short)value, 2)).PadLeft(sizeof(short) * 8, '0')}");
 			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString((short)expected, 2)).PadLeft(sizeof(short) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"result  : {(Convert.ToString((short)reversed, 2)).PadLeft(sizeof(short) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"actual  : {(Convert.ToString((short)reversed, 2)).PadLeft(sizeof(short) * 8, '0')}");
 
-			Assert.AreEqual(expected, reversed, "UShort ReverseBits did not produce the correct result.");
+			Assert.AreEqual(expected, reversed, "UShort ReverseBits did not produce the correct actual.");
 		}
 
 		// Int tests
@@ -49,9 +49,9 @@ namespace Bodu.Extensions
 		public void ReverseBits_Int_ShouldReverseBits(int value, uint expected)
 		{
 			int reversed = value.ReverseBits();
-			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString((int)value, 2)).PadLeft(sizeof(int) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString(value, 2)).PadLeft(sizeof(int) * 8, '0')}");
 			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString((int)expected, 2)).PadLeft(sizeof(int) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"result  : {(Convert.ToString((int)reversed, 2)).PadLeft(sizeof(int) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"actual  : {(Convert.ToString(reversed, 2)).PadLeft(sizeof(int) * 8, '0')}");
 
 			Assert.AreEqual((int)expected, reversed);
 		}
@@ -66,11 +66,11 @@ namespace Bodu.Extensions
 		public void ReverseBits_Long_ShouldReverseBits(long value, long expected)
 		{
 			long reversed = value.ReverseBits();
-			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString((long)value, 2)).PadLeft(sizeof(long) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString((long)expected, 2)).PadLeft(sizeof(long) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"result  : {(Convert.ToString((long)reversed, 2)).PadLeft(sizeof(long) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString(value, 2)).PadLeft(sizeof(long) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString(expected, 2)).PadLeft(sizeof(long) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"actual  : {(Convert.ToString(reversed, 2)).PadLeft(sizeof(long) * 8, '0')}");
 
-			Assert.AreEqual(expected, reversed, "Long ReverseBits did not produce the correct result.");
+			Assert.AreEqual(expected, reversed, "Long ReverseBits did not produce the correct actual.");
 		}
 
 		// ULong tests
@@ -85,9 +85,9 @@ namespace Bodu.Extensions
 			ulong reversed = value.ReverseBits();
 			Trace.WriteLineIf(reversed != expected, $"value   : {(Convert.ToString((long)value, 2)).PadLeft(sizeof(long) * 8, '0')}");
 			Trace.WriteLineIf(reversed != expected, $"expected: {(Convert.ToString((long)expected, 2)).PadLeft(sizeof(long) * 8, '0')}");
-			Trace.WriteLineIf(reversed != expected, $"result  : {(Convert.ToString((long)reversed, 2)).PadLeft(sizeof(long) * 8, '0')}");
+			Trace.WriteLineIf(reversed != expected, $"actual  : {(Convert.ToString((long)reversed, 2)).PadLeft(sizeof(long) * 8, '0')}");
 
-			Assert.AreEqual(expected, reversed, "Ulong ReverseBits did not produce the correct result.");
+			Assert.AreEqual(expected, reversed, "Ulong ReverseBits did not produce the correct actual.");
 		}
 	}
 }

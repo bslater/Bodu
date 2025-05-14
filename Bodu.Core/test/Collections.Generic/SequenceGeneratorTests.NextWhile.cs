@@ -8,12 +8,12 @@
 		[TestMethod]
 		public void NextWhile_WhenUsingIndexedTransform_ShouldReturnExpectedSequence()
 		{
-			var result = SequenceGenerator.NextWhile(
+			var actual = SequenceGenerator.NextWhile(
 				0,
 				x => x < 5,
 				(x, _) => x + 1).ToArray();
 
-			CollectionAssert.AreEqual(new[] { 0, 1, 2, 3, 4 }, result);
+			CollectionAssert.AreEqual(new[] { 0, 1, 2, 3, 4 }, actual);
 		}
 
 		/// <summary>
@@ -22,12 +22,12 @@
 		[TestMethod]
 		public void NextWhile_WhenUsingSimpleTransform_ShouldReturnExpectedSequence()
 		{
-			var result = SequenceGenerator.NextWhile(
+			var actual = SequenceGenerator.NextWhile(
 				1,
 				x => x <= 8,
 				x => x * 2).ToArray();
 
-			CollectionAssert.AreEqual(new[] { 1, 2, 4, 8 }, result);
+			CollectionAssert.AreEqual(new[] { 1, 2, 4, 8 }, actual);
 		}
 
 		/// <summary>
@@ -36,17 +36,17 @@
 		[TestMethod]
 		public void NextWhile_WhenUsingStateObject_ShouldReturnProjectedSequence()
 		{
-			var result = SequenceGenerator.NextWhile(
+			var actual = SequenceGenerator.NextWhile(
 				new { A = 1, B = 1 },
 				state => state.B < 8,
 				state => new { A = state.B, B = state.A + state.B },
 				state => state.A).ToArray();
 
-			CollectionAssert.AreEqual(new[] { 1, 1, 2, 3 }, result);
+			CollectionAssert.AreEqual(new[] { 1, 1, 2, 3 }, actual);
 		}
 
 		/// <summary>
-		/// Verifies that NextWhile throws when the result selector is null.
+		/// Verifies that NextWhile throws when the actual selector is null.
 		/// </summary>
 		[TestMethod]
 		public void NextWhile_WhenResultSelectorIsNull_ShouldThrowExactly()
@@ -63,12 +63,12 @@
 		[TestMethod]
 		public void NextWhile_WhenInitialConditionIsFalse_ShouldReturnEmptySequence()
 		{
-			var result = SequenceGenerator.NextWhile(
+			var actual = SequenceGenerator.NextWhile(
 				5,
 				x => false,
 				x => x + 1).ToArray();
 
-			Assert.AreEqual(0, result.Length);
+			Assert.AreEqual(0, actual.Length);
 		}
 
 		/// <summary>

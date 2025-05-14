@@ -13,34 +13,29 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow(2024, 1, "January", "en-US")]
-		[DataRow(2024, 2, "February", "en-US")]
-		[DataRow(2024, 3, "März", "de-DE")]
-		[DataRow(2024, 4, "avril", "fr-FR")]
-		[DataRow(2024, 5, "maggio", "it-IT")]
-		[DataRow(2024, 6, "июнь", "ru-RU")]
-		[DataRow(2024, 12, "desember", "nb-NO")]
-		public void MonthName_WithCulture_ShouldReturnLocalizedName(int year, int month, string expectedMonthName, string cultureCode)
+		[DynamicData(nameof(MonthNameTestData), DynamicDataSourceType.Method)]
+		public void MonthName_WithCulture_ShouldReturnLocalizedName(int year, int month, CultureInfo culture, string expected)
 		{
 			DateTime input = new DateTime(year, month, 1);
-			CultureInfo culture = new CultureInfo(cultureCode);
-			string result = input.MonthName(culture);
 
-			Assert.AreEqual(expectedMonthName, result);
+			string actual = input.MonthName(culture);
+
+			Assert.AreEqual(expected, actual);
 		}
 
-		[TestMethod]
-		public void MonthName_WhenCultureIsNull_ShouldFallbackToCurrentCulture()
+		[DataTestMethod]
+		[DynamicData(nameof(MonthNameFrenchTestData), DynamicDataSourceType.Method)]
+		public void MonthName_WhenCultureIsNull_ShouldFallbackToCurrentCulture(int year, int month, string expected)
 		{
 			var original = CultureInfo.CurrentCulture;
 			try
 			{
 				CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
-				DateTime input = new DateTime(2024, 1, 1);
+				DateTime input = new DateTime(year, month, 1);
 
-				string result = input.MonthName(null!);
+				string actual = input.MonthName(null!);
 
-				Assert.AreEqual("janvier", result);
+				Assert.AreEqual(expected, actual);
 			}
 			finally
 			{
@@ -52,18 +47,18 @@ namespace Bodu.Extensions
 		public void MonthName_WhenUsingMinValue_ShouldReturnExpected()
 		{
 			DateTime input = DateTime.MinValue; // 0001-01-01
-			string result = input.MonthName(new CultureInfo("en-US"));
+			string actual = input.MonthName(new CultureInfo("en-US"));
 
-			Assert.AreEqual("January", result);
+			Assert.AreEqual("January", actual);
 		}
 
 		[TestMethod]
 		public void MonthName_WhenUsingMaxValue_ShouldReturnExpected()
 		{
 			DateTime input = DateTime.MaxValue; // 9999-12-31
-			string result = input.MonthName(new CultureInfo("en-US"));
+			string actual = input.MonthName(new CultureInfo("en-US"));
 
-			Assert.AreEqual("December", result);
+			Assert.AreEqual("December", actual);
 		}
 	}
 }

@@ -47,13 +47,13 @@ namespace Bodu.Collections.Generic
 			((CircularBuffer<int>)buffer).Enqueue(2);
 			((CircularBuffer<int>)buffer).Enqueue(3);
 
-			var result = new List<int>();
+			var actual = new List<int>();
 			foreach (var item in buffer)
 			{
-				result.Add((int)item);
+				actual.Add((int)item);
 			}
 
-			CollectionAssert.AreEqual(new[] { 1, 2, 3 }, result);
+			CollectionAssert.AreEqual(new[] { 1, 2, 3 }, actual);
 		}
 
 		/// <summary>
@@ -63,9 +63,9 @@ namespace Bodu.Collections.Generic
 		public void IEnumerable_WhenBufferIsEmpty_ShouldYieldNoElements()
 		{
 			var buffer = new CircularBuffer<int>(3);
-			var result = buffer.ToList();
+			var actual = buffer.ToList();
 
-			CollectionAssert.AreEqual(Array.Empty<int>(), result);
+			CollectionAssert.AreEqual(Array.Empty<int>(), actual);
 		}
 
 		/// <summary>

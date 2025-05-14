@@ -17,8 +17,8 @@ namespace Bodu.Extensions
 		public void ToIsoString_WhenUtcKind_ShouldReturnUtcFormatted(string inputStr, DateTimeKind kind, string expected)
 		{
 			DateTime input = DateTime.Parse(inputStr, null, DateTimeStyles.AdjustToUniversal).ToUniversalTime();
-			string result = input.ToIsoString();
-			Assert.AreEqual(expected, result);
+			string actual = input.ToIsoString();
+			Assert.AreEqual(expected, actual);
 		}
 
 		[DataTestMethod]
@@ -27,12 +27,12 @@ namespace Bodu.Extensions
 		public void ToIsoString_WithIncludeFractionalSeconds_ShouldRespectOption(string dateTimeStr, bool includeFraction, string? expected)
 		{
 			DateTime input = DateTime.Parse(dateTimeStr, CultureInfo.InvariantCulture);
-			string result = input.ToIsoString(includeFraction);
+			string actual = input.ToIsoString(includeFraction);
 
 			if (expected != null)
-				Assert.AreEqual(expected, result);
+				Assert.AreEqual(expected, actual);
 			else
-				Assert.IsTrue(result.StartsWith("2024-04-20T15:30:45."));
+				Assert.IsTrue(actual.StartsWith("2024-04-20T15:30:45."));
 		}
 
 		[DataTestMethod]
@@ -63,8 +63,8 @@ namespace Bodu.Extensions
 		public void ToIsoString_WithCustomFormat_ShouldReturnExpected(string inputStr, string format, string expected)
 		{
 			DateTime input = DateTime.Parse(inputStr, CultureInfo.InvariantCulture);
-			string result = input.ToIsoString(format);
-			Assert.AreEqual(expected, result);
+			string actual = input.ToIsoString(format);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]

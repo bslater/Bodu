@@ -19,8 +19,8 @@
 		[DynamicData(nameof(GetMinTestData), DynamicDataSourceType.Method)]
 		public void Min_WhenComparingTwoValues_ShouldReturnSmaller(SimpleTestObject? first, SimpleTestObject? second, SimpleTestObject? expected)
 		{
-			var result = ComparableHelper.Min(first, second);
-			Assert.AreEqual(expected, result);
+			var actual = ComparableHelper.Min(first, second);
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

@@ -148,10 +148,10 @@ namespace Bodu.Collections.Generic
 		public void ICollection_CopyTo_WhenBufferIsWrapped_ShouldCopyCorrectly()
 		{
 			ICollection buffer = CreateWrappedBuffer();
-			var result = new int[5];
-			buffer.CopyTo(result, 0);
+			var actual = new int[5];
+			buffer.CopyTo(actual, 0);
 
-			CollectionAssert.AreEqual(new[] { 2, 3, 4, 5, 6 }, result);
+			CollectionAssert.AreEqual(new[] { 2, 3, 4, 5, 6 }, actual);
 		}
 
 		/// <summary>

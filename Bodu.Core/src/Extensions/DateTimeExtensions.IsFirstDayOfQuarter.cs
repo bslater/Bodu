@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="DateTimeExtensions.IsFirstDayOfQuarter.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="DateTimeExtensions.IsFirstDayOfQuarter.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 using System;
 
@@ -22,7 +22,7 @@ namespace Bodu.Extensions
 		/// </remarks>
 		public static bool IsFirstDayOfQuarter(this DateTime dateTime)
 		{
-			var(year, quarter) = GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryDecember, referenceDate: dateTime);
+			var (year, quarter) = GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryDecember, referenceDate: dateTime);
 			return dateTime.Date.Ticks == ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
 		}
 
@@ -82,7 +82,7 @@ namespace Bodu.Extensions
 		public static bool IsFirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
-			return dateTime.Date.Ticks == provider.GetStartDate(dateTime).Date.Ticks;
+			return dateTime.Date.Ticks == provider.GetQuarterStart(dateTime).Date.Ticks;
 		}
 	}
 }

@@ -1,8 +1,8 @@
-// ---------------------------------------------------------------------------------------------------------------
-// <copyright file="WeekOfMonthOrdinal.cs" company="PlaceholderCompany">
-//     Copyright (c) PlaceholderCompany. All rights reserved.
-// </copyright>
-// ---------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------
+// // <copyright file="WeekOfMonthOrdinal.cs" company="PlaceholderCompany">
+// //     Copyright (c) PlaceholderCompany. All rights reserved.
+// // </copyright>
+// // ---------------------------------------------------------------------------------------------------------------
 
 namespace Bodu.Extensions
 {
@@ -15,32 +15,32 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Represents the first occurrence of a specific weekday in the month (e.g., the 1st Monday).
 		/// </summary>
-		First,
+		First = 1,
 
 		/// <summary>
 		/// Represents the second occurrence of a specific weekday in the month (e.g., the 2nd Monday).
 		/// </summary>
-		Second,
+		Second = 2,
 
 		/// <summary>
 		/// Represents the third occurrence of a specific weekday in the month (e.g., the 3rd Monday).
 		/// </summary>
-		Third,
+		Third = 3,
 
 		/// <summary>
 		/// Represents the fourth occurrence of a specific weekday in the month (e.g., the 4th Monday).
 		/// </summary>
-		Fourth,
+		Fourth = 4,
 
 		/// <summary>
 		/// Represents the fifth occurrence of a specific weekday in the month (e.g., the 5th Monday). <note type="important">This is
 		/// relatively rare and only occurs in months where five instances of the specified weekday exist.</note>
 		/// </summary>
-		Fifth,
+		Fifth = 5,
 
 		/// <summary>
 		/// Represents the last occurrence of a specific weekday in the month (e.g., the last Monday).
 		/// </summary>
-		Last,
+		Last = 6,
 	}
 }

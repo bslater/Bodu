@@ -28,9 +28,9 @@ namespace Bodu.Collections.Generic
 			buffer.TryEnqueue(1);
 			buffer.TryEnqueue(2);
 
-			var result = buffer.TryEnqueue(3);
+			var actual = buffer.TryEnqueue(3);
 
-			Assert.IsFalse(result);
+			Assert.IsFalse(actual);
 			CollectionAssert.AreEqual(new[] { 1, 2 }, buffer.ToArray());
 		}
 
@@ -42,9 +42,9 @@ namespace Bodu.Collections.Generic
 		{
 			var buffer = new CircularBuffer<int>(3);
 
-			var result = buffer.TryEnqueue(42);
+			var actual = buffer.TryEnqueue(42);
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.AreEqual(1, buffer.Count);
 			Assert.AreEqual(42, buffer.Peek());
 		}
@@ -59,9 +59,9 @@ namespace Bodu.Collections.Generic
 			buffer.TryEnqueue(1);
 			buffer.TryEnqueue(2);
 
-			var result = buffer.TryEnqueue(3);
+			var actual = buffer.TryEnqueue(3);
 
-			Assert.IsFalse(result);
+			Assert.IsFalse(actual);
 			Assert.AreEqual(2, buffer.Count);
 			CollectionAssert.AreEqual(new[] { 1, 2 }, buffer.ToArray());
 		}
@@ -76,9 +76,9 @@ namespace Bodu.Collections.Generic
 			buffer.TryEnqueue(1);
 			buffer.TryEnqueue(2);
 
-			var result = buffer.TryEnqueue(3);
+			var actual = buffer.TryEnqueue(3);
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			Assert.AreEqual(2, buffer.Count);
 			CollectionAssert.AreEqual(new[] { 2, 3 }, buffer.ToArray());
 		}
@@ -98,9 +98,9 @@ namespace Bodu.Collections.Generic
 			buffer.ItemEvicting += item => events.Add("Evicting:" + item);
 			buffer.ItemEvicted += item => events.Add("Evicted:" + item);
 
-			var result = buffer.TryEnqueue("C"); // should evict "A"
+			var actual = buffer.TryEnqueue("C"); // should evict "A"
 
-			Assert.IsTrue(result);
+			Assert.IsTrue(actual);
 			CollectionAssert.AreEqual(new[] { "Evicting:A", "Evicted:A" }, events);
 			CollectionAssert.AreEqual(new[] { "B", "C" }, buffer.ToArray());
 		}

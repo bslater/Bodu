@@ -12,28 +12,21 @@ namespace Bodu.Extensions
 	{
 
 		[DataTestMethod]
-		[DataRow("1970-01-01T00:00:00Z", 0)]                   // epoch
-		[DataRow("1970-01-01T00:00:01Z", 1000)]                // +1 second
-		[DataRow("1970-01-01T00:01:00Z", 60_000)]              // +1 min
-		[DataRow("1970-01-01T01:00:00Z", 3_600_000)]           // +1 hour
-		[DataRow("1969-12-31T23:59:59Z", -1000)]               // -1 second
-		[DataRow("1969-12-31T23:59:00Z", -60_000)]             // -1 min
-		public void ToUnixTimeMilliseconds_WhenCalledWithUtc_ShouldReturnExpected(string inputDate, long expected)
+		[DynamicData(nameof(FromUnixTimeMillisecondsTestData), DynamicDataSourceType.Property)]
+		public void ToUnixTimeMilliseconds_WhenCalledWithUtc_ShouldReturnExpected(long expected, DateTime input)
 		{
-			DateTime input = DateTime.Parse(inputDate).ToUniversalTime();
+			long actual = input.ToUnixTimeMilliseconds();
 
-			long result = input.ToUnixTimeMilliseconds();
-
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
 		public void ToUnixTimeMilliseconds_WhenKindIsUtc_ShouldReturnCorrectMilliseconds()
 		{
 			DateTime input = new DateTime(1970, 1, 1, 0, 0, 1, DateTimeKind.Utc); // +1 sec
-			long result = input.ToUnixTimeMilliseconds();
+			long actual = input.ToUnixTimeMilliseconds();
 
-			Assert.AreEqual(1000, result);
+			Assert.AreEqual(1000, actual);
 		}
 
 		[TestMethod]
@@ -43,9 +36,9 @@ namespace Bodu.Extensions
 			DateTime local = utc.ToLocalTime();
 			long expected = utc.ToUnixTimeMilliseconds();
 
-			long result = local.ToUnixTimeMilliseconds();
+			long actual = local.ToUnixTimeMilliseconds();
 
-			Assert.AreEqual(expected, result);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -64,17 +57,17 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void ToUnixTimeMilliseconds_WhenUsingMinValue_ShouldBeNegativeLarge()
 		{
-			long result = DateTime.MinValue.ToUnixTimeMilliseconds();
+			long actual = DateTime.MinValue.ToUnixTimeMilliseconds();
 
-			Assert.IsTrue(result < 0);
+			Assert.IsTrue(actual < 0);
 		}
 
 		[TestMethod]
 		public void ToUnixTimeMilliseconds_WhenUsingMaxValue_ShouldBePositiveLarge()
 		{
-			long result = DateTime.MaxValue.ToUnixTimeMilliseconds();
+			long actual = DateTime.MaxValue.ToUnixTimeMilliseconds();
 
-			Assert.IsTrue(result > 0);
+			Assert.IsTrue(actual > 0);
 		}
 
 		[TestMethod]

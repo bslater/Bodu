@@ -25,7 +25,7 @@
 			byte[] buffer = new byte[16];
 			rng.NextBytes(buffer);
 
-			Assert.IsTrue(buffer.Any(b => b != 0), "Expected non-zero bytes in result.");
+			Assert.IsTrue(buffer.Any(b => b != 0), "Expected non-zero bytes in actual.");
 		}
 
 		[TestMethod]

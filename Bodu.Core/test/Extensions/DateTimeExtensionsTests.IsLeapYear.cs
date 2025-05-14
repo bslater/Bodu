@@ -8,29 +8,17 @@ using Bodu.Extensions;
 
 namespace Bodu.Extensions
 {
-	public class DateTimeExtensions_IsLeapYearTests
+	public partial class DateTimeExtensionsTests
 	{
+
 		[DataTestMethod]
-		[DataRow(1600, true)]     // Leap year (divisible by 400)
-		[DataRow(1700, false)]    // Not a leap year (divisible by 100 but not 400)
-		[DataRow(1800, false)]
-		[DataRow(1900, false)]
-		[DataRow(2000, true)]     // Leap year (divisible by 400)
-		[DataRow(2004, true)]     // Typical leap year (divisible by 4)
-		[DataRow(2015, false)]    // Normal common year
-		[DataRow(2016, true)]
-		[DataRow(2023, false)]
-		[DataRow(2024, true)]
-		[DataRow(2100, false)]    // Century non-leap year
-		[DataRow(2400, true)]     // Century leap year
-		[DataRow(0001, false)]    // Minimum year
-		[DataRow(9999, false)]    // Maximum supported DateTime year
+		[DynamicData(nameof(LeapYearTestData), DynamicDataSourceType.Method)]
 		public void IsLeapYear_WhenCalled_ShouldReturnExpected(int year, bool expected)
 		{
 			DateTime input = new DateTime(year, 1, 1);
-			bool result = input.IsLeapYear();
+			bool actual = input.IsLeapYear();
 
-			Assert.AreEqual(expected, result, $"Expected leap year check for {year} to be {expected}.");
+			Assert.AreEqual(expected, actual, $"Expected leap year check for {year} to be {expected}.");
 		}
 	}
 }

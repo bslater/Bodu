@@ -19,19 +19,19 @@ namespace Bodu.Infrastructure
 		/// <summary>
 		/// Gets whether the enumerable has been enumerated at least once.
 		/// </summary>
-		public bool HasEnumerated => this.enumeratorCreated;
+		public bool HasEnumerated => enumeratorCreated;
 
 		/// <summary>
 		/// Gets the number of items enumerated (only tracked in first enumeration).
 		/// </summary>
-		public int ItemsEnumerated => this.itemsEnumerated;
+		public int ItemsEnumerated => itemsEnumerated;
 
 		/// <summary>
 		/// Enables enforcement of one-time enumeration.
 		/// </summary>
 		public TrackingEnumerable<T> EnforceSingleEnumeration()
 		{
-			this.enforceSingleEnumeration = true;
+			enforceSingleEnumeration = true;
 			return this;
 		}
 
@@ -50,21 +50,21 @@ namespace Bodu.Infrastructure
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			if (this.enumeratorCreated && this.enforceSingleEnumeration)
+			if (enumeratorCreated && enforceSingleEnumeration)
 				throw new InvalidOperationException("Sequence cannot be enumerated more than once.");
 
-			this.enumeratorCreated = true;
-			this.onEnumerate();
+			enumeratorCreated = true;
+			onEnumerate();
 
 			int index = 0;
-			foreach (var item in this.source)
+			foreach (var item in source)
 			{
-				this.onItemAccess?.Invoke(index);
-				this.itemsEnumerated = ++index;
+				onItemAccess?.Invoke(index);
+				itemsEnumerated = ++index;
 				yield return item;
 			}
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

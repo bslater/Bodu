@@ -8,25 +8,16 @@ using Bodu.Extensions;
 
 namespace Bodu.Extensions
 {
-	public partial class DateTimeExtensionsTests
+	public partial class DateTimeExtensionsTests	
 	{
 
 		[DataTestMethod]
-		[DataRow("2024-04-01", DayOfWeek.Monday, "2024-04-29")]
-		[DataRow("2024-04-01", DayOfWeek.Sunday, "2024-04-28")]
-		[DataRow("2024-02-15", DayOfWeek.Wednesday, "2024-02-28")] // Leap year
-		[DataRow("2023-02-15", DayOfWeek.Tuesday, "2023-02-28")]   // Non-leap year
-		[DataRow("2024-12-01", DayOfWeek.Saturday, "2024-12-28")]
-		[DataRow("2024-06-10", DayOfWeek.Sunday, "2024-06-30")]
-		public void LastDayOfWeekInMonth_WhenCalled_ShouldReturnExpectedDate(string inputDate, DayOfWeek dayOfWeek, string expectedDate)
+		[DynamicData(nameof(LastDayOfWeekInMonthTestData), DynamicDataSourceType.Method)]
+		public void LastDayOfWeekInMonth_WhenCalled_ShouldReturnExpectedDate(DateTime input, DayOfWeek dayOfWeek, DateTime expected)
 		{
-			DateTime input = DateTime.Parse(inputDate);
-			DateTime expected = DateTime.Parse(expectedDate);
-			DateTime result = input.LastDayOfWeekInMonth(dayOfWeek);
+			DateTime actual = input.LastDayOfWeekInMonth(dayOfWeek);
 
-			Assert.AreEqual(expected, result);
-			Assert.AreEqual(input.Kind, result.Kind);
-			Assert.AreEqual(TimeSpan.Zero, result.TimeOfDay);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[TestMethod]
@@ -45,28 +36,28 @@ namespace Bodu.Extensions
 		[DataRow(DateTimeKind.Unspecified)]
 		[DataRow(DateTimeKind.Utc)]
 		[DataRow(DateTimeKind.Local)]
-		public void LastDayOfWeekInMonth_WhenKindIsLocal_ShouldPreserveKind(DateTimeKind kind)
+		public void LastDayOfWeekInMonth_WhenKindIsSet_ShouldPreserveKind(DateTimeKind kind)
 		{
 			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
-			DateTime result = input.LastDayOfWeekInMonth(DayOfWeek.Saturday);
+			DateTime actual = input.LastDayOfWeekInMonth(DayOfWeek.Saturday);
 
-			Assert.AreEqual(kind, result.Kind);
+			Assert.AreEqual(kind, actual.Kind);
 		}
 
 		[TestMethod]
 		public void LastDayOfWeekInMonth_WhenMinValue_ShouldReturnValidResult()
 		{
-			DateTime result = DateTime.MinValue.LastDayOfWeekInMonth(DayOfWeek.Monday);
+			DateTime actual = DateTime.MinValue.LastDayOfWeekInMonth(DayOfWeek.Monday);
 
-			Assert.IsTrue(result >= DateTime.MinValue && result <= DateTime.MinValue.AddMonths(1).AddDays(-1));
+			Assert.IsTrue(actual >= DateTime.MinValue && actual <= DateTime.MinValue.AddMonths(1).AddDays(-1));
 		}
 
 		[TestMethod]
 		public void LastDayOfWeekInMonth_WhenMaxValue_ShouldReturnValidResult()
 		{
-			DateTime result = DateTime.MaxValue.LastDayOfWeekInMonth(DayOfWeek.Friday);
+			DateTime actual = DateTime.MaxValue.LastDayOfWeekInMonth(DayOfWeek.Friday);
 
-			Assert.IsTrue(result <= DateTime.MaxValue);
+			Assert.IsTrue(actual <= DateTime.MaxValue);
 		}
 	}
 }

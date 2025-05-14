@@ -2,7 +2,7 @@
   "help": "https://go.microsoft.com/fwlink/?linkid=866610",
   "dependentFileProviders": {
     "regex": {
-      "(.*)\\.([^.]+)\\.cs$": "\\1.cs"
+      "^(.*)\\.\\.[^.]+\\.cs$": "$1.cs"
     }
   }
 }

@@ -1,11 +1,4 @@
-﻿using Bodu.Collections;
-using Bodu.Collections.Generic.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Bodu.Collections.Generic.Extensions
+﻿namespace Bodu.Collections.Generic.Extensions
 {
 	[TestClass]
 	public sealed partial class IEnumerableExtensionsTests_Batch : EnumerableTests
@@ -143,8 +136,8 @@ namespace Bodu.Collections.Generic.Extensions
 		[TestMethod]
 		public void Batch_WithEmptySource_ShouldReturnEmpty()
 		{
-			var result = Array.Empty<int>().Batch(2).ToList();
-			Assert.AreEqual(0, result.Count);
+			var actual = Array.Empty<int>().Batch(2).ToList();
+			Assert.AreEqual(0, actual.Count);
 		}
 	}
 }
