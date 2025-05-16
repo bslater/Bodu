@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.LastDayOfQuarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -36,8 +36,8 @@ namespace Bodu.Extensions
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static DateOnly LastDayOfQuarter(this DateOnly date)
-			=> LastDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
+		public static DateOnly LastDayOfQuarter(this DateOnly date) =>
+			LastDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the last day of the specified <paramref name="quarter" /> in the given
@@ -77,8 +77,8 @@ namespace Bodu.Extensions
 		/// <see cref="LastDayOfQuarter(CalendarQuarterDefinition, int, int)" /> or provider-based overloads.
 		/// </para>
 		/// </remarks>
-		public static DateOnly LastDayOfQuarter(int quarter, int year)
-			=> LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
+		public static DateOnly LastDayOfQuarter(int quarter, int year) =>
+			LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
 
 		/// <summary>
 		/// Returns the last day of the quarter that includes the specified <paramref name="date" />, based on the provided <see cref="CalendarQuarterDefinition" />.

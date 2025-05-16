@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.FirstDayOfYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.FirstDayOfYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -21,6 +21,6 @@ namespace Bodu.Extensions
 		/// </para>
 		/// </remarks>
 		public static DateOnly FirstDayOfYear(this DateOnly date) =>
-			DateOnly.FromDayNumber(GetDayNumber(date.Year, 1, 1));
+			new DateOnly(date.Year, 1, 1);
 	}
 }

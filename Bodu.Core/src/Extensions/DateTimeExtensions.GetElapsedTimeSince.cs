@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.GetElapsedTimeSince.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="GetElapsedTimeSince.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -13,23 +13,24 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the time elapsed between the specified <see cref="DateTime" /> and the current UTC time.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> to compare against.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to compare against the current UTC time.</param>
 		/// <returns>
 		/// A <see cref="TimeSpan" /> representing the duration between <paramref name="dateTime" /> and <see cref="DateTime.UtcNow" />. A
-		/// positive value indicates a past timestamp, while a negative value indicates a future timestamp.
+		/// positive value indicates that <paramref name="dateTime" /> is in the past; a negative value indicates it is in the future.
 		/// </returns>
-		/// <exception cref="ArgumentException">Thrown if <paramref name="dateTime" /> has <see cref="DateTimeKind.Unspecified" />.</exception>
 		/// <remarks>
 		/// <para>
-		/// This method calculates elapsed time relative to the current UTC time using <see cref="DateTime.UtcNow" />. It automatically
-		/// converts local time inputs to UTC using <see cref="DateTime.ToUniversalTime()" />.
+		/// The method evaluates elapsed time relative to <see cref="DateTime.UtcNow" />. If the input is in local time, it is first
+		/// converted to UTC using <see cref="DateTime.ToUniversalTime" />.
 		/// </para>
 		/// <para>
-		/// If the input <see cref="DateTime" /> has a <see cref="DateTimeKind" /> of <see cref="DateTimeKind.Unspecified" />, an exception
-		/// is thrown to avoid ambiguous behavior. Callers should explicitly specify <see cref="DateTimeKind.Utc" /> or
-		/// <see cref="DateTimeKind.Local" /> when using this method.
+		/// If the <paramref name="dateTime" /> has a <see cref="DateTime.Kind" /> of <see cref="DateTimeKind.Unspecified" />, an exception
+		/// is thrown to avoid ambiguity in time zone interpretation.
 		/// </para>
 		/// </remarks>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="dateTime" /> has <see cref="DateTimeKind.Unspecified" />, as the UTC offset cannot be determined.
+		/// </exception>
 		public static TimeSpan GetElapsedTimeSince(this DateTime dateTime)
 		{
 			DateTime utcInput = dateTime.Kind switch

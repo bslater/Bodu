@@ -447,4 +447,7 @@
   <data name="Arg_Invalid_ValueForOperation" xml:space="preserve">
     <value>The value for '{0}' must be {1}, but was {2}.</value>
   </data>
+  <data name="Arg_OutOfRange_WeekNotValidForYearAndCulture" xml:space="preserve">
+    <value>Week {0} is not valid for the year {1} using culture {2}.</value>
+  </data>
 </root>

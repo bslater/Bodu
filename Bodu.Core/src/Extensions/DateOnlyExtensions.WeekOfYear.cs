@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.WeekOfYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.WeekOfYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -23,8 +23,8 @@ namespace Bodu.Extensions
 		/// This method uses the <see cref="CalendarWeekRule" /> and <see cref="DayOfWeek" /> defined in
 		/// <see cref="CultureInfo.CurrentCulture" />. Week numbering may vary across cultures (e.g., U.S. vs ISO 8601).
 		/// </remarks>
-		public static int WeekOfYear(this DateOnly date)
-			=> date.WeekOfYear(null);
+		public static int WeekOfYear(this DateOnly date) =>
+			date.WeekOfYear(null);
 
 		/// <summary>
 		/// Returns the week number (1–53) of the year that contains the specified <see cref="DateOnly" />, using the given <paramref name="culture" />.

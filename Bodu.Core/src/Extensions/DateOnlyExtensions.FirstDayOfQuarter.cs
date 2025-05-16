@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -36,8 +36,8 @@ namespace Bodu.Extensions
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static DateOnly FirstDayOfQuarter(this DateOnly date)
-			=> FirstDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
+		public static DateOnly FirstDayOfQuarter(this DateOnly date) =>
+			FirstDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the first day of the specified <paramref name="quarter" /> in the given
@@ -77,8 +77,8 @@ namespace Bodu.Extensions
 		/// provider-based overloads.
 		/// </para>
 		/// </remarks>
-		public static DateOnly FirstDayOfQuarter(int quarter, int year)
-			=> FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
+		public static DateOnly FirstDayOfQuarter(int quarter, int year) =>
+			FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
 
 		/// <summary>
 		/// Returns the first day of the quarter that includes the specified <paramref name="date" />, based on the provided <see cref="CalendarQuarterDefinition" />.

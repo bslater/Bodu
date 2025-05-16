@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.LastDayOfWeekInYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.LastDayOfWeekInYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -30,7 +30,7 @@ namespace Bodu.Extensions
 		public static DateOnly LastDayOfWeekInYear(this DateOnly date, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
-			int dayNumber = GetDayNumber(date.Year, 12, 31);
+			int dayNumber = DateTimeExtensions.GetDayNumberUnchecked(date.Year, 12, 31);
 
 			return DateOnly.FromDayNumber(dayNumber - ((int)GetDayOfWeekFromDayNumber(dayNumber) - (int)dayOfWeek + 7) % 7);
 		}

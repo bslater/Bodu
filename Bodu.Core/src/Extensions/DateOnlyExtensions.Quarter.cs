@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.Quarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.Quarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -39,8 +39,8 @@ namespace Bodu.Extensions
 		/// </list>
 		/// The quarter number returned is based on the month of <paramref name="date" />, regardless of the day or time.
 		/// </remarks>
-		public static int Quarter(this DateOnly date)
-			=> Quarter(date, CalendarQuarterDefinition.JanuaryDecember);
+		public static int Quarter(this DateOnly date) =>
+			GetQuarterForDate(date, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
 
 		/// <summary>
 		/// Returns the quarter number (1–4) for the specified <see cref="DateOnly" />, using the given
@@ -86,7 +86,7 @@ namespace Bodu.Extensions
 		/// Use this overload to support advanced or non-standard fiscal calendars, such as 4-4-5 financial periods, retail accounting
 		/// calendars, or region-specific quarter models not covered by <see cref="CalendarQuarterDefinition" />.
 		/// <para>
-		/// This method delegates to <see cref="IQuarterDefinitionProvider.GetQuarter" /> and can be used in conjunction with
+		/// This method delegates to <see cref="IQuarterDefinitionProvider.GetQuarter(DateOnly)" /> and can be used in conjunction with
 		/// <see cref="FirstDayOfQuarter(DateOnly, IQuarterDefinitionProvider)" /> and
 		/// <see cref="LastDayOfQuarter(DateOnly, IQuarterDefinitionProvider)" /> for complete custom quarter boundary resolution.
 		/// </para>
@@ -125,7 +125,7 @@ namespace Bodu.Extensions
 			uint q = (uint)(quarter - 1);
 			uint endMonth = (((q + 1U) * 3U + definition.defMonth - 1U) % 12U) + 1U;
 			int endYear = (endMonth <= definition.defMonth) ? year + 1 : year;
-			return GetDayNumber(endYear, (int)endMonth, (int)definition.defDay) - 1;
+			return DateTimeExtensions.GetDayNumberUnchecked(endYear, (int)endMonth, (int)definition.defDay) - 1;
 		}
 
 		/// <summary>
@@ -150,7 +150,7 @@ namespace Bodu.Extensions
 			uint q = (uint)(quarter - 1);
 			uint startMonth = ((q * 3U + definition.defMonth - 1U) % 12U) + 1U;
 			int startYear = (startMonth < definition.defMonth) ? year + 1 : year;
-			return GetDayNumber(startYear, (int)startMonth, (int)definition.defDay);
+			return DateTimeExtensions.GetDayNumberUnchecked(startYear, (int)startMonth, (int)definition.defDay);
 		}
 
 		/// <summary>

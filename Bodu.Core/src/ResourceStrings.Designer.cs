@@ -592,6 +592,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Week {0} is not valid for the year {1} using culture {2}..
+        /// </summary>
+        internal static string Arg_OutOfRange_WeekNotValidForYearAndCulture {
+            get {
+                return ResourceManager.GetString("Arg_OutOfRange_WeekNotValidForYearAndCulture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value &apos;{1}&apos; is not a defined member of the {0} enumeration..
         /// </summary>
         internal static string Arg_OutOfRangeException_EnumValue {

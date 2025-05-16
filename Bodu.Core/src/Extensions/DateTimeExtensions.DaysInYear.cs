@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.DaysInYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DaysInYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -23,8 +23,8 @@ namespace Bodu.Extensions
 		/// This method uses the calendar defined by <see cref="CultureInfo.CurrentCulture" />. The result may vary depending on the
 		/// calendar system (e.g., Gregorian, Hebrew, Hijri).
 		/// </remarks>
-		public static int DaysInYear(this DateTime dateTime)
-			=> dateTime.DaysInYear(null!);
+		public static int DaysInYear(this DateTime dateTime) =>
+			dateTime.DaysInYear(null!);
 
 		/// <summary>
 		/// Returns the number of days in the calendar year of the specified <see cref="DateTime" />, using the specified <see cref="Calendar" />.
@@ -39,7 +39,7 @@ namespace Bodu.Extensions
 		/// <see cref="GregorianCalendar" />, <see cref="HebrewCalendar" />). If <paramref name="calendar" /> is <c>null</c>, the calendar
 		/// from <see cref="CultureInfo.CurrentCulture" /> is used.
 		/// </remarks>
-		public static int DaysInYear(this DateTime dateTime, Calendar calendar)
-			=> (calendar ?? CultureInfo.CurrentCulture.Calendar).GetDaysInYear(dateTime.Year);
+		public static int DaysInYear(this DateTime dateTime, Calendar calendar) =>
+			(calendar ?? CultureInfo.CurrentCulture.Calendar).GetDaysInYear(dateTime.Year);
 	}
 }

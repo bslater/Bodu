@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.GetIso8601Year.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="GetIso8601Year.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -20,7 +20,7 @@ namespace Bodu.Extensions
 		/// <returns>The ISO 8601 calendar year that contains the date’s week.</returns>
 		/// <remarks>ISO weeks may belong to the previous or next calendar year depending on where the week falls.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static int GetIso8601Year(this DateTime date)
+		public static int GetIsoYear(this DateTime date)
 		{
 #if NETSTANDARD2_0
 

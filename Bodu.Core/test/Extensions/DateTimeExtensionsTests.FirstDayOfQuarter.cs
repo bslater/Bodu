@@ -32,7 +32,7 @@ namespace Bodu.Extensions
 		[DynamicData(nameof(FirstDayOfQuarterTestData), DynamicDataSourceType.Method)]
 		public void FirstDayOfQuarter_WhenUsingQuarterAndDefinition_ShouldReturnExpectedDate(int year, int quarter, CalendarQuarterDefinition definition, DateTime expected)
 		{
-			var actual = DateTimeExtensions.FirstDayOfQuarter(year, quarter, definition);
+			var actual = DateTimeExtensions.GetFirstDayOfQuarter(year, quarter, definition);
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -40,7 +40,7 @@ namespace Bodu.Extensions
 		[DynamicData(nameof(FirstDayOfQuarterYearQuarterJanuaryDecemberTestData), DynamicDataSourceType.Method)]
 		public void FirstDayOfQuarter_WhenUsingQuarterAndCalendarDefinition_ShouldReturnExpectedDate(int year, int quarter, DateTime expected)
 		{
-			var actual = DateTimeExtensions.FirstDayOfQuarter(year, quarter);
+			var actual = DateTimeExtensions.GetFirstDayOfQuarter(year, quarter);
 			Assert.AreEqual(expected, actual);
 		}
 
@@ -112,7 +112,7 @@ namespace Bodu.Extensions
 
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.FirstDayOfQuarter(2025, 1, definition);
+				_ = DateTimeExtensions.GetFirstDayOfQuarter(2025, 1, definition);
 			});
 		}
 
@@ -124,7 +124,7 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.FirstDayOfQuarter(2025, quarter, CalendarQuarterDefinition.JanuaryDecember);
+				_ = DateTimeExtensions.GetFirstDayOfQuarter(2025, quarter, CalendarQuarterDefinition.JanuaryDecember);
 			});
 		}
 
@@ -136,7 +136,7 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.FirstDayOfQuarter(2025, quarter);
+				_ = DateTimeExtensions.GetFirstDayOfQuarter(2025, quarter);
 			});
 		}
 

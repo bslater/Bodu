@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateTimeExtensions.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -92,6 +92,10 @@ namespace Bodu.Extensions
 		/// </summary>
 		internal const long TicksPerYear = DateTimeExtensions.TicksPerDay * DaysPerYear;
 
+		internal static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+
+		internal static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+
 		/// <summary>
 		/// Represents the number of days in 100 years. This field is constant.
 		/// </summary>
@@ -142,9 +146,55 @@ namespace Bodu.Extensions
 		/// </summary>
 		private const long MinTicks = 0;
 
-		internal static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+		/// <summary>
+		/// Computes the day number corresponding to the specified <see cref="DateTime" />, representing the number of days since 0001-01-01.
+		/// </summary>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to convert.</param>
+		/// <returns>The number of days elapsed since 0001-01-01, where that date is treated as day 0.</returns>
+		/// <remarks>
+		/// This method performs a fast, allocation-free conversion by dividing the <see cref="DateTime.Ticks" /> value by the number of
+		/// ticks per day.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static int GetDayNumber(DateTime dateTime) =>
+			(int)((ulong)dateTime.Ticks / DateTimeExtensions.TicksPerDay);
 
-		internal static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+		/// <summary>
+		/// Computes the day number for the specified year, month, and day, representing the number of days elapsed since 0001-01-01.
+		/// </summary>
+		/// <param name="year">The year component, which must be between 1 and 9999 inclusive.</param>
+		/// <param name="month">The month component, which must be between 1 and 12 inclusive.</param>
+		/// <param name="day">The day component, which must be valid for the specified year and month.</param>
+		/// <returns>An <see cref="int" /> representing the number of days since 0001-01-01, where that date is treated as day 0.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="year" />, <paramref name="month" />, or <paramref name="day" /> is outside the valid range of the
+		/// Gregorian calendar, or if the combination does not form a valid date.
+		/// </exception>
+		/// <remarks>
+		/// <para>
+		/// This method performs full validation of the input parameters to ensure that the specified date is valid in the proleptic
+		/// Gregorian calendar.
+		/// </para>
+		/// <para>
+		/// It provides functionality equivalent to computing <c>new DateOnly(year, month, day).DayNumber</c>, but avoids object allocations
+		/// and is optimized for scenarios where correctness and validation are both required.
+		/// </para>
+		/// </remarks>
+		public static int GetDayNumber(int year, int month, int day)
+		{
+			if (year >= 1 && year <= 9999 && month >= 1 && month <= 12)
+			{
+				int[] days = DateTime.IsLeapYear(year) ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
+				if (day >= 1 && day <= days[month] - days[month - 1])
+				{
+					int y = year - 1;
+					int dayNumber = (y * 365) + (y / 4) - (y / 100) + (y / 400) + days[month - 1] + day - 1;
+					return dayNumber;
+				}
+			}
+
+			throw new ArgumentOutOfRangeException(null, ResourceStrings.Arg_OutOfRange_BadYearMonthDay);
+		}
 
 		/// <summary>
 		/// Returns the number of ticks representing the date portion (midnight) of the specified tick value.
@@ -272,6 +322,58 @@ namespace Bodu.Extensions
 			GetDateParts(dateTime.Ticks, out year, out month, out day);
 
 		/// <summary>
+		/// Returns the number of ticks representing the date portion (midnight) of the specified <see cref="DateTime" />.
+		/// </summary>
+		/// <param name="dateTime">The <see cref="System.DateTime" /> instance from which to extract the date portion as a tick count.</param>
+		/// <returns>
+		/// A <see cref="long" /> representing the number of ticks at midnight (00:00:00.000) on the day of <paramref name="dateTime" />.
+		/// This value is a multiple of <see cref="DateTimeExtensions.TicksPerDay" /> and falls within the valid <see cref="DateTime" /> range.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method truncates the time component of the input <paramref name="dateTime" /> by rounding down to the nearest whole day
+		/// boundary. It is equivalent to <c>dateTime.Date.Ticks</c> but avoids allocation of a new <see cref="DateTime" /> instance and is
+		/// optimized for internal use.
+		/// </para>
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static long GetDateTicks(DateTime dateTime) =>
+			dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
+
+		/// <summary>
+		/// Computes the day number for the specified year, month, and day, representing the number of days since 0001-01-01.
+		/// </summary>
+		/// <param name="year">The year component (e.g., 2025).</param>
+		/// <param name="month">The month component in the range 1 through 12.</param>
+		/// <param name="day">The day component in the range 1 through 31, depending on the month and year.</param>
+		/// <returns>An integer representing the number of days elapsed since 0001-01-01, with that date treated as day 0.</returns>
+		/// <remarks>
+		/// <para>
+		/// This method uses Gregorian calendar rules and a precomputed day-of-year lookup table to account for leap years. It performs no
+		/// validation on the input parameters and assumes that <paramref name="year" />, <paramref name="month" />, and
+		/// <paramref name="day" /> form a valid calendar date.
+		/// </para>
+		/// <para>
+		/// This method is intended for trusted, performance-critical internal use where input correctness is guaranteed by the caller. It
+		/// avoids allocating <see cref="DateTime" /> instances and is suitable for inlining.
+		/// </para>
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static int GetDayNumberUnchecked(int year, int month, int day)
+		{
+			bool isLeap = DateTime.IsLeapYear(year);
+			int[] days = isLeap ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
+
+			return (int)(
+				(long)(year - 1) * 365
+				+ (year - 1) / 4
+				- (year - 1) / 100
+				+ (year - 1) / 400
+				+ days[month - 1]
+				+ day - 1); // Subtract 1 to match DateOnly.DayNumber origin
+		}
+
+		/// <summary>
 		/// Calculates the <see cref="System.DayOfWeek" /> for a date represented as a tick count.
 		/// </summary>
 		/// <param name="ticks">
@@ -324,6 +426,16 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
+		/// Returns the tick count that represents the date nearest to the specified <paramref name="dayOfWeek" /> relative to the provided
+		/// <paramref name="ticks" /> value.
+		/// </summary>
+		internal static long GetNearestDayOfWeek(long ticks, DayOfWeek dayOfWeek)
+		{
+			int delta = ((int)dayOfWeek - (int)GetDayOfWeekFromTicks(ticks) + 7) % 7;
+			return ticks + ((delta > 3 ? delta - 7 : delta) * TicksPerDay);
+		}
+
+		/// <summary>
 		/// Returns the tick count between the <paramref name="dateTime" /> and next <paramref name="dayOfWeek" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="System.DateTime" /> to which to get the next day of week.</param>
@@ -335,6 +447,33 @@ namespace Bodu.Extensions
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long GetNextDayOfWeekAsTicks(DateTime dateTime, DayOfWeek dayOfWeek)
 			=> DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)dateTime.DayOfWeek + 7) % 7);
+
+		/// <summary>
+		/// Calculates the number of ticks between the specified <paramref name="ticks" /> value and the next occurrence of the given <paramref name="dayOfWeek" />.
+		/// </summary>
+		/// <param name="ticks">
+		/// A date and time expressed as the number of 100-nanosecond intervals (ticks) since 0001-01-01T00:00:00.000 in the Gregorian calendar.
+		/// </param>
+		/// <param name="dayOfWeek">
+		/// A <see cref="System.DayOfWeek" /> value representing the target day of the week to compute forward to.
+		/// </param>
+		/// <returns>
+		/// A <see cref="long" /> value representing the number of ticks between the specified <paramref name="ticks" /> value and the next
+		/// occurrence of <paramref name="dayOfWeek" />. This value is a non-negative multiple of <see cref="DateTimeExtensions.TicksPerDay" />.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the date represented by <paramref name="ticks" /> already falls on <paramref name="dayOfWeek" />, this method returns a 7-day
+		/// tick interval to the following week's occurrence.
+		/// </para>
+		/// <para>This method performs no argument validation and assumes that <paramref name="ticks" /> is within the valid range for <see cref="System.DateTime" />.</para>
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static long GetNextDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
+		{
+			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
+			return DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)day + 7) % 7);
+		}
 
 		/// <summary>
 		/// Calculates the number of ticks between the specified <paramref name="dateTime" /> and the previous occurrence of the specified <paramref name="dayOfWeek" />.
@@ -359,59 +498,33 @@ namespace Bodu.Extensions
 			DateTimeExtensions.TicksPerDay * (((((int)dayOfWeek - (int)dateTime.DayOfWeek) - 7) % 7 - 7) % 7);
 
 		/// <summary>
-		/// Returns the number of ticks representing the date portion (midnight) of the specified <see cref="DateTime" />.
+		/// Calculates the number of ticks between the specified <paramref name="ticks" /> value and the previous occurrence of the given <paramref name="dayOfWeek" />.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="System.DateTime" /> instance from which to extract the date portion as a tick count.</param>
+		/// <param name="ticks">
+		/// A date and time expressed as the number of 100-nanosecond intervals (ticks) since 0001-01-01T00:00:00.000 in the Gregorian calendar.
+		/// </param>
+		/// <param name="dayOfWeek">
+		/// A <see cref="System.DayOfWeek" /> value representing the target day of the week to compute backward to.
+		/// </param>
 		/// <returns>
-		/// A <see cref="long" /> representing the number of ticks at midnight (00:00:00.000) on the day of <paramref name="dateTime" />.
-		/// This value is a multiple of <see cref="DateTimeExtensions.TicksPerDay" /> and falls within the valid <see cref="DateTime" /> range.
+		/// A <see cref="long" /> value representing the number of ticks between the specified <paramref name="ticks" /> and the most recent
+		/// occurrence of <paramref name="dayOfWeek" />. This value is a non-negative multiple of <see cref="DateTimeExtensions.TicksPerDay" />.
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// This method truncates the time component of the input <paramref name="dateTime" /> by rounding down to the nearest whole day
-		/// boundary. It is equivalent to <c>dateTime.Date.Ticks</c> but avoids allocation of a new <see cref="DateTime" /> instance and is
-		/// optimized for internal use.
+		/// If the date represented by <paramref name="ticks" /> already falls on <paramref name="dayOfWeek" />, this method returns a 7-day
+		/// tick interval backward to the previous week's occurrence.
+		/// </para>
+		/// <para>
+		/// This method performs no validation. The caller must ensure that <paramref name="ticks" /> falls within the valid
+		/// <see cref="System.DateTime" /> range, and that <paramref name="dayOfWeek" /> is a valid <see cref="System.DayOfWeek" /> enum value.
 		/// </para>
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static long GetDateTicks(DateTime dateTime) =>
-			dateTime.Ticks - (dateTime.Ticks % DateTimeExtensions.TicksPerDay);
-
-		/// <summary>
-		/// Returns the day number corresponding to the specified year, month, and day, relative to 0001-01-01.
-		/// </summary>
-		/// <param name="year">The year component, which must be between 1 and 9999 inclusive.</param>
-		/// <param name="month">The month component, which must be between 1 and 12 inclusive.</param>
-		/// <param name="day">The day component, which must be valid for the specified year and month.</param>
-		/// <returns>An <see cref="int" /> representing the number of days since 0001-01-01.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown when <paramref name="year" />, <paramref name="month" />, or <paramref name="day" /> is outside the valid range of the
-		/// Gregorian calendar or does not form a valid date.
-		/// </exception>
-		/// <remarks>
-		/// <para>
-		/// This method performs full validation of the input parameters and throws an exception if the combination does not represent a
-		/// valid calendar date.
-		/// </para>
-		/// <para>
-		/// It is equivalent to computing <c>new DateOnly(year, month, day).DayNumber</c> but avoids allocation and is optimized for
-		/// internal use.
-		/// </para>
-		/// </remarks>
-		internal static int GetDayNumber(int year, int month, int day)
+		internal static long GetPreviousDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
 		{
-			if (year >= 1 && year <= 9999 && month >= 1 && month <= 12)
-			{
-				int[] days = DateTime.IsLeapYear(year) ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
-				if (day >= 1 && day <= days[month] - days[month - 1])
-				{
-					int y = year - 1;
-					int dayNumber = (y * 365) + (y / 4) - (y / 100) + (y / 400) + days[month - 1] + day - 1;
-					return dayNumber;
-				}
-			}
-
-			throw new ArgumentOutOfRangeException(null, ResourceStrings.Arg_OutOfRange_BadYearMonthDay);
+			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
+			return -DateTimeExtensions.TicksPerDay * ((7 + (int)day - (int)dayOfWeek) % 7);
 		}
 
 		/// <summary>
@@ -437,8 +550,83 @@ namespace Bodu.Extensions
 		/// high-performance internal date calculations.
 		/// </para>
 		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static long GetTicksForDate(int year, int month, int day) =>
-			DateTimeExtensions.GetDayNumber(year, month, day) * TicksPerDay;
+			DateTimeExtensions.GetDayNumberUnchecked(year, month, day) * TicksPerDay;
+
+		/// <summary>
+		/// Returns the <see cref="DayOfWeek" /> corresponding to January 1st of the specified year, using Gregorian calendar rules.
+		/// </summary>
+		/// <param name="year">The year for which to calculate the weekday of January 1st.</param>
+		/// <returns>A <see cref="DayOfWeek" /> value indicating the weekday of January 1st in the specified year.</returns>
+		/// <remarks>
+		/// <para>
+		/// This method uses a fast arithmetic formula to determine the weekday of January 1st without allocating a <see cref="DateTime" />
+		/// instance. It is equivalent in result to: <c>new DateTime(year, 1, 1).DayOfWeek</c>.
+		/// </para>
+		/// <para>
+		/// The returned value corresponds to the <see cref="DayOfWeek" /> enumeration, where <c>0 = Sunday</c>, <c>1 = Monday</c>, ...,
+		/// <c>6 = Saturday</c>.
+		/// </para>
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static DayOfWeek GetWeekDayOfJanuary1(int year)
+		{
+			// Zeller’s-like congruence to determine the weekday of Jan 1
+			int weekdayIndex = (year + year / 4 - year / 100 + year / 400) % 7;
+			return (DayOfWeek)((weekdayIndex + 7) % 7); // Ensure non-negative
+		}
+
+		/// <summary>
+		/// Calculates the calendar week number of the year for the specified tick value, using the provided week rule and week start day.
+		/// </summary>
+		/// <param name="ticks">The number of ticks representing the target date (100ns intervals since 0001-01-01T00:00:00.000).</param>
+		/// <param name="rule">
+		/// A <see cref="CalendarWeekRule" /> value that determines how the first week of the year is defined (FirstDay, FirstFullWeek, FirstFourDayWeek).
+		/// </param>
+		/// <param name="firstDayOfWeek">A <see cref="DayOfWeek" /> value indicating the first day of the week (e.g., Sunday, Monday).</param>
+		/// <returns>The 1-based week number of the year that contains the specified tick value, based on the specified rule.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="rule" /> is not a valid <see cref="CalendarWeekRule" />.</exception>
+		internal static int GetWeekOfYear(long ticks, CalendarWeekRule rule, DayOfWeek firstDayOfWeek)
+		{
+			// Convert ticks into a date for computing day-of-year
+			var date = new DateTime(ticks, DateTimeKind.Unspecified);
+			int dayOfYear = date.DayOfYear - 1; // Convert to 0-based day index
+
+			return rule switch
+			{
+				CalendarWeekRule.FirstDay =>
+					GetFirstDayWeekOfYear(dayOfYear, date.DayOfWeek, (int)firstDayOfWeek),
+
+				CalendarWeekRule.FirstFullWeek =>
+					GetWeekOfYearFullDays(ticks, dayOfYear, (int)firstDayOfWeek, 7),
+
+				CalendarWeekRule.FirstFourDayWeek =>
+					GetWeekOfYearFullDays(ticks, dayOfYear, (int)firstDayOfWeek, 4),
+
+				_ => throw new ArgumentOutOfRangeException(
+						string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, rule, nameof(CalendarWeekRule),
+						nameof(rule))),
+			};
+		}
+
+		/// <summary>
+		/// Returns the day of the week considered the start of the week for a given <see cref="CalendarWeekendDefinition" /> definition.
+		/// </summary>
+		/// <param name="weekend">The weekend configuration to evaluate.</param>
+		/// <returns>The inferred <see cref="DayOfWeek" /> that begins the week.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the provided <paramref name="weekend" /> is not supported.</exception>
+		internal static DayOfWeek GetWeekStartDay(CalendarWeekendDefinition weekend) => weekend switch
+		{
+			CalendarWeekendDefinition.SaturdaySunday => DayOfWeek.Monday,
+			CalendarWeekendDefinition.ThursdayFriday => DayOfWeek.Saturday,
+			CalendarWeekendDefinition.FridaySaturday => DayOfWeek.Sunday,
+			CalendarWeekendDefinition.SundayOnly => DayOfWeek.Monday,
+			CalendarWeekendDefinition.FridayOnly => DayOfWeek.Saturday,
+			CalendarWeekendDefinition.None => DayOfWeek.Monday,
+			_ => throw new ArgumentOutOfRangeException(nameof(weekend),
+				$"Unsupported {nameof(CalendarWeekendDefinition)} selectedDays: {weekend}")
+		};
 
 		/// <summary>
 		/// Returns the number of ticks at midnight on the first day of the specified month.
@@ -510,6 +698,25 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
+		/// Computes the week number of the year using the <see cref="CalendarWeekRule.FirstDay" /> rule.
+		/// </summary>
+		/// <param name="dayOfYear">Zero-based day index within the year (e.g., Jan 1 = 0).</param>
+		/// <param name="dayOfWeek">The day of the week of the specified date.</param>
+		/// <param name="firstDayOfWeek">The starting day of the week as an integer (0–6).</param>
+		/// <returns>The 1-based week number that contains the specified date.</returns>
+		private static int GetFirstDayWeekOfYear(int dayOfYear, DayOfWeek dayOfWeek, int firstDayOfWeek)
+		{
+			// Determine the day of the week for Jan 1 by back-calculating from the current date
+			int dayForJan1 = (int)dayOfWeek - (dayOfYear % 7);
+
+			// Calculate offset to align with the first day of the week
+			int offset = (dayForJan1 - firstDayOfWeek + 14) % 7;
+
+			// Adjust day-of-year and compute week number
+			return (dayOfYear + offset) / 7 + 1;
+		}
+
+		/// <summary>
 		/// Returns the number of ticks at midnight on the last specified weekday in the given month.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="System.DateTime" /> value from which to determine the year and month.</param>
@@ -532,12 +739,6 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the tick count that represents the last day of week in the current month of the <see cref="System.DateTime" />.
 		/// </summary>
-		private static long GetLastDayOfWeekInMonthAsTicks(DateTime dateTime, DayOfWeek dayOfWeek) =>
-			DateTimeExtensions.GetLastDayOfWeekInMonth(DateTimeExtensions.GetLastDayOfMonthTicks(dateTime), dayOfWeek);
-
-		/// <summary>
-		/// Returns the tick count that represents the last day of week in the current month of the <see cref="System.DateTime" />.
-		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long GetLastDayOfWeekInMonth(long ticks, DayOfWeek dayOfWeek)
 		{
@@ -546,14 +747,10 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the tick count that represents the date nearest to the specified <paramref name="dayOfWeek" /> relative to the provided
-		/// <paramref name="ticks" /> value.
+		/// Returns the tick count that represents the last day of week in the current month of the <see cref="System.DateTime" />.
 		/// </summary>
-		internal static long GetNearestDayOfWeek(long ticks, DayOfWeek dayOfWeek)
-		{
-			int delta = ((int)dayOfWeek - (int)GetDayOfWeekFromTicks(ticks) + 7) % 7;
-			return ticks + ((delta > 3 ? delta - 7 : delta) * TicksPerDay);
-		}
+		private static long GetLastDayOfWeekInMonthAsTicks(DateTime dateTime, DayOfWeek dayOfWeek) =>
+			DateTimeExtensions.GetLastDayOfWeekInMonth(DateTimeExtensions.GetLastDayOfMonthTicks(dateTime), dayOfWeek);
 
 		/// <summary>
 		/// Returns the number of ticks at midnight on the last specified weekday in the given year and month.
@@ -578,63 +775,6 @@ namespace Bodu.Extensions
 			long ticks = DateTimeExtensions.GetTicksForDate(year, month, DateTime.DaysInMonth(year, month));
 			ticks += ((dayOfWeek - DateTimeExtensions.GetDayOfWeekFromTicks(ticks) - 7) % 7) * DateTimeExtensions.TicksPerDay;
 			return ticks;
-		}
-
-		/// <summary>
-		/// Calculates the number of ticks between the specified <paramref name="ticks" /> value and the next occurrence of the given <paramref name="dayOfWeek" />.
-		/// </summary>
-		/// <param name="ticks">
-		/// A date and time expressed as the number of 100-nanosecond intervals (ticks) since 0001-01-01T00:00:00.000 in the Gregorian calendar.
-		/// </param>
-		/// <param name="dayOfWeek">
-		/// A <see cref="System.DayOfWeek" /> value representing the target day of the week to compute forward to.
-		/// </param>
-		/// <returns>
-		/// A <see cref="long" /> value representing the number of ticks between the specified <paramref name="ticks" /> value and the next
-		/// occurrence of <paramref name="dayOfWeek" />. This value is a non-negative multiple of <see cref="DateTimeExtensions.TicksPerDay" />.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If the date represented by <paramref name="ticks" /> already falls on <paramref name="dayOfWeek" />, this method returns a 7-day
-		/// tick interval to the following week's occurrence.
-		/// </para>
-		/// <para>This method performs no argument validation and assumes that <paramref name="ticks" /> is within the valid range for <see cref="System.DateTime" />.</para>
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static long GetNextDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
-		{
-			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
-			return DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)day + 7) % 7);
-		}
-
-		/// <summary>
-		/// Calculates the number of ticks between the specified <paramref name="ticks" /> value and the previous occurrence of the given <paramref name="dayOfWeek" />.
-		/// </summary>
-		/// <param name="ticks">
-		/// A date and time expressed as the number of 100-nanosecond intervals (ticks) since 0001-01-01T00:00:00.000 in the Gregorian calendar.
-		/// </param>
-		/// <param name="dayOfWeek">
-		/// A <see cref="System.DayOfWeek" /> value representing the target day of the week to compute backward to.
-		/// </param>
-		/// <returns>
-		/// A <see cref="long" /> value representing the number of ticks between the specified <paramref name="ticks" /> and the most recent
-		/// occurrence of <paramref name="dayOfWeek" />. This value is a non-negative multiple of <see cref="DateTimeExtensions.TicksPerDay" />.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If the date represented by <paramref name="ticks" /> already falls on <paramref name="dayOfWeek" />, this method returns a 7-day
-		/// tick interval backward to the previous week's occurrence.
-		/// </para>
-		/// <para>
-		/// This method performs no validation. The caller must ensure that <paramref name="ticks" /> falls within the valid
-		/// <see cref="System.DateTime" /> range, and that <paramref name="dayOfWeek" /> is a valid <see cref="System.DayOfWeek" /> enum value.
-		/// </para>
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static long GetPreviousDayOfWeekTicksFrom(long ticks, DayOfWeek dayOfWeek)
-		{
-			DayOfWeek day = DateTimeExtensions.GetDayOfWeekFromTicks(ticks);
-			return DateTimeExtensions.TicksPerDay * (((int)dayOfWeek - (int)day - 7) % 7);
 		}
 
 		/// <summary>
@@ -686,76 +826,6 @@ namespace Bodu.Extensions
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long GetTimeTicks(DateTime dateTime)
 			=> dateTime.Ticks % DateTimeExtensions.TicksPerDay;
-
-		/// <summary>
-		/// Returns the day of the week considered the start of the week for a given <see cref="CalendarWeekendDefinition" /> definition.
-		/// </summary>
-		/// <param name="weekend">The weekend configuration to evaluate.</param>
-		/// <returns>The inferred <see cref="DayOfWeek" /> that begins the week.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if the provided <paramref name="weekend" /> is not supported.</exception>
-		internal static DayOfWeek GetWeekStartDay(CalendarWeekendDefinition weekend) => weekend switch
-		{
-			CalendarWeekendDefinition.SaturdaySunday => DayOfWeek.Monday,
-			CalendarWeekendDefinition.ThursdayFriday => DayOfWeek.Saturday,
-			CalendarWeekendDefinition.FridaySaturday => DayOfWeek.Sunday,
-			CalendarWeekendDefinition.SundayOnly => DayOfWeek.Monday,
-			CalendarWeekendDefinition.FridayOnly => DayOfWeek.Saturday,
-			CalendarWeekendDefinition.None => DayOfWeek.Monday,
-			_ => throw new ArgumentOutOfRangeException(nameof(weekend),
-				$"Unsupported {nameof(CalendarWeekendDefinition)} selectedDays: {weekend}")
-		};
-
-		/// <summary>
-		/// Calculates the calendar week number of the year for the specified tick value, using the provided week rule and week start day.
-		/// </summary>
-		/// <param name="ticks">The number of ticks representing the target date (100ns intervals since 0001-01-01T00:00:00.000).</param>
-		/// <param name="rule">
-		/// A <see cref="CalendarWeekRule" /> value that determines how the first week of the year is defined (FirstDay, FirstFullWeek, FirstFourDayWeek).
-		/// </param>
-		/// <param name="firstDayOfWeek">A <see cref="DayOfWeek" /> value indicating the first day of the week (e.g., Sunday, Monday).</param>
-		/// <returns>The 1-based week number of the year that contains the specified tick value, based on the specified rule.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="rule" /> is not a valid <see cref="CalendarWeekRule" />.</exception>
-		internal static int GetWeekOfYear(long ticks, CalendarWeekRule rule, DayOfWeek firstDayOfWeek)
-		{
-			// Convert ticks into a date for computing day-of-year
-			var date = new DateTime(ticks, DateTimeKind.Unspecified);
-			int dayOfYear = date.DayOfYear - 1; // Convert to 0-based day index
-
-			return rule switch
-			{
-				CalendarWeekRule.FirstDay =>
-					GetFirstDayWeekOfYear(dayOfYear, date.DayOfWeek, (int)firstDayOfWeek),
-
-				CalendarWeekRule.FirstFullWeek =>
-					GetWeekOfYearFullDays(ticks, dayOfYear, (int)firstDayOfWeek, 7),
-
-				CalendarWeekRule.FirstFourDayWeek =>
-					GetWeekOfYearFullDays(ticks, dayOfYear, (int)firstDayOfWeek, 4),
-
-				_ => throw new ArgumentOutOfRangeException(
-						string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, rule, nameof(CalendarWeekRule),
-						nameof(rule))),
-			};
-		}
-
-		/// <summary>
-		/// Computes the week number of the year using the <see cref="CalendarWeekRule.FirstDay" /> rule.
-		/// </summary>
-		/// <param name="dayOfYear">Zero-based day index within the year (e.g., Jan 1 = 0).</param>
-		/// <param name="dayOfWeek">The day of the week of the specified date.</param>
-		/// <param name="firstDayOfWeek">The starting day of the week as an integer (0–6).</param>
-		/// <returns>The 1-based week number that contains the specified date.</returns>
-		private static int GetFirstDayWeekOfYear(int dayOfYear, DayOfWeek dayOfWeek, int firstDayOfWeek)
-		{
-			// Determine the day of the week for Jan 1 by back-calculating from the current date
-			int dayForJan1 = (int)dayOfWeek - (dayOfYear % 7);
-
-			// Calculate offset to align with the first day of the week
-			int offset = (dayForJan1 - firstDayOfWeek + 14) % 7;
-
-			// Adjust day-of-year and compute week number
-			return (dayOfYear + offset) / 7 + 1;
-		}
 
 		/// <summary>
 		/// Computes the calendar week number of the year for a given date using either <see cref="CalendarWeekRule.FirstFullWeek" /> or

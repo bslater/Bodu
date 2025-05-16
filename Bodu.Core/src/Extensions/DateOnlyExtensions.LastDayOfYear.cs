@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.LastDayOfYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.LastDayOfYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -22,6 +22,6 @@ namespace Bodu.Extensions
 		/// </para>
 		/// </remarks>
 		public static DateOnly LastDayOfYear(this DateOnly date) =>
-			DateOnly.FromDayNumber(GetDayNumber(date.Year, 12, 31));
+			new DateOnly(date.Year, 12, 31);
 	}
 }

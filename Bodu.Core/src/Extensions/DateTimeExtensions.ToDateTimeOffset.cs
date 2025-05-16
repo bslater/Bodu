@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.ToDateTimeOffset.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="ToDateTimeOffset.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -11,57 +11,56 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to a <see cref="DateTimeOffset" />, interpreting the value based on its <see cref="DateTime.Kind" />.
+		/// Converts the specified <see cref="DateTime" /> to a <see cref="DateTimeOffset" />, using its <see cref="DateTime.Kind" /> to
+		/// determine the time zone offset.
 		/// </summary>
-		/// <param name="dateTime">The input <see cref="DateTime" /> to convert.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to convert.</param>
 		/// <returns>
-		/// A <see cref="DateTimeOffset" /> representing the same point in time as <paramref name="dateTime" />, using its
-		/// <see cref="DateTime.Kind" /> to determine the offset (local, UTC, or unspecified).
+		/// A <see cref="DateTimeOffset" /> that represents the same point in time as <paramref name="dateTime" />, adjusted according to
+		/// its <see cref="DateTime.Kind" /> ( <c>Local</c>, <c>Utc</c>, or <c>Unspecified</c>).
 		/// </returns>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Thrown if the conversion results in a UTC time that is outside the allowable range for <see cref="DateTimeOffset" />.
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if the resulting UTC time is outside the valid range supported by <see cref="DateTimeOffset" />.
 		/// </exception>
 		/// <remarks>
-		/// This method respects the <see cref="DateTime.Kind" /> value:
+		/// The <see cref="DateTime.Kind" /> property determines how the offset is interpreted:
 		/// <list type="bullet">
 		/// <item>
-		/// <term>UTC</term>
-		/// <description>Returns a <see cref="DateTimeOffset" /> with zero offset.</description>
+		/// <term><see cref="DateTimeKind.Utc" /></term>
+		/// <description>Creates a <see cref="DateTimeOffset" /> with a zero offset (UTC).</description>
 		/// </item>
 		/// <item>
-		/// <term>Local</term>
-		/// <description>Applies the system’s local offset.</description>
+		/// <term><see cref="DateTimeKind.Local" /></term>
+		/// <description>Applies the local system time zone offset.</description>
 		/// </item>
 		/// <item>
-		/// <term>Unspecified</term>
-		/// <description>Assumes the local time zone context.</description>
+		/// <term><see cref="DateTimeKind.Unspecified" /></term>
+		/// <description>Assumes the value is local and applies the system time zone offset.</description>
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static DateTimeOffset ToDateTimeOffset(this DateTime dateTime)
-			=> new(dateTime);
+		public static DateTimeOffset ToDateTimeOffset(this DateTime dateTime) =>
+			new(dateTime);
 
 		/// <summary>
 		/// Converts the specified <see cref="DateTime" /> to a <see cref="DateTimeOffset" /> using the provided UTC offset.
 		/// </summary>
-		/// <param name="dateTime">The input <see cref="DateTime" /> to convert.</param>
-		/// <param name="offset">The <see cref="TimeSpan" /> offset from UTC to associate with the resulting <see cref="DateTimeOffset" />.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to convert.</param>
+		/// <param name="offset">The UTC <see cref="TimeSpan" /> offset to associate with the resulting <see cref="DateTimeOffset" />.</param>
 		/// <returns>
-		/// A <see cref="DateTimeOffset" /> representing the same clock time as <paramref name="dateTime" /> with the specified
+		/// A <see cref="DateTimeOffset" /> representing the same clock time as <paramref name="dateTime" />, with the specified
 		/// <paramref name="offset" /> applied.
 		/// </returns>
-		/// <exception cref="System.ArgumentException">
-		/// Thrown if <paramref name="offset" /> is not valid for the specified <paramref name="dateTime.Kind" />, or if it creates an
-		/// invalid combination.
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="offset" /> is not within the range ±14 hours, or if it is not compatible with the
+		/// <see cref="DateTime.Kind" /> of <paramref name="dateTime" />.
 		/// </exception>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Thrown if the resulting UTC time is outside the valid range supported by <see cref="DateTimeOffset" />.
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the resulting UTC time falls outside the supported range of <see cref="DateTimeOffset" />.</exception>
 		/// <remarks>
-		/// Use this overload when the offset is known or must be explicitly applied (e.g., fixed timezone data). The
-		/// <paramref name="offset" /> must be within ±14 hours.
+		/// Use this overload when a specific UTC offset must be applied—such as when working with historical time zone data or non-local
+		/// time zones. The offset must be in the range [-14:00, +14:00].
 		/// </remarks>
-		public static DateTimeOffset ToDateTimeOffset(this DateTime dateTime, TimeSpan offset)
-			=> new(dateTime, offset);
+		public static DateTimeOffset ToDateTimeOffset(this DateTime dateTime, TimeSpan offset) =>
+			new(dateTime, offset);
 	}
 }

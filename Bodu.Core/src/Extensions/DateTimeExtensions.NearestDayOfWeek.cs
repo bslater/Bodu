@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.NearestDayOfWeek.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="NearestDayOfWeek.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -13,38 +13,58 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the nearest date to <paramref name="dateTime" /> that falls on the specified <paramref name="dayOfWeek" />.
 		/// </summary>
-		/// <param name="dateTime">The reference date.</param>
-		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> to find.</param>
+		/// <param name="dateTime">The reference <see cref="DateTime" /> value.</param>
+		/// <param name="dayOfWeek">The target <see cref="DayOfWeek" /> to locate.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing the closest date (before or after) to <paramref name="dateTime" /> that falls on the
-		/// specified <paramref name="dayOfWeek" />. If two dates are equally close, the earlier one is returned.
+		/// A <see cref="DateTime" /> representing the closest date (either before or after) to <paramref name="dateTime" /> that falls on
+		/// the specified <paramref name="dayOfWeek" />. If two dates are equally close, the earlier one is returned.
 		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a defined value in the <see cref="DayOfWeek" /> enumeration.
+		/// </exception>
+		/// <remarks>The result preserves the <see cref="DateTime.Kind" /> of the input.</remarks>
 		public static DateTime NearestDayOfWeek(this DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
-
-			return new DateTime(GetNearestDayOfWeek(dateTime.Ticks, dayOfWeek), dateTime.Kind);
+			return new(GetNearestDayOfWeek(dateTime.Ticks, dayOfWeek), dateTime.Kind);
 		}
 
 		/// <summary>
-		/// Returns the nearest date to the specified year/month/day that falls on the given <paramref name="dayOfWeek" />.
+		/// Returns the nearest date to the specified year, month, and day that falls on the given <paramref name="dayOfWeek" />.
 		/// </summary>
-		/// <param name="year">The year component of the reference date.</param>
-		/// <param name="month">The month component of the reference date.</param>
-		/// <param name="day">The day component of the reference date.</param>
-		/// <param name="dayOfWeek">The target <see cref="DayOfWeek" /> to find.</param>
+		/// <param name="year">
+		/// The calendar year component of the reference date. Must be between the <c>Year</c> property values of
+		/// <see cref="DateTime.MinValue" /> and <see cref="DateTime.MaxValue" />, inclusive.
+		/// </param>
+		/// <param name="month">
+		/// The calendar month component of the reference date. Must be an integer between 1 and 12, inclusive, where 1 represents January
+		/// and 12 represents December.
+		/// </param>
+		/// <param name="day">
+		/// The day component of the reference date. Must be valid for the specified <paramref name="year" /> and <paramref name="month" />,
+		/// including leap year considerations for February.
+		/// </param>
+		/// <param name="dayOfWeek">
+		/// The target <see cref="DayOfWeek" /> value to locate. For example, specifying <see cref="DayOfWeek.Monday" /> returns the date
+		/// closest to the reference date that falls on a Monday.
+		/// </param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing the closest date (before or after) to the input date that falls on the specified
-		/// <paramref name="dayOfWeek" />. If two dates are equally close, the earlier one is returned.
+		/// A <see cref="DateTime" /> representing the closest date (either before or after) to the specified reference date that falls on
+		/// the given <paramref name="dayOfWeek" />. If two dates are equally close, the earlier one is returned. The result is normalized
+		/// to midnight (00:00:00) and has <see cref="DateTimeKind.Unspecified" />.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
+		/// Thrown if <paramref name="dayOfWeek" /> is not a defined value of the <see cref="DayOfWeek" /> enumeration, or if
+		/// <paramref name="year" />, <paramref name="month" />, or <paramref name="day" /> is outside the valid range supported by <see cref="DateTime" />.
 		/// </exception>
+		/// <remarks>
+		/// The result is computed by evaluating the distance (in days) between the specified reference date and the nearest occurrence of
+		/// the specified <paramref name="dayOfWeek" />. If both a forward and backward date are equally close, the earlier date is returned.
+		/// </remarks>
 		public static DateTime NearestDayOfWeek(int year, int month, int day, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
-
-			return new DateTime(GetNearestDayOfWeek(GetTicksForDate(year, month, day), dayOfWeek), DateTimeKind.Unspecified);
+			return new(GetNearestDayOfWeek(GetTicksForDate(year, month, day), dayOfWeek), DateTimeKind.Unspecified);
 		}
 	}
 }

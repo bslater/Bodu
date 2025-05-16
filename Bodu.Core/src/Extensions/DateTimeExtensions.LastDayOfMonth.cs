@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.LastDayOfMonth.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="LastDayOfMonth.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -19,34 +19,45 @@ namespace Bodu.Extensions
 		/// <see cref="DateTime.Kind" /> preserved.
 		/// </returns>
 		/// <remarks>
-		/// This method uses the rules of the Gregorian calendar to determine the number of days in the month, including leap year behavior
-		/// for February. The time component is normalized to midnight (00:00:00).
+		/// <para>
+		/// This method calculates the last day of the month using Gregorian calendar rules. Leap years are correctly accounted for when
+		/// determining the length of February.
+		/// </para>
+		/// <para>
+		/// The result has its time component normalized to midnight (00:00:00), and the original <see cref="DateTime.Kind" /> is retained.
+		/// </para>
 		/// </remarks>
-		public static DateTime LastDayOfMonth(this DateTime dateTime)
-			=> new(DateTimeExtensions.GetLastDayOfMonthTicks(dateTime), dateTime.Kind);
+		public static DateTime LastDayOfMonth(this DateTime dateTime) =>
+			new(GetLastDayOfMonthTicks(dateTime), dateTime.Kind);
 
 		/// <summary>
 		/// Returns a <see cref="DateTime" /> representing midnight on the last day of the specified year and month.
 		/// </summary>
-		/// <param name="year">The year component of the date. Must be between 1 and 9999, inclusive.</param>
-		/// <param name="month">The month component of the date. Must be between 1 and 12, inclusive.</param>
-		/// <returns>
-		/// A <see cref="DateTime" /> set to 00:00:00 on the last day of the specified month and year, with
-		/// <see cref="DateTimeKind.Unspecified" /> as its kind.
-		/// </returns>
+		/// <param name="year">
+		/// The calendar year component of the date. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
+		/// <see cref="DateTime.MaxValue" />, inclusive.
+		/// </param>
+		/// <param name="month">
+		/// The month component of the date. Must be an integer between 1 and 12, inclusive, where 1 represents January and 12 represents December.
+		/// </param>
+		/// <returns>A <see cref="DateTime" /> set to 00:00:00 on the last day of the specified month and year, with <see cref="DateTimeKind.Unspecified" />.</returns>
 		/// <remarks>
-		/// The method calculates the last day of the month using the Gregorian calendar rules, accounting for leap years. The returned
-		/// <see cref="DateTime" /> always has the time component set to midnight and the kind set to <see cref="DateTimeKind.Unspecified" />.
+		/// <para>
+		/// This method uses Gregorian calendar logic to determine the number of days in the specified month, including leap year
+		/// adjustments for February.
+		/// </para>
+		/// <para>The returned value is normalized to midnight (00:00:00) and uses <see cref="DateTimeKind.Unspecified" />.</para>
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="year" /> is outside the valid range, or if <paramref name="month" /> is not between 1 and 12.
+		/// Thrown if <paramref name="year" /> is less than the <c>Year</c> of <see cref="DateTime.MinValue" /> or greater than that of
+		/// <see cref="DateTime.MaxValue" />, or if <paramref name="month" /> is outside the valid range of 1 to 12.
 		/// </exception>
 		public static DateTime LastDayOfMonth(int year, int month)
 		{
 			ThrowHelper.ThrowIfOutOfRange(year, DateTime.MinValue.Year, DateTime.MaxValue.Year);
 			ThrowHelper.ThrowIfOutOfRange(month, 1, 12);
 
-			return new DateTime(year, month, DateTime.DaysInMonth(year, month), 0, 0, 0, DateTimeKind.Unspecified);
+			return new(GetTicksForDate(year, month, DateTime.DaysInMonth(year, month)), DateTimeKind.Unspecified);
 		}
 	}
 }

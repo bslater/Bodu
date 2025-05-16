@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.FirstDayOfQuarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="FirstDayOfQuarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -11,110 +11,50 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns a <see cref="DateTime" /> representing the first day of the calendar quarter for the specified <paramref name="dateTime" />.
+		/// Returns the first day of the calendar quarter that contains the specified <see cref="DateTime" />, using the standard calendar
+		/// quarter definition.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> whose quarter is evaluated.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> value representing the first day of the quarter, with the time component normalized to midnight
-		/// (00:00:00) and the original <see cref="DateTime.Kind" /> preserved.
+		/// A <see cref="DateTime" /> representing the first day of the quarter, with the time set to midnight (00:00:00) and the original
+		/// <see cref="DateTime.Kind" /> preserved.
 		/// </returns>
 		/// <remarks>
-		/// This method uses the standard calendar quarter definition:
+		/// This method uses the standard calendar quarter system:
 		/// <list type="bullet">
 		/// <item>
-		/// <term>Q1</term>
-		/// <description>January–March</description>
+		/// <description>Q1: January–March</description>
 		/// </item>
 		/// <item>
-		/// <term>Q2</term>
-		/// <description>April–June</description>
+		/// <description>Q2: April–June</description>
 		/// </item>
 		/// <item>
-		/// <term>Q3</term>
-		/// <description>July–September</description>
+		/// <description>Q3: July–September</description>
 		/// </item>
 		/// <item>
-		/// <term>Q4</term>
-		/// <description>October–December</description>
+		/// <description>Q4: October–December</description>
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static DateTime FirstDayOfQuarter(this DateTime dateTime)
-			=> FirstDayOfQuarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);
+		public static DateTime FirstDayOfQuarter(this DateTime dateTime) =>
+			FirstDayOfQuarterInternal(dateTime, CalendarQuarterDefinition.JanuaryDecember);
 
 		/// <summary>
-		/// Returns a <see cref="DateTime" /> representing the first day of the specified <paramref name="quarter" /> in the given
-		/// <paramref name="year" />, based on the standard calendar quarter definition.
+		/// Returns the first day of the quarter that contains the specified <see cref="DateTime" />, using the specified quarter definition.
 		/// </summary>
-		/// <param name="year">
-		/// The calendar year in which the quarter is to be evaluated. The returned date will represent the start of the quarter within this year.
-		/// </param>
-		/// <param name="quarter">
-		/// The quarter number to evaluate (1 through 4), using the conventional calendar-based quarters: Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 =
-		/// Jul–Sep, Q4 = Oct–Dec.
-		/// </param>
+		/// <param name="dateTime">The reference date.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> to use for determining quarter boundaries.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing the first day of the specified calendar quarter in the given year, with the time set to
-		/// 00:00:00 and a <see cref="DateTimeKind" /> of <see cref="DateTimeKind.Unspecified" />.
+		/// A <see cref="DateTime" /> representing the first day of the quarter, with the time set to midnight (00:00:00) and the original
+		/// <see cref="DateTime.Kind" /> preserved.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is not between 1 and 4 (inclusive).</exception>
 		/// <remarks>
-		/// <para>This method uses the standard month-aligned calendar quarter system defined by <see cref="CalendarQuarterDefinition.JanuaryDecember" />:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Q1</term>
-		/// <description>January – March</description>
-		/// </item>
-		/// <item>
-		/// <term>Q2</term>
-		/// <description>April – June</description>
-		/// </item>
-		/// <item>
-		/// <term>Q3</term>
-		/// <description>July – September</description>
-		/// </item>
-		/// <item>
-		/// <term>Q4</term>
-		/// <description>October – December</description>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// For other fiscal or custom quarter definitions, use the <see cref="FirstDayOfQuarter(int, int, CalendarQuarterDefinition)" /> or
-		/// provider-based overloads.
-		/// </para>
+		/// <para>Supports both month- and day-aligned quarter definitions. For custom systems, use the provider-based overload.</para>
 		/// </remarks>
-		public static DateTime FirstDayOfQuarter(int year, int quarter)
-			=> FirstDayOfQuarter(year, quarter, CalendarQuarterDefinition.JanuaryDecember);
-
-		/// <summary>
-		/// Returns the first day of the quarter that includes the specified <paramref name="dateTime" />, based on the provided <see cref="CalendarQuarterDefinition" />.
-		/// </summary>
-		/// <param name="dateTime">
-		/// The <see cref="DateTime" /> to evaluate. The returned value will be the first calendar day of the quarter that contains this
-		/// date, according to the selected definition.
-		/// </param>
-		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
-		/// <returns>
-		/// A <see cref="DateTime" /> representing the first day of the identified quarter, with the time component normalized to midnight
-		/// (00:00:00) and the original <see cref="DateTime.Kind" /> preserved.
-		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="definition" /> is not a valid member of the <see cref="CalendarQuarterDefinition" /> enumeration.
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="definition" /> is not a valid enumeration value.</exception>
 		/// <exception cref="InvalidOperationException">
-		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />, which requires a provider-based
-		/// overload (see <see cref="FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" />).
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the provider-based overload instead.
 		/// </exception>
-		/// <remarks>
-		/// <para>
-		/// This method supports both month-aligned and day-aligned quarter definitions. When the definition is not aligned to the first day
-		/// of a month, the result will reflect the exact starting day of the quarter as defined.
-		/// </para>
-		/// <para>
-		/// For custom or non-standard quarter systems, use the <see cref="FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" />
-		/// overload with a custom implementation of <see cref="IQuarterDefinitionProvider" />.
-		/// </para>
-		/// </remarks>
 		public static DateTime FirstDayOfQuarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -123,44 +63,79 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
-			return new DateTime(ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition)), dateTime.Kind);
+			return FirstDayOfQuarterInternal(dateTime, definition);
 		}
 
 		/// <summary>
-		/// Returns the first day of the specified <paramref name="quarter" /> in the given <paramref name="year" />, based on the provided <see cref="CalendarQuarterDefinition" />.
+		/// Returns the first day of the quarter containing the specified <see cref="DateTime" />, using a custom <see cref="IQuarterDefinitionProvider" />.
+		/// </summary>
+		/// <param name="dateTime">The reference date.</param>
+		/// <param name="provider">An implementation of <see cref="IQuarterDefinitionProvider" /> that defines custom quarter logic.</param>
+		/// <returns>
+		/// A <see cref="DateTime" /> representing the first day of the quarter, with the time set to midnight (00:00:00) and the original
+		/// <see cref="DateTime.Kind" /> preserved.
+		/// </returns>
+		/// <remarks>This method is used for fiscal calendars such as 4-4-5 or other region-specific quarter systems.</remarks>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the provider returns an invalid quarter boundary.</exception>
+		public static DateTime FirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
+		{
+			ThrowHelper.ThrowIfNull(provider);
+
+			return provider.GetQuarterStart(dateTime);
+		}
+
+		/// <summary>
+		/// Returns the first day of the specified calendar quarter in the given year, using the standard calendar quarter definition.
 		/// </summary>
 		/// <param name="year">
-		/// The reference calendar year. The result will represent the start date of the specified quarter relative to this year. If the
-		/// quarter begins in the next calendar year (based on modular month arithmetic), the year will be incremented accordingly.
+		/// The calendar year to evaluate. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
+		/// <see cref="DateTime.MaxValue" />, inclusive.
 		/// </param>
 		/// <param name="quarter">
-		/// The quarter number to evaluate (1 through 4). Represents the Nth quarter following the definition’s anchor month and day.
+		/// The quarter number within the year. Must be an integer between 1 and 4, inclusive, where 1 represents the first quarter (January
+		/// to March), and 4 represents the last quarter (October to December).
 		/// </param>
-		/// <param name="definition">Specifies the quarter definition used to determine the first date of the quarter.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing the first day of the specified quarter in the applicable year, with the time set to
-		/// 00:00:00 and a <see cref="DateTimeKind" /> of <see cref="DateTimeKind.Unspecified" />.
+		/// A <see cref="DateTime" /> representing the first day of the specified quarter, with the time set to midnight (00:00:00) and <see cref="DateTimeKind.Unspecified" />.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="quarter" /> is not between 1 and 4 (inclusive), or if <paramref name="definition" /> is not a defined
-		/// value of the <see cref="CalendarQuarterDefinition" /> enumeration.
-		/// </exception>
-		/// <exception cref="InvalidOperationException">
-		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />, which requires a provider-based
-		/// overload. Use the <see cref="FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> method instead.
-		/// </exception>
+		/// <remarks>See <see cref="CalendarQuarterDefinition.JanuaryDecember" /> for standard quarter alignment.</remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is less than 1 or greater than 4.</exception>
+		public static DateTime GetFirstDayOfQuarter(int year, int quarter) =>
+			GetFirstDayOfQuarter(year, quarter, CalendarQuarterDefinition.JanuaryDecember);
+
+		/// <summary>
+		/// Returns the first day of the specified quarter and year, using the provided quarter definition.
+		/// </summary>
+		/// <param name="year">
+		/// The calendar year used as the base year for the quarter. Must be between the <c>Year</c> property values of
+		/// <see cref="DateTime.MinValue" /> and <see cref="DateTime.MaxValue" />, inclusive.
+		/// </param>
+		/// <param name="quarter">
+		/// The quarter number within the year. Must be an integer between 1 and 4, inclusive, where 1 represents the first quarter and 4
+		/// represents the final quarter.
+		/// </param>
+		/// <param name="definition">
+		/// The <see cref="CalendarQuarterDefinition" /> value that determines how quarters are aligned within the year (e.g.,
+		/// calendar-aligned or fiscal-aligned).
+		/// </param>
+		/// <returns>
+		/// A <see cref="DateTime" /> representing the first day of the quarter, with the time set to midnight (00:00:00) and <see cref="DateTimeKind.Unspecified" />.
+		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// For month-aligned definitions (e.g., <c>07</c> for July), each quarter starts on the 1st day of the corresponding month and
-		/// repeats every 3 months.
-		/// </para>
-		/// <para>
-		/// For day-aligned definitions (e.g., <c>0406</c> for April 6), each quarter starts on a specific day-of-month, and subsequent
-		/// quarters maintain the day anchor across three-month intervals.
+		/// Month-aligned definitions (e.g., January, April, etc.) start each quarter on the 1st of the month. Day-aligned definitions
+		/// (e.g., MMDD-style) support anchored day-of-month starts for each quarter.
 		/// </para>
 		/// </remarks>
-		public static DateTime FirstDayOfQuarter(int year, int quarter, CalendarQuarterDefinition definition)
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="year" /> is outside the supported <see cref="DateTime" /> year range, if <paramref name="quarter" />
+		/// is not between 1 and 4, or if <paramref name="definition" /> is not a valid enumeration value.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />, which requires an external <see cref="IQuarterDefinitionProvider" />.
+		/// </exception>
+		public static DateTime GetFirstDayOfQuarter(int year, int quarter, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -169,28 +144,23 @@ namespace Bodu.Extensions
 				throw new InvalidOperationException(
 					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
 
-			return new DateTime(ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition)), DateTimeKind.Unspecified);
+			return new(ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition)), DateTimeKind.Unspecified);
 		}
 
 		/// <summary>
-		/// Returns the first day of the quarter based on a custom <see cref="IQuarterDefinitionProvider" /> implementation.
+		/// Returns the first day of the quarter that contains the specified <see cref="DateTime" />, using a prevalidated quarter definition.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value whose quarter is being evaluated.</param>
-		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> that defines custom quarter logic.</param>
+		/// <param name="dateTime">The reference date.</param>
+		/// <param name="definition">A valid <see cref="CalendarQuarterDefinition" /> that is not <see cref="CalendarQuarterDefinition.Custom" />.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing the first calendar day of the applicable custom quarter, with the time set to midnight
-		/// (00:00:00) and the <see cref="DateTime.Kind" /> preserved.
+		/// A <see cref="DateTime" /> representing the first day of the quarter, with the time set to midnight (00:00:00) and the original
+		/// <see cref="DateTime.Kind" /> preserved.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="provider" /> returns an invalid quarter boundary.</exception>
-		/// <remarks>
-		/// This method supports advanced or domain-specific definitions of quarters by delegating logic to the specified
-		/// <paramref name="provider" />, such as 4-4-5 fiscal calendars or regional fiscal systems.
-		/// </remarks>
-		public static DateTime FirstDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
+		/// <remarks>This method performs no validation and should be used only when the input definition is known to be valid.</remarks>
+		private static DateTime FirstDayOfQuarterInternal(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
-			ThrowHelper.ThrowIfNull(provider);
-			return provider.GetQuarterStart(dateTime);
+			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
+			return new(ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition)), dateTime.Kind);
 		}
 	}
 }

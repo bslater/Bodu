@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.DaysInMonth.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.DaysInMonth.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -21,7 +21,7 @@ namespace Bodu.Extensions
 		/// This method always evaluates the number of days using the proleptic Gregorian calendar, regardless of the current culture or
 		/// calendar settings.
 		/// </remarks>
-		public static int DaysInMonth(this DateOnly date)
-			=> DateTime.DaysInMonth(date.Year, date.Month);
+		public static int DaysInMonth(this DateOnly date) =>
+			DateTime.DaysInMonth(date.Year, date.Month);
 	}
 }

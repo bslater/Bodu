@@ -1,23 +1,22 @@
 ﻿namespace Bodu.Extensions
 {
-	[TestClass]
-	public partial class NumericExtensions
+	public partial class NumericExtensionsTests
 	{
 		/// <summary>
 		/// Verifies that the byte array returned for a known integer value matches the expected byte order based on system endianness.
 		/// </summary>
 		[TestMethod]
-		[DataRow(0, new byte[] { 0x00 })]  // Zero value
-		[DataRow(1, new byte[] { 0x01 })]  // Least significant bit set
-		[DataRow(255, new byte[] { 0xFF })]  // All bits set for byte
+		[DataRow((byte)0, new byte[] { 0x00 })]  // Zero value
+		[DataRow((byte)1, new byte[] { 0x01 })]  // Least significant bit set
+		[DataRow((byte)255, new byte[] { 0xFF })]  // All bits set for byte
 		[DataRow(int.MaxValue, new byte[] { 0xFF, 0xFF, 0xFF, 0x7F })]  // max value for int
 		[DataRow(int.MinValue, new byte[] { 0x00, 0x00, 0x00, 0x80 })]  // min value for int
 		[DataRow(long.MaxValue, new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F })]  // max value for long
 		[DataRow(long.MinValue, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 })]  // min value for long
 		[DataRow(-1, new byte[] { 0xFF, 0xFF, 0xFF, 0xFF })]  // Two's complement for -1 (int)
-		[DataRow(-int.MaxValue, new byte[] { 0x80, 0x00, 0x00, 0x00 })]  // Two's complement for -int.MaxValue
-		[DataRow(-long.MaxValue, new byte[] { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 })]  // Two's complement for -long.MaxValue
-		public void GetBytes_WhenCalled_ShouldReturnExpectedByteArrayForVariousValues(long input, byte[] expected)
+		[DataRow(-int.MaxValue, new byte[] { 0x01, 0x00, 0x00, 0x80 })]  // Two's complement for -int.MaxValue
+		[DataRow(-long.MaxValue, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 })]  // Two's complement for -long.MaxValue
+		public void GetBytes_WhenCalled_ShouldReturnExpectedByteArrayForVariousValues<T>(T input, byte[] expected)
 		{
 			var bytes = input.GetBytes();
 			CollectionAssert.AreEqual(expected, bytes);
@@ -78,10 +77,10 @@
 		/// </summary>
 		[TestMethod]
 		[DataRow(0x12345678, new byte[] { 0x78, 0x56, 0x34, 0x12 })]  // little-endian test
-		[DataRow(0x12345678, new byte[] { 0x12, 0x34, 0x56, 0x78 })]  // big-endian test
-		public void GetBytes_WhenCalled_ShouldReturnCorrectBytes_ForKnownIntegerValues(int value, byte[] expected)
+		[DataRow(0x12345678, new byte[] { 0x12, 0x34, 0x56, 0x78 }, true)]  // big-endian test
+		public void GetBytes_WhenCalled_ShouldReturnCorrectBytes_ForKnownIntegerValues(int value, byte[] expected, bool isBigEndian = false)
 		{
-			var bytes = value.GetBytes();
+			var bytes = value.GetBytes(asBigEndian: isBigEndian);
 			CollectionAssert.AreEqual(expected, bytes);
 		}
 

@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.IsLeapYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.IsLeapYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -19,7 +19,7 @@ namespace Bodu.Extensions
 		/// This method follows the rules of the Gregorian calendar, where a leap year occurs every 4 years, except for years that are
 		/// divisible by 100 but not by 400 (e.g., 2000 was a leap year, but 1900 was not).
 		/// </remarks>
-		public static bool IsLeapYear(this DateOnly date)
-			=> DateTime.IsLeapYear(date.Year);
+		public static bool IsLeapYear(this DateOnly date) =>
+			DateTime.IsLeapYear(date.Year);
 	}
 }

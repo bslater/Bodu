@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.Min.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="Min.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -17,10 +17,11 @@ namespace Bodu.Extensions
 		/// <param name="second">The second <see cref="DateTime" /> value to compare.</param>
 		/// <returns>The earlier of the two <see cref="DateTime" /> values. If both values are equal, <paramref name="first" /> is returned.</returns>
 		/// <remarks>
-		/// This method compares the two <see cref="DateTime" /> values using the <see cref="DateTime.CompareTo(DateTime)" /> method. The
-		/// result preserves the original <see cref="DateTime.Kind" /> property (e.g., <c>Utc</c>, <c>Local</c>, or <c>Unspecified</c>).
+		/// This method compares the values using <see cref="DateTime.CompareTo(DateTime)" /> and returns the earlier one. The result
+		/// preserves the original <see cref="DateTime.Kind" /> of the selected value.
 		/// </remarks>
-		public static DateTime Min(DateTime first, DateTime second) => first <= second ? first : second;
+		public static DateTime Min(DateTime first, DateTime second) =>
+			first <= second ? first : second;
 
 		/// <summary>
 		/// Returns the earlier of two specified nullable <see cref="DateTime" /> values.
@@ -29,8 +30,8 @@ namespace Bodu.Extensions
 		/// <param name="second">The second nullable <see cref="DateTime" /> value to compare.</param>
 		/// <returns>The earlier of the two <see cref="DateTime" /> values, or <c>null</c> if both are <c>null</c>.</returns>
 		/// <remarks>
-		/// If one value is <c>null</c>, the non-null value is returned. If both values are non-null, they are compared using the
-		/// <see cref="DateTime.CompareTo(DateTime)" /> method.
+		/// <para>If both values are non-null, they are compared using <see cref="DateTime.CompareTo(DateTime)" /> and the earlier is returned.</para>
+		/// <para>If only one value is non-null, it is returned. If both are <c>null</c>, the result is <c>null</c>.</para>
 		/// </remarks>
 		public static DateTime? Min(DateTime? first, DateTime? second) =>
 			first.HasValue && second.HasValue ? (first.Value <= second.Value ? first : second) : first ?? second;

@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.Min.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.Min.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -17,7 +17,8 @@ namespace Bodu.Extensions
 		/// <param name="second">The second <see cref="DateOnly" /> value to compare.</param>
 		/// <returns>The earlier of the two <see cref="DateOnly" /> values. If both values are equal, <paramref name="first" /> is returned.</returns>
 		/// <remarks>This method compares two non-null <see cref="DateOnly" /> values using <see cref="DateOnly.CompareTo(DateOnly)" />.</remarks>
-		public static DateOnly Min(DateOnly first, DateOnly second) => first <= second ? first : second;
+		public static DateOnly Min(DateOnly first, DateOnly second) =>
+			first <= second ? first : second;
 
 		/// <summary>
 		/// Returns the earlier of two nullable <see cref="DateOnly" /> values.

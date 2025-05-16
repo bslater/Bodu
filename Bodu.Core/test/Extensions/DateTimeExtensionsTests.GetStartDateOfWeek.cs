@@ -44,6 +44,28 @@ namespace Bodu.Extensions
 			});
 		}
 
+		[DataTestMethod]
+		[DataRow(0)] //DateTime.MinValue.Year-1
+		[DataRow(10000)] //DateTime.MaxValue.Year+1
+		public void GetStartDateOfWeek_WithInvalidYear_ShouldThrowExactly(int year)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				DateTimeExtensions.GetStartDateOfWeek(year, 1);
+			});
+		}
+
+		[DataTestMethod]
+		[DataRow(0)] //DateTime.MinValue.Year-1
+		[DataRow(10000)] //DateTime.MaxValue.Year+1
+		public void GetStartDateOfWeek_WithCultureAndInvalidYear_ShouldThrowExactly(int year)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				DateTimeExtensions.GetStartDateOfWeek(year, 1, CultureInfo.CurrentCulture);
+			});
+		}
+
 		/// <summary>
 		/// Verifies that the current culture is used when the culture argument is null.
 		/// </summary>

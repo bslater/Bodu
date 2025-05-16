@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.IsFirstDayOfMonth.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IsFirstDayOfMonth.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -11,11 +11,13 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Determines whether the current <see cref="DateTime" /> instance represents the first day of its month.
+		/// Indicates whether the specified <see cref="DateTime" /> falls on the first day of its month.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
-		/// <returns><see langword="true" /> if the <paramref name="dateTime" /> is the first day of its month; otherwise, <see langword="false" />.</returns>
-		/// <remarks>This method checks whether the day component of the <paramref name="dateTime" /> is equal to 1.</remarks>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
+		/// <returns><see langword="true" /> if <paramref name="dateTime" /> represents the first day of its month; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// This method compares the <see cref="DateTime.Day" /> component to <c>1</c> to determine if the date is the first day of the month.
+		/// </remarks>
 		public static bool IsFirstDayOfMonth(this DateTime dateTime) =>
 			dateTime.Day == 1;
 	}

@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.NearestDayOfWeek.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.NearestDayOfWeek.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -44,7 +44,7 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			return DateOnly.FromDayNumber(GetNearestDayOfWeek(GetDayNumber(year, month, day), dayOfWeek));
+			return DateOnly.FromDayNumber(GetNearestDayOfWeek(DateTimeExtensions.GetDayNumberUnchecked(year, month, day), dayOfWeek));
 		}
 	}
 }

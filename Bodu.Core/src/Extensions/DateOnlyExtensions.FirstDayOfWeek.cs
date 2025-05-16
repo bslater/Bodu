@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.FirstDayOfWeek.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.FirstDayOfWeek.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -19,8 +19,8 @@ namespace Bodu.Extensions
 		/// <param name="date">The input <see cref="DateOnly" /> for which to determine the start of the week.</param>
 		/// <returns>A <see cref="DateOnly" /> representing the first day of the week that includes <paramref name="date" />.</returns>
 		/// <remarks>This method uses <see cref="CultureInfo.CurrentCulture" /> to determine the first day of the week, based on <see cref="DateTimeFormatInfo.FirstDayOfWeek" />.</remarks>
-		public static DateOnly FirstDayOfWeek(this DateOnly date)
-			=> date.FirstDayOfWeek(null!);
+		public static DateOnly FirstDayOfWeek(this DateOnly date) =>
+			date.FirstDayOfWeek(null!);
 
 		/// <summary>
 		/// Returns the first day of the week that contains the specified <see cref="DateOnly" />, using the provided culture or the current culture.

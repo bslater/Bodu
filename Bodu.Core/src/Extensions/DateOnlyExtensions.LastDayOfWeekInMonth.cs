@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.LastDayOfWeekInMonth.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.LastDayOfWeekInMonth.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -33,7 +33,7 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			int dayNumber = GetDayNumber(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
+			int dayNumber = DateTimeExtensions.GetDayNumberUnchecked(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month));
 			return DateOnly.FromDayNumber(dayNumber - ((int)GetDayOfWeekFromDayNumber(dayNumber) - (int)dayOfWeek + 7) % 7);
 		}
 	}

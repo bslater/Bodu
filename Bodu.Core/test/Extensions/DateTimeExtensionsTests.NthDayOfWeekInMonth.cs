@@ -27,7 +27,7 @@ namespace Bodu.Extensions
 		{
 			int year = input.Year, month = input.Month;
 
-			var actual = DateTimeExtensions.NthDayOfWeekInMonth(year, month, dayOfWeek, ordinal);
+			var actual = DateTimeExtensions.GetNthDayOfWeekInMonth(year, month, dayOfWeek, ordinal);
 
 			Assert.AreEqual(expected, actual);
 		}

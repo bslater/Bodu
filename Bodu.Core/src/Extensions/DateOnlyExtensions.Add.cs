@@ -1,10 +1,11 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.Add.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.Add.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Bodu.Extensions
 {
@@ -29,33 +30,24 @@ namespace Bodu.Extensions
 		/// </exception>
 		public static DateOnly Add(this DateOnly date, int years, int months, int days)
 		{
-			date.GetDateParts(out int y, out int m, out int d);
+			date.GetDateParts(out int year, out int month, out int day);
 
-			int totalMonths = m - 1 + (years * 12) + months;
-			if (totalMonths >= 0)
-			{
-				y += totalMonths / 12;
-				m = (totalMonths % 12) + 1;
-			}
-			else
-			{
-				y += (totalMonths - 11) / 12;
-				m = 12 + ((totalMonths + 1) % 12);
-			}
+			// Convert months to total and update year/month accordingly
+			int totalMonths = (year * 12 + (month - 1)) + (years * 12 + months);
+			year = totalMonths / 12;
+			month = (totalMonths % 12) + 1;
 
-			// Compute leap year status without method call
-			bool isLeap = (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0));
-			int[] daysToMonth = isLeap ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
+			// Clamp day based on new month/year
+			bool isLeap = DateTime.IsLeapYear(year);
+			int[] daysInMonths = isLeap ? DateTimeExtensions.DaysToMonth366 : DateTimeExtensions.DaysToMonth365;
+			int maxDay = daysInMonths[month] - daysInMonths[month - 1];
+			if (day > maxDay)
+				day = maxDay;
 
-			// Clamp day manually using table lookup
-			int maxDay = daysToMonth[m] - daysToMonth[m - 1];
-			if (d > maxDay) d = maxDay;
+			int dayNumber = DateTimeExtensions.GetDayNumberUnchecked(year, month, day);
 
-			int y1 = y - 1;
-			int dayNumber = y1 * 365 + y1 / 4 - y1 / 100 + y1 / 400 + daysToMonth[m - 1] + d - 1;
-
-			// Add days if non-trivial
-			if (days > DateTimeExtensions.Epsilon || days < -DateTimeExtensions.Epsilon)
+			// Add days if necessary
+			if (days != 0)
 				dayNumber = checked(dayNumber + days);
 
 			if ((uint)dayNumber > DateOnly.MaxValue.DayNumber)

@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.ToIsoString.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="ToIsoString.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -13,31 +13,25 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to an ISO 8601 formatted string, respecting the <see cref="DateTime.Kind" />.
+		/// Converts the specified <see cref="DateTime" /> to an ISO 8601 formatted string, using its <see cref="DateTime.Kind" /> to
+		/// determine the appropriate format suffix.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> to convert.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to convert.</param>
 		/// <returns>
 		/// A string representation of <paramref name="dateTime" /> in ISO 8601 format:
 		/// <list type="bullet">
 		/// <item>
-		/// <description>If <see cref="DateTime.Kind" /> is <see cref="DateTimeKind.Utc" />, the result ends with 'Z'.</description>
+		/// <description>Ends with <c>'Z'</c> if <see cref="DateTime.Kind" /> is <see cref="DateTimeKind.Utc" />.</description>
 		/// </item>
 		/// <item>
-		/// <description>
-		/// If <see cref="DateTime.Kind" /> is <see cref="DateTimeKind.Local" />, the result includes the local time zone offset.
-		/// </description>
+		/// <description>Includes local time zone offset if <see cref="DateTimeKind.Local" />.</description>
 		/// </item>
 		/// <item>
-		/// <description>
-		/// If <see cref="DateTime.Kind" /> is <see cref="DateTimeKind.Unspecified" />, the result omits any time zone information.
-		/// </description>
+		/// <description>Omits offset for <see cref="DateTimeKind.Unspecified" />.</description>
 		/// </item>
 		/// </list>
 		/// </returns>
-		/// <remarks>
-		/// Uses the "o" (round-trip) format for Local and Unspecified kinds, and "yyyy-MM-ddTHH:mm:ss.fffffffZ" for Utc to enforce ISO 8601
-		/// 'Z' suffix.
-		/// </remarks>
+		/// <remarks>Uses the "o" (round-trip) format for <c>Local</c> and <c>Unspecified</c>, and a custom UTC format for <c>Utc</c>.</remarks>
 		public static string ToIsoString(this DateTime dateTime)
 		{
 			return dateTime.Kind switch
@@ -49,13 +43,13 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to an ISO 8601 formatted string, allowing fractional seconds to be omitted.
+		/// Converts the specified <see cref="DateTime" /> to an ISO 8601 formatted string, optionally omitting fractional seconds.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> to convert.</param>
-		/// <param name="includeFractionalSeconds">Whether to include fractional seconds (7 digits) in the result.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to convert.</param>
+		/// <param name="includeFractionalSeconds">Indicates whether to include fractional seconds (7 digits) in the output.</param>
 		/// <returns>A string representation of <paramref name="dateTime" /> in ISO 8601 format, with or without fractional seconds.</returns>
 		/// <remarks>
-		/// When <paramref name="includeFractionalSeconds" /> is <c>true</c>, uses the "o" (round-trip) format; otherwise, uses "yyyy-MM-ddTHH:mm:ss".
+		/// Uses the "o" (round-trip) format when <paramref name="includeFractionalSeconds" /> is <c>true</c>; otherwise, uses "yyyy-MM-ddTHH:mm:ss".
 		/// </remarks>
 		public static string ToIsoString(this DateTime dateTime, bool includeFractionalSeconds)
 		{
@@ -64,27 +58,25 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to an ISO 8601 formatted string, using an explicit <see cref="DateTimeKind" />.
+		/// Converts the specified <see cref="DateTime" /> to an ISO 8601 formatted string, using an explicit <see cref="DateTimeKind" /> override.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to convert.</param>
 		/// <param name="kind">The <see cref="DateTimeKind" /> to apply before formatting.</param>
 		/// <returns>
-		/// A string representation of the input in ISO 8601 format, formatted as:
+		/// A string representation of the input <see cref="DateTime" /> in ISO 8601 format:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><see cref="DateTimeKind.Utc" /> → UTC with trailing 'Z'.</description>
+		/// <description><see cref="DateTimeKind.Utc" /> → Ends with <c>'Z'</c>.</description>
 		/// </item>
 		/// <item>
-		/// <description><see cref="DateTimeKind.Local" /> → Local time with offset.</description>
+		/// <description><see cref="DateTimeKind.Local" /> → Includes local time zone offset.</description>
 		/// </item>
 		/// <item>
-		/// <description><see cref="DateTimeKind.Unspecified" /> → No time zone indicator.</description>
+		/// <description><see cref="DateTimeKind.Unspecified" /> → No offset information.</description>
 		/// </item>
 		/// </list>
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="kind" /> is not a valid <see cref="DateTimeKind" /> value.
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="kind" /> is not a valid value of <see cref="DateTimeKind" />.</exception>
 		public static string ToIsoString(this DateTime dateTime, DateTimeKind kind)
 		{
 			return kind switch
@@ -92,20 +84,21 @@ namespace Bodu.Extensions
 				DateTimeKind.Utc => dateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ", CultureInfo.InvariantCulture),
 				DateTimeKind.Local => dateTime.ToLocalTime().ToString("o", CultureInfo.InvariantCulture),
 				DateTimeKind.Unspecified => DateTime.SpecifyKind(dateTime, DateTimeKind.Unspecified).ToString("o", CultureInfo.InvariantCulture),
-				_ => throw new ArgumentOutOfRangeException(nameof(kind), "Invalid DateTimeKind selectedDays.")
+				_ => throw new ArgumentOutOfRangeException(nameof(kind), "Invalid DateTimeKind value.")
 			};
 		}
 
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to a formatted string using a custom format and optional culture.
+		/// Converts the specified <see cref="DateTime" /> to a string using a custom format and optional culture.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> to format.</param>
-		/// <param name="format">A valid custom format string (e.g., "yyyy-MM-ddTHH:mm:ss").</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> value to format.</param>
+		/// <param name="format">A valid date-time format string (e.g., "yyyy-MM-ddTHH:mm:ss").</param>
 		/// <param name="culture">
-		/// An optional <see cref="CultureInfo" /> to apply. If <c>null</c>, <see cref="CultureInfo.InvariantCulture" /> is used.
+		/// An optional <see cref="CultureInfo" /> for culture-specific formatting. If <c>null</c>,
+		/// <see cref="CultureInfo.InvariantCulture" /> is used.
 		/// </param>
-		/// <returns>A string formatted using the specified pattern and culture.</returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is null or empty.</exception>
+		/// <returns>A formatted string representation of <paramref name="dateTime" /> using the specified format and culture.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is <c>null</c> or empty.</exception>
 		public static string ToIsoString(this DateTime dateTime, string format, CultureInfo? culture = null)
 		{
 			if (string.IsNullOrWhiteSpace(format))

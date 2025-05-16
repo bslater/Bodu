@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.LastDayOfWeekInMonth.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="LastDayOfWeekInMonth.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -15,57 +15,67 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> whose month and year define the search range.</param>
 		/// <param name="dayOfWeek">
-		/// The <see cref="DayOfWeek" /> value to locate. For example, <see cref="DayOfWeek.Friday" /> will return the last Friday of the month.
+		/// The <see cref="DayOfWeek" /> value to locate. For example, <see cref="DayOfWeek.Friday" /> returns the last Friday of the month.
 		/// </param>
 		/// <returns>
-		/// A new <see cref="DateTime" /> set to midnight on the last occurrence of the specified <paramref name="dayOfWeek" /> in the same
-		/// month and year as <paramref name="dateTime" />, with the original <see cref="DateTime.Kind" /> preserved.
+		/// A <see cref="DateTime" /> set to midnight (00:00:00) on the last occurrence of the specified <paramref name="dayOfWeek" /> in
+		/// the same month and year as <paramref name="dateTime" />, preserving the original <see cref="DateTime.Kind" />.
 		/// </returns>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="dayOfWeek" /> is not a defined value in the <see cref="DayOfWeek" /> enumeration.
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid member of the <see cref="DayOfWeek" /> enumeration.
 		/// </exception>
 		/// <remarks>
-		/// The search starts from the last day of the month and proceeds backward until the specified <paramref name="dayOfWeek" /> is
-		/// found. The result is normalized to midnight (00:00:00), and the original <see cref="DateTime.Kind" /> is retained.
+		/// <para>
+		/// The search begins at the last day of the month and moves backward to find the most recent occurrence of the specified
+		/// <paramref name="dayOfWeek" />. The result is normalized to midnight (00:00:00), and the <see cref="DateTime.Kind" /> is preserved.
+		/// </para>
 		/// </remarks>
 		public static DateTime LastDayOfWeekInMonth(this DateTime dateTime, DayOfWeek dayOfWeek)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			long ticks = DateTimeExtensions.GetLastDayOfWeekInMonthAsTicks(dateTime, dayOfWeek);
-			return new DateTime(ticks, dateTime.Kind);
+			long ticks = GetLastDayOfWeekInMonthAsTicks(dateTime, dayOfWeek);
+			return new(ticks, dateTime.Kind);
 		}
 
 		/// <summary>
 		/// Returns the last occurrence of the specified <see cref="DayOfWeek" /> within the specified <paramref name="year" /> and <paramref name="month" />.
 		/// </summary>
-		/// <param name="year">The year component of the month to search. Must be between <see cref="DateTime.MinValue" /> and <see cref="DateTime.MaxValue" />.</param>
-		/// <param name="month">The month component of the year to search (1–12).</param>
+		/// <param name="year">
+		/// The calendar year to evaluate. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
+		/// <see cref="DateTime.MaxValue" />, inclusive.
+		/// </param>
+		/// <param name="month">
+		/// The calendar month to evaluate. Must be an integer between 1 and 12, inclusive, where 1 represents January and 12 represents December.
+		/// </param>
 		/// <param name="dayOfWeek">
-		/// The <see cref="DayOfWeek" /> value to locate. For example, <see cref="DayOfWeek.Friday" /> will return the last Friday of the
-		/// specified month.
+		/// The <see cref="DayOfWeek" /> to locate. For example, specifying <see cref="DayOfWeek.Monday" /> will return the last Monday in
+		/// the specified month.
 		/// </param>
 		/// <returns>
-		/// A new <see cref="DateTime" /> set to midnight on the last occurrence of the specified <paramref name="dayOfWeek" /> in the given
-		/// <paramref name="year" /> and <paramref name="month" />, with <see cref="DateTimeKind.Unspecified" />.
+		/// A <see cref="DateTime" /> set to midnight (00:00:00) on the last occurrence of the specified <paramref name="dayOfWeek" /> in
+		/// the given <paramref name="year" /> and <paramref name="month" />, with <see cref="DateTimeKind.Unspecified" />.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="year" /> or <paramref name="month" /> is outside the valid range, or if <paramref name="dayOfWeek" />
-		/// is not a defined value in the <see cref="DayOfWeek" /> enumeration.
+		/// Thrown if <paramref name="year" /> is less than the <c>Year</c> of <see cref="DateTime.MinValue" /> or greater than the
+		/// <c>Year</c> of <see cref="DateTime.MaxValue" />, if <paramref name="month" /> is not between 1 and 12, or if
+		/// <paramref name="dayOfWeek" /> is not a defined value of the <see cref="DayOfWeek" /> enumeration.
 		/// </exception>
 		/// <remarks>
-		/// The search begins from the last day of the specified month and proceeds backward until the specified
-		/// <paramref name="dayOfWeek" /> is found. The resulting <see cref="DateTime" /> has its time component set to midnight and kind
-		/// set to <see cref="DateTimeKind.Unspecified" />.
+		/// <para>
+		/// This method starts from the last calendar day of the specified month and iterates backward to find the most recent occurrence of
+		/// the specified <paramref name="dayOfWeek" />. The returned <see cref="DateTime" /> is normalized to midnight (00:00:00) and has a
+		/// <see cref="DateTimeKind" /> of <see cref="DateTimeKind.Unspecified" />.
+		/// </para>
 		/// </remarks>
-		public static DateTime LastDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek)
+		public static DateTime GetLastDayOfWeekInMonth(int year, int month, DayOfWeek dayOfWeek)
 		{
-			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
+			ThrowHelper.ThrowIfOutOfRange(year, MinYear, MaxYear);
 			ThrowHelper.ThrowIfOutOfRange(month, 1, 12);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			long ticks = DateTimeExtensions.GetLastDayOfWeekInMonth(DateTimeExtensions.GetTicksForDate(year, month, DateTime.DaysInMonth(year, month)), dayOfWeek);
-			return new DateTime(ticks, DateTimeKind.Unspecified);
+			long ticks = GetLastDayOfWeekInMonth(GetTicksForDate(year, month, DateTime.DaysInMonth(year, month)), dayOfWeek);
+			return new(ticks, DateTimeKind.Unspecified);
 		}
 	}
 }

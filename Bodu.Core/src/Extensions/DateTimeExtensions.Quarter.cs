@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.Quarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="Quarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -15,49 +15,43 @@ namespace Bodu.Extensions
 		/// Returns the quarter number (1–4) of the year for the specified <see cref="DateTime" />, using the standard calendar quarter
 		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryDecember" />).
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <returns>An integer between 1 and 4 representing the calendar quarter that includes <paramref name="dateTime" />.</returns>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
+		/// <returns>An integer between 1 and 4 representing the calendar quarter that contains <paramref name="dateTime" />.</returns>
 		/// <remarks>
-		/// This method uses the standard Gregorian calendar quarter structure aligned to the calendar year:
+		/// This method uses the standard Gregorian calendar quarter alignment:
 		/// <list type="bullet">
 		/// <item>
 		/// <term>Q1</term>
-		/// <description>1 January – 31 March</description>
+		/// <description>January 1 – March 31</description>
 		/// </item>
 		/// <item>
 		/// <term>Q2</term>
-		/// <description>1 April – 30 June</description>
+		/// <description>April 1 – June 30</description>
 		/// </item>
 		/// <item>
 		/// <term>Q3</term>
-		/// <description>1 July – 30 September</description>
+		/// <description>July 1 – September 30</description>
 		/// </item>
 		/// <item>
 		/// <term>Q4</term>
-		/// <description>1 October – 31 December</description>
+		/// <description>October 1 – December 31</description>
 		/// </item>
 		/// </list>
-		/// The quarter number returned is based on the month of <paramref name="dateTime" />, regardless of the day or time.
+		/// The quarter is determined based on the month of <paramref name="dateTime" /> only.
 		/// </remarks>
-		public static int Quarter(this DateTime dateTime)
-			=> Quarter(dateTime, CalendarQuarterDefinition.JanuaryDecember);
+		public static int Quarter(this DateTime dateTime) =>
+			GetQuarterForDate(dateTime, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using the given
-		/// <see cref="CalendarQuarterDefinition" /> to determine the fiscal calendar structure.
+		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a predefined <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <param name="definition">Specifies the quarter definition used to determine the quarter.</param>
-		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
+		/// <param name="definition">The quarter definition that determines how the year is segmented into quarters.</param>
+		/// <returns>An integer between 1 and 4 representing the quarter that contains the given <paramref name="dateTime" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="definition" /> is not a valid value of the <see cref="CalendarQuarterDefinition" /> enum, or if it is
-		/// <see cref="CalendarQuarterDefinition.Custom" />. Use the <see cref="Quarter(DateTime, IQuarterDefinitionProvider)" /> overload
-		/// to support custom definitions.
+		/// Thrown if <paramref name="definition" /> is not a valid enum value or is <see cref="CalendarQuarterDefinition.Custom" />.
 		/// </exception>
-		/// <remarks>
-		/// This method supports predefined quarter structures aligned to calendar or financial years. The result is based on adjusting the
-		/// input month by the definition offset and mapping the result to a 1-based quarter.
-		/// </remarks>
+		/// <remarks>This method supports various standard calendar and financial quarter alignments. For custom models, use <see cref="Quarter(DateTime, IQuarterDefinitionProvider)" />.</remarks>
 		public static int Quarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -70,26 +64,16 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom
-		/// <see cref="IQuarterDefinitionProvider" /> implementation.
+		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom quarter definition provider.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <param name="provider">
-		/// An implementation of <see cref="IQuarterDefinitionProvider" /> that determines the quarter based on custom logic.
-		/// </param>
-		/// <returns>An integer between 1 and 4 representing the quarter that includes the specified <paramref name="dateTime" />.</returns>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
+		/// <param name="provider">An <see cref="IQuarterDefinitionProvider" /> that defines how quarters are structured.</param>
+		/// <returns>An integer between 1 and 4 representing the quarter that contains <paramref name="dateTime" />.</returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if the quarter value returned by the provider is outside the valid range of 1 through 4.
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the quarter returned by the provider is not in the range 1–4.</exception>
 		/// <remarks>
-		/// Use this overload to support advanced or non-standard fiscal calendars, such as 4-4-5 financial periods, retail accounting
-		/// calendars, or region-specific quarter models not covered by <see cref="CalendarQuarterDefinition" />.
-		/// <para>
-		/// This method delegates to <see cref="IQuarterDefinitionProvider.GetQuarter" /> and can be used in conjunction with
-		/// <see cref="FirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> and
-		/// <see cref="LastDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> for complete custom quarter boundary resolution.
-		/// </para>
+		/// Use this overload to support complex fiscal models such as 4-4-5 retail calendars or non-month-aligned systems. This method
+		/// calls <see cref="IQuarterDefinitionProvider.GetQuarter(DateTime)" />.
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
@@ -104,18 +88,15 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Computes the tick value for the last day of the specified quarter based on a custom month-day anchor definition.
+		/// Computes the tick value for the end of the specified quarter, based on a month-day anchor definition.
 		/// </summary>
-		/// <param name="year">The fiscal or calendar year in which the quarter ends.</param>
-		/// <param name="quarter">The quarter number (1–4).</param>
+		/// <param name="year">The year in which the quarter ends.</param>
+		/// <param name="quarter">The 1-based quarter number (1–4).</param>
 		/// <param name="definition">
 		/// A tuple representing the anchor month and day that define the start of Q1 (e.g., (4, 6) for April 6).
 		/// </param>
-		/// <returns>The number of ticks representing midnight at the start of the day *after* the last day of the quarter.</returns>
-		/// <remarks>
-		/// The returned value subtracts one day from the start of the next quarter to yield the final calendar day of the current quarter.
-		/// This accounts for wrap-around years when the end of Q4 exceeds the anchor month.
-		/// </remarks>
+		/// <returns>The number of ticks representing midnight on the last day of the quarter.</returns>
+		/// <remarks>This is calculated by subtracting one day from the start of the next quarter.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long ComputeQuarterEndTicks(
 			int year,
@@ -131,22 +112,19 @@ namespace Bodu.Extensions
 			int endYear = (endMonth <= definition.defMonth) ? year + 1 : year;
 
 			// Return ticks
-			return DateTimeExtensions.GetTicksForDate(endYear, (int)endMonth, (int)definition.defDay) - DateTimeExtensions.TicksPerDay;
+			return GetTicksForDate(endYear, (int)endMonth, (int)definition.defDay) - TicksPerDay;
 		}
 
 		/// <summary>
-		/// Computes the tick value for the first day of the specified quarter based on a custom month-day anchor definition.
+		/// Computes the tick value for the start of the specified quarter, based on a month-day anchor definition.
 		/// </summary>
-		/// <param name="year">The fiscal or calendar year in which the quarter starts.</param>
-		/// <param name="quarter">The quarter number (1–4).</param>
+		/// <param name="year">The year in which the quarter begins.</param>
+		/// <param name="quarter">The 1-based quarter number (1–4).</param>
 		/// <param name="definition">
 		/// A tuple representing the anchor month and day that define the start of Q1 (e.g., (4, 6) for April 6).
 		/// </param>
-		/// <returns>The number of ticks representing midnight on the first day of the specified quarter.</returns>
-		/// <remarks>
-		/// The method accounts for non-standard quarter anchors that may wrap into the following calendar year. For example, a fiscal year
-		/// starting in October will have Q1 starting in October of the previous year.
-		/// </remarks>
+		/// <returns>The number of ticks representing midnight on the first day of the quarter.</returns>
+		/// <remarks>Accounts for wrap-around years when the anchor month begins in the latter part of the year.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long ComputeQuarterStartTicks(
 			int year,
@@ -162,19 +140,18 @@ namespace Bodu.Extensions
 			int startYear = (startMonth < definition.defMonth) ? year + 1 : year;
 
 			// Return ticks
-			return DateTimeExtensions.GetTicksForDate(startYear, (int)startMonth, (int)definition.defDay);
+			return GetTicksForDate(startYear, (int)startMonth, (int)definition.defDay);
 		}
 
 		/// <summary>
-		/// Determines the fiscal or calendar year and quarter number for a given <see cref="DateTime" /> based on a custom quarter definition.
+		/// Determines the fiscal year and quarter that include the specified <paramref name="referenceDate" /> using the given quarter definition.
 		/// </summary>
-		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how quarters are anchored.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines quarter anchor points.</param>
 		/// <param name="referenceDate">The date to evaluate.</param>
-		/// <returns>A tuple containing the resolved <c>Year</c> and <c>Quarter</c> (1–4) that include the <paramref name="referenceDate" />.</returns>
+		/// <returns>A tuple containing the resolved year and quarter number (1–4).</returns>
 		/// <remarks>
-		/// This method supports both standard and non-standard quarter definitions by calculating the appropriate year and quarter number
-		/// for the given <paramref name="referenceDate" />. If the computed start date of the quarter is after the reference date, the year
-		/// is decremented to represent the previous fiscal year.
+		/// If the calculated start of the resolved quarter is after <paramref name="referenceDate" />, the year is decremented to reflect
+		/// the prior fiscal year.
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static (int Year, int Quarter) GetQuarterAndYearFromDate(CalendarQuarterDefinition definition, DateTime referenceDate)
@@ -192,7 +169,7 @@ namespace Bodu.Extensions
 			int startYear = (startMonth < defMonthDay.defMonth) ? y + 1 : y;
 
 			// Calculate the tick count for the quarter start date
-			long startTicks = DateTimeExtensions.GetTicksForDate(startYear, (int)startMonth, (int)defMonthDay.defDay);
+			long startTicks = GetTicksForDate(startYear, (int)startMonth, (int)defMonthDay.defDay);
 
 			// If the start date is after the reference date, back up to the previous fiscal year
 			if (startTicks > referenceDate.Ticks)
@@ -204,9 +181,9 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Extracts the anchor month and day components from a <see cref="CalendarQuarterDefinition" /> value.
 		/// </summary>
-		/// <param name="definition">A <see cref="CalendarQuarterDefinition" /> enum value encoded as MMDD (e.g., 401 for 1 April).</param>
-		/// <returns>A tuple <c>(defMonth, defDay)</c> representing the anchor month and day of Q1.</returns>
-		/// <remarks>Used as a normalized form of the quarter definition for modular math calculations.</remarks>
+		/// <param name="definition">A <see cref="CalendarQuarterDefinition" /> value encoded as MMDD (e.g., 406 for April 6).</param>
+		/// <returns>A tuple <c>(defMonth, defDay)</c> representing the anchor month and day that define the start of Q1.</returns>
+		/// <remarks>This method unpacks the encoded <see cref="CalendarQuarterDefinition" /> value for internal use in modular calculations.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static (uint defMonth, uint defDay) GetQuarterDefinition(CalendarQuarterDefinition definition)
 		{
@@ -219,15 +196,14 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Determines the fiscal or calendar quarter number (1–4) that contains the specified <see cref="DateTime" />, based on the
-		/// supplied quarter definition anchor.
+		/// Determines the quarter number (1–4) that includes the specified <see cref="DateTime" />, based on a month-day anchor definition.
 		/// </summary>
 		/// <param name="dateTime">The date to evaluate.</param>
-		/// <param name="definition">
-		/// A tuple representing the anchor month and day (e.g., (4, 1) for April 1) that defines the start of Q1.
-		/// </param>
-		/// <returns>An integer in the range [1, 4] representing the resolved quarter number.</returns>
-		/// <remarks>If the date falls on the first month of a quarter but before the anchor day, it is assigned to the previous quarter.</remarks>
+		/// <param name="definition">A tuple representing the start of Q1, encoded as (month, day).</param>
+		/// <returns>An integer between 1 and 4 representing the resolved quarter number.</returns>
+		/// <remarks>
+		/// If <paramref name="dateTime" /> falls before the anchor day in the quarter's first month, it is considered part of the previous quarter.
+		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static int GetQuarterForDate(this DateTime dateTime, (uint defMonth, uint defDay) definition)
 		{

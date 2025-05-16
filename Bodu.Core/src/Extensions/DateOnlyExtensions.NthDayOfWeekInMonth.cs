@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.NthDayOfWeekInMonth.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.NthDayOfWeekInMonth.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -50,7 +50,7 @@ namespace Bodu.Extensions
 					return date.LastDayOfWeekInMonth(dayOfWeek);
 
 				default:
-					int dayNumber = GetDayNumber(date.Year, date.Month, 1);
+					int dayNumber = DateTimeExtensions.GetDayNumberUnchecked(date.Year, date.Month, 1);
 					var result = DateOnly.FromDayNumber(
 						dayNumber + (((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(dayNumber) + 7) % 7) + (((int)ordinal - 1) * 7)
 					);

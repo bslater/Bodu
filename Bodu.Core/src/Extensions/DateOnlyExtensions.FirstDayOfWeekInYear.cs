@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.FirstDayOfWeekInYear.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.FirstDayOfWeekInYear.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -31,7 +31,7 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			int dayNumber = GetDayNumber(date.Year, 1, 1);
+			int dayNumber = DateTimeExtensions.GetDayNumberUnchecked(date.Year, 1, 1);
 			return DateOnly.FromDayNumber(dayNumber + ((int)dayOfWeek - (int)GetDayOfWeekFromDayNumber(dayNumber) + 7) % 7);
 		}
 	}

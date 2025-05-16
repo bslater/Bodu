@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.Add.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="Add.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -11,34 +11,37 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Adds the specified number of years, months, and fractional days to the given <see cref="DateTime" />.
+		/// Adds the specified number of calendar years, months, and fractional days to the given <see cref="DateTime" />.
 		/// </summary>
-		/// <param name="dateTime">The starting <see cref="DateTime" /> value to which the offsets will be applied.</param>
-		/// <param name="years">The number of calendar years to add. A negative value subtracts years.</param>
-		/// <param name="months">The number of calendar months to add. A negative value subtracts months.</param>
-		/// <param name="days">The number of days to add, including fractional values. A negative value subtracts days.</param>
+		/// <param name="dateTime">The starting <see cref="DateTime" /> value to adjust.</param>
+		/// <param name="years">The number of years to add. Negative values subtract years.</param>
+		/// <param name="months">The number of months to add. Negative values subtract months.</param>
+		/// <param name="days">The number of days to add, including fractional days. Negative values subtract days.</param>
 		/// <returns>
-		/// A new <see cref="DateTime" /> that has been adjusted by the specified number of years, months, and days, preserving the original
-		/// time-of-day and <see cref="DateTime.Kind" />.
+		/// A new <see cref="DateTime" /> adjusted by the specified values. The original <see cref="DateTime.Kind" /> and time-of-day are
+		/// preserved unless modified by the <paramref name="days" /> parameter.
 		/// </returns>
 		/// <remarks>
-		/// <para>The adjustments are applied in the following order: <b>years</b>, then <b>months</b>, then <b>days</b>.</para>
+		/// <para>Adjustments are applied in the following order: <b>years</b>, then <b>months</b>, then <b>days</b>.</para>
 		/// <para>
-		/// Month and year adjustments respect calendar boundaries, including leap years. If the resulting day exceeds the maximum valid day
-		/// in the calculated month (e.g., adding one month to January 31), it is automatically clamped to the last valid day of the
-		/// resulting month.
+		/// Year and month adjustments honor calendar boundaries, including leap years. If the resulting day exceeds the last valid day of
+		/// the target month (e.g., adding one month to January 31), it is clamped to the final day of that month.
 		/// </para>
 		/// <para>
-		/// Fractional days are applied with sub-millisecond precision using tick-based arithmetic. If the <paramref name="days" />
-		/// parameter is less than machine epsilon (1e-10), it is ignored to avoid unnecessary computation.
+		/// The original time-of-day is preserved unless the <paramref name="days" /> parameter includes a fractional component, in which
+		/// case the time-of-day is adjusted accordingly.
 		/// </para>
 		/// <para>
-		/// Internally, this method uses tick-level operations and does not rely on <see cref="DateTime.AddYears(int)" />,
-		/// <see cref="DateTime.AddMonths(int)" />, or <see cref="DateTime.AddDays(double)" />, making it suitable for performance-sensitive scenarios.
+		/// Fractional days are applied with tick-level precision. Values smaller than machine epsilon ( <c>1e-10</c>) are ignored to avoid
+		/// unnecessary computation.
+		/// </para>
+		/// <para>
+		/// This method performs all adjustments using tick arithmetic and does not rely on <see cref="DateTime.AddYears(int)" />,
+		/// <see cref="DateTime.AddMonths(int)" />, or <see cref="DateTime.AddDays(double)" />, making it suitable for performance-critical paths.
 		/// </para>
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if the calculated date is earlier than <see cref="DateTime.MinValue" /> or later than <see cref="DateTime.MaxValue" />.
+		/// Thrown if the resulting date is earlier than <see cref="DateTime.MinValue" /> or later than <see cref="DateTime.MaxValue" />.
 		/// </exception>
 		public static DateTime Add(this DateTime dateTime, int years, int months, double days)
 		{
@@ -70,7 +73,7 @@ namespace Bodu.Extensions
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
 					string.Format(ResourceStrings.Arg_OutOfRange_ResultingValueOutOfRangeForType, nameof(DateTime)));
 
-			return new DateTime(totalTicks, dateTime.Kind);
+			return new(totalTicks, dateTime.Kind);
 		}
 	}
 }

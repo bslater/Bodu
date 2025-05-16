@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.Age.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.Age.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -25,8 +25,8 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>The result is clamped to 0 to avoid returning negative values for future dates.</para>
 		/// </remarks>
-		public static int Age(this DateOnly date)
-			=> date.Age(DateTime.Today.ToDateOnly());
+		public static int Age(this DateOnly date) =>
+			date.Age(DateTime.Today.ToDateOnly());
 
 		/// <summary>
 		/// Calculates the age in full calendar years as at a specified reference date.

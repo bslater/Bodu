@@ -52,12 +52,13 @@ namespace Bodu.Collections.Generic
 	/// // Enqueue three items
 	/// buffer.Enqueue(1);
 	/// buffer.Enqueue(2);
-	/// buffer.Enqueue(3);
+	/// buffer.Enqueue(3);				// Buffer now contains 1, 2, 3
+	/// buffer.TryEnqueue(4);			// false
 	///
 	/// // Attempt to add a fourth item (will throw if AllowOverwrite is false)
 	/// try
 	/// {
-	///     buffer.Enqueue(4); // InvalidOperationException
+	///     buffer.Enqueue(4);			// InvalidOperationException
 	/// }
 	/// catch (InvalidOperationException ex)
 	/// {
@@ -68,12 +69,12 @@ namespace Bodu.Collections.Generic
 	/// buffer.AllowOverwrite = true;
 	///
 	/// // Now enqueuing will overwrite the oldest item (1)
-	/// buffer.Enqueue(4); // Buffer now contains 2, 3, 4
+	/// buffer.Enqueue(4);				// Buffer now contains 2, 3, 4
 	///
 	/// // Dequeue all items to verify the order
 	/// while (buffer.TryDequeue(out int value))
 	/// {
-	///     Console.WriteLine(value); // Outputs: 2, 3, 4
+	///     Console.WriteLine(value);	// Outputs: 2, 3, 4
 	/// }
 	///]]>
 	/// </code>

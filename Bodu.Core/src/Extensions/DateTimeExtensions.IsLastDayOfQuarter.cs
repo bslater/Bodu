@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateTimeExtensions.IsLastDayOfQuarter.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IsLastDayOfQuarter.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -11,16 +11,17 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Determines whether the current <see cref="DateTime" /> instance represents the last day of its calendar quarter based on the
+		/// Determines whether the specified <see cref="DateTime" /> instance represents the last day of its calendar quarter, based on the
 		/// standard January–December quarter definition.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
-		/// <returns><see langword="true" /> if the <paramref name="dateTime" /> is the last day of its quarter; otherwise, <see langword="false" />.</returns>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
+		/// <returns><see langword="true" /> if <paramref name="dateTime" /> is the final calendar day of its quarter; otherwise, <see langword="false" />.</returns>
 		/// <remarks>
-		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="dateTime" /> corresponds to
-		/// the last day of the quarter, assuming a standard calendar year definition where Q1 is January–March, Q2 is April–June, Q3 is
-		/// July–September, and Q4 is October–December. The comparison is performed using the <see cref="DateTime.Date" /> property to
-		/// normalize the time to midnight before evaluating the boundary.
+		/// <para>
+		/// This method uses the <see cref="CalendarQuarterDefinition.JanuaryDecember" /> convention: Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 =
+		/// Jul–Sep, Q4 = Oct–Dec.
+		/// </para>
+		/// <para>The comparison is performed on the date component only (time is normalized to 00:00:00).</para>
 		/// </remarks>
 		public static bool IsLastDayOfQuarter(this DateTime dateTime)
 		{
@@ -29,27 +30,25 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Determines whether the current <see cref="DateTime" /> instance represents the last day of its calendar quarter based on a
+		/// Determines whether the specified <see cref="DateTime" /> instance represents the last day of its calendar quarter, based on a
 		/// specified <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
-		/// <param name="definition">Specifies the quarter definition used to determine the last date of the quarter.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> used to determine quarter boundaries. Must not be <see cref="CalendarQuarterDefinition.Custom" />.</param>
 		/// <returns>
-		/// <see langword="true" /> if the <paramref name="dateTime" /> is the last day of its quarter based on the specified
+		/// <see langword="true" /> if <paramref name="dateTime" /> is the final calendar day of its quarter based on
 		/// <paramref name="definition" />; otherwise, <see langword="false" />.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="definition" /> is not a valid member of the <see cref="CalendarQuarterDefinition" /> enumeration.
-		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="definition" /> is not a defined member of <see cref="CalendarQuarterDefinition" />.</exception>
 		/// <exception cref="InvalidOperationException">
-		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the
-		/// <see cref="IsFirstDayOfQuarter(DateTime, IQuarterDefinitionProvider)" /> overload with a custom
-		/// <see cref="IQuarterDefinitionProvider" /> implementation in this case.
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the overload that accepts an
+		/// <see cref="IQuarterDefinitionProvider" /> instead.
 		/// </exception>
 		/// <remarks>
-		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="dateTime" /> corresponds to
-		/// the last day of the quarter based on the provided <paramref name="definition" />. The comparison is performed using the
-		/// <see cref="DateTime.Date" /> property to normalize the time to midnight before evaluating the boundary.
+		/// <para>
+		/// The method evaluates whether the date portion of <paramref name="dateTime" /> (normalized to 00:00:00) is the final day of its
+		/// quarter according to the specified definition.
+		/// </para>
 		/// </remarks>
 		public static bool IsLastDayOfQuarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
@@ -64,26 +63,28 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Determines whether the current <see cref="DateTime" /> instance represents the last day of its calendar quarter based on a
-		/// custom quarter definition provided by an <see cref="IQuarterDefinitionProvider" />.
+		/// Determines whether the specified <see cref="DateTime" /> instance represents the last day of its calendar quarter, based on a
+		/// custom quarter definition provider.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
+		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
 		/// <param name="provider">
-		/// An implementation of <see cref="IQuarterDefinitionProvider" /> that defines how quarter boundaries are determined.
+		/// An implementation of <see cref="IQuarterDefinitionProvider" /> that defines custom quarter boundary logic.
 		/// </param>
 		/// <returns>
-		/// <see langword="true" /> if the <paramref name="dateTime" /> is the last day of its quarter according to the rules of the
-		/// specified <paramref name="provider" />; otherwise, <see langword="false" />.
+		/// <see langword="true" /> if <paramref name="dateTime" /> is the final calendar day of its quarter according to
+		/// <paramref name="provider" />; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <c>null</c>.</exception>
 		/// <remarks>
-		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="dateTime" /> corresponds to
-		/// the last day of the quarter, using the logic defined by the specified <paramref name="provider" />. The comparison is performed
-		/// using the <see cref="DateTime.Date" /> property to normalize the time to midnight before evaluating the boundary.
+		/// <para>
+		/// The method compares the date portion (normalized to 00:00:00) of <paramref name="dateTime" /> with the end of quarter date
+		/// returned by the specified <paramref name="provider" />.
+		/// </para>
 		/// </remarks>
 		public static bool IsLastDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
+
 			return dateTime.Date.Ticks == provider.GetQuarterEnd(dateTime).Date.Ticks;
 		}
 	}

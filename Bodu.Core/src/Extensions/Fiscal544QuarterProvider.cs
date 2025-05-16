@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="Fiscal544QuarterProvider.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="Fiscal544QuarterProvider.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -105,6 +105,17 @@ namespace Bodu.Extensions
 			is53WeekFiscalYear = Is53WeekFiscal(fiscalYearStartTicks, year, month + (isFiscalYearEnd ? 1 : 0), firstDayOfWeek);
 		}
 
+		/// <summary>
+		/// Gets a value indicating whether [is53 week fiscal year].
+		/// </summary>
+		/// <value><c>true</c> if [is53 week fiscal year]; otherwise, <c>false</c>.</value>
+		public bool Is53WeekFiscalYear => is53WeekFiscalYear;
+
+		/// <summary>
+		/// Gets the total number of weeks in the fiscal year (52 or 53).
+		/// </summary>
+		public int WeeksInFiscalYear => is53WeekFiscalYear ? 53 : 52;
+
 		/// <inheritdoc />
 		public int GetQuarter(DateTime dateTime)
 		{
@@ -122,40 +133,11 @@ namespace Bodu.Extensions
 			GetQuarter(dateOnly.ToDateTime(TimeOnly.MinValue));
 
 		/// <inheritdoc />
-		public DateTime GetQuarterStart(DateTime dateTime)
-		{
-			ValidateDateInFiscalYear(dateTime);
-			int quarter = GetQuarter(dateTime);
-			return GetQuarterStart(quarter);
-		}
-
-		/// <inheritdoc />
-		public DateOnly GetQuarterStartDate(DateOnly dateOnly) =>
-			GetQuarterStart(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
-
-		/// <inheritdoc />
-		public DateTime GetQuarterStart(int quarter)
-		{
-			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
-			long offsetWeeks = (quarter - 1) * 13L;
-			long startTicks = fiscalYearStartTicks + offsetWeeks * DateTimeExtensions.TicksPerWeek;
-			return new DateTime(DateTimeExtensions.GetDateAsTicks(startTicks), DateTimeKind.Unspecified);
-		}
-
-		/// <inheritdoc />
-		public DateOnly GetQuarterStartDate(int quarter) =>
-			GetQuarterStart(quarter).ToDateOnly();
-
-		/// <inheritdoc />
 		public DateTime GetQuarterEnd(DateTime dateTime)
 		{
 			int quarter = GetQuarter(dateTime);
 			return GetQuarterEnd(quarter);
 		}
-
-		/// <inheritdoc />
-		public DateOnly GetQuarterEndDate(DateOnly dateOnly) =>
-			GetQuarterEnd(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
 
 		/// <inheritdoc />
 		public DateTime GetQuarterEnd(int quarter)
@@ -167,19 +149,43 @@ namespace Bodu.Extensions
 		}
 
 		/// <inheritdoc />
+		public DateOnly GetQuarterEndDate(DateOnly dateOnly) =>
+			GetQuarterEnd(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
+
+		/// <inheritdoc />
 		public DateOnly GetQuarterEndDate(int quarter) =>
 			GetQuarterEnd(quarter).ToDateOnly();
 
-		/// <summary>
-		/// Gets the total number of weeks in the fiscal year (52 or 53).
-		/// </summary>
-		public int WeeksInFiscalYear => is53WeekFiscalYear ? 53 : 52;
+		/// <inheritdoc />
+		public DateTime GetQuarterStart(DateTime dateTime)
+		{
+			ValidateDateInFiscalYear(dateTime);
+			int quarter = GetQuarter(dateTime);
+			return GetQuarterStart(quarter);
+		}
+
+		/// <inheritdoc />
+		public DateTime GetQuarterStart(int quarter)
+		{
+			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
+			long offsetWeeks = (quarter - 1) * 13L;
+			long startTicks = fiscalYearStartTicks + offsetWeeks * DateTimeExtensions.TicksPerWeek;
+			return new DateTime(DateTimeExtensions.GetDateAsTicks(startTicks), DateTimeKind.Unspecified);
+		}
+
+		/// <inheritdoc />
+		public DateOnly GetQuarterStartDate(DateOnly dateOnly) =>
+			GetQuarterStart(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
+
+		/// <inheritdoc />
+		public DateOnly GetQuarterStartDate(int quarter) =>
+			GetQuarterStart(quarter).ToDateOnly();
 
 		/// <summary>
-		/// Gets a value indicating whether [is53 week fiscal year].
+		/// Aligns a date to the start of the week.
 		/// </summary>
-		/// <value><c>true</c> if [is53 week fiscal year]; otherwise, <c>false</c>.</value>
-		public bool Is53WeekFiscalYear => is53WeekFiscalYear;
+		private static long AlignToNearestDayOfWeek(long ticks, DayOfWeek weekStart)
+			=> DateTimeExtensions.GetNearestDayOfWeek(ticks, weekStart);
 
 		/// <summary>
 		/// Determines whether the configured fiscal year has 53 weeks.
@@ -211,14 +217,8 @@ namespace Bodu.Extensions
 			if (deltaDays < 0 || deltaDays >= fiscalYearLengthDays)
 			{
 				throw new ArgumentOutOfRangeException(nameof(dateTime),
-					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, new DateTime(fiscalYearStartTicks)));
+					string.Format(ResourceStrings.Arg_OutOfRange_DateOutsideFiscalYear, dateTime, new DateTime(fiscalYearStartTicks, DateTimeKind.Unspecified)));
 			}
 		}
-
-		/// <summary>
-		/// Aligns a date to the start of the week.
-		/// </summary>
-		private static long AlignToNearestDayOfWeek(long ticks, DayOfWeek weekStart)
-			=> DateTimeExtensions.GetNearestDayOfWeek(ticks, weekStart);
 	}
 }
