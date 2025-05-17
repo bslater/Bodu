@@ -136,15 +136,16 @@ namespace Bodu.Security.Cryptography
 #if NETFRAMEWORK || NETCOREAPP3_1
 
 			// For .NET Framework and earlier .NET Core versions (up to 3.1), it throws ArgumentNullException.
-			Assert.ThrowsException<ArgumentNullException>(
-				() => algorithm.ComputeHash((Stream)null!)
-			);
+			Assert.ThrowsException<ArgumentNullException>(				() => {
+			algorithm.ComputeHash((Stream)null!);
+			});
 #else
 
 			// For .NET 5 and later, it throws NullReferenceException instead.
-			Assert.ThrowsExactly<NullReferenceException>(
-				() => algorithm.ComputeHash((Stream)null!)
-			);
+			Assert.ThrowsExactly<NullReferenceException>(() =>
+			{
+				algorithm.ComputeHash((Stream)null!);
+			});
 #endif
 		}
 

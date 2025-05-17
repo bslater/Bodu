@@ -5,7 +5,9 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
@@ -27,23 +29,24 @@ namespace Bodu.Security.Cryptography
 	/// </para>
 	/// <list type="bullet">
 	/// <item>
-	/// <description><see cref="SipHash64" /> - Produces a 64-bit hash output suitable for compact keyed checksums.</description>
+	/// <description><see cref="SipHash64" /> – Produces a 64-bit hash output suitable for compact keyed checksums.</description>
 	/// </item>
 	/// <item>
-	/// <description><see cref="SipHash128" /> - Produces a 128-bit hash output offering increased collision resistance.</description>
+	/// <description><see cref="SipHash128" /> – Produces a 128-bit hash output offering increased collision resistance.</description>
 	/// </item>
 	/// </list>
 	/// <para>The algorithm proceeds in two primary phases:</para>
 	/// <list type="number">
 	/// <item>
 	/// <description>
-	/// <b>Compression:</b> Each 64-bit block of the input is mixed into the internal state using a configurable number of rounds ( <see cref="CompressionRounds" />).
+	/// <b>Compression:</b> Each 64-bit block of the input is mixed into the internal state using a configurable number of compression
+	/// rounds, as defined by <see cref="CompressionRounds" />.
 	/// </description>
 	/// </item>
 	/// <item>
 	/// <description>
-	/// <b>Finalization:</b> After processing all input, additional rounds ( <see cref="FinalizationRounds" />) are applied to produce the
-	/// final hash output.
+	/// <b>Finalization:</b> After processing all input, a configurable number of finalization rounds—specified via
+	/// <see cref="FinalizationRounds" />—are applied to produce the final hash output.
 	/// </description>
 	/// </item>
 	/// </list>
@@ -51,7 +54,7 @@ namespace Bodu.Security.Cryptography
 	/// signatures, or secure data integrity checks.</note>
 	/// </remarks>
 	public abstract class SipHash
-		: System.Security.Cryptography.KeyedHashAlgorithm
+			: System.Security.Cryptography.KeyedHashAlgorithm
 	{
 		/// <summary>
 		/// The fixed key size in bytes (128 bits).
@@ -97,15 +100,35 @@ namespace Bodu.Security.Cryptography
 			if (Array.IndexOf(ValidHashSizes, hashSize) == -1)
 				throw new ArgumentException($"Invalid hash size {hashSize}. Valid hash sizes are: {string.Join(", ", ValidHashSizes)}", nameof(hashSize));
 
-			this.KeyValue = new byte[KeySize];
-			CryptoUtilities.FillWithRandomNonZeroBytes(this.KeyValue);
-			this.compressionRounds = MinCompressionRounds;
-			this.finalizationRounds = MinFinalizationRounds;
-			this.HashSizeValue = hashSize;
-			this.residualByteBuffer = new Memory<byte>(new byte[BlockSize]);
-			this.length = 0;
-			this.InitializeVectors();
+			KeyValue = new byte[KeySize];
+			CryptoUtilities.FillWithRandomNonZeroBytes(KeyValue);
+			compressionRounds = MinCompressionRounds;
+			finalizationRounds = MinFinalizationRounds;
+			HashSizeValue = hashSize;
+			residualByteBuffer = new Memory<byte>(new byte[BlockSize]);
+			length = 0;
+			InitializeVectors();
 		}
+
+		/// <summary>
+		/// Gets the fully qualified algorithm name, including round configuration and hash output size.
+		/// </summary>
+		/// <remarks>
+		/// Follows the convention "SipHash-c-d-x", where:
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>c</c>: compression rounds</description>
+		/// </item>
+		/// <item>
+		/// <description><c>d</c>: finalization rounds</description>
+		/// </item>
+		/// <item>
+		/// <description><c>x</c>: output hash size in bits</description>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		public string AlgorithmName =>
+			$"SipHash-{CompressionRounds}-{FinalizationRounds}-{HashSizeValue}";
 
 		/// <summary>
 		/// Gets or sets the number of compression rounds performed per message block.
@@ -117,17 +140,17 @@ namespace Bodu.Security.Cryptography
 		{
 			get
 			{
-				this.ThrowIfDisposed();
-				return this.compressionRounds;
+				ThrowIfDisposed();
+				return compressionRounds;
 			}
 
 			set
 			{
-				this.ThrowIfDisposed();
-				this.ThrowIfInvalidState();
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfLessThan(value, MinCompressionRounds);
 
-				this.compressionRounds = value;
+				compressionRounds = value;
 			}
 		}
 
@@ -141,17 +164,17 @@ namespace Bodu.Security.Cryptography
 		{
 			get
 			{
-				this.ThrowIfDisposed();
-				return this.finalizationRounds;
+				ThrowIfDisposed();
+				return finalizationRounds;
 			}
 
 			set
 			{
-				this.ThrowIfDisposed();
-				this.ThrowIfInvalidState();
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfLessThan(value, MinFinalizationRounds);
 
-				this.finalizationRounds = value;
+				finalizationRounds = value;
 			}
 		}
 
@@ -166,20 +189,20 @@ namespace Bodu.Security.Cryptography
 		{
 			get
 			{
-				this.ThrowIfDisposed();
-				return this.KeyValue.Copy();
+				ThrowIfDisposed();
+				return KeyValue.Copy();
 			}
 
 			set
 			{
-				this.ThrowIfDisposed();
-				this.ThrowIfInvalidState();
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfNull(value);
 				if (value.Length != KeySize)
 					throw new CryptographicException(string.Format(ResourceStrings.CryptographicException_InvalidKeySize, value.Length, SipHash.KeySize));
 
-				this.KeyValue = value.Copy();
-				this.InitializeVectors();
+				KeyValue = value.Copy();
+				InitializeVectors();
 			}
 		}
 
@@ -211,37 +234,37 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		public override void Initialize()
 		{
-			this.ThrowIfDisposed();
+			ThrowIfDisposed();
 #if !NET6_0_OR_GREATER
-            this.State = 0;
-            this.finalized = false;
+            State = 0;
+            finalized = false;
 #endif
-			this.residualByteBuffer.Span.Clear();
-			this.length = 0;
-			this.residualBytes = 0;
-			this.InitializeVectors();
+			residualByteBuffer.Span.Clear();
+			length = 0;
+			residualBytes = 0;
+			InitializeVectors();
 		}
 
 		/// <inheritdoc />
 		protected override void Dispose(bool disposing)
 		{
-			if (this.disposed) return;
+			if (disposed) return;
 
 			if (disposing)
 			{
-				this.residualByteBuffer.Span.Clear();
-				this.v0 = this.v1 = this.v2 = this.v3 = 0;
-				this.length = 0;
-				this.residualBytes = 0;
+				residualByteBuffer.Span.Clear();
+				v0 = v1 = v2 = v3 = 0;
+				length = 0;
+				residualBytes = 0;
 
-				if (this.KeyValue is not null)
+				if (KeyValue is not null)
 				{
-					CryptographicOperations.ZeroMemory(this.KeyValue);
-					this.KeyValue = null!;
+					CryptographicOperations.ZeroMemory(KeyValue);
+					KeyValue = null!;
 				}
 			}
 
-			this.disposed = true;
+			disposed = true;
 			base.Dispose(disposing);
 		}
 
@@ -254,9 +277,9 @@ namespace Bodu.Security.Cryptography
 		/// <param name="cbSize">The length of the data to process.</param>
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
-			this.ThrowIfDisposed();
-			this.length += length;
-			this.ProcessBlocks(array, ibStart, cbSize);
+			ThrowIfDisposed();
+			length += (ulong)cbSize;
+			ProcessBlocks(array, ibStart, cbSize);
 		}
 
 		/// <inheritdoc />
@@ -270,8 +293,8 @@ namespace Bodu.Security.Cryptography
 		/// </remarks>
 		protected override byte[] HashFinal()
 		{
-			this.ThrowIfDisposed();
-			return this.ProcessFinalBlock();
+			ThrowIfDisposed();
+			return ProcessFinalBlock();
 		}
 
 		/// <summary>
@@ -289,7 +312,7 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ThrowIfInvalidState()
 		{
-			if (this.State != 0)
+			if (State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
 		}
 
@@ -303,9 +326,9 @@ namespace Bodu.Security.Cryptography
 		private void ThrowIfDisposed()
 		{
 #if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
+			ObjectDisposedException.ThrowIf(disposed, this);
 #else
-			if (this.disposed)
+			if (disposed)
 				throw new ObjectDisposedException(nameof(SipHash));
 #endif
 		}
@@ -316,14 +339,14 @@ namespace Bodu.Security.Cryptography
 		/// <remarks>This method XORs the <see cref="Key" /> with predefined constants to initialize the internal state.</remarks>
 		private void InitializeVectors()
 		{
-			ulong k0 = BitConverter.ToUInt64(this.KeyValue, 0);
-			ulong k1 = BitConverter.ToUInt64(this.KeyValue, 8);
-			this.v0 = InitialStates[0] ^ k0;
-			this.v1 = InitialStates[1] ^ k1;
-			this.v2 = InitialStates[2] ^ k0;
-			this.v3 = InitialStates[3] ^ k1;
+			ulong k0 = BitConverter.ToUInt64(KeyValue, 0);
+			ulong k1 = BitConverter.ToUInt64(KeyValue, 8);
+			v0 = InitialStates[0] ^ k0;
+			v1 = InitialStates[1] ^ k1;
+			v2 = InitialStates[2] ^ k0;
+			v3 = InitialStates[3] ^ k1;
 
-			if (this.HashSizeValue == 128) this.v1 ^= 0xee;
+			if (HashSizeValue == 128) v1 ^= 0xee;
 		}
 
 		/// <summary>
@@ -331,25 +354,30 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		/// <param name="iterations">The number of rounds to perform.</param>
 		/// <remarks>Each round consists of multiple bitwise operations and rotations defined by the SipHash specification.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void PerformSipRounds(int iterations)
 		{
+			ulong r0 = v0, r1 = v1, r2 = v2, r3 = v3;
+
 			for (int i = 0; i < iterations; i++)
 			{
-				this.v0 += this.v1;
-				this.v1 = (this.v1 << 13) | (this.v1 >> (64 - 13));
-				this.v1 ^= this.v0;
-				this.v0 = (this.v0 << 32) | (this.v0 >> (64 - 32));
-				this.v2 += this.v3;
-				this.v3 = (this.v3 << 16) | (this.v3 >> (64 - 16));
-				this.v3 ^= this.v2;
-				this.v0 += this.v3;
-				this.v3 = (this.v3 << 21) | (this.v3 >> (64 - 21));
-				this.v3 ^= this.v0;
-				this.v2 += this.v1;
-				this.v1 = (this.v1 << 17) | (this.v1 >> (64 - 17));
-				this.v1 ^= this.v2;
-				this.v2 = (this.v2 << 32) | (this.v2 >> (64 - 32));
+				r0 += r1;
+				r1 = BitOperations.RotateLeft(r1, 13);
+				r1 ^= r0;
+				r0 = BitOperations.RotateLeft(r0, 32);
+				r2 += r3;
+				r3 = BitOperations.RotateLeft(r3, 16);
+				r3 ^= r2;
+				r0 += r3;
+				r3 = BitOperations.RotateLeft(r3, 21);
+				r3 ^= r0;
+				r2 += r1;
+				r1 = BitOperations.RotateLeft(r1, 17);
+				r1 ^= r2;
+				r2 = BitOperations.RotateLeft(r2, 32);
 			}
+
+			v0 = r0; v1 = r1; v2 = r2; v3 = r3;
 		}
 
 		/// <summary>
@@ -362,35 +390,47 @@ namespace Bodu.Security.Cryptography
 		private void ProcessBlocks(byte[] buffer, int offset, int length)
 		{
 			int pos = offset;
+			Span<byte> residualSpan = residualByteBuffer.Span;
 
-			if (this.residualBytes > 0)
+			// Handle residual bytes from the previous call
+			if (residualBytes > 0)
 			{
-				int remainingLength = BlockSize - this.residualBytes;
-				if (remainingLength <= length)
+				int remaining = BlockSize - residualBytes;
+
+				if (length >= remaining)
 				{
-					new Span<byte>(buffer, offset, remainingLength).CopyTo(this.residualByteBuffer.Span.Slice(this.residualBytes));
-					ulong block = BitConverter.ToUInt64(this.residualByteBuffer.Span.Slice(0, BlockSize));
-					this.ProcessBlock(block);
-					this.residualBytes = 0;
-					pos += remainingLength;
+					// Fill up the buffer and process one full block
+					buffer.AsSpan(pos, remaining).CopyTo(residualSpan[residualBytes..]);
+
+					ulong block = MemoryMarshal.Read<ulong>(residualSpan);
+					ProcessBlock(block);
+
+					residualBytes = 0;
+					pos += remaining;
 				}
 				else
 				{
-					new Span<byte>(buffer, offset, length).CopyTo(this.residualByteBuffer.Span.Slice(this.residualBytes));
-					this.residualBytes += length;
+					// Not enough to complete a block, just append to residuals
+					buffer.AsSpan(pos, length).CopyTo(residualSpan[residualBytes..]);
+
+					residualBytes += length;
 					return;
 				}
 			}
 
-			int end = offset + length - BlockSize;
-			for (; pos <= end; pos += BlockSize)
+			// Process full blocks directly from the input
+			int end = offset + length;
+			while (pos + BlockSize <= end)
 			{
-				ulong block = BitConverter.ToUInt64(buffer, pos);
-				this.ProcessBlock(block);
+				ulong block = MemoryMarshal.Read<ulong>(buffer.AsSpan(pos, BlockSize));
+				ProcessBlock(block);
+				pos += BlockSize;
 			}
 
-			this.residualBytes = (BlockSize + end - pos) % BlockSize;
-			new Span<byte>(buffer, pos, this.residualBytes).CopyTo(this.residualByteBuffer.Span);
+			// Buffer any remaining residual bytes
+			residualBytes = end - pos;
+			if (residualBytes > 0)
+				buffer.AsSpan(pos, residualBytes).CopyTo(residualSpan);
 		}
 
 		/// <summary>
@@ -398,11 +438,12 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		/// <param name="block">The 64-bit block to process.</param>
 		/// <remarks>Updates internal state using <see cref="PerformSipRounds" /> and XOR operations.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ProcessBlock(ulong block)
 		{
-			this.v3 ^= block;
-			this.PerformSipRounds(this.compressionRounds);
-			this.v0 ^= block;
+			v3 ^= block;
+			PerformSipRounds(compressionRounds);
+			v0 ^= block;
 		}
 
 		/// <summary>
@@ -412,29 +453,38 @@ namespace Bodu.Security.Cryptography
 		/// <remarks>Combines all partial input and applies the finalization round logic based on the configured output size.</remarks>
 		private byte[] ProcessFinalBlock()
 		{
-			ulong block = this.length << 56;
+			Span<byte> finalBlock = stackalloc byte[8];
 
-			if (this.residualBytes > 0)
+			// Copy residual message bytes (0–7) into the lower bytes
+			residualByteBuffer.Span.Slice(0, residualBytes).CopyTo(finalBlock);
+
+			// Zero upper unused bytes
+			if (residualBytes < 8)
+				finalBlock.Slice(residualBytes).Clear();
+
+			ulong block = MemoryMarshal.Read<ulong>(finalBlock);
+
+			block |= length << 56;
+
+			ProcessBlock(block);
+
+			v2 ^= (HashSizeValue == 64) ? 0xffUL : 0xeeUL;
+			PerformSipRounds(finalizationRounds);
+
+			byte[] hash = new byte[HashSizeValue / 8];
+
+			// First 64-bit output
+			ulong h0 = v0 ^ v1 ^ v2 ^ v3;
+			MemoryMarshal.Write(hash.AsSpan(0, 8), in h0);
+
+			// Optional second block for SipHash-128
+			if (HashSizeValue == 128)
 			{
-				block |= BitConverter.ToUInt64(this.residualByteBuffer.Span.Slice(0, BlockSize));
-			}
+				v1 ^= 0xdd;
+				PerformSipRounds(finalizationRounds);
 
-			this.ProcessBlock(block);
-
-			this.v2 ^= (this.HashSizeValue == 64) ? 0xffUL : 0xeeUL;
-			this.PerformSipRounds(this.finalizationRounds);
-
-			byte[] hash = new byte[this.HashSizeValue / 8];
-			ulong finalHash = this.v0 ^ this.v1 ^ this.v2 ^ this.v3;
-			Array.Copy(BitConverter.GetBytes(finalHash), 0, hash, 0, 8);
-
-			if (this.HashSizeValue == 128)
-			{
-				this.v1 ^= 0xdd;
-				this.PerformSipRounds(this.finalizationRounds);
-
-				finalHash = this.v0 ^ this.v1 ^ this.v2 ^ this.v3;
-				Array.Copy(BitConverter.GetBytes(finalHash), 0, hash, 8, 8);
+				ulong h1 = v0 ^ v1 ^ v2 ^ v3;
+				MemoryMarshal.Write(hash.AsSpan(8, 8), in h1);
 			}
 
 			return hash;

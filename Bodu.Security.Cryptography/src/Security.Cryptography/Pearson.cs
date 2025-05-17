@@ -92,7 +92,7 @@ namespace Bodu.Security.Cryptography
 
 			this.permutationTable = (byte[])DefaultTable.Clone();
 			this.HashSizeValue = hashSize;
-			this.Initialize();
+			this.hashValue = new byte[this.HashSizeValue / 8];
 		}
 
 		/// <inheritdoc />

@@ -16,7 +16,10 @@ namespace Bodu.Security.Cryptography
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => algorithm.FinalizationRounds = value);
+			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			{
+				algorithm.FinalizationRounds = value;
+			});
 		}
 
 		/// <summary>

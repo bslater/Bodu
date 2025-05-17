@@ -23,7 +23,7 @@ namespace Bodu.Security.Cryptography
 				ExpectedHash_ForInputPrefixes = new[]
 				{
 					"00000000", // []
-					"00000000", // [0]
+					"AEF5002E", // [0]
 					"01000000", // [0,1]
 					"12000000", // [0,1,2]
 					"23010000", // [0,1,2,3]

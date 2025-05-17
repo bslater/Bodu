@@ -34,8 +34,6 @@ namespace Bodu.Security.Cryptography
 	public sealed class SipHash128
 		: SipHash
 	{
-		#region Ctors
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SipHash128" /> class.
 		/// </summary>
@@ -71,7 +69,5 @@ namespace Bodu.Security.Cryptography
 			: base(128)
 		{
 		}
-
-		#endregion Ctors
 	}
 }

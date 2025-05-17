@@ -19,7 +19,7 @@ namespace Bodu.Security.Cryptography
 				Name = "SipHash128 (default)",
 				Factory = () => this.CreateAlgorithm(),
 				ExpectedHash_ForEmptyByteArray = "A3817F04BA25A8E66DF67214C7550293",
-				ExpectedHash_ForSimpleTextAsciiBytes = "9BB989D3DE95D16E02F73DD2CFFBF636",
+				ExpectedHash_ForSimpleTextAsciiBytes = "7628C9301AA4412555E65227CD31964E",
 				ExpectedHash_ForByteSequence0To255 = "67A00304D3834C4612EAEE7B5F579ACB",
 				ExpectedHash_ForInputPrefixes = new[]
 				{

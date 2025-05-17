@@ -15,7 +15,9 @@ namespace Bodu.Security.Cryptography
 			algorithm.Dispose();
 
 			Assert.ThrowsException<ObjectDisposedException>(() =>
-				_ = algorithm.ComputeHash(CryptoTestUtilities.EmptyByteArray));
+			{
+				_ = algorithm.ComputeHash(CryptoTestUtilities.EmptyByteArray);
+			});
 		}
 
 		/// <summary>
@@ -28,7 +30,9 @@ namespace Bodu.Security.Cryptography
 			algorithm.Dispose();
 
 			Assert.ThrowsException<ObjectDisposedException>(() =>
-				_ = algorithm.ComputeHash(CryptoTestUtilities.EmptyByteArray, 0, 0));
+			{
+				_ = algorithm.ComputeHash(CryptoTestUtilities.EmptyByteArray, 0, 0);
+			});
 		}
 
 		/// <summary>
@@ -55,7 +59,9 @@ namespace Bodu.Security.Cryptography
 			algorithm.Dispose();
 
 			Assert.ThrowsException<ObjectDisposedException>(() =>
-			 _ = algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0));
+			{
+				_ = algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
+			});
 		}
 
 		/// <summary>
@@ -68,7 +74,9 @@ namespace Bodu.Security.Cryptography
 			algorithm.Dispose();
 
 			Assert.ThrowsException<ObjectDisposedException>(() =>
-			 _ = algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0));
+			{
+				_ = algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+			});
 		}
 
 		/// <summary>

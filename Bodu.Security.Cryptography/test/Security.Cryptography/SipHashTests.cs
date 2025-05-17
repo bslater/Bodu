@@ -5,6 +5,6 @@ namespace Bodu.Security.Cryptography
 {
 	public abstract partial class SipHashTests<T>
 		: KeyedHashAlgorithmTests<T>
-		where T : SipHash
+		where T : SipHash, new()
 	{ }
 }

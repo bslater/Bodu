@@ -245,10 +245,31 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets the descriptive name of the current configuration.
+		/// Gets the full CubeHash algorithm name in the canonical submission format.
 		/// </summary>
-		/// <remarks>This value includes initialization, round, and hash size parameters.</remarks>
-		public string Name => $"CubeHash{InitializationRounds}+{Rounds}/{TransformBlockSize}+{FinalizationRounds}-{HashSize}";
+		/// <remarks>
+		/// <para>Follows the CubeHash naming convention from the original submission: <c>CubeHashr+b/w+f-h</c>, where:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>r</c> = number of initialization rounds</description>
+		/// </item>
+		/// <item>
+		/// <description><c>b</c> = number of transformation rounds per block</description>
+		/// </item>
+		/// <item>
+		/// <description><c>w</c> = block size in bytes</description>
+		/// </item>
+		/// <item>
+		/// <description><c>f</c> = number of finalization rounds</description>
+		/// </item>
+		/// <item>
+		/// <description><c>h</c> = hash size in bits</description>
+		/// </item>
+		/// </list>
+		/// <para>Example: <c>CubeHash16+32/32+32-256</c></para>
+		/// </remarks>
+		public string AlgorithmName =>
+			$"CubeHash{InitializationRounds}+{Rounds}/{TransformBlockSize}+{FinalizationRounds}-{HashSize}";
 
 		/// <inheritdoc />
 		/// <summary>

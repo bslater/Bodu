@@ -101,7 +101,10 @@ namespace Bodu.Security.Cryptography
 			algorithm.Dispose();
 
 			// Act & Assert
-			Assert.ThrowsException<ObjectDisposedException>(() => algorithm.Initialize());
+			Assert.ThrowsException<ObjectDisposedException>(() =>
+			{
+				algorithm.Initialize();
+			});
 		}
 	}
 }

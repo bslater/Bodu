@@ -11,23 +11,19 @@ namespace Bodu.Security.Cryptography
 	public abstract partial class HashAlgorithmTests<T>
 	{
 		/// <summary>
-		/// Verifies that calling <see cref="HashAlgorithm.Clear" /> disposes the instance, and any further attempts to use it result in <see cref="ObjectDisposedException" />.
+		/// Verifies that calling <see cref="HashAlgorithm.Clear" /> disposes the algorithm and further usage throws <see cref="ObjectDisposedException" />.
 		/// </summary>
 		[TestMethod]
-		public void Clear_ShouldDisposeAlgorithmAndPreventFurtherUse()
+		public void Clear_WhenCalled_ShouldDisposeAndThrowOnFurtherUse()
 		{
-			byte[] buffer = null!;
-
 			using var algorithm = this.CreateAlgorithm();
-
-			// Expect ArgumentNullException on null buffer
-			Assert.ThrowsException<ArgumentNullException>(() => algorithm.ComputeHash(buffer));
-
-			// Clear should dispose
 			algorithm.Clear();
 
-			// Any further call should throw ObjectDisposedException
-			Assert.ThrowsException<ObjectDisposedException>(() => algorithm.ComputeHash(buffer));
+			byte[] buffer = new byte[1];
+			Assert.ThrowsException<ObjectDisposedException>(() =>
+			{
+				algorithm.ComputeHash(buffer);
+			});
 		}
 	}
 }

@@ -13,7 +13,10 @@ namespace Bodu.Security.Cryptography
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentNullException>(() => algorithm.Key = null!);
+			Assert.ThrowsException<ArgumentNullException>(() =>
+			{
+				algorithm.Key = null!;
+			});
 		}
 
 		/// <summary>
@@ -24,7 +27,10 @@ namespace Bodu.Security.Cryptography
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<CryptographicException>(() => algorithm.Key = new byte[0]);
+			Assert.ThrowsException<CryptographicException>(() =>
+			{
+				algorithm.Key = new byte[0];
+			});
 		}
 
 		/// <summary>
@@ -208,7 +214,10 @@ namespace Bodu.Security.Cryptography
 		{
 			using var algorithm = this.CreateAlgorithm();
 			byte[] tooLong = new byte[MaximumLegalKeyLength + 1];
-			Assert.ThrowsException<CryptographicException>(() => algorithm.Key = tooLong);
+			Assert.ThrowsException<CryptographicException>(() =>
+			{
+				algorithm.Key = tooLong;
+			});
 		}
 
 		[TestMethod]
@@ -217,7 +226,10 @@ namespace Bodu.Security.Cryptography
 			using var algorithm = this.CreateAlgorithm();
 			byte[] tooShort = new byte[MinimumLegalKeyLength - 1];
 
-			Assert.ThrowsException<CryptographicException>(() => algorithm.Key = tooShort);
+			Assert.ThrowsException<CryptographicException>(() =>
+			{
+				algorithm.Key = tooShort;
+			});
 		}
 	}
 }

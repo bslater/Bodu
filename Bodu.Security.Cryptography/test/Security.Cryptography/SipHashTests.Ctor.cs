@@ -17,7 +17,10 @@ namespace Bodu.Security.Cryptography
 		[DataRow(-1)]
 		public void Ctor_WhenHashSizeIsInvalid_ShouldThrowArgumentException(int hashSize)
 		{
-			Assert.ThrowsException<ArgumentException>(() => new TestSipHash(hashSize));
+			Assert.ThrowsException<ArgumentException>(() =>
+			{
+				new TestSipHash(hashSize);
+			});
 		}
 
 		/// <summary>
