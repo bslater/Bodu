@@ -67,7 +67,8 @@ namespace Bodu.Security.Cryptography
 			this.blockSize = hashSize / 8; // Block size for Fletcher algorithm
 			this.modulus = (1UL << (hashSize / 2)) - 1;
 			this.residualByteBuffer = new Memory<byte>(new byte[this.wordSize]);
-			this.Initialize();
+			this.partA = this.partB = 0;
+			this.residualBytes = 0;
 		}
 
 		/// <inheritdoc />
@@ -105,9 +106,9 @@ namespace Bodu.Security.Cryptography
 		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
-		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
-		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
+		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
@@ -194,20 +195,6 @@ namespace Bodu.Security.Cryptography
 			// Convert to a byte array and take the size
 			return finalHash.GetBytes().SliceInternal(0, this.blockSize);
 		}
-
-		///// <inheritdoc />
-		//public override bool Equals(object obj)
-		//{
-		//	return obj is Fletcher other &&
-		//		   this.HashSizeValue == other.HashSizeValue &&
-		//		   this.modulus == other.initialValue;
-		//}
-
-		///// <inheritdoc />
-		//public override int GetHashCode()
-		//{
-		//	return HashCode.Combine(this.useModified, this.initialValue);
-		//}
 
 		/// <summary>
 		/// Processes blocks of data for hashing. It handles both full and residual blocks.

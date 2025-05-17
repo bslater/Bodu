@@ -128,14 +128,24 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that <see cref="HashAlgorithm.ComputeHash(Stream)" /> throws <see cref="ArgumentNullException" /> when passed a null stream.
 		/// </summary>
 		[TestMethod]
-		public void ComputeHash_WithNullStream_ShouldThrowArgumentNullException()
+		public void ComputeHash_WithNullStream_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
-			{
-				algorithm.ComputeHash((Stream)null!);
-			});
+			// Expected behavior differs based on .NET version
+#if NETFRAMEWORK || NETCOREAPP3_1
+
+			// For .NET Framework and earlier .NET Core versions (up to 3.1), it throws ArgumentNullException.
+			Assert.ThrowsException<ArgumentNullException>(
+				() => algorithm.ComputeHash((Stream)null!)
+			);
+#else
+
+			// For .NET 5 and later, it throws NullReferenceException instead.
+			Assert.ThrowsExactly<NullReferenceException>(
+				() => algorithm.ComputeHash((Stream)null!)
+			);
+#endif
 		}
 
 		/// <summary>

@@ -370,3 +370,4 @@ FodyWeavers.xsd
 
 # Ignore local repository items
 /ConsoleApp2/
+/bc-csharp/

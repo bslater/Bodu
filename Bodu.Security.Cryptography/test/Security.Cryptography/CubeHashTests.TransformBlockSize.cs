@@ -44,8 +44,8 @@ namespace Bodu.Security.Cryptography
 
 			algorithm.ComputeHash(input);
 
-			// Change the transform block size hashValue after the first computation, and perform the second algorithm computation with the new
-			// transform block size hashValue.
+			// Change the transform block size hashValue after the first computation, and perform the second algorithm computation with the
+			// new transform block size hashValue.
 			algorithm.TransformBlockSize = 32;
 			algorithm.ComputeHash(input);
 		}
@@ -75,6 +75,7 @@ namespace Bodu.Security.Cryptography
 		[DataRow(-1)]
 		[DataRow(0)]
 		[DataRow(129)]
+		[DataRow(256)]
 		[DataRow(int.MaxValue)]
 		public void TransformBlockSize_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
 		{
@@ -93,11 +94,9 @@ namespace Bodu.Security.Cryptography
 		[DataRow(32)]
 		[DataRow(64)]
 		[DataRow(128)]
-		[DataRow(256)]
 		public void TransformBlockSize_WhenSetToValidValue_ShouldBeAssigned(int size)
 		{
 			using var algorithm = this.CreateAlgorithm();
-			int original = algorithm.TransformBlockSize;
 			algorithm.TransformBlockSize = size;
 
 			Assert.AreEqual(size, algorithm.TransformBlockSize);

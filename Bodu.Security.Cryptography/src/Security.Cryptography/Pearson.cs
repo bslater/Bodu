@@ -79,9 +79,19 @@ namespace Bodu.Security.Cryptography
 		/// Initializes a new instance of the <see cref="Pearson" /> class with a default 8-bit hash size.
 		/// </summary>
 		public Pearson()
+			: this(8)
+		{ }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Pearson" /> class with a default 8-bit hash size.
+		/// </summary>
+		public Pearson(int hashSize)
 		{
+			ThrowHelper.ThrowIfOutOfRange(hashSize, MinHashSize, MaxHashSize);
+			ThrowHelper.ThrowIfNotPositiveMultipleOf(hashSize, 8);
+
 			this.permutationTable = (byte[])DefaultTable.Clone();
-			this.HashSizeValue = 8;
+			this.HashSizeValue = hashSize;
 			this.Initialize();
 		}
 
@@ -104,9 +114,9 @@ namespace Bodu.Security.Cryptography
 		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
-		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
-		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
+		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 

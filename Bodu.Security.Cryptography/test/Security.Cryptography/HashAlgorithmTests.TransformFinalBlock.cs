@@ -160,10 +160,11 @@ namespace Bodu.Security.Cryptography
 
 		/// <summary>
 		/// Verifies that calling <see cref="HashAlgorithm.TransformFinalBlock(byte[], int, int)" /> twice without calling
-		/// <see cref="HashAlgorithm.Initialize" /> throws <see cref="CryptographicUnexpectedOperationException" />.
+		/// <see cref="HashAlgorithm.Initialize" /> behaves according to the .NET version in use. For older versions, it throws
+		/// <see cref="CryptographicUnexpectedOperationException" />, whereas in later versions, it does not throw.
 		/// </summary>
 		[TestMethod]
-		public void TransformFinalBlock_WhenCalledTwice_ShouldThrow()
+		public void TransformFinalBlock_WhenCalledTwice_ExpectedBehaviorBasedOnDotNetVersion()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			var buffer = CryptoTestUtilities.SimpleTextAsciiBytes;
@@ -171,10 +172,18 @@ namespace Bodu.Security.Cryptography
 			algorithm.TransformBlock(buffer, 0, buffer.Length - 1, null, 0);
 			algorithm.TransformFinalBlock(buffer, buffer.Length - 1, 1);
 
-			// This second call should throw
-			Assert.ThrowsException<CryptographicUnexpectedOperationException>(
-				() => algorithm.TransformFinalBlock(buffer, 0, 0)
-			);
+			// Expected behavior differs based on .NET version
+#if NETFRAMEWORK || NETCOREAPP3_1
+
+    // For .NET Framework and earlier .NET Core versions (up to 3.1), the second call should throw.
+    Assert.ThrowsException<CryptographicUnexpectedOperationException>(
+        () => algorithm.TransformFinalBlock(buffer, 0, 0)
+    );
+#else
+
+			// For .NET 5 and later, subsequent calls to TransformFinalBlock are allowed. In this case, we do not expect an exception.
+			algorithm.TransformFinalBlock(buffer, 0, 0);
+#endif
 		}
 	}
 }

@@ -51,7 +51,7 @@ namespace Bodu.Security.Cryptography
 		/// </listheader>
 		/// <item>
 		/// <term><see cref="SipHash.CompressionRounds" /></term>
-		/// <description><see cref="Bodu.SipHash.MinCompressionRounds" /></description>
+		/// <description><see cref="SipHash.MinCompressionRounds" /></description>
 		/// </item>
 		/// <item>
 		/// <term><see cref="SipHash.FinalizationRounds" /></term>

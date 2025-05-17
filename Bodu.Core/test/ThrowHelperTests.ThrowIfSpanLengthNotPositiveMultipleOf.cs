@@ -40,7 +40,7 @@ namespace Bodu
 			var span = new int[length];
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
-				ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(span.AsSpan(), factor);
+				ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(span.AsSpan(), factor);
 			});
 		}
 
@@ -51,7 +51,7 @@ namespace Bodu
 		public void ThrowIfSpanLengthNotPositiveMultipleOf_Span_WhenLengthValid_ShouldNotThrow(int length, int factor)
 		{
 			Span<int> span = new int[length];
-			ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(span, factor);
+			ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(span, factor);
 		}
 	}
 }

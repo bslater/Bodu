@@ -372,14 +372,8 @@
   <data name="Arg_Invalid_ArrayIsZeroLength" xml:space="preserve">
     <value>The provided array has zero length. Length must be greater than zero.</value>
   </data>
-  <data name="Arg_Invalid_SpanTooShort" xml:space="preserve">
-    <value>Span is too short. Required minimum is {0} from a specified index.</value>
-  </data>
   <data name="Arg_Invalid_ArrayLengthMultipleOf" xml:space="preserve">
     <value>Length of the array must be a multiple of {0}.</value>
-  </data>
-  <data name="Arg_Invalid_SpanLengthMultipleOf" xml:space="preserve">
-    <value>Length of the Span must be a multiple of {0}.</value>
   </data>
   <data name="Arg_Invalid_GreaterThanOrEqualOtherParameter" xml:space="preserve">
     <value>The value must not be greater than or equal to the value of {0}.</value>

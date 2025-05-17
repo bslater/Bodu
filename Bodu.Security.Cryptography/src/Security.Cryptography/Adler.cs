@@ -66,7 +66,8 @@ namespace Bodu.Security.Cryptography
 		{
 			this.modulo = modulo;
 			this.HashSizeValue = 32;
-			this.Initialize();
+			this.partA = 1;
+			this.partB = 0;
 		}
 
 		/// <inheritdoc />
@@ -88,9 +89,9 @@ namespace Bodu.Security.Cryptography
 		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
-		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
-		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
+		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
@@ -110,7 +111,7 @@ namespace Bodu.Security.Cryptography
 
 		/// <inheritdoc />
 		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref=" " /> algorithm.
+		/// Processes a block of data by feeding it into the <see cref="Adler" /> algorithm.
 		/// </summary>
 		/// <param name="array">The byte array containing the data to be hashed.</param>
 		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>

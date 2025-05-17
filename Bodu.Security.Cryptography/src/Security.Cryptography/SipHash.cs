@@ -84,7 +84,7 @@ namespace Bodu.Security.Cryptography
 		private ulong length;
 		private int residualBytes;
 		private ulong v0, v1, v2, v3;
-		private Memory<byte> residualByteBuffer;
+		private readonly Memory<byte> residualByteBuffer;
 		private bool disposed;
 
 		/// <summary>
@@ -202,9 +202,9 @@ namespace Bodu.Security.Cryptography
 		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
-		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
-		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
+		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
@@ -237,7 +237,7 @@ namespace Bodu.Security.Cryptography
 				if (this.KeyValue is not null)
 				{
 					CryptographicOperations.ZeroMemory(this.KeyValue);
-					this.KeyValue = null;
+					this.KeyValue = null!;
 				}
 			}
 
@@ -255,7 +255,7 @@ namespace Bodu.Security.Cryptography
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			this.ThrowIfDisposed();
-			this.length += (ulong)length;
+			this.length += length;
 			this.ProcessBlocks(array, ibStart, cbSize);
 		}
 

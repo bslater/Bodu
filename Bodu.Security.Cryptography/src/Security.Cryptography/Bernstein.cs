@@ -64,9 +64,8 @@ namespace Bodu.Security.Cryptography
 		public Bernstein()
 		{
 			this.HashSizeValue = 32;
-			this.initialValue = DefaultInitialValue;
+			this.initialValue = this.value = DefaultInitialValue;
 			this.useModified = false;
-			this.Initialize();
 		}
 
 		/// <summary>
@@ -155,9 +154,9 @@ namespace Bodu.Security.Cryptography
 		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
-		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
-		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
+		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
@@ -170,14 +169,6 @@ namespace Bodu.Security.Cryptography
 			this.finalized = false;
 #endif
 			this.value = this.initialValue;
-		}
-
-		/// <inheritdoc />
-		public override bool Equals(object? obj)
-		{
-			return obj is Bernstein other &&
-				   this.useModified == other.useModified &&
-				   this.initialValue == other.initialValue;
 		}
 
 		/// <inheritdoc />

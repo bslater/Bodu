@@ -295,24 +295,6 @@ namespace Bodu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Length of the Span must be a multiple of {0}..
-        /// </summary>
-        internal static string Arg_Invalid_SpanLengthMultipleOf {
-            get {
-                return ResourceManager.GetString("Arg_Invalid_SpanLengthMultipleOf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Span is too short. Required minimum is {0} from a specified index..
-        /// </summary>
-        internal static string Arg_Invalid_SpanTooShort {
-            get {
-                return ResourceManager.GetString("Arg_Invalid_SpanTooShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The string comparison type is not supported..
         /// </summary>
         internal static string Arg_Invalid_StringComparison {

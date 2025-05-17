@@ -136,7 +136,7 @@ namespace Bodu.Extensions
 		{
 			ThrowHelper.ThrowIfLessThanOrEqual(elementSize, 1);
 			ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(source, elementSize);
-			ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(destination, elementSize);
+			ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(destination, elementSize);
 
 			if (destination.Length < source.Length)
 				ThrowHelper.ThrowIfCountExceedsAvailable(source.Length, destination.Length);

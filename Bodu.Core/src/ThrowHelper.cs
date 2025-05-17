@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="ThrowHelper.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="ThrowHelper.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -1925,7 +1925,7 @@ namespace Bodu
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
 			if (span.Length - index < requiredLength)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), paramName);
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
 		}
 
 #endif
@@ -1970,7 +1970,7 @@ namespace Bodu
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
 			if (span.Length - index < requiredLength)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), paramName);
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
 		}
 
 #endif
@@ -2019,7 +2019,7 @@ namespace Bodu
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
 			if (span.Length == 0 || span.Length % divisor != 0)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), paramName);
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), paramName);
 		}
 
 #endif
@@ -2054,21 +2054,19 @@ namespace Bodu
 		/// <typeparam name="T">The element type of the span.</typeparam>
 		/// <param name="span">The span to check.</param>
 		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
 		/// <param name="paramName">The name of the span parameter.</param>
 		/// <exception cref="ArgumentException">
 		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
 		/// Message: "Length of the Span must be a multiple of {0}."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
+		public static void ThrowIfArrayLengthNotPositiveMultipleOf<T>(
 			Span<T> span,
 			int divisor,
-			Func<string, Exception>? func = null,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
 			if (span.Length == 0 || span.Length % divisor != 0)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), paramName);
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), paramName);
 		}
 
 #endif

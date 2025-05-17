@@ -101,7 +101,9 @@ namespace Bodu.Security.Cryptography
 			this.HashSizeValue = crcStandard.Size;
 			this.hashSizeBytes = (this.HashSizeValue + 7) / 8;
 
-			this.Initialize();
+			this.crcValue = this.ReflectIn
+				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
+				: this.InitialValue;
 		}
 
 		/// <summary>
@@ -221,15 +223,16 @@ namespace Bodu.Security.Cryptography
 
 		/// <inheritdoc />
 		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
+		/// Gets a value indicating whether multiple blocks can be transformed in a single
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" /> call.
 		/// </summary>
 		/// <returns>
 		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="TransformBlock" /> or
-		/// <see cref="HashCore" />, making this property typically return <see langword="true" />. Override this to return
-		/// <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
+		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
@@ -509,12 +512,6 @@ namespace Bodu.Security.Cryptography
 			if (this.disposed)
 				throw new ObjectDisposedException(nameof(Crc));
 #endif
-		}
-
-		/// <inheritdoc />
-		protected override void HashCore(ReadOnlySpan<byte> source)
-		{
-			base.HashCore(source);
 		}
 
 		/// <inheritdoc />

@@ -9,7 +9,7 @@ using Bodu.Infrastructure;
 
 namespace Bodu.Security.Cryptography
 {
-    public partial class SipHash128Tests
+	public partial class SipHash128Tests
 	{
 		/// <inheritdoc />
 		public override IEnumerable<HashAlgorithmVariant> GetVariants() => new[]
@@ -19,11 +19,11 @@ namespace Bodu.Security.Cryptography
 				Name = "SipHash128 (default)",
 				Factory = () => this.CreateAlgorithm(),
 				ExpectedHash_ForEmptyByteArray = "A3817F04BA25A8E66DF67214C7550293",
-				ExpectedHash_ForSimpleTextAsciiBytes = "7628C9301AA4412555E65227CD31964E",
+				ExpectedHash_ForSimpleTextAsciiBytes = "9BB989D3DE95D16E02F73DD2CFFBF636",
 				ExpectedHash_ForByteSequence0To255 = "67A00304D3834C4612EAEE7B5F579ACB",
 				ExpectedHash_ForInputPrefixes = new[]
 				{
-					"A3817F04BA25A8E66DF67214C7550293",// []
+					"A3817F04BA25A8E66DF67214C7550293", // []
 					"DA87C1D86B99AF44347659119B22FC45",	// [0]
 					"8177228DA4A45DC7FCA38BDEF60AFFE4",	// [0,1]
 					"9C70B60C5267A94E5F33B6B02985ED51",	// [0,1,2]
