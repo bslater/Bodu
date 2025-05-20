@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that reusing the algorithm instance after <see cref="HashAlgorithm.Initialize" /> resets the state correctly.
@@ -94,14 +94,14 @@ namespace Bodu.Security.Cryptography
 		/// matching base .NET behavior.
 		/// </summary>
 		[TestMethod]
-		public void Initialize_WhenDisposed_ShouldThrowObjectDisposedException()
+		public void Initialize_WhenDisposed_ShouldThrowExactly()
 		{
 			// Arrange
 			using var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
 			// Act & Assert
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
 				algorithm.Initialize();
 			});

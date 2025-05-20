@@ -1,31 +1,83 @@
-﻿using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
+		[DataTestMethod]
+		[DynamicData(nameof(ComputeHashNamedInputTestData))]
+		public void ComputeHash_WhenUsingNamedInput_ShouldMatchExpected(TVariant variant, string testName, byte[] input, byte[] expected)
+		{
+			var algorithm = CreateAlgorithm(variant);
+			byte[] actual = algorithm.ComputeHash(input);
+
+			Trace.WriteLineIf(actual != expected, $"Expected: {Convert.ToHexString(expected)}");
+			Trace.WriteLineIf(actual != expected, $"Actual  : {Convert.ToHexString(actual)}");
+			CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for {testName} using variant '{variant}'.");
+		}
+
 		/// <summary>
 		/// Verifies that repeated calls to <see cref="HashAlgorithm.ComputeHash(byte[])" /> with the same input produce the same result.
 		/// </summary>
-		[TestMethod]
-		public void ComputeHash_ShouldBeDeterministic()
+		[DataTestMethod]
+		[DynamicData(nameof(HashAlgorithmVariants))]
+		public void ComputeHash_WhenUsingIncrementalInput_ShouldMatchExpected(TVariant variant)
+		{
+			var algorithm = CreateAlgorithm(variant);
+			var count = algorithm.HashSize / 2;
+			byte[] input = new byte[count];
+			var expectedHashes = GetExpectedHashesForIncrementalInput(variant).ToArray();
+
+			if (!expectedHashes.Any())
+				Assert.Inconclusive($"No expected hashes defined for variant {variant}.");
+
+			Assert.AreEqual(expectedHashes.Length, count, "Expected hashes count should match the hash algorithm size.");
+
+			for (int i = 0; i < count; i++)
+			{
+				byte[] expected = Convert.FromHexString(expectedHashes[i]);
+				input[i] = (byte)i;
+				var actual = algorithm.ComputeHash(input, 0, i);
+
+				Trace.WriteLineIf(actual != expected, $"Expected: {Convert.ToHexString(expected)}");
+				Trace.WriteLineIf(actual != expected, $"Actual  : {Convert.ToHexString(actual)}");
+				CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for variant '{variant}' at incremental length {i + 1}.");
+			}
+		}
+
+		/// <summary>
+		/// Verifies that repeated calls to <see cref="HashAlgorithm.ComputeHash(byte[])" /> with the same input produce the same result.
+		/// </summary>
+		[DataTestMethod]
+		[DynamicData(nameof(HashAlgorithmVariants))]
+		public void ComputeHash_ShouldBeDeterministic(TVariant variant)
 		{
 			byte[] input = Enumerable.Range(0, 128).Select(i => (byte)(i % 256)).ToArray();
-			using var algorithm = this.CreateAlgorithm();
+			using var algorithm = this.CreateAlgorithm(variant);
 			byte[] hash1 = algorithm.ComputeHash(input);
 			byte[] hash2 = algorithm.ComputeHash(input);
+
 			CollectionAssert.AreEqual(hash1, hash2);
 		}
 
 		/// <summary>
 		/// Verifies that <see cref="HashAlgorithm.ComputeHash(byte[])" /> produces consistent output for repeated identical input.
 		/// </summary>
-		[TestMethod]
-		public void ComputeHash_WhenReusedWithSameInput_ShouldProduceIdenticalHashResults()
+		[DataTestMethod]
+		[DataRow(0)]
+		[DataRow(7)]
+		[DataRow(64)]
+		[DataRow(91)]
+		[DataRow(1023)]
+		[DataRow(1024)]
+		public void ComputeHash_WhenReusedWithSameInput_ShouldProduceIdenticalHashResults(int size)
 		{
 			using var algorithm = this.CreateAlgorithm();
-			byte[] input = new byte[1024];
-			CryptoUtilities.FillWithRandomNonZeroBytes(input);
+			byte[] input = new byte[size];
+			if (size > 0)
+				CryptoUtilities.FillWithRandomNonZeroBytes(input);
 
 			byte[] hashA = algorithm.ComputeHash(input);
 			byte[] hashB = algorithm.ComputeHash(input);
@@ -42,11 +94,10 @@ namespace Bodu.Security.Cryptography
 		public void ComputeHash_ShouldReturnEmptyHash_WhenOffsetAndCountAreZero(int size, int offset, int count)
 		{
 			byte[] buffer = new byte[size];
-			byte[] expected = Convert.FromHexString(this.ExpectedHash_ForEmptyByteArray);
+			byte[] expected = ExpectedEmptyInputHash;
 			using var algorithm = this.CreateAlgorithm();
 
-			byte[] actual = algorithm.ComputeHash(buffer, offset, count);
-			CollectionAssert.AreEqual(expected, actual);
+			byte[] actual = algorithm.ComputeHash(buffer, offset, count); CollectionAssert.AreEqual(expected, actual);
 
 			buffer[0] = 0xFF;
 			buffer[^1] = 0xFF;
@@ -82,12 +133,12 @@ namespace Bodu.Security.Cryptography
 		[DataRow(3, 0, 4)]
 		[DataRow(3, 1, 3)]
 		[DataRow(3, 3, 1)]
-		public void ComputeHash_WhenOffsetAndCountCombinationIsInvalid_ShouldThrowArgumentException(int size, int offset, int count)
+		public void ComputeHash_WhenOffsetAndCountCombinationIsInvalid_ShouldThrowExactly(int size, int offset, int count)
 		{
 			byte[] buffer = new byte[size];
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				algorithm.ComputeHash(buffer, offset, count);
 			});
@@ -97,12 +148,12 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that <see cref="HashAlgorithm.ComputeHash(byte[])" /> throws <see cref="ArgumentNullException" /> when passed a null buffer.
 		/// </summary>
 		[TestMethod]
-		public void ComputeHash_WithNullBuffer_ShouldThrowArgumentNullException()
+		public void ComputeHash_WithNullBuffer_ShouldThrowExactly()
 		{
 			byte[] buffer = null!;
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.ComputeHash(buffer);
 			});
@@ -113,12 +164,12 @@ namespace Bodu.Security.Cryptography
 		/// is null.
 		/// </summary>
 		[TestMethod]
-		public void ComputeHash_WithNullBufferAndRange_ShouldThrowArgumentNullException()
+		public void ComputeHash_WithNullBufferAndRange_ShouldThrowExactly()
 		{
 			byte[] buffer = null!;
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.ComputeHash(buffer, 0, 0);
 			});
@@ -136,7 +187,7 @@ namespace Bodu.Security.Cryptography
 #if NETFRAMEWORK || NETCOREAPP3_1
 
 			// For .NET Framework and earlier .NET Core versions (up to 3.1), it throws ArgumentNullException.
-			Assert.ThrowsException<ArgumentNullException>(				() => {
+			Assert.ThrowsExactly<ArgumentNullException>(				() => {
 			algorithm.ComputeHash((Stream)null!);
 			});
 #else
@@ -154,12 +205,12 @@ namespace Bodu.Security.Cryptography
 		/// offset is negative.
 		/// </summary>
 		[TestMethod]
-		public void ComputeHash_WhenOffsetIsNegative_ShouldThrowArgumentOutOfRangeException()
+		public void ComputeHash_WhenOffsetIsNegative_ShouldThrowExactly()
 		{
-			byte[] buffer = new byte[0];
+			byte[] buffer = Array.Empty<byte>();
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				algorithm.ComputeHash(buffer, -1, 0);
 			});
@@ -182,6 +233,20 @@ namespace Bodu.Security.Cryptography
 
 			Assert.IsNotNull(hash);
 			Assert.AreEqual(algorithm.HashSize / 8, hash.Length);
+		}
+
+		[TestMethod]
+		public void ComputeHash_WithLargeInput_ShouldNotThrow()
+		{
+			using var algorithm = this.CreateAlgorithm();
+
+			// Create data that will certainly exceed uint.MaxValue during computation
+			byte[] data = Enumerable.Repeat((byte)255, 20_480_000).ToArray();
+
+			// This will throw naturally if there's an overflow or other error
+			var result = algorithm.ComputeHash(data);
+
+			Assert.AreEqual(algorithm.HashSize / 8, result.Length);
 		}
 	}
 }

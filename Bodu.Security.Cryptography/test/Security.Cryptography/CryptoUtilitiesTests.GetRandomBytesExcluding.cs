@@ -13,7 +13,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void GetRandomBytesExcluding_WhenLengthIsLessThanOrEqualToZero_ShouldThrowArgumentOutOfRangeException()
+		public void GetRandomBytesExcluding_WhenLengthIsLessThanOrEqualToZero_ShouldThrowExactly()
 		{
 			_ = CryptoUtilities.GetRandomBytesExcluding(0x01, 0);
 		}

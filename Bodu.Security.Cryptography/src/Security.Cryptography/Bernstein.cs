@@ -5,7 +5,9 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
+using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
@@ -41,17 +43,17 @@ namespace Bodu.Security.Cryptography
 	/// digital signatures, or any use case that requires secure integrity or confidentiality.</note>
 	/// </remarks>
 	public sealed class Bernstein
-			: System.Security.Cryptography.HashAlgorithm
+		: System.Security.Cryptography.HashAlgorithm
 	{
 		/// <summary>
 		/// The default initial value used to seed the hash algorithm. This is constant.
 		/// </summary>
 		public const uint DefaultInitialValue = 5381U;
 
-		private uint value;
+		private uint hashValue;
 		private uint initialValue;
 		private bool useModified;
-		private bool disposed;
+		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -64,7 +66,7 @@ namespace Bodu.Security.Cryptography
 		public Bernstein()
 		{
 			this.HashSizeValue = 32;
-			this.initialValue = this.value = DefaultInitialValue;
+			this.initialValue = this.hashValue = DefaultInitialValue;
 			this.useModified = false;
 		}
 
@@ -168,7 +170,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.value = this.initialValue;
+			this.hashValue = this.initialValue;
 		}
 
 		/// <inheritdoc />
@@ -191,51 +193,94 @@ namespace Bodu.Security.Cryptography
 #endif
 
 			if (this.useModified)
-			{
-				this.HashModified(array, ibStart, cbSize);
-			}
+				HashModified(array.AsSpan(ibStart, cbSize));
 			else
-			{
-				this.HashOriginal(array, ibStart, cbSize);
-			}
+				HashOriginal(array.AsSpan(ibStart, cbSize));
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HashOriginal(byte[] data, int offset, int length)
+		/// <summary>
+		/// Processes a block of data by feeding it into the <see cref="Bernstein" /> algorithm.
+		/// </summary>
+		/// <param name="source">
+		/// The input data to process. This method consumes the entire span and updates the internal checksum state accordingly.
+		/// </param>
+		protected override void HashCore(ReadOnlySpan<byte> source)
 		{
-			int end = offset + length;
-			for (int i = offset; i < end; i++)
-			{
-				// hash = hash * 33 + data[i]
-				this.value = ((this.value << 5) + this.value) + data[i];
-			}
+			ThrowIfDisposed();
+
+#if !NET6_0_OR_GREATER
+	if (this.finalized)
+		throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+#endif
+
+			if (this.useModified)
+				HashModified(source);
+			else
+				HashOriginal(source);
 		}
 
+		/// <summary>
+		/// Updates the internal hash state using the original Bernstein hash algorithm (hash = hash * 33 + b).
+		/// </summary>
+		/// <param name="data">
+		/// The input data to hash. Each byte is processed sequentially and combined into the internal hash state using addition.
+		/// </param>
+		/// <remarks>This implementation corresponds to the original "djb2" hash function commonly used in hash table implementations.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HashModified(byte[] data, int offset, int length)
+		private void HashOriginal(ReadOnlySpan<byte> data)
 		{
-			int end = offset + length;
-			for (int i = offset; i < end; i++)
+			uint v = hashValue;
+			foreach (var b in data)
 			{
-				// hash = hash * 33 ^ data[i]
-				this.value = ((this.value << 5) + this.value) ^ data[i];
+				v = ((v << 5) + v) + b;
 			}
+			hashValue = v;
+		}
+
+		/// <summary>
+		/// Updates the internal hash state using the modified Bernstein hash algorithm (hash = hash * 33 ^ b).
+		/// </summary>
+		/// <param name="data">
+		/// The input data to hash. Each byte is processed sequentially and combined into the internal hash state using XOR.
+		/// </param>
+		/// <remarks>
+		/// This variation of the Bernstein hash function replaces the addition step with a bitwise XOR operation for alternative mixing behavior.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HashModified(ReadOnlySpan<byte> data)
+		{
+			uint v = hashValue;
+			foreach (byte b in data)
+			{
+				v = ((v << 5) + v) ^ b;
+			}
+			hashValue = v;
 		}
 
 		/// <inheritdoc />
 		/// <summary>
-		/// Finalizes the <see cref="Bernstein" /> hash computation after all input data has been processed, and returns the resulting hash value.
+		/// Finalizes the <see cref="Bernstein" /> hash computation after all input data has been processed, and returns the resulting hash
+		/// value as a byte array.
 		/// </summary>
 		/// <returns>
-		/// A byte array containing the Bernstein result. The length depends on the configured <see cref="HashAlgorithm.HashSize" />,
-		/// typically 4 bytes for a 32-bit variant or 8 bytes for a 64-bit variant.
+		/// A byte array representing the finalized Bernstein hash. The length corresponds to the configured
+		/// <see cref="HashAlgorithm.HashSize" />, which is 4 bytes for this 32-bit implementation. The returned hash is encoded in
+		/// <b>big-endian</b> byte order to ensure platform-independent consistency.
 		/// </returns>
 		/// <remarks>
-		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
-		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// <para>
+		/// This method computes the final hash by applying any remaining state transformations and serializing the internal 32-bit hash
+		/// value into a standardized byte array. The hash reflects all data previously supplied through calls to
+		/// <see cref="HashCore(byte[], int, int)" /> or <see cref="HashCore(ReadOnlySpan{byte})" />.
+		/// </para>
+		/// <para>
+		/// Calling this method invalidates the current hashing state. To reuse the same instance for another hashing operation, call
+		/// <see cref="HashAlgorithm.Initialize" /> to reset the internal state.
+		/// </para>
 		/// </remarks>
 		protected override byte[] HashFinal()
 		{
+			ThrowIfDisposed();
 #if !NET6_0_OR_GREATER
 			if (this.finalized)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
@@ -244,7 +289,9 @@ namespace Bodu.Security.Cryptography
 			this.State = 2;
 #endif
 
-			return this.value.GetBytes(asBigEndian: true);
+			Span<byte> span = stackalloc byte[4];
+			BinaryPrimitives.WriteUInt32BigEndian(span, this.hashValue); // Explicit big-endian output
+			return span.ToArray();
 		}
 
 		/// <summary>

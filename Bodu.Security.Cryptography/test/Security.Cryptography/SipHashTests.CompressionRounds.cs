@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class SipHashTests<T>
+	public abstract partial class SipHashTests<TTest, TAlgorithm>
 	{
 		/// <summary> <summary> Verifies that setting an invalid hashValue for <see cref="SipHash.CompressionRounds"/> throws <see
 		/// cref="ArgumentOutOfRangeException"/>. </summary>

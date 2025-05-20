@@ -13,7 +13,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that TryDepadBlock returns <c>true</c> for valid input input across modes.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidDepaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidDepaddingCases), DynamicDataSourceType.Method)]
 		public void TryDepadBlock_WhenValidPadding_ShouldReturnTrue(
 			PaddingMode padding, string inputHex, string expectedHex)
 		{
@@ -29,7 +29,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that TryDepadBlock returns the correct uninput byte count for valid input.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidDepaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidDepaddingCases), DynamicDataSourceType.Method)]
 		public void TryDepadBlock_WhenValidPadding_ShouldReturnExpectedLength(
 			PaddingMode padding, string inputHex, string expectedHex)
 		{
@@ -47,7 +47,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that TryDepadBlock returns the correct uninput content for valid input.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidDepaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidDepaddingCases), DynamicDataSourceType.Method)]
 		public void TryDepadBlock_WhenValidPadding_ShouldReturnExpectedResult(
 			PaddingMode padding, string inputHex, string expectedHex)
 		{
@@ -65,7 +65,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that TryDepadBlock returns <c>false</c> for invalid input input across supported modes.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.InvalidDepaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.InvalidDepaddingCases), DynamicDataSourceType.Method)]
 		public void TryDepadBlock_WhenInvalidPadding_ShouldReturnFalse(PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType)
 		{
 			byte[] input = Convert.FromHexString(inputHex);

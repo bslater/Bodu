@@ -1,4 +1,5 @@
 using System.Buffers.Binary;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
@@ -12,7 +13,12 @@ namespace Bodu.Security.Cryptography
 	/// permutationTable indexing and other non-cryptographic use cases where speed is preferred over security.
 	/// </para>
 	/// <para>The core hash function operates using the expression: <c><![CDATA[hash ^= (hash << 5) + (hash >> 2) + byte]]></c>.</para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
+	/// /// <para>
+	/// The computed hash is returned as a 4-byte array in the <b>system's native endianness</b>. On little-endian platforms (such as most modern desktops),
+	/// the least significant byte appears first. Consumers requiring a specific byte order (e.g., big-endian for network protocols) should normalize the
+	/// output using <see cref="System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(uint)" /> as needed.
+	/// </para>
+	///<note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
 	/// password hashing, or integrity verification in security-sensitive contexts.</note>
 	/// </remarks>
 	public sealed class JSHash
@@ -20,8 +26,8 @@ namespace Bodu.Security.Cryptography
 	{
 		private const uint DefaultValue = 0x4E67C6A7;
 
-		private uint value;
-		private bool disposed;
+		private uint hashValue;
+		private bool disposed = false;
 
 #if !NET6_0_OR_GREATER
 
@@ -72,7 +78,7 @@ namespace Bodu.Security.Cryptography
             this.finalized = false;
 #endif
 			ThrowIfDisposed();
-			this.value = DefaultValue;
+			this.hashValue = DefaultValue;
 		}
 
 		/// <inheritdoc />
@@ -94,10 +100,25 @@ namespace Bodu.Security.Cryptography
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
-			foreach (byte b in array.AsSpan(ibStart, cbSize))
+			HashCore(array.AsSpan(ibStart, cbSize));
+		}
+
+		/// <summary>
+		/// Processes a block of data by feeding it into the <see cref="Elf64" /> algorithm.
+		/// </summary>
+		/// <param name="source">
+		/// The input data to process. This method consumes the entire span and updates the internal checksum state accordingly.
+		/// </param>
+		protected override void HashCore(ReadOnlySpan<byte> source)
+		{
+			ThrowIfDisposed();
+
+			var v = hashValue;
+			foreach (byte b in source)
 			{
-				this.value ^= (this.value << 5) + (this.value >> 2) + b;
+				v ^= (v << 5) + (v >> 2) + b;
 			}
+			hashValue = v;
 		}
 
 		/// <inheritdoc />
@@ -118,9 +139,9 @@ namespace Bodu.Security.Cryptography
             this.finalized = true;
             this.State = 2;
 #endif
-			byte[] buffer = new byte[4];
-			BinaryPrimitives.WriteUInt32BigEndian(buffer, this.value);
-			return buffer;
+			Span<byte> span = stackalloc byte[4];
+			MemoryMarshal.Write(span, in this.hashValue);
+			return span.ToArray();
 		}
 
 		/// <inheritdoc />
@@ -131,7 +152,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.value = 0;
+				this.hashValue = 0;
 			}
 
 			this.disposed = true;

@@ -14,7 +14,7 @@ namespace Bodu.Security.Cryptography
 		/// supported padding modes.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void TryPadBlock_WhenValidInput_ShouldReturnTrue(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -32,7 +32,7 @@ namespace Bodu.Security.Cryptography
 		/// must match the expected padded length derived from the input and padding mode.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void TryPadBlock_WhenValidInput_ShouldReturnExpectedLength(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -50,7 +50,7 @@ namespace Bodu.Security.Cryptography
 		/// padding is only appended and not destructive to source data.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void TryPadBlock_WhenValidInput_ShouldPreserveOriginalBytes(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -68,7 +68,7 @@ namespace Bodu.Security.Cryptography
 		/// block sizes, or insufficient destination buffer length.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), DynamicDataSourceType.Method)]
 		public void TryPadBlock_WhenInvalidInput_ShouldReturnFalse(
 			PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType, int? destinationLength = null)
 		{
@@ -89,7 +89,7 @@ namespace Bodu.Security.Cryptography
 		/// configuration, aligning with a <c>false</c> return hashValue.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), DynamicDataSourceType.Method)]
 		public void TryPadBlock_WhenInvalidInput_ShouldReturnZeroWritten(
 			PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType, int? destinationLength = null)
 		{

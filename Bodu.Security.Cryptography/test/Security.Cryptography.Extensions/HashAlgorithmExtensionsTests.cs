@@ -17,6 +17,6 @@ namespace Bodu.Security.Cryptography.Extensions
 		private static readonly byte[] SampleStringHash = BitConverter.GetBytes((uint)(97 + 98 + 99 + 100));
 		private static readonly Encoding SampleEncoding = Encoding.ASCII;
 
-		private static SimpleSummingHashAlgorithm CreateAlgorithm() => new();
+		private static MonitoringHashAlgorithm CreateAlgorithm() => new();
 	}
 }

@@ -4,46 +4,70 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Bodu.Infrastructure;
+using Newtonsoft.Json.Linq;
 
 namespace Bodu.Security.Cryptography
 {
+	public enum SingleHashVariant
+	{
+		Default
+	}
+
 	/// <summary>
 	/// Base class for reusable unit tests of hash algorithms.
 	/// </summary>
 	/// <typeparam name="T">The hash algorithm type under test.</typeparam>
-	public abstract partial class HashAlgorithmTests<T>
-		: Security.Cryptography.CryptoTransformTests<T>
-		where T : HashAlgorithm
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
+		: Security.Cryptography.CryptoTransformTests<TAlgorithm>
+		where TTest : HashAlgorithmTests<TTest, TAlgorithm, TVariant>, new()
+		where TAlgorithm : HashAlgorithm, new()
+		where TVariant : Enum
 	{
 		/// <summary>
-		/// Returns all algorithm variants to test. Must be overridden in the concrete test class.
+		/// Returns all variants to be tested.
 		/// </summary>
-		public abstract IEnumerable<HashAlgorithmVariant> GetVariants();
+		public abstract IEnumerable<TVariant> GetHashAlgorithmVariants();
 
 		// Property to control if partial blocks should be handled
 		public virtual bool HandlePartialBlocks => true;
 
 		public virtual bool IsStateless => false;
 
+		protected override TAlgorithm CreateAlgorithm() =>
+			this.CreateAlgorithm(DefaultVariant);
+
 		/// <summary>
-		/// Gets the expected hexadecimal hash hashValue for an empty byte array input.
+		/// Returns the default variant to use in parameterless scenarios.
 		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// This property should be overridden in derived test classes to provide the expected hash output for the specific algorithm being
-		/// tested when given an empty buffer ( <c>new byte[0]</c>).
-		/// </para>
-		/// <para>
-		/// It is used in conjunction with the <see cref="CryptoTransformTests{T}.CreateAlgorithm" /> factory method to validate that
-		/// <see cref="HashAlgorithm.ComputeHash(byte[])" /> returns the correct result.
-		/// </para>
-		/// </remarks>
-		/// <hashValue>A string representing the expected hash hashValue as an uppercase hexadecimal string without delimiters (e.g., <c>"DEADBEEF"</c>).</hashValue>
-		protected abstract string ExpectedHash_ForEmptyByteArray { get; }
+		protected virtual TVariant DefaultVariant => GetHashAlgorithmVariants().First();
+
+		/// <summary>
+		/// Returns the expected hash result when hashing an empty byte array using the default variant.
+		/// </summary>
+		/// <exception cref="KeyNotFoundException">Thrown if the expected hash for the empty input is not defined for the default variant.</exception>
+		protected override byte[] ExpectedEmptyInputHash =>
+			Convert.FromHexString(
+				GetExpectedHashesForNamedInputs(DefaultVariant).TryGetValue("Empty", out var hex)
+					? hex
+					: throw new KeyNotFoundException(
+						$"Expected hash for \"Empty\" input is not defined for variant '{DefaultVariant}'."));
+
+		protected abstract TAlgorithm CreateAlgorithm(TVariant variant);
+
+		/// <summary>
+		/// Returns expected hash outputs for well-known named test inputs (e.g., "Empty", "ABC").
+		/// </summary>
+		protected abstract IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(TVariant variant);
+
+		/// <summary>
+		/// Returns expected hash outputs for incremental byte sequences input[0..i].
+		/// </summary>
+		protected abstract IReadOnlyList<string> GetExpectedHashesForIncrementalInput(TVariant variant);
 
 		/// <summary>
 		/// Gets or sets the expected hashValue of the <see cref="HashAlgorithm.InputBlockSize" /> property. Default is 1 for stream-based algorithms.
@@ -64,7 +88,7 @@ namespace Bodu.Security.Cryptography
 		/// </returns>
 		protected static IEnumerable<object[]> GetWritableProperties()
 		{
-			var algorithmType = typeof(T); // T is the hash algorithm under test
+			var algorithmType = typeof(TAlgorithm); // T is the hash algorithm under test
 			var properties = algorithmType
 				.GetProperties(BindingFlags.Public | BindingFlags.Instance)
 				.Where(p => p.CanRead && p.CanWrite && p.GetIndexParameters().Length == 0)
@@ -83,52 +107,50 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Helper to assert a hash result matches expected hex.
+		/// Shared input vectors used across all hash algorithm tests.
 		/// </summary>
-		/// <param name="input">The input bytes.</param>
-		/// <param name="expectedHex">Expected hex hash result.</param>
-		protected static void AssertHashMatches(HashAlgorithmVariant variant, byte[] input, string expectedHex)
+		protected static readonly IReadOnlyDictionary<string, byte[]> SharedInputs = new Dictionary<string, byte[]>
 		{
-			using HashAlgorithm algorithm = variant.Factory.Invoke();
-			byte[] actual = algorithm.ComputeHash(input);
-			byte[] expected = Convert.FromHexString(expectedHex);
-			CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for variant '{variant.Name}'.");
-		}
+			["Empty"] = Array.Empty<byte>(),
+			["ABC"] = Encoding.ASCII.GetBytes("ABC"),
+			["QuickBrownFox"] = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog"),
+			["Zeros_16"] = new byte[16],
+			["Sequential_0_255"] = Enumerable.Range(0, 255).Select(i => (byte)i).ToArray()
+		};
 
-		/// <summary>
-		/// Executes the common test that verifies progressively longer byte prefixes hash to expected results.
-		/// </summary>
-		/// <param name="variant">The algorithm variant containing the expected test data and factory.</param>
-		protected static void AssertHashMatchesInputPrefixes(HashAlgorithmVariant variant)
+		public static IEnumerable<object[]> ComputeHashNamedInputTestData()
 		{
-			using HashAlgorithm algorithm = variant.Factory.Invoke();
-
-			int vectorCount = algorithm.HashSize / 2;
-			byte[] input = new byte[vectorCount];
-			string[] expectedHex = variant.ExpectedHash_ForInputPrefixes as string[]
-				?? variant.ExpectedHash_ForInputPrefixes.ToArray();
-
-			Assert.AreEqual(vectorCount, expectedHex.Length, "Unexpected number of test vectors.");
-
-			for (int i = 0; i < vectorCount; i++)
+			var instance = new TTest();
+			foreach (var variant in instance.GetHashAlgorithmVariants())
 			{
-				input[i] = (byte)i;
-				byte[] expected = Convert.FromHexString(expectedHex[i]);
-				byte[] actual = algorithm.ComputeHash(input, 0, i);
-
-				CollectionAssert.AreEqual(expected, actual, $"Hash mismatch at prefix length {i}");
+				var testVectors = instance.GetTestVectors(variant);
+				foreach (var vector in testVectors)
+				{
+					yield return new object[] { variant, vector.Name, vector.Input, vector.ExpectedHash };
+				}
 			}
 		}
 
-		protected static void AssertHashMatchesTestVector(HashAlgorithmVariant variant)
+		public static IEnumerable<object[]> HashAlgorithmVariants() =>
+			new TTest().GetHashAlgorithmVariants().Select(variant => new object[] { variant });
+
+		/// <summary>
+		/// Combines shared inputs with expected outputs into test vectors.
+		/// </summary>
+		protected virtual IEnumerable<HashTestVector> GetTestVectors(TVariant variant)
 		{
-			foreach (var testVector in variant.ExpectedHash_ForHashTestVectors)
+			var expected = GetExpectedHashesForNamedInputs(variant);
+			foreach (var (name, input) in SharedInputs)
 			{
-				using HashAlgorithm algorithm = variant.Factory.Invoke();
-				byte[] input = Encoding.ASCII.GetBytes(testVector.InputHex);
-				byte[] actual = algorithm.ComputeHash(input);
-				string result = Convert.ToHexString(actual);
-				Assert.AreEqual(testVector.ExpectedHex, result, $"Hash mismatch for variant '{variant.Name}' test vector.");
+				if (expected.TryGetValue(name, out var hex))
+				{
+					yield return new HashTestVector
+					{
+						Name = name,
+						Input = input,
+						ExpectedHash = Convert.FromHexString(hex)
+					};
+				}
 			}
 		}
 	}

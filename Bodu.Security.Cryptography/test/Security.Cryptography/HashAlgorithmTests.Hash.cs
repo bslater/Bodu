@@ -2,15 +2,15 @@
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
-		/// Verifies that accessing <see cref="HashAlgorithm.Hash" /> after calling
-		/// <see cref="HashAlgorithm.Initialize" /> without finalizing the hash computation throws a <see cref="CryptographicUnexpectedOperationException" />.
+		/// Verifies that accessing <see cref="HashAlgorithm.Hash" /> after calling <see cref="HashAlgorithm.Initialize" /> without
+		/// finalizing the hash computation throws a <see cref="CryptographicUnexpectedOperationException" />.
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(CryptographicUnexpectedOperationException))]
-		public void Hash_Get_WhenInitializedAfterTransformBlock_ShouldThrowUnexpectedOperationException()
+		public void Hash_Get_WhenInitializedAfterTransformBlock_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			algorithm.TransformBlock(CryptoTestUtilities.ByteSequence0To255, 0, 256, null, 0);
@@ -30,7 +30,7 @@ namespace Bodu.Security.Cryptography
 		[DataRow(0, 100)]
 		[DataRow(10, 10)]
 		[ExpectedException(typeof(CryptographicUnexpectedOperationException))]
-		public void Hash_Get_WhenTransformFinalBlockNotCalled_ShouldThrowUnexpectedOperationException(int offset, int count)
+		public void Hash_Get_WhenTransformFinalBlockNotCalled_ShouldThrowExactly(int offset, int count)
 		{
 			using var algorithm = this.CreateAlgorithm();
 			algorithm.TransformBlock(CryptoTestUtilities.ByteSequence0To255, offset, count, null, 0);

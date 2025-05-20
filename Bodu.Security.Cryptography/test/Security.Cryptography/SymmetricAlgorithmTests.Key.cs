@@ -36,21 +36,21 @@ namespace Bodu.Security.Cryptography
 		/// Validates that setting the Key to null throws an ArgumentNullException.
 		/// </summary>
 		[TestMethod]
-		public void Key_WhenSetToNull_ShouldThrowArgumentNullException()
+		public void Key_WhenSetToNull_ShouldThrowExactly()
 		{
 			using T algorithm = this.CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() => algorithm.Key = null);
+			Assert.ThrowsExactly<ArgumentNullException>(() => algorithm.Key = null);
 		}
 
 		/// <summary>
 		/// Validates that setting an invalid Key size throws a CryptographicException.
 		/// </summary>
 		[TestMethod]
-		public void Key_WhenSetToInvalidSize_ShouldThrowCryptographicException()
+		public void Key_WhenSetToInvalidSize_ShouldThrowExactly()
 		{
 			using T algorithm = this.CreateAlgorithm();
 			byte[] invalidKey = new byte[algorithm.BlockSize - 1];
-			Assert.ThrowsException<CryptographicException>(() => algorithm.Key = invalidKey);
+			Assert.ThrowsExactly<CryptographicException>(() => algorithm.Key = invalidKey);
 		}
 
 		/// <summary>

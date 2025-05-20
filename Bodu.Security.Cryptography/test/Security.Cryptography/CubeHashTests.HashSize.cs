@@ -8,9 +8,6 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	/// <summary>
-	/// Contains unit tests for the <see cref="CubeHash.HashSize" /> property and its interaction with the algorithming lifecycle.
-	/// </summary>
 	public partial class CubeHashTests
 	{
 		/// <summary>
@@ -44,7 +41,8 @@ namespace Bodu.Security.Cryptography
 
 			algorithm.ComputeHash(input);
 
-			// Change the hash size hashValue after the first computation, and perform the second algorithm computation with the new hash size hashValue.
+			// Change the hash size hashValue after the first computation, and perform the second algorithm computation with the new hash
+			// size hashValue.
 			algorithm.HashSize = 32;
 			algorithm.ComputeHash(input);
 		}

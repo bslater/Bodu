@@ -31,30 +31,30 @@ namespace Bodu.Infrastructure
         /// Verifies that passing null throws ArgumentNullException.
         /// </summary>
         [TestMethod]
-        public void WhenArrayIsNull_ShouldThrowArgumentNullException()
+        public void WhenArrayIsNull_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(2);
-            Assert.ThrowsException<ArgumentNullException>(() => buffer.Add(null!, 0, 1));
+            Assert.ThrowsExactly<ArgumentNullException>(() => buffer.Add(null!, 0, 1));
         }
 
         /// <summary>
         /// Verifies that a negative index throws ArgumentOutOfRangeException.
         /// </summary>
         [TestMethod]
-        public void WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+        public void WhenIndexIsNegative_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(4);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => buffer.Add(new byte[4], -1, 1));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => buffer.Add(new byte[4], -1, 1));
         }
 
         /// <summary>
         /// Verifies that a negative count throws ArgumentOutOfRangeException.
         /// </summary>
         [TestMethod]
-        public void WhenCountIsNegative_ShouldThrowArgumentOutOfRangeException()
+        public void WhenCountIsNegative_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(4);
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => buffer.Add(new byte[4], 0, -1));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => buffer.Add(new byte[4], 0, -1));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Bodu.Infrastructure
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void WhenIndexAndCountAreInvalidRange_ShouldThrowArgumentException()
+        public void WhenIndexAndCountAreInvalidRange_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(4);
             buffer.Add(new byte[2], 1, 2);
@@ -73,7 +73,7 @@ namespace Bodu.Infrastructure
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void WhenCountExceedsRemainingCapacity_ShouldThrowArgumentException()
+        public void WhenCountExceedsRemainingCapacity_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(2);
             buffer.Add(new byte[] { 1 }, 0, 1);

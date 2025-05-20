@@ -12,7 +12,7 @@ namespace Bodu.Security.Cryptography
 		/// <summary>
 		/// Provides valid input blocks for padding scenarios with expected padded outputs.
 		/// </summary>
-		public static IEnumerable<object[]> ValidPaddingCases => new[]
+		public static IEnumerable<object[]> ValidPaddingCases() => new[]
 		{
 			// PaddingMode, InputHex, BlockSize, ExpectedHex Typical valid cases
 			new object[] { PaddingMode.PKCS7, "102030", 8, "1020300505050505" },
@@ -49,7 +49,7 @@ namespace Bodu.Security.Cryptography
 		/// <summary>
 		/// Provides invalid input configurations for padding logic that are expected to throw exceptions.
 		/// </summary>
-		public static IEnumerable<object[]> InvalidPaddingCases => new[]
+		public static IEnumerable<object[]> InvalidPaddingCases() => new[]
 		{
 			// PaddingMode, InputHex, BlockSize, ExpectedExceptionType, DestinationSize PaddingMode.None but input not aligned
 			new object[] { PaddingMode.None, "01020304", 8, typeof(CryptographicException) },
@@ -75,7 +75,7 @@ namespace Bodu.Security.Cryptography
 		/// ISO10126, only the last padding byte is validated due to randomness.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void PadBlock_WhenValidInput_ShouldApplyCorrectPadding_UsingByteArray(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -100,7 +100,7 @@ namespace Bodu.Security.Cryptography
 		/// ISO10126, only the last padding byte is validated due to randomness.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void PadBlock_WhenValidInput_ShouldApplyCorrectPadding_UsingSpan(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -130,7 +130,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that PadBlock returns the expected total output length after padding is applied when using the byte array overload.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void PadBlock_WhenValidInput_ShouldReturnExpectedLength_UsingByteArray(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -145,7 +145,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that PadBlock returns the expected total output length after padding is applied when using the span-based overload.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void PadBlock_WhenValidInput_ShouldReturnExpectedLength_UsingSpan(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -165,7 +165,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that PadBlock preserves the original bytes at the beginning of the padded block when using the byte array overload.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void PadBlock_WhenValidInput_ShouldPreserveOriginalBytes_UsingByteArray(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -179,7 +179,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that PadBlock preserves the original bytes at the beginning of the padded block when using the span-based overload.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), typeof(CryptoUtilitiesTests))]
+		[DynamicData(nameof(CryptoUtilitiesTests.ValidPaddingCases), DynamicDataSourceType.Method)]
 		public void PadBlock_WhenValidInput_ShouldPreserveOriginalBytes_UsingSpan(
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
@@ -200,8 +200,8 @@ namespace Bodu.Security.Cryptography
 		/// size when using the byte array overload. Skips tests that require a custom destination length.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), typeof(CryptoUtilitiesTests))]
-		public void PadBlock_WhenInvalidInput_ShouldThrowException_UsingByteArray(
+		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), DynamicDataSourceType.Method)]
+		public void PadBlock_WhenInvalidInput_ShouldThrowExactly_WithArray(
 			PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType, int? destinationLength = null)
 		{
 			byte[] input = Convert.FromHexString(inputHex);
@@ -224,8 +224,8 @@ namespace Bodu.Security.Cryptography
 		/// size when using the span-based overload.
 		/// </summary>
 		[TestMethod]
-		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), typeof(CryptoUtilitiesTests))]
-		public void PadBlock_WhenInvalidInput_ShouldThrowException_UsingSpan(
+		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), DynamicDataSourceType.Method)]
+		public void PadBlock_WhenInvalidInput_ShouldThrowExactly_WithSpan(
 			PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType, int? destinationLength = null)
 		{
 			byte[] input = Convert.FromHexString(inputHex);

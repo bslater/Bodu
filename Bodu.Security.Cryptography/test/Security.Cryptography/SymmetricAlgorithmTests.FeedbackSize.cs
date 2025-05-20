@@ -17,11 +17,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(-1)]
 		[DataRow(0)]
 		[DataRow(null)]
-		public void FeedbackSize_WhenInvalid_ShouldThrowCryptographicException(int? feedbackSize)
+		public void FeedbackSize_WhenInvalid_ShouldThrowExactly(int? feedbackSize)
 		{
 			using T algorithm = this.CreateAlgorithm();
 			int sizeToTest = feedbackSize ?? algorithm.BlockSize + 1;
-			Assert.ThrowsException<CryptographicException>(() => algorithm.FeedbackSize = sizeToTest);
+			Assert.ThrowsExactly<CryptographicException>(() => algorithm.FeedbackSize = sizeToTest);
 		}
 	}
 }

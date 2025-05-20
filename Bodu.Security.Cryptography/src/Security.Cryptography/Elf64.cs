@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
@@ -32,8 +33,8 @@ namespace Bodu.Security.Cryptography
 		: System.Security.Cryptography.HashAlgorithm
 	{
 		private ulong seedValue;
-		private ulong value;
-		private bool disposed;
+		private ulong hashValue;
+		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -110,7 +111,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.value = this.seedValue;
+			this.hashValue = this.seedValue;
 		}
 
 		/// <inheritdoc />
@@ -132,7 +133,29 @@ namespace Bodu.Security.Cryptography
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
-			this.ProcessBlocks(array, ibStart, cbSize);
+			this.HashCore(array.AsSpan(ibStart, cbSize));
+		}
+
+		/// <summary>
+		/// Processes a block of data by feeding it into the <see cref="Elf64" /> algorithm.
+		/// </summary>
+		/// <param name="source">
+		/// The input data to process. This method consumes the entire span and updates the internal checksum state accordingly.
+		/// </param>
+		protected override void HashCore(ReadOnlySpan<byte> source)
+		{
+			ThrowIfDisposed();
+
+			var v = hashValue;
+			foreach (byte b in source)
+			{
+				v = (v << 4) + b;
+				ulong work = v & 0xF000000000000000UL;
+
+				v ^= work >> 56;
+				v &= ~work;
+			}
+			hashValue = v;
 		}
 
 		/// <inheritdoc />
@@ -155,34 +178,33 @@ namespace Bodu.Security.Cryptography
 			this.State = 2;
 #endif
 
-			return this.value.GetBytes(asBigEndian: true);
+			return this.hashValue.GetBytes(asBigEndian: true);
 		}
 
-		/// <summary>
-		/// Performs the ELF hash mixing routine over a block of bytes.
-		/// </summary>
-		/// <param name="array">The input data.</param>
-		/// <param name="offset">Starting index within the array.</param>
-		/// <param name="length">Number of bytes to process.</param>
-		/// <remarks>
-		/// This method shifts the internal hash state left by 4 bits, adds the current byte, then XORs and clears the high-order bits to
-		/// ensure even distribution of bits.
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ProcessBlocks(byte[] array, int offset, int length)
-		{
-			int end = offset + length;
-			for (int i = offset; i < end; i++)
-			{
-				this.value = (this.value << 4) + array[i];
-				ulong work = this.value & 0xF000000000000000UL;
-				if (work != 0)
-				{
-					this.value ^= work >> 56;
-					this.value &= ~work;
-				}
-			}
-		}
+		///// <summary>
+		///// Performs the ELF hash mixing routine over a block of bytes.
+		///// </summary>
+		///// <param name="array">The input data.</param>
+		///// <param name="offset">Starting index within the array.</param>
+		///// <param name="length">Number of bytes to process.</param>
+		///// <remarks>
+		///// This method shifts the internal hash state left by 4 bits, adds the current byte, then XORs and clears the high-order bits to
+		///// ensure even distribution of bits.
+		///// </remarks>
+		//private void ProcessBlocks(byte[] array, int offset, int length)
+		//{
+		//	int end = offset + length;
+		//	for (int i = offset; i < end; i++)
+		//	{
+		//		this.hashValue = (this.hashValue << 4) + array[i];
+		//		ulong work = this.hashValue & 0xF000000000000000UL;
+		//		if (work != 0)
+		//		{
+		//			this.hashValue ^= work >> 56;
+		//			this.hashValue &= ~work;
+		//		}
+		//	}
+		//}
 
 		/// <summary>
 		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
@@ -210,7 +232,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.seedValue = this.value = 0;
+				this.seedValue = this.hashValue = 0;
 			}
 
 			this.disposed = true;

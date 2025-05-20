@@ -10,53 +10,47 @@ using Bodu.Infrastructure;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
-		/// <summary>
-		/// Asserts that hashing a stream using <see cref="HashAlgorithm.ComputeHashAsync(Stream)" /> returns the expected hex result.
-		/// </summary>
-		/// <param name="variant">The test variant with algorithm factory and expected hash.</param>
-		/// <param name="input">The stream content to hash.</param>
-		/// <param name="expectedHex">The expected hash result in hex.</param>
-		/// <returns>A task representing the asynchronous test execution.</returns>
-		protected async Task AssertStreamHashMatchesAsync(HashAlgorithmVariant variant, byte[] input, string expectedHex)
+		[DataTestMethod]
+		[DynamicData(nameof(ComputeHashNamedInputTestData))]
+		public async Task ComputeHashAsync_WhenUsingNamedInput_ShouldMatchExpected(TVariant variant, string testName, byte[] input, byte[] expected)
 		{
+			using var algorithm = CreateAlgorithm(variant);
 			await using var stream = new MemoryStream(input);
-			using var algorithm = variant.Factory.Invoke();
 
-			byte[] result = await algorithm.ComputeHashAsync(stream);
-			string actual = Convert.ToHexString(result);
+			byte[] actual = await algorithm.ComputeHashAsync(stream);
 
-			Assert.AreEqual(expectedHex, actual, $"Hash mismatch for variant '{variant.Name}'.");
+			Trace.WriteLineIf(actual != expected, $"Expected: {Convert.ToHexString(expected)}");
+			Trace.WriteLineIf(actual != expected, $"Actual  : {Convert.ToHexString(actual)}");
+			CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for {testName} using variant '{variant}'.");
 		}
 
-		/// <summary>
-		/// Asserts that hashing a stream using <see cref="HashAlgorithm.ComputeHashAsync(Stream)" /> returns the expected hex result.
-		/// </summary>
-		/// <param name="variant">The test variant with algorithm factory and expected hash.</param>
-		/// <param name="input">The stream content to hash.</param>
-		/// <param name="expectedHex">The expected hash result in hex.</param>
-		/// <returns>A task representing the asynchronous test execution.</returns>
-		protected async Task AssertHashMatchesInputPrefixesAsync(HashAlgorithmVariant variant)
+		[DataTestMethod]
+		[DynamicData(nameof(HashAlgorithmVariants))]
+		public async Task ComputeHashAsync_WhenUsingIncrementalInput_ShouldMatchExpected(TVariant variant)
 		{
-			using HashAlgorithm algorithm = variant.Factory.Invoke();
-			int vectorCount = algorithm.HashSize / 2;
-			byte[] input = Enumerable.Range(0, vectorCount).Select(i => (byte)i).ToArray();
+			using var algorithm = CreateAlgorithm(variant);
+			var count = algorithm.HashSize / 2;
+			byte[] input = new byte[count];
+			var expectedHashes = GetExpectedHashesForIncrementalInput(variant).ToArray();
 
-			string[] expectedHex = variant.ExpectedHash_ForInputPrefixes as string[]
-				?? variant.ExpectedHash_ForInputPrefixes.ToArray();
+			if (!expectedHashes.Any())
+				Assert.Inconclusive($"No expected hashes defined for variant {variant}.");
 
-			Assert.AreEqual(vectorCount, expectedHex.Length, "Unexpected number of expected hash results.");
+			Assert.AreEqual(expectedHashes.Length, count, "Expected hashes count should match the hash algorithm size.");
 
-			for (int i = 0; i < vectorCount; i++)
+			for (int i = 0; i < count; i++)
 			{
-				// Create a stream using a prefix of the input
-				await using var stream = new MemoryStream(input, 0, i + 1, writable: false);
+				byte[] expected = Convert.FromHexString(expectedHashes[i]);
+				input[i] = (byte)i;
+				await using var stream = new MemoryStream(input, 0, i, writable: false);
 
-				byte[] result = await algorithm.ComputeHashAsync(stream);
-				string actual = Convert.ToHexString(result);
+				byte[] actual = await algorithm.ComputeHashAsync(stream);
 
-				Assert.AreEqual(expectedHex[i], actual, $"Hash mismatch for variant '{variant.Name}' at prefix length {i + 1}.");
+				Trace.WriteLineIf(actual != expected, $"Expected: {Convert.ToHexString(expected)}");
+				Trace.WriteLineIf(actual != expected, $"Actual  : {Convert.ToHexString(actual)}");
+				CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for variant '{variant}' at incremental length {i + 1}.");
 			}
 		}
 
@@ -82,7 +76,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that ComputeHashAsync throws ArgumentNullException when the stream is null.
 		/// </summary>
 		[TestMethod]
-		public async Task ComputeHashAsync_WhenStreamIsNull_ShouldThrowArgumentNullException()
+		public async Task ComputeHashAsync_WhenStreamIsNull_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () =>
@@ -95,7 +89,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that ComputeHashAsync throws TaskCanceledException if the cancellation token is already canceled.
 		/// </summary>
 		[TestMethod]
-		public async Task ComputeHashAsync_WhenCancelledTokenIsPassed_ShouldThrowTaskCanceledException()
+		public async Task ComputeHashAsync_WhenCancelledTokenIsPassed_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			using var stream = new MemoryStream(new byte[4096]);
@@ -112,40 +106,46 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that ComputeHashAsync throws ArgumentNullException when passed a null stream directly.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public async Task ComputeHashAsync_ComputeHashAsync_WithNullStream_ShouldThrowArgumentNullException()
+		public async Task ComputeHashAsync_ComputeHashAsync_WithNullStream_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
-			await algorithm.ComputeHashAsync(null!);
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () =>
+			{
+				await algorithm.ComputeHashAsync(null!);
+			});
 		}
 
 		/// <summary>
 		/// Verifies that ComputeHashAsync throws ObjectDisposedException when the algorithm is disposed.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(ObjectDisposedException))]
-		public async Task ComputeHashAsync_ComputeHashAsync_WhenAlgorithmDisposed_ShouldThrowObjectDisposedException()
+		public async Task ComputeHashAsync_ComputeHashAsync_WhenAlgorithmDisposed_ShouldThrowExactly()
 		{
 			var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
 			using var stream = new MemoryStream(new byte[16]);
-			await algorithm.ComputeHashAsync(stream);
+			await Assert.ThrowsExceptionAsync<ObjectDisposedException>(async () =>
+			{
+				await algorithm.ComputeHashAsync(stream);
+			});
 		}
 
 		/// <summary>
 		/// Verifies that ComputeHashAsync throws TaskCanceledException when cancellation token is triggered.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(TaskCanceledException))]
-		public async Task ComputeHashAsync_ComputeHashAsync_WithCancelledToken_ShouldThrowTaskCanceledException()
+		public async Task ComputeHashAsync_ComputeHashAsync_WithCancelledToken_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			using var stream = new MemoryStream(new byte[4096]);
 			using var cts = new CancellationTokenSource();
 			cts.Cancel();
 
-			await algorithm.ComputeHashAsync(stream, cts.Token);
+			await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
+			{
+				await algorithm.ComputeHashAsync(stream, cts.Token);
+			});
 		}
 
 		/// <summary>
@@ -155,19 +155,18 @@ namespace Bodu.Security.Cryptography
 		public async Task ComputeHashAsync_WhenStreamIsEmpty_ShouldReturnExpectedHash()
 		{
 			using var algorithm = this.CreateAlgorithm();
-			using var stream = new MemoryStream(new byte[0]);
+			using var stream = new MemoryStream(Array.Empty<byte>());
 
-			byte[] result = await algorithm.ComputeHashAsync(stream);
-			string actualHex = Convert.ToHexString(result);
+			byte[] actual = await algorithm.ComputeHashAsync(stream);
 
-			Assert.AreEqual(this.ExpectedHash_ForEmptyByteArray, actualHex);
+			CollectionAssert.AreEqual(this.ExpectedEmptyInputHash, actual);
 		}
 
 		/// <summary>
 		/// Verifies that <see cref="HashAlgorithm.ComputeHashAsync" /> supports cancellation during slow stream processing.
 		/// </summary>
 		[TestMethod]
-		public async Task ComputeHashAsync_WhenCancelled_ShouldThrowOperationCanceledException()
+		public async Task ComputeHashAsync_WhenCancelled_ShouldThrowExactly()
 		{
 			using var cancellationSource = new CancellationTokenSource(1000); // cancel after 1 second
 			using var stream = new ThrottledIncrementingByteStream(10000); // delayed stream that is 10 seconds
@@ -175,15 +174,17 @@ namespace Bodu.Security.Cryptography
 
 			await Task.WhenAny(
 				Assert.ThrowsExceptionAsync<OperationCanceledException>(() =>
-					algorithm.ComputeHashAsync(stream, cancellationSource.Token)),
-				Task.Delay(5000)); // just in case
+				{
+					return algorithm.ComputeHashAsync(stream, cancellationSource.Token);
+				}),
+				Task.Delay(5000));   // just in case
 		}
 
 		/// <summary>
 		/// Verifies behavior when <see cref="HashAlgorithmExtensions.ComputeHashAsync" /> is cancelled before the await begins.
 		/// </summary>
 		[TestMethod]
-		public async Task ComputeHashAsync_WhenCancelledBeforeAwait_ShouldThrowTaskCanceledException()
+		public async Task ComputeHashAsync_WhenCancelledBeforeAwait_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			var stream = new FixedLengthIncrementingStream(int.MaxValue);

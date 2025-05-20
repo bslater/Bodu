@@ -21,11 +21,11 @@ namespace Bodu.Infrastructure
         /// Verifies that calling GetRandomBytes on an incomplete buffer throws InvalidOperationException.
         /// </summary>
         [TestMethod]
-        public void WhenBufferNotFull_ShouldThrowInvalidOperationException()
+        public void WhenBufferNotFull_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(3);
             buffer.Add(new byte[] { 1 }, 0, 1);
-            Assert.ThrowsException<InvalidOperationException>(() => buffer.GetBytes());
+            Assert.ThrowsExactly<InvalidOperationException>(() => buffer.GetBytes());
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Bodu.Infrastructure
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void WhenGetBytesCalledTwice_ShouldThrowOnSecondCall()
+        public void WhenGetBytesCalledTwice_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(2);
             buffer.Add(new byte[] { 1, 2 }, 0, 2);

@@ -54,7 +54,7 @@ namespace Bodu.Security.Cryptography
 	/// signatures, or secure data integrity checks.</note>
 	/// </remarks>
 	public abstract class SipHash
-			: System.Security.Cryptography.KeyedHashAlgorithm
+		: System.Security.Cryptography.KeyedHashAlgorithm
 	{
 		/// <summary>
 		/// The fixed key size in bytes (128 bits).
@@ -88,7 +88,7 @@ namespace Bodu.Security.Cryptography
 		private int residualBytes;
 		private ulong v0, v1, v2, v3;
 		private readonly Memory<byte> residualByteBuffer;
-		private bool disposed;
+		private bool disposed = false;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SipHash" /> class with a specified hash size.
@@ -98,7 +98,7 @@ namespace Bodu.Security.Cryptography
 		protected SipHash(int hashSize)
 		{
 			if (Array.IndexOf(ValidHashSizes, hashSize) == -1)
-				throw new ArgumentException($"Invalid hash size {hashSize}. Valid hash sizes are: {string.Join(", ", ValidHashSizes)}", nameof(hashSize));
+				throw new ArgumentException($"Invalid hashValue size {hashSize}. Valid hashValue sizes are: {string.Join(", ", ValidHashSizes)}", nameof(hashSize));
 
 			KeyValue = new byte[KeySize];
 			CryptoUtilities.FillWithRandomNonZeroBytes(KeyValue);

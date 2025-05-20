@@ -9,19 +9,21 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class CryptoTransformTests<T>
+	public abstract partial class CryptoTransformTests<TAlgorithm>
 	{
 		/// <summary>
-		/// Verifies that <see cref="ICryptoTransform.TransformBlock" /> throws an
-		/// <see cref="ObjectDisposedException" /> after the algorithm is disposed.
+		/// Verifies that <see cref="ICryptoTransform.TransformBlock" /> throws an <see cref="ObjectDisposedException" /> after the
+		/// algorithm is disposed.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(ObjectDisposedException))]
-		public void WhenDisposed_ShouldThrowObjectDisposedException_OnTransformBlock()
+		public void TransformBlock_WhenDisposed_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
-			algorithm.TransformBlock(CryptoTestUtilities.EmptyByteArray, 0, 0, null, 0);
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
+			{
+				algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
+			});
 		}
 	}
 }

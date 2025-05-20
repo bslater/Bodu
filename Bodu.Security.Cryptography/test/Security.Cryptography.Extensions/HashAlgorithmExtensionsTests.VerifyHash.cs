@@ -102,7 +102,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		[TestMethod]
 		public void VerifyHash_WhenAlgorithmIsNull_ShouldThrow()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				HashAlgorithm? algorithm = null;
 				algorithm.VerifyHash(SampleData, SampleHash);
@@ -116,7 +116,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		public void VerifyHash_WhenExpectedHashIsNull_ShouldThrow()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash(SampleData, (byte[])null!);
 			});
@@ -129,7 +129,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		public void VerifyHash_WhenExpectedHexIsNull_ShouldThrow()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash(SampleData, (string)null!);
 			});
@@ -143,7 +143,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		{
 			using var algorithm = CreateAlgorithm();
 			using var stream = new MemoryStream(SampleData);
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash(stream, (byte[])null!);
 			});
@@ -157,7 +157,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		{
 			using var algorithm = CreateAlgorithm();
 			using var stream = new MemoryStream(SampleData);
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash(stream, (string)null!);
 			});
@@ -170,7 +170,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		public void VerifyHash_WhenStringInputIsNull_ShouldThrow()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash(null!, Encoding.ASCII, SampleHash);
 			});
@@ -183,7 +183,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		public void VerifyHash_WhenEncodingIsNull_ShouldThrow()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash("hello", null!, SampleHash);
 			});
@@ -196,7 +196,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		public void VerifyHash_WhenExpectedHashIsNullForString_ShouldThrow()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.VerifyHash("hello", Encoding.ASCII, null!);
 			});

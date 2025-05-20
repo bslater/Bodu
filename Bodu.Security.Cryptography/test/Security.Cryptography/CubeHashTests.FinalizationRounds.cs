@@ -8,9 +8,6 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	/// <summary>
-	/// Contains unit tests for the <see cref="CubeHash.FinalizationRounds" /> property and its interaction with the algorithming lifecycle.
-	/// </summary>
 	public partial class CubeHashTests
 	{
 		/// <summary>
@@ -44,8 +41,8 @@ namespace Bodu.Security.Cryptography
 
 			algorithm.ComputeHash(input);
 
-			// Change the finalization rounds hashValue after the first computation, and perform the second algorithm computation with the new
-			// finalization rounds hashValue.
+			// Change the finalization rounds hashValue after the first computation, and perform the second algorithm computation with the
+			// new finalization rounds hashValue.
 			algorithm.FinalizationRounds = 64;
 			algorithm.ComputeHash(input);
 		}

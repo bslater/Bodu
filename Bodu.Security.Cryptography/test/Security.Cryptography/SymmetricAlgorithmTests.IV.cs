@@ -36,21 +36,21 @@ namespace Bodu.Security.Cryptography
 		/// Validates that setting the IV to null throws an ArgumentNullException.
 		/// </summary>
 		[TestMethod]
-		public void IV_WhenSetToNull_ShouldThrowArgumentNullException()
+		public void IV_WhenSetToNull_ShouldThrowExactly()
 		{
 			using T algorithm = this.CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() => algorithm.IV = null);
+			Assert.ThrowsExactly<ArgumentNullException>(() => algorithm.IV = null);
 		}
 
 		/// <summary>
 		/// Validates that setting an invalid IV size throws a CryptographicException.
 		/// </summary>
 		[TestMethod]
-		public void IV_WhenSetToInvalidSize_ShouldThrowCryptographicException()
+		public void IV_WhenSetToInvalidSize_ShouldThrowExactly()
 		{
 			using T algorithm = this.CreateAlgorithm();
 			byte[] invalidIV = new byte[algorithm.BlockSize - 1];
-			Assert.ThrowsException<CryptographicException>(() => algorithm.IV = invalidIV);
+			Assert.ThrowsExactly<CryptographicException>(() => algorithm.IV = invalidIV);
 		}
 
 		/// <summary>

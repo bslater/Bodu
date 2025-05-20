@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that calling <see cref="HashAlgorithm.Clear" /> disposes the algorithm and further usage throws <see cref="ObjectDisposedException" />.
@@ -20,7 +20,7 @@ namespace Bodu.Security.Cryptography
 			algorithm.Clear();
 
 			byte[] buffer = new byte[1];
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
 				algorithm.ComputeHash(buffer);
 			});

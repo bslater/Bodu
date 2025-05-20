@@ -37,7 +37,7 @@ namespace Bodu.Security.Cryptography
 		private ulong partB;
 		private readonly Memory<byte> residualByteBuffer;  // To hold residual bytes
 		private int residualBytes;
-		private bool disposed;
+		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks

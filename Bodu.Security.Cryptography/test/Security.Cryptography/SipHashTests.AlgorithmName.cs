@@ -10,19 +10,25 @@ using System.Text;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class SipHashTests<T>
+	public abstract partial class SipHashTests<TTest, TAlgorithm>
 	{
 		[DataTestMethod]
-		[DataRow(-1, -1)]
-		[DataRow(3, 5)]
-		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString(int c, int d)
+		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
+		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString(SipHashVariant variant)
 		{
-			using var algorithm = new T();
-			if (c > 0 & d > 0)
+			using var algorithm = this.CreateAlgorithm(variant);
+
+			Assert.AreEqual($"SipHash-{algorithm.CompressionRounds}-{algorithm.FinalizationRounds}-{algorithm.HashSize}", algorithm.AlgorithmName);
+		}
+
+		[TestMethod]
+		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString()
+		{
+			using var algorithm = new TAlgorithm
 			{
-				algorithm.CompressionRounds = 3;
-				algorithm.FinalizationRounds = 5;
-			}
+				CompressionRounds = 3,
+				FinalizationRounds = 5
+			};
 
 			Assert.AreEqual($"SipHash-{algorithm.CompressionRounds}-{algorithm.FinalizationRounds}-{algorithm.HashSize}", algorithm.AlgorithmName);
 		}

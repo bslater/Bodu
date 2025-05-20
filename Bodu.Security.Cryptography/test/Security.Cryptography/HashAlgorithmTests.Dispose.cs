@@ -3,20 +3,20 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that calling <see cref="HashAlgorithm.ComputeHash(byte[])" /> after disposal throws an <see cref="ObjectDisposedException" />.
 		/// </summary>
 		[TestMethod]
-		public void Dispose_WhenComputeHashWithBufferCalledAfterDispose_ShouldThrowObjectDisposedException()
+		public void Dispose_WhenComputeHashWithBufferCalledAfterDispose_ShouldThrowExactly()
 		{
 			var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
-				_ = algorithm.ComputeHash(CryptoTestUtilities.EmptyByteArray);
+				_ = algorithm.ComputeHash(Array.Empty<byte>());
 			});
 		}
 
@@ -24,14 +24,14 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that calling <see cref="HashAlgorithm.ComputeHash(byte[], int, int)" /> after disposal throws an <see cref="ObjectDisposedException" />.
 		/// </summary>
 		[TestMethod]
-		public void Dispose_WhenComputeHashWithBufferRangeCalledAfterDispose_ShouldThrowObjectDisposedException()
+		public void Dispose_WhenComputeHashWithBufferRangeCalledAfterDispose_ShouldThrowExactly()
 		{
 			var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
-				_ = algorithm.ComputeHash(CryptoTestUtilities.EmptyByteArray, 0, 0);
+				_ = algorithm.ComputeHash(Array.Empty<byte>(), 0, 0);
 			});
 		}
 
@@ -39,12 +39,12 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that calling <see cref="HashAlgorithm.ComputeHash(Stream)" /> after disposal throws an <see cref="ObjectDisposedException" />.
 		/// </summary>
 		[TestMethod]
-		public void Dispose_WhenComputeHashWithStreamCalledAfterDispose_ShouldThrowObjectDisposedException()
+		public void Dispose_WhenComputeHashWithStreamCalledAfterDispose_ShouldThrowExactly()
 		{
 			var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 				_ = algorithm.ComputeHash(Stream.Null));
 		}
 
@@ -53,12 +53,12 @@ namespace Bodu.Security.Cryptography
 		/// throws an <see cref="ObjectDisposedException" />.
 		/// </summary>
 		[TestMethod]
-		public void Dispose_WhenTransformBlockCalledAfterDispose_ShouldThrowObjectDisposedException()
+		public void Dispose_WhenTransformBlockCalledAfterDispose_ShouldThrowExactly()
 		{
 			var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
 				_ = algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
 			});
@@ -68,12 +68,12 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that accessing the <see cref="HashAlgorithm.Hash" /> property after disposal throws an <see cref="ObjectDisposedException" />.
 		/// </summary>
 		[TestMethod]
-		public void Dispose_WhenTransformFinalBlockCalledAfterDispose_ShouldThrowObjectDisposedException()
+		public void Dispose_WhenTransformFinalBlockCalledAfterDispose_ShouldThrowExactly()
 		{
 			var algorithm = this.CreateAlgorithm();
 			algorithm.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
 				_ = algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
 			});
@@ -90,10 +90,10 @@ namespace Bodu.Security.Cryptography
 		/// </remarks>
 		[DataTestMethod]
 		[DynamicData(nameof(GetWritableProperties), DynamicDataSourceType.Method)]
-		public void Dispose_WhenAssigningProperty_ShouldThrowObjectDisposedException(PropertyInfo property)
+		public void Dispose_WhenAssigningProperty_ShouldThrowExactly(PropertyInfo property)
 		{
 			if (property is null)
-				Assert.Inconclusive($"No writable properties were found for type {typeof(T).Name}.");
+				Assert.Inconclusive($"No writable properties were found for type {typeof(TAlgorithm).Name}.");
 
 			using var algorithm = this.CreateAlgorithm();
 

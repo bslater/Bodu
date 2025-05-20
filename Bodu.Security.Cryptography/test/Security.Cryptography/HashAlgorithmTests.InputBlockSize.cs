@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that <see cref="HashAlgorithm.InputBlockSize" /> returns the expected default block size.
@@ -17,7 +17,7 @@ namespace Bodu.Security.Cryptography
 		public void InputBlockSize_ShouldBeExpectedInputBlockSize()
 		{
 			using var algorithm = this.CreateAlgorithm();
-			Assert.AreEqual(this.ExpectedInputBlockSize, algorithm.InputBlockSize, $"{typeof(T).Name} InputBlockSize should be {this.ExpectedInputBlockSize}.");
+			Assert.AreEqual(this.ExpectedInputBlockSize, algorithm.InputBlockSize, $"{typeof(TAlgorithm).Name} InputBlockSize should be {this.ExpectedInputBlockSize}.");
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that calling <see cref="HashAlgorithm.TransformBlock" /> after a completed hash and reinitialization does not throw.
@@ -34,10 +34,10 @@ namespace Bodu.Security.Cryptography
 		/// </remarks>
 		[DataTestMethod]
 		[DynamicData(nameof(GetWritableProperties), DynamicDataSourceType.Method)]
-		public void TransformBlock_WhenPropertySetAfterTransform_ShouldThrowCryptographicUnexpectedOperationException(PropertyInfo property)
+		public void TransformBlock_WhenPropertySetAfterTransform_ShouldThrowExactly(PropertyInfo property)
 		{
 			if (property is null)
-				Assert.Inconclusive($"No writable properties were found for type {typeof(T).Name}.");
+				Assert.Inconclusive($"No writable properties were found for type {typeof(TAlgorithm).Name}.");
 
 			using var algorithm = this.CreateAlgorithm();
 

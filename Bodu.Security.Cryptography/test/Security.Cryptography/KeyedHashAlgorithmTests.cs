@@ -3,9 +3,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class KeyedHashAlgorithmTests<T>
-		: Security.Cryptography.HashAlgorithmTests<T>
-		where T : System.Security.Cryptography.KeyedHashAlgorithm
+	public abstract partial class KeyedHashAlgorithmTests<TTest, TAlgorithm, TVariant>
+		: Security.Cryptography.HashAlgorithmTests<TTest, TAlgorithm, TVariant>
+		where TTest : HashAlgorithmTests<TTest, TAlgorithm, TVariant>, new()
+		where TAlgorithm : KeyedHashAlgorithm, new()
+		where TVariant : Enum
 	{
 		/// <summary>
 		/// Generates a unique and valid key for use with the current <see cref="KeyedHashAlgorithm" /> implementation.
@@ -22,7 +24,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		protected abstract IReadOnlyList<int> ValidKeyLengths { get; }
 
-		protected static void AssertValidKeyLength(T algorithm, int length)
+		protected static void AssertValidKeyLength(TAlgorithm algorithm, int length)
 		{
 			byte[] key = Enumerable.Repeat((byte)0xAA, length).ToArray();
 			algorithm.Key = key;

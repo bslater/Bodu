@@ -113,10 +113,10 @@ namespace Bodu.Security.Cryptography.Extensions
 		/// Verifies that TryVerifyHash returns false when the expected hash is null.
 		/// </summary>
 		[TestMethod]
-		public void TryVerifyHash_WhenExpectedHashIsNull__ShouldThrowException()
+		public void TryVerifyHash_WhenExpectedHashIsNull__ShouldThrowExactly()
 		{
 			HashAlgorithm? algorithm = null;
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.TryVerifyHash(SampleData, (byte[])null!);
 			});
@@ -136,10 +136,10 @@ namespace Bodu.Security.Cryptography.Extensions
 		/// Verifies that TryVerifyHash throws ArgumentNullException when the algorithm is null.
 		/// </summary>
 		[TestMethod]
-		public void TryVerifyHash_WhenAlgorithmIsNull_ShouldThrowException()
+		public void TryVerifyHash_WhenAlgorithmIsNull_ShouldThrowExactly()
 		{
 			HashAlgorithm? algorithm = null;
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm!.TryVerifyHash(SampleData, SampleHash);
 			});
@@ -149,10 +149,10 @@ namespace Bodu.Security.Cryptography.Extensions
 		/// Verifies that TryVerifyHash throws ArgumentNullException when the algorithm is null.
 		/// </summary>
 		[TestMethod]
-		public void TryVerifyHash_WhenAStringInputIsNull_ShouldThrowException()
+		public void TryVerifyHash_WhenAStringInputIsNull_ShouldThrowExactly()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.TryVerifyHash(null!, SampleEncoding, SampleStringHash);
 			});
@@ -162,10 +162,10 @@ namespace Bodu.Security.Cryptography.Extensions
 		/// Verifies that TryVerifyHash throws ArgumentNullException when the encoding is null.
 		/// </summary>
 		[TestMethod]
-		public void TryVerifyHash_WhenEncodingIsNull_ShouldThrowException()
+		public void TryVerifyHash_WhenEncodingIsNull_ShouldThrowExactly()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.TryVerifyHash(SampleString, null!, SampleStringHash);
 			});
@@ -175,10 +175,10 @@ namespace Bodu.Security.Cryptography.Extensions
 		/// Verifies that TryVerifyHash throws ArgumentNullException when the encoding is null.
 		/// </summary>
 		[TestMethod]
-		public void TryVerifyHash_WhenExpectedHashIsNul_ShouldThrowException()
+		public void TryVerifyHash_WhenExpectedHashIsNul_ShouldThrowExactly()
 		{
 			using var algorithm = CreateAlgorithm();
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.TryVerifyHash(SampleString, SampleEncoding, null!);
 			});

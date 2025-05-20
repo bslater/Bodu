@@ -23,7 +23,7 @@ namespace Bodu.Infrastructure
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void WhenSpanExceedsRemainingCapacity_ShouldThrowArgumentException()
+        public void WhenSpanExceedsRemainingCapacity_ShouldThrowExactly()
         {
             var buffer = new ByteBuffer(2);
             buffer.Add(new byte[] { 1 }, 0, 1);

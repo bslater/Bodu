@@ -13,7 +13,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void FillWithRandomNonZeroBytes_WhenBufferIsNull_ShouldThrowArgumentNullException()
+		public void FillWithRandomNonZeroBytes_WhenBufferIsNull_ShouldThrowExactly()
 		{
 			CryptoUtilities.FillWithRandomNonZeroBytes(null);
 		}
@@ -23,7 +23,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
-		public void FillWithRandomNonZeroBytes_WhenBufferIsEmpty_ShouldThrowArgumentException()
+		public void FillWithRandomNonZeroBytes_WhenBufferIsEmpty_ShouldThrowExactly()
 		{
 			CryptoUtilities.FillWithRandomNonZeroBytes(Array.Empty<byte>());
 		}

@@ -2,7 +2,7 @@
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class HashAlgorithmTests<T>
+	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that hashing data via <see cref="HashAlgorithm.TransformBlock" /> and
@@ -33,15 +33,15 @@ namespace Bodu.Security.Cryptography
 		public void TransformBlockAndFinalBlock_WhenInputIsEmpty_ShouldProduceExpectedHash()
 		{
 			using var algorithm = this.CreateAlgorithm();
-			byte[] expected = Convert.FromHexString(this.ExpectedHash_ForEmptyByteArray);
+			byte[] expected = this.ExpectedEmptyInputHash;
 
 			// Case 1: TransformBlock followed by TransformFinalBlock
-			algorithm.TransformBlock(CryptoTestUtilities.EmptyByteArray, 0, 0, null, 0);
-			algorithm.TransformFinalBlock(CryptoTestUtilities.EmptyByteArray, 0, 0);
+			algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
+			algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
 			CollectionAssert.AreEqual(expected, algorithm.Hash, "TransformBlock followed by TransformFinalBlock on empty input should match expected hash.");
 
 			// Case 2: TransformFinalBlock alone
-			algorithm.TransformFinalBlock(CryptoTestUtilities.EmptyByteArray, 0, 0);
+			algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
 			CollectionAssert.AreEqual(expected, algorithm.Hash, "TransformFinalBlock alone on empty input should match expected hash.");
 		}
 
@@ -176,7 +176,7 @@ namespace Bodu.Security.Cryptography
 #if NETFRAMEWORK || NETCOREAPP3_1
 
     // For .NET Framework and earlier .NET Core versions (up to 3.1), the second call should throw.
-    Assert.ThrowsException<CryptographicUnexpectedOperationException>(
+    Assert.ThrowsExactly<CryptographicUnexpectedOperationException>(
         () => algorithm.TransformFinalBlock(buffer, 0, 0)
     );
 #else

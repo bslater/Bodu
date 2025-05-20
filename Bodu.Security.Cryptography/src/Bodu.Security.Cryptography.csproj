@@ -35,6 +35,8 @@
     <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithm.Encrypt.cs" />
     <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithm.EncryptAsync.cs" />
     <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithm.TransformHelpers.cs" />
+    <Compile Remove="Security.Cryptography\Blowfish.cs" />
+    <Compile Remove="Security.Cryptography\BlowfishTransform.cs" />
   </ItemGroup>
 
   <ItemGroup>

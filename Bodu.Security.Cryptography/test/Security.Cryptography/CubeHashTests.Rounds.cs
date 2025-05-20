@@ -8,9 +8,6 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	/// <summary>
-	/// Contains unit tests for the <see cref="CubeHash.Rounds" /> property and its interaction with the algorithming lifecycle.
-	/// </summary>
 	public partial class CubeHashTests
 	{
 		/// <summary>

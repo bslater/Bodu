@@ -29,9 +29,9 @@ namespace Bodu.Infrastructure
         /// Verifies that the constructor throws when called with negative capacity.
         /// </summary>
         [TestMethod]
-        public void WhenCalledWithNegativeCapacity_ShouldThrowArgumentOutOfRangeException()
+        public void WhenCalledWithNegativeCapacity_ShouldThrowExactly()
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new ByteBuffer(-1));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ByteBuffer(-1));
         }
 
         /// <summary>

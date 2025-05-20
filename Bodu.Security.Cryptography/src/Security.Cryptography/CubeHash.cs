@@ -4,8 +4,11 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
+using System.Drawing;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Security.Cryptography
 {
@@ -60,7 +63,10 @@ namespace Bodu.Security.Cryptography
 		private int bitLength; // tracks number of bits consumed
 		private int rounds;
 		private uint[] state;
-		private bool disposed;
+		private bool disposed = false;
+		private readonly uint[] scratch = new uint[16];
+		private bool isInitializedStateCached = false;
+		private uint[] initializedState;
 
 #if !NET6_0_OR_GREATER
         private bool finalized; // flag to block reuse in older .NET
@@ -76,8 +82,7 @@ namespace Bodu.Security.Cryptography
 			this.Rounds = this.InitializationRounds = 16;
 			this.FinalizationRounds = 32;
 			this.bitLength = 0;
-			this.state = new uint[32];
-			this.InitializeVectors();
+			this.state = initializedState = new uint[32];
 		}
 
 		/// <inheritdoc />
@@ -125,7 +130,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
 				this.finalizationRounds = value;
-				this.Initialize();
+				isInitializedStateCached = false;
 			}
 		}
 
@@ -156,7 +161,7 @@ namespace Bodu.Security.Cryptography
 				ThrowHelper.ThrowIfOutOfRange(value, MinHashSize, MaxHashSize);
 				ThrowHelper.ThrowIfNotPositiveMultipleOf(value, 8);
 				this.HashSizeValue = value;
-				this.Initialize();
+				isInitializedStateCached = false;
 			}
 		}
 
@@ -184,7 +189,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
 				this.initializationRounds = value;
-				this.Initialize();
+				isInitializedStateCached = false;
 			}
 		}
 
@@ -213,7 +218,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinInputBlockSize, MaxInputBlockSize);
 				this.inputBlockSizeBits = value * 8;
-				this.Initialize();
+				isInitializedStateCached = false;
 			}
 		}
 
@@ -240,7 +245,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
 				this.rounds = value;
-				this.Initialize();
+				isInitializedStateCached = false;
 			}
 		}
 
@@ -305,7 +310,9 @@ namespace Bodu.Security.Cryptography
             this.finalized = false;
 #endif
 			this.bitLength = 0;
-			this.InitializeVectors();
+
+			EnsureInitialized();
+			InitializeVectors();
 		}
 
 		/// <inheritdoc />
@@ -326,16 +333,22 @@ namespace Bodu.Security.Cryptography
             if (this.finalized)
                 throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
-			ProcessInput(array.AsSpan(ibStart, cbSize));
+			EnsureInitialized();
+			HashCore(array.AsSpan(ibStart, cbSize));
 		}
 
 		/// <summary>
-		/// Processes input bytes into the internal state using 32-bit little-endian packing.
+		/// Processes a block of data by feeding it into the <see cref="ApHash" /> algorithm.
 		/// </summary>
-		/// <param name="data">Input bytes to process.</param>
-		private void ProcessInput(ReadOnlySpan<byte> data)
+		/// <param name="source">
+		/// The input data to process. This method consumes the entire span and updates the internal checksum state accordingly.
+		/// </param>
+		protected override void HashCore(ReadOnlySpan<byte> source)
 		{
-			foreach (byte b in data)
+			ThrowIfDisposed();
+			EnsureInitialized();
+
+			foreach (var b in source)
 			{
 				// XOR byte into current 32-bit word based on bit offset
 				this.state[this.bitLength / 32] ^= (uint)b << (8 * ((this.bitLength / 8) % 4));
@@ -369,6 +382,7 @@ namespace Bodu.Security.Cryptography
             this.finalized = true;
             this.State = 2;
 #endif
+			EnsureInitialized();
 
 			// Add padding bit to current word
 			uint pad = (uint)(128 >> (this.bitLength % 8));
@@ -380,25 +394,37 @@ namespace Bodu.Security.Cryptography
 			this.state[31] ^= 1U;
 			this.PerformRounds(this.finalizationRounds);
 
-			Span<byte> hash = stackalloc byte[this.HashSize / 8];
-			for (int i = 0; i < hash.Length; i++)
+			int byteLength = this.HashSize / 8;
+			byte[] result = GC.AllocateUninitializedArray<byte>(byteLength);
+			for (int i = 0; i < byteLength; i++)
 			{
-				hash[i] = (byte)(this.state[i / 4] >> (8 * (i % 4)));
+				result[i] = (byte)(this.state[i / 4] >> (8 * (i % 4)));
 			}
 
-			return hash.ToArray();
+			return result;
 		}
 
 		/// <summary>
 		/// Initializes the CubeHash internal state vector with parameters.
 		/// </summary>
-		private void InitializeVectors()
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void EnsureInitialized()
 		{
+			if (this.isInitializedStateCached)
+				return;
+
 			this.state = new uint[32];
 			this.state[0] = (uint)this.HashSize / 8;
 			this.state[1] = (uint)this.TransformBlockSize;
 			this.state[2] = (uint)this.Rounds;
 			this.PerformRounds(this.initializationRounds);
+			this.initializedState = this.state.ToArray();
+			this.isInitializedStateCached = true;
+		}
+
+		private void InitializeVectors()
+		{
+			this.state = this.initializedState.ToArray();
 		}
 
 		/// <summary>
@@ -409,22 +435,51 @@ namespace Bodu.Security.Cryptography
 		private void PerformRounds(int rounds)
 		{
 			Span<uint> stateSpan = this.state;
-			Span<uint> temp = stackalloc uint[16];
+			Span<uint> temp = scratch;
 
 			for (int r = 0; r < rounds; r++)
 			{
-				// Steps 1–10 from CubeHash specification
-				for (int i = 0; i < 16; i++) stateSpan[i + 16] += stateSpan[i];
-				for (int i = 0; i < 16; i++) temp[i ^ 8] = stateSpan[i];
-				for (int i = 0; i < 16; i++) stateSpan[i] = (temp[i] << 7) | (temp[i] >> (32 - 7));
-				for (int i = 0; i < 16; i++) stateSpan[i] ^= stateSpan[i + 16];
-				for (int i = 0; i < 16; i++) temp[i ^ 2] = stateSpan[i + 16];
+				// Step 1: Add lower and upper halves
+				for (int i = 0; i < 16; i++)
+					stateSpan[i + 16] += stateSpan[i];
+
+				// Step 2: XOR permutation (XOR with 8)
+				for (int i = 0; i < 16; i++)
+					temp[i ^ 8] = stateSpan[i];
+
+				// Step 3: Rotate left by 7
+				for (int i = 0; i < 16; i++)
+					stateSpan[i] = BitOperations.RotateLeft(temp[i], 7);
+
+				// Step 4: XOR lower with upper again
+				for (int i = 0; i < 16; i++)
+					stateSpan[i] ^= stateSpan[i + 16];
+
+				// Step 5: Second permutation (XOR with 2)
+				for (int i = 0; i < 16; i++)
+					temp[i ^ 2] = stateSpan[i + 16];
 				temp.CopyTo(stateSpan.Slice(16));
-				for (int i = 0; i < 16; i++) stateSpan[i + 16] += stateSpan[i];
-				for (int i = 0; i < 16; i++) temp[i ^ 4] = stateSpan[i];
-				for (int i = 0; i < 16; i++) stateSpan[i] = (temp[i] << 11) | (temp[i] >> (32 - 11));
-				for (int i = 0; i < 16; i++) stateSpan[i] ^= stateSpan[i + 16];
-				for (int i = 0; i < 16; i++) temp[i ^ 1] = stateSpan[i + 16];
+
+				// Step 6: Add again
+				for (int i = 0; i < 16; i++)
+					stateSpan[i + 16] += stateSpan[i];
+
+				// Step 7: Permute lower (XOR with 4)
+				for (int i = 0; i < 16; i++)
+					temp[i ^ 4] = stateSpan[i];
+
+				// Step 8: Rotate left by 11
+				for (int i = 0; i < 16; i++)
+					stateSpan[i] = BitOperations.RotateLeft(temp[i], 11);
+
+				// Step 9: Final XOR
+				for (int i = 0; i < 16; i++)
+					stateSpan[i] ^= stateSpan[i + 16];
+
+				// Step 10: Final permutation (XOR with 1)
+				for (int i = 0; i < 16; i++)
+					temp[i ^ 1] = stateSpan[i + 16];
+
 				temp.CopyTo(stateSpan.Slice(16));
 			}
 		}

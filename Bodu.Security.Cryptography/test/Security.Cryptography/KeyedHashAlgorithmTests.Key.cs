@@ -3,17 +3,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Bodu.Security.Cryptography
 {
-	public abstract partial class KeyedHashAlgorithmTests<T>
+	public abstract partial class KeyedHashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
 		/// <summary>
 		/// Verifies that setting a null key throws an <see cref="ArgumentNullException" />.
 		/// </summary>
 		[TestMethod]
-		public void Key_WhenSetToNull_ShouldThrowArgumentNullException()
+		public void Key_WhenSetToNull_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentNullException>(() =>
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
 				algorithm.Key = null!;
 			});
@@ -23,13 +23,13 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that setting an invalid key throws a <see cref="CryptographicException" />.
 		/// </summary>
 		[TestMethod]
-		public void Key_WhenSetToInvalidKey_ShouldThrowCryptographicException()
+		public void Key_WhenSetToInvalidKey_ShouldThrowExactly()
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<CryptographicException>(() =>
+			Assert.ThrowsExactly<CryptographicException>(() =>
 			{
-				algorithm.Key = new byte[0];
+				algorithm.Key = Array.Empty<byte>();
 			});
 		}
 
@@ -214,7 +214,7 @@ namespace Bodu.Security.Cryptography
 		{
 			using var algorithm = this.CreateAlgorithm();
 			byte[] tooLong = new byte[MaximumLegalKeyLength + 1];
-			Assert.ThrowsException<CryptographicException>(() =>
+			Assert.ThrowsExactly<CryptographicException>(() =>
 			{
 				algorithm.Key = tooLong;
 			});
@@ -226,9 +226,29 @@ namespace Bodu.Security.Cryptography
 			using var algorithm = this.CreateAlgorithm();
 			byte[] tooShort = new byte[MinimumLegalKeyLength - 1];
 
-			Assert.ThrowsException<CryptographicException>(() =>
+			Assert.ThrowsExactly<CryptographicException>(() =>
 			{
 				algorithm.Key = tooShort;
+			});
+		}
+
+		/// <summary>
+		/// Verifies that modifying the key after hashing has begun throws an exception.
+		/// </summary>
+		[TestMethod]
+		public void Key_WhenSetAfterHashingBegins_ShouldThrow()
+		{
+			using var algorithm = this.CreateAlgorithm();
+			byte[] newKey = this.GenerateUniqueKey();
+			byte[] input = new byte[1024];
+
+			// Begin processing
+			algorithm.TransformBlock(input, 0, input.Length, null, 0);
+
+			// Attempt to set the key mid-stream
+			Assert.ThrowsExactly<CryptographicUnexpectedOperationException>(() =>
+			{
+				algorithm.Key = newKey;
 			});
 		}
 	}
