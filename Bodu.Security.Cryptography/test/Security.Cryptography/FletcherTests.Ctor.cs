@@ -34,8 +34,12 @@ namespace Bodu.Security.Cryptography
 		}
 
 		private class TestFletcherHash
-			: Security.Cryptography.Fletcher
+			: Security.Cryptography.Fletcher<TestFletcherHash>
 		{
+			public TestFletcherHash()
+				: base(16)
+			{ }
+
 			public TestFletcherHash(int hashSize)
 				: base(hashSize)
 			{ }

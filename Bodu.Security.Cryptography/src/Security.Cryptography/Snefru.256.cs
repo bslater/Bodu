@@ -3,17 +3,22 @@
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Represents the 256-bit variant of the <see cref="Snefru{T}" /> hash algorithm.
+	/// Computes the hash for the input data using the <c>Snefru-256</c> hash algorithm. This variant performs block-based permutation using
+	/// S-boxes and rotations across a 512-bit buffer and an 8-word internal state. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// <see cref="Snefru256" /> is a concrete implementation of the Snefru cryptographic hash function that produces a 256-bit (32-byte)
-	/// output. It uses 8 words (32-bit unsigned integers) of internal state and processes input data in 64-byte blocks with double-sized padding.
+	/// <see cref="Snefru256" /> computes a 256-bit (32-byte) hash using 8 rounds of transformation applied to 64-byte input blocks. It
+	/// maintains an 8-element internal state of 32-bit unsigned integers, with output produced after mixing and finalization.
 	/// </para>
 	/// <para>
-	/// This variant applies 8 rounds of S-box substitutions and word rotations to transform each input block, then combines the result into
-	/// the internal state using bitwise XOR. Upon finalization, the internal state is encoded in big-endian format to produce the final
-	/// hash digest.
+	/// The core transformation involves alternating S-box substitutions and circular bit rotations. Each S-box round updates surrounding
+	/// buffer words based on fixed lookup tables. Rotations vary across rounds to promote cross-word diffusion. The permuted buffer values
+	/// are XORed back into the internal state.
+	/// </para>
+	/// <para>
+	/// Input is padded to 128 bytes (2 × block size), appending the total message bit length at the end. The final state is written in
+	/// big-endian format to produce the final digest.
 	/// </para>
 	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
 	/// signatures, or secure data integrity checks.</note>

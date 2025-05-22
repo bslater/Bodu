@@ -5,8 +5,8 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes a hash value using the <c>Pearson</c> hashing algorithm—a fast, lightweight, and non-cryptographic hash function suitable
-	/// for basic checksums and hash-based lookups.
+	/// Computes the hash for the input data using the <c>Pearson</c> hash algorithm. This variant applies a non-cryptographic
+	/// permutation-based transformation using a 256-byte lookup table to produce compact hash values. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -292,13 +292,25 @@ namespace Bodu.Security.Cryptography
 			base.Dispose(disposing);
 		}
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="Pearson" /> algorithm.
+		/// Processes a segment of the input byte array and feeds it into the <see cref="Pearson" /> hashing algorithm. This method updates
+		/// the internal state by processing <paramref name="cbSize" /> bytes starting at the specified <paramref name="ibStart" /> offset.
 		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
+		/// <param name="array">The input byte array containing the data to hash.</param>
+		/// <param name="ibStart">The zero-based index in <paramref name="array" /> at which to begin reading data.</param>
+		/// <param name="cbSize">The number of bytes to process from <paramref name="array" />.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <para><paramref name="ibStart" /> is less than 0.</para>
+		/// <para>-or-</para>
+		/// <para><paramref name="cbSize" /> is less than 0.</para>
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// <paramref name="ibStart" /> and <paramref name="cbSize" /> specify a range that exceeds the length of <paramref name="array" />.
+		/// </exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// The hash algorithm has already been finalized and cannot accept more input data.
+		/// </exception>
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);
@@ -318,9 +330,13 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="Pearson" /> algorithm.
+		/// Processes the entirety of the input <paramref name="source" /> and feeds it into the <see cref="Pearson" /> hashing algorithm.
+		/// This method updates the internal hash state accordingly by consuming the entire input span.
 		/// </summary>
-		/// <param name="source">The input span containing the data to be hashed. This method updates the internal hash state accordingly.</param>
+		/// <param name="source">The input byte span containing the data to hash.</param>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// The hash algorithm has already been finalized and cannot accept more input data.
+		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected override void HashCore(ReadOnlySpan<byte> source)
 		{
@@ -351,17 +367,34 @@ namespace Bodu.Security.Cryptography
 			workingHash = v;
 		}
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Finalizes the <see cref="Pearson" /> hash computation after all input data has been processed, and returns the resulting hash value.
+		/// Finalizes the hash computation and returns the resulting 32-bit <see cref="Pearson" /> hash. This method reflects all input
+		/// previously processed via <see cref="HashAlgorithm.HashCore(byte[], int, int)" /> or
+		/// <see cref="HashAlgorithm.HashCore(ReadOnlySpan{byte})" /> and produces a final, stable hash output.
 		/// </summary>
 		/// <returns>
-		/// A byte array containing the Pearson result. The length depends on the <see cref="HashAlgorithm.HashSize" /> setting, typically 1
-		/// byte (8 bits), but may be longer if an extended variant is used.
+		/// A 4-byte array representing the computed <c>Pearson</c> hash value. The result is encoded in the platform’s native byte order.
 		/// </returns>
 		/// <remarks>
-		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
-		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// <para>
+		/// This method completes the internal state of the hashing algorithm and serializes the final hash value into a
+		/// platform-independent format. It is invoked automatically by <see cref="HashAlgorithm.ComputeHash(byte[])" /> and related methods
+		/// once all data has been processed.
+		/// </para>
+		/// <para>After this method returns, the internal state is considered finalized and the computed hash is stable.</para>
+		/// <para>
+		/// In .NET 6.0 and later, the algorithm is automatically reset by invoking <see cref="HashAlgorithm.Initialize" />, allowing the
+		/// instance to be reused immediately.
+		/// </para>
+		/// <para>
+		/// In earlier versions of .NET, the internal state is marked as finalized, and any subsequent calls to
+		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, <see cref="HashAlgorithm.HashCore(ReadOnlySpan{byte})" />, or
+		/// <see cref="HashAlgorithm.HashFinal" /> will throw a <see cref="CryptographicUnexpectedOperationException" />. To compute another
+		/// hash, you must explicitly call <see cref="HashAlgorithm.Initialize" /> to reset the algorithm.
+		/// </para>
+		/// <para>
+		/// Implementations should ensure all residual or pending data is processed and integrated into the final hash value before returning.
+		/// </para>
 		/// </remarks>
 		protected override byte[] HashFinal()
 		{

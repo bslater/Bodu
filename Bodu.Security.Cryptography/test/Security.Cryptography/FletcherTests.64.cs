@@ -14,10 +14,10 @@ namespace Bodu.Security.Cryptography
 		: Security.Cryptography.FletcherTests<Fletcher64Tests, Fletcher64>
 	{
 		/// <inheritdoc />
-		protected override int ExpectedInputBlockSize => 8;
+		protected override int ExpectedInputBlockSize => 4;
 
 		/// <inheritdoc />
-		protected override int ExpectedOutputBlockSize => 8;
+		protected override int ExpectedOutputBlockSize => 4;
 
 		/// <inheritdoc />
 		protected override Fletcher64 CreateAlgorithm() => new Fletcher64();

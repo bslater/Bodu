@@ -9,9 +9,9 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Provides a sealed implementation of the <c>SipHash</c> cryptographic hash algorithm that produces a 128-bit hash output. This
-	/// implementation uses a keyed Add-Rotate-XOR (ARX) construction optimized for short messages. See the official
-	/// <a href="https://131002.net/siphash/">SipHash specification</a> for details.
+	/// Computes the hash for the input data using the <c>SipHash-128</c> hash algorithm. This implementation uses a keyed Add-Rotate-XOR
+	/// (ARX) construction optimized for short messages. See the official <a href="https://131002.net/siphash/">SipHash specification</a>
+	/// for details. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>

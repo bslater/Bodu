@@ -15,7 +15,7 @@ namespace Bodu.Security.Cryptography
 	public abstract partial class FletcherTests<TTest, TAlgorithm>
 		: HashAlgorithmTests<TTest, TAlgorithm, SingleHashVariant>
 		where TTest : HashAlgorithmTests<TTest, TAlgorithm, SingleHashVariant>, new()
-		where TAlgorithm : Fletcher, new()
+		where TAlgorithm : Fletcher<TAlgorithm>, new()
 	{
 		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
 		{
@@ -28,7 +28,7 @@ namespace Bodu.Security.Cryptography
 			list.AddRange([
 				"modulus",
 				"wordSize",
-				"blockSize",
+				"BlockSizeBytes",
 			]);
 
 			return list;

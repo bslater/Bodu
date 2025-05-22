@@ -27,18 +27,15 @@ namespace Bodu.Security.Cryptography
 	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
 	/// password hashing, or integrity verification in security-sensitive contexts.</note>
 	/// </remarks>
-	public abstract class Fletcher
-		: System.Security.Cryptography.HashAlgorithm
+	public abstract class Fletcher<T>
+		: BlockHashAlgorithm<T>
+			where T : Fletcher<T>, new()
 	{
 		private static readonly int[] ValidHashSizes = { 16, 32, 64 };
 
 		private readonly ulong modulus;
-		private readonly int wordSize;
-		private readonly int blockSize;
 		private ulong partA;
 		private ulong partB;
-		private readonly Memory<byte> residualByteBuffer;  // To hold residual bytes
-		private int residualBytes;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
@@ -47,10 +44,10 @@ namespace Bodu.Security.Cryptography
 #endif
 
 		/// <inheritdoc />
-		public override int InputBlockSize => this.blockSize;
+		public override int InputBlockSize => BlockSizeBytes;
 
 		/// <inheritdoc />
-		public override int OutputBlockSize => this.blockSize;
+		public override int OutputBlockSize => BlockSizeBytes;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fletcher" /> class with the specified hash size.
@@ -58,19 +55,15 @@ namespace Bodu.Security.Cryptography
 		/// <param name="hashSize">The hash size in bits. Valid values are 16, 32, or 64.</param>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="hashSize" /> is not 16, 32, or 64.</exception>
 		protected Fletcher(int hashSize)
-		{
-			if (!ValidHashSizes.Contains(hashSize))
-				throw new ArgumentException(
+			: base(ValidHashSizes.Contains(hashSize)
+				 ? hashSize / 16
+				 : throw new ArgumentException(
 					string.Format(ResourceStrings.CryptographicException_InvalidHashSize, hashSize, string.Join(", ", ValidHashSizes)),
-					nameof(hashSize));
-
-			this.HashSizeValue = hashSize;
-			this.wordSize = hashSize / 16; // Word size for Fletcher algorithm
-			this.blockSize = hashSize / 8; // Block size for Fletcher algorithm
+					nameof(hashSize)))
+		{
 			this.modulus = (1UL << (hashSize / 2)) - 1;
-			this.residualByteBuffer = new Memory<byte>(new byte[this.wordSize]);
+			HashSizeValue = hashSize;
 			this.partA = this.partB = 0;
-			this.residualBytes = 0;
 		}
 
 		/// <summary>
@@ -94,10 +87,8 @@ namespace Bodu.Security.Cryptography
 			if (disposing)
 			{
 				CryptoUtilities.ClearAndNullify(ref HashValue);
-				CryptoUtilities.Clear(residualByteBuffer);
 
 				this.partA = this.partB = 0;
-				this.residualBytes = 0;
 			}
 
 			this.disposed = true;
@@ -135,180 +126,48 @@ namespace Bodu.Security.Cryptography
 		public override void Initialize()
 		{
 			ThrowIfDisposed();
+			base.Initialize();
 #if !NET6_0_OR_GREATER
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.partA = 0;
-			this.partB = 0;
-			this.residualByteBuffer.Span.Clear();
-			this.residualBytes = 0;
+			this.partA = this.partB = 0;
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="Fletcher" /> algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-		protected override void HashCore(byte[] array, int ibStart, int cbSize)
+		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength)
 		{
-			ThrowHelper.ThrowIfNull(array);
-			ThrowIfDisposed();
-#if !NET6_0_OR_GREATER
-			ThrowHelper.ThrowIfLessThan(ibStart, 0);
-			ThrowHelper.ThrowIfLessThan(cbSize, 0);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, cbSize);
-			if (this.finalized)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
-#endif
-
-			this.ProcessBlocks(array.AsSpan(), ibStart, cbSize);
+			Span<byte> buffer = stackalloc byte[BlockSizeBytes];
+			block.CopyTo(buffer);
+			return buffer.ToArray();
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Finalizes the <see cref="Fletcher" /> checksum computation after all input data has been processed, and returns the resulting
-		/// hash value.
-		/// </summary>
-		/// <returns>
-		/// A byte array containing the Fletcher result. The length depends on the <see cref="HashAlgorithm.HashSize" /> setting:
-		/// <list type="bullet">
-		/// <item>
-		/// <description><c>HashSize = 32</c>: Returns a 4-byte Fletcher-32 checksum</description>
-		/// </item>
-		/// <item>
-		/// <description><c>HashSize = 64</c>: Returns an 8-byte Fletcher-64 checksum</description>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
-		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
-		/// </remarks>
-		protected override byte[] HashFinal()
+		protected override byte[] ProcessFinalBlock()
 		{
-			ThrowIfDisposed();
-#if !NET6_0_OR_GREATER
-			if (this.finalized)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
-
-			this.finalized = true;
-			this.State = 2;
-#endif
-
-			// Process any residual data if necessary
-			if (this.residualBytes > 0)
-			{
-				this.ProcessBlock(this.residualByteBuffer.Span);
-				this.residualBytes = 0;
-				this.residualByteBuffer.Span.Clear();
-			}
-
 			// Combine partA and partB into the final hash value
-			ulong finalHash = (this.partA << (this.HashSize / 2)) | this.partB;
+			ulong finalHash = (this.partA << (this.HashSizeValue / 2)) | this.partB;
 
 			// Convert to a byte array and take the size
-			return finalHash.GetBytes().SliceInternal(0, this.blockSize);
+			return finalHash.GetBytes().SliceInternal(0, HashSizeValue / 8);
 		}
 
-		/// <summary>
-		/// Processes blocks of data for hashing. It handles both full and residual blocks.
-		/// </summary>
-		/// <param name="buffer">The data buffer.</param>
-		/// <param name="offset">The starting index in the buffer.</param>
-		/// <param name="length">The length of the data to process.</param>
-		private void ProcessBlocks(Span<byte> buffer, int offset, int length)
-		{
-			int pos = offset;
+		/// <inheritdoc />
+		protected override bool ShouldPadFinalBlock() => false;
 
-			// If there is any residual data, handle it first
-			if (this.residualBytes > 0)
-			{
-				int remainingLength = this.wordSize - this.residualBytes;
-				if (remainingLength <= length)
-				{
-					// Fill the buffer to make a full block
-					buffer.Slice(offset, remainingLength).CopyTo(this.residualByteBuffer.Span.Slice(this.residualBytes));
-					this.ProcessBlock(this.residualByteBuffer.Span);
-					this.residualBytes = 0;
-					this.residualByteBuffer.Span.Clear();
-					pos += remainingLength;
-				}
-				else
-				{
-					buffer.Slice(offset, length).CopyTo(this.residualByteBuffer.Span.Slice(this.residualBytes));
-					this.residualBytes += length;
-					return;
-				}
-			}
-
-			// Process full blocks in the buffer
-			int end = offset + length - this.wordSize;
-			for (; pos <= end; pos += this.wordSize)
-			{
-				this.ProcessBlock(buffer.Slice(pos, this.wordSize));
-			}
-
-			// Handle residual bytes (partial block at the end)
-			this.residualBytes = (this.wordSize + end - pos) % this.wordSize;
-			buffer.Slice(pos, this.residualBytes).CopyTo(this.residualByteBuffer.Span);
-		}
-
-		/// <summary>
-		/// Processes a single block of data and updates the internal state.
-		/// </summary>
-		/// <param name="buffer">The data buffer.</param>
+		/// <inheritdoc />
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ProcessBlock(Span<byte> buffer)
+		protected override void ProcessBlock(ReadOnlySpan<byte> block)
 		{
-			// Process the current block using loop unrolling for word size of 8
-			ulong block = 0;
-			for (int i = 0; i < this.wordSize; i++)
+			ulong b = 0;
+			for (int i = 0; i < block.Length && i < BlockSizeBytes; i++)
 			{
-				block |= ((ulong)buffer[i]) << ((this.wordSize - (i + 1)) << 3);
+				b |= ((ulong)block[i]) << ((BlockSizeBytes - (i + 1)) << 3);
 			}
 
 			// Update the internal state (partA and partB)
-			this.partA = (this.partA + block) % this.modulus;
+			this.partA = (this.partA + b) % this.modulus;
 			this.partB = (this.partB + this.partA) % this.modulus;
-		}
-
-		/// <summary>
-		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
-		/// indicating that the instance is in a finalized or non-configurable state.
-		/// </summary>
-		/// <remarks>
-		/// This method is used to prevent reconfiguration of algorithm parameters such as the key, number of rounds, or other settings once
-		/// hashing has begun. It ensures settings are immutable after initialization.
-		/// </remarks>
-		/// <exception cref="CryptographicUnexpectedOperationException">
-		/// Thrown when an attempt is made to modify the algorithm after it has entered a non-zero state, which indicates that hashing has
-		/// started or been finalized.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfInvalidState()
-		{
-			if (this.State != 0)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
-#else
-			if (this.disposed)
-				throw new ObjectDisposedException(nameof(SipHash));
-#endif
 		}
 	}
 }

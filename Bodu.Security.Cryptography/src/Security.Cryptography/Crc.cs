@@ -294,13 +294,25 @@ namespace Bodu.Security.Cryptography
 			return buffer;
 		}
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="Crc" /> algorithm using the provided <see cref="CrcStandard" />.
+		/// Processes a segment of the input byte array and feeds it into the <see cref="Crc" /> hashing algorithm. This method updates the
+		/// internal state by processing <paramref name="cbSize" /> bytes starting at the specified <paramref name="ibStart" /> offset.
 		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
+		/// <param name="array">The input byte array containing the data to hash.</param>
+		/// <param name="ibStart">The zero-based index in <paramref name="array" /> at which to begin reading data.</param>
+		/// <param name="cbSize">The number of bytes to process from <paramref name="array" />.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <para><paramref name="ibStart" /> is less than 0.</para>
+		/// <para>-or-</para>
+		/// <para><paramref name="cbSize" /> is less than 0.</para>
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// <paramref name="ibStart" /> and <paramref name="cbSize" /> specify a range that exceeds the length of <paramref name="array" />.
+		/// </exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// The hash algorithm has already been finalized and cannot accept more input data.
+		/// </exception>
 		protected override void HashCore(byte[] array, int ibStart, int cbSize)
 		{
 			ThrowHelper.ThrowIfNull(array);

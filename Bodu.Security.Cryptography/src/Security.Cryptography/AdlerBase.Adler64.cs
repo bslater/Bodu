@@ -9,13 +9,14 @@ using System;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Represents the <c>Adler-64</c> checksum algorithm using a modulus of 4294967291.
+	/// Computes the hash for the input data using the <c>Adler-64</c> checksum algorithm. This variant calculates two running sums over the
+	/// input bytes modulo 4294967291 and combines them into a 64-bit result. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
 	/// Adler-64 is a non-cryptographic checksum algorithm that extends the principles of Adler-32 into a 64-bit domain. It maintains two
-	/// 64-bit running sums (A and B), which are updated for each byte of input and combined into a final 64-bit checksum as <c>(B &lt;&lt;
-	/// 32) | A</c>.
+	/// 64-bit running sums (A and B), which are updated for each byte of input and combined into a final 64-bit checksum as <c><![CDATA[(B
+	/// >> 32) | A]]></c>.
 	/// </para>
 	/// <para>
 	/// This implementation uses the prime number 4294967291 (the largest 32-bit unsigned prime) as the modulus, reducing the likelihood of

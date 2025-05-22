@@ -7,7 +7,8 @@
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data using the <see cref="Fletcher32" /> hash algorithm. This class cannot be inherited.
+	/// Computes the hash for the input data using the <c>Fletcher-32</c> hash algorithm. This variant performs a non-cryptographic checksum
+	/// calculation using two 16-bit accumulators to efficiently detect errors in byte sequences. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -16,7 +17,7 @@ namespace Bodu.Security.Cryptography
 	/// </para>
 	/// </remarks>
 	public sealed class Fletcher32
-		: Security.Cryptography.Fletcher
+		: Security.Cryptography.Fletcher<Fletcher32>
 	{
 		// Define a constant for the hash size
 		private const int FletcherHashSize = 32;

@@ -3,17 +3,22 @@
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Represents the 128-bit variant of the <see cref="Snefru{T}" /> hash algorithm.
+	/// Computes the hash for the input data using the <c>Snefru-128</c> hash algorithm. This variant applies a symmetric, non-keyed block
+	/// transformation using a fixed sequence of S-box and bit rotation rounds. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// <see cref="Snefru128" /> is a concrete implementation of the Snefru cryptographic hash function that produces a 128-bit (16-byte)
-	/// output. It uses 4 words (32-bit unsigned integers) of internal state and processes input data in 64-byte blocks with double-sized padding.
+	/// <see cref="Snefru128" /> computes a 128-bit (16-byte) hash using 8 rounds of transformation over a 512-bit working buffer. The
+	/// algorithm uses a 4-word (32-bit unsigned integer) internal state and processes input data in fixed 64-byte blocks.
 	/// </para>
 	/// <para>
-	/// This variant applies 8 rounds of S-box substitutions and word rotations to transform each input block, then combines the result into
-	/// the internal state using bitwise XOR. Upon finalization, the internal state is encoded in big-endian format to produce the final
-	/// hash digest.
+	/// Each round consists of an S-box substitution stage followed by a word-wise circular rotation phase. The S-box logic uses precomputed
+	/// lookup tables to inject non-linearity, while rotations ensure data diffusion across the buffer. After all rounds, the result is
+	/// XORed back into the internal state.
+	/// </para>
+	/// <para>
+	/// Input blocks are padded using double-length padding (2 × block size), with the total bit length encoded in the final 8 bytes. The
+	/// final state is serialized in big-endian byte order to produce the resulting hash.
 	/// </para>
 	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
 	/// signatures, or secure data integrity checks.</note>
