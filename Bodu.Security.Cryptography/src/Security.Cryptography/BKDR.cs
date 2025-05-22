@@ -13,7 +13,7 @@ using Bodu.Extensions;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data using the <see cref="BKDR" /> hash algorithm.
+	/// Computes the hash for the input data using the <c>BKDR</c> hash algorithm.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -45,7 +45,7 @@ namespace Bodu.Security.Cryptography
 		};
 
 		private uint seedValue;
-		private uint hashValue;
+		private uint workingHash;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 		private bool finalized;
@@ -123,7 +123,7 @@ namespace Bodu.Security.Cryptography
 			State = 0;
 			finalized = false;
 #endif
-			hashValue = seedValue;
+			workingHash = seedValue;
 		}
 
 		/// <inheritdoc />
@@ -160,12 +160,12 @@ namespace Bodu.Security.Cryptography
 			if (finalized)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
-			uint v = hashValue;
+			uint v = workingHash;
 			foreach (var b in source)
 			{
 				v = (v * seedValue) + b;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -195,7 +195,7 @@ namespace Bodu.Security.Cryptography
 			State = 2;
 #endif
 			Span<byte> span = stackalloc byte[4];
-			BinaryPrimitives.WriteUInt32BigEndian(span, hashValue);
+			BinaryPrimitives.WriteUInt32BigEndian(span, workingHash);
 			return span.ToArray();
 		}
 
@@ -205,7 +205,9 @@ namespace Bodu.Security.Cryptography
 			if (disposed) return;
 			if (disposing)
 			{
-				hashValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				workingHash = seedValue = 0;
 			}
 			disposed = true;
 			base.Dispose(disposing);

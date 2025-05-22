@@ -37,7 +37,10 @@ namespace Bodu.Security.Cryptography
 		public void TransformBlock_WhenPropertySetAfterTransform_ShouldThrowExactly(PropertyInfo property)
 		{
 			if (property is null)
-				Assert.Inconclusive($"No writable properties were found for type {typeof(TAlgorithm).Name}.");
+			{
+				Assert.Inconclusive($"Type '{typeof(TAlgorithm).Name}' has no writable properties — test passes by default.");
+				return;
+			}
 
 			using var algorithm = this.CreateAlgorithm();
 

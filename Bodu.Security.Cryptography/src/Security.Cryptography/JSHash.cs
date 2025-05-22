@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes a non-cryptographic 32-bit hash using the <see cref="JSHash" /> algorithm by Justin Sobel.
+	/// Computes a non-cryptographic 32-bit hash using the <c>JSHash</c> algorithm by Justin Sobel.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -26,7 +26,7 @@ namespace Bodu.Security.Cryptography
 	{
 		private const uint DefaultValue = 0x4E67C6A7;
 
-		private uint hashValue;
+		private uint workingHash;
 		private bool disposed = false;
 
 #if !NET6_0_OR_GREATER
@@ -78,7 +78,7 @@ namespace Bodu.Security.Cryptography
             this.finalized = false;
 #endif
 			ThrowIfDisposed();
-			this.hashValue = DefaultValue;
+			this.workingHash = DefaultValue;
 		}
 
 		/// <inheritdoc />
@@ -113,12 +113,12 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowIfDisposed();
 
-			var v = hashValue;
+			var v = workingHash;
 			foreach (byte b in source)
 			{
 				v ^= (v << 5) + (v >> 2) + b;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -140,7 +140,7 @@ namespace Bodu.Security.Cryptography
             this.State = 2;
 #endif
 			Span<byte> span = stackalloc byte[4];
-			MemoryMarshal.Write(span, in this.hashValue);
+			MemoryMarshal.Write(span, in this.workingHash);
 			return span.ToArray();
 		}
 
@@ -152,7 +152,9 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.hashValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				this.workingHash = 0;
 			}
 
 			this.disposed = true;

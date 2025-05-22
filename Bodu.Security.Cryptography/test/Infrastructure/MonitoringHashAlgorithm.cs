@@ -182,8 +182,12 @@ namespace Bodu.Infrastructure
 
 			if (disposing)
 			{
+				CryptographicOperations.ZeroMemory(HashValue);
+				HashValue = null;
 				this.hashValue = 0;
 				this.bytesProcessed = 0;
+				InitializeCallCount = HashCoreCallCount = HashAccessCount = HashCoreSpanCallCount =
+					HashFinalCallCount = HashSizeAccessCount = TryHashFinalCallCount = 0;
 			}
 
 			this.disposed = true;

@@ -9,7 +9,7 @@ using System;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Represents the standard Adler-32 checksum algorithm using a modulus of 65521.
+	/// Represents the standard <c>Adler-32</c> checksum algorithm using a modulus of 65521.
 	/// </summary>
 	/// <remarks>
 	/// <para>

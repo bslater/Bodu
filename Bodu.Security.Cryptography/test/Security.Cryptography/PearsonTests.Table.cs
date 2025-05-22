@@ -35,7 +35,7 @@ namespace Bodu.Security.Cryptography
 			var hash = new Pearson();
 			byte[] invalidTable = Enumerable.Range(0, 100).Select(i => (byte)i).ToArray();
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				hash.Table = invalidTable;
 			});
@@ -50,7 +50,7 @@ namespace Bodu.Security.Cryptography
 			var hash = new Pearson();
 			byte[] duplicateTable = Enumerable.Repeat((byte)42, 256).ToArray(); // All elements are the same
 
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				hash.Table = duplicateTable;
 			});

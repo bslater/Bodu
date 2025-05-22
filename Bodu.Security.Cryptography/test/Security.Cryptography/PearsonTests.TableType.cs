@@ -75,7 +75,7 @@ namespace Bodu.Security.Cryptography
 
 			hash.TableType = Pearson.PearsonTableType.UserDefined;
 
-			Assert.ThrowsException<CryptographicUnexpectedOperationException>(() =>
+			Assert.ThrowsExactly<CryptographicUnexpectedOperationException>(() =>
 			{
 				hash.ComputeHash(new byte[] { 1, 2, 3 });
 			}, "Using UserDefined table type without a valid table should throw.");
@@ -87,7 +87,7 @@ namespace Bodu.Security.Cryptography
 			using var hash = new Pearson();
 			hash.TransformBlock(new byte[] { 1, 2, 3 }, 0, 3, null, 0);
 
-			Assert.ThrowsException<CryptographicUnexpectedOperationException>(() =>
+			Assert.ThrowsExactly<CryptographicUnexpectedOperationException>(() =>
 			{
 				hash.TableType = Pearson.PearsonTableType.SHA256Constants;
 			});
@@ -99,7 +99,7 @@ namespace Bodu.Security.Cryptography
 			var hash = new Pearson();
 			hash.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
 				hash.TableType = Pearson.PearsonTableType.CRC32HighByte;
 			});
@@ -111,7 +111,7 @@ namespace Bodu.Security.Cryptography
 			var hash = new Pearson();
 			hash.Dispose();
 
-			Assert.ThrowsException<ObjectDisposedException>(() =>
+			Assert.ThrowsExactly<ObjectDisposedException>(() =>
 			{
 				var _ = hash.TableType;
 			});

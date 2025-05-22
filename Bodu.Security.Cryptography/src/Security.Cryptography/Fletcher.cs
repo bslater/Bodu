@@ -6,12 +6,14 @@
 
 using Bodu.Extensions;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Base class for computing hash using the Fletcher hash algorithm family (Fletcher-16, Fletcher-32, Fletcher-64). This class cannot be inherited.
+	/// Base class for computing hash using the <c>Fletcher</c> hash algorithm family (Fletcher-16, Fletcher-32, Fletcher-64). This class
+	/// cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -19,8 +21,8 @@ namespace Bodu.Security.Cryptography
 	/// components (partA and partB) over the input data and produces a hash based on these.
 	/// </para>
 	/// <para>
-	/// This implementation handles Fletcher hash sizes of 16, 32, and 64 bits. Derived classes (e.g., Fletcher16, Fletcher32, Fletcher64)
-	/// can implement specific hash sizes.
+	/// This implementation handles Fletcher hash sizes of 16, 32, and 64 bits. Derived classes (see <see cref="Fletcher16" />,
+	/// <see cref="Fletcher32" />, <see cref="Fletcher64" />) can implement specific hash sizes.
 	/// </para>
 	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
 	/// password hashing, or integrity verification in security-sensitive contexts.</note>
@@ -71,6 +73,19 @@ namespace Bodu.Security.Cryptography
 			this.residualBytes = 0;
 		}
 
+		/// <summary>
+		/// Gets the fully qualified algorithm name for this Fletcher variant, based on the configured hash output size.
+		/// </summary>
+		/// <value>
+		/// A string in the form <c>Fletcher-N</c>, where <c>N</c> is the number of bits in the final hash output (e.g., <c>Fletcher-32</c>
+		/// or <c>Fletcher-64</c>).
+		/// </value>
+		/// <remarks>
+		/// The naming convention follows the established Fletcher standard, where the suffix indicates the bit-width of the resulting checksum:
+		/// </remarks>
+		public string AlgorithmName =>
+			$"Fletcher-{HashSizeValue}";
+
 		/// <inheritdoc />
 		protected override void Dispose(bool disposing)
 		{
@@ -78,7 +93,9 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.residualByteBuffer.Span.Clear();
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoUtilities.Clear(residualByteBuffer);
+
 				this.partA = this.partB = 0;
 				this.residualBytes = 0;
 			}

@@ -18,13 +18,32 @@ namespace Bodu.Security.Cryptography
 	#endregion Using Statements
 
 	/// <summary>
-	/// Computes the hash for the input data by using the <see cref="Bodu.Security.Cryptography.Pjw32" /> hash algorithm. This class cannot
-	/// be inherited.
+	/// Provides a sealed implementation of the <c>PJW</c> 32-bit hash algorithm developed by Peter J. Weinberger. This non-cryptographic
+	/// hash function is designed for fast computation and simple collision handling in hash table and lookup scenarios.
 	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The <see cref="Pjw32" /> algorithm computes a 32-bit hash value by iteratively mixing input bytes using a shifting and masking
+	/// strategy that isolates high-order bits and folds them back into the result. It is derived from the original algorithm described in
+	/// the "Dragon Book" (Compilers: Principles, Techniques, and Tools) and was later adapted by Peter J. Weinberger for use in compilers
+	/// and symbol tables.
+	/// </para>
+	/// <para>
+	/// The hashing process involves shifting the result left by a fixed amount (typically 4 bits), adding the current byte, and then
+	/// folding any overflow bits back into the hash using XOR. This provides a reasonably well-distributed hash for small-to-medium strings
+	/// and identifier-style data.
+	/// </para>
+	/// <para>
+	/// This implementation is suitable for general-purpose use cases that require fast, deterministic hashing such as hash tables, string
+	/// interning, and symbol indexing.
+	/// </para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure. It must <b>not</b> be used for digital signatures,
+	/// password hashing, or data integrity checks in security-critical applications.</note>
+	/// </remarks>
 	public sealed class Pjw32
 		: System.Security.Cryptography.HashAlgorithm
 	{
-		private uint hashValue;
+		private uint workingHash;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
@@ -74,7 +93,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.hashValue = 0;
+			this.workingHash = 0;
 		}
 
 		/// <inheritdoc />
@@ -117,7 +136,7 @@ namespace Bodu.Security.Cryptography
 			if (this.finalized)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
-			uint v = hashValue;
+			uint v = workingHash;
 
 			foreach (var b in source)
 			{
@@ -127,7 +146,7 @@ namespace Bodu.Security.Cryptography
 				v ^= high >> Shift;
 				v &= LowBitsMask;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -157,7 +176,7 @@ namespace Bodu.Security.Cryptography
 			State = 2;
 #endif
 			Span<byte> span = stackalloc byte[4];
-			BinaryPrimitives.WriteUInt32BigEndian(span, hashValue);
+			BinaryPrimitives.WriteUInt32BigEndian(span, workingHash);
 			return span.ToArray();
 		}
 
@@ -167,7 +186,9 @@ namespace Bodu.Security.Cryptography
 			if (disposed) return;
 			if (disposing)
 			{
-				hashValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				workingHash = 0;
 			}
 			disposed = true;
 			base.Dispose(disposing);
@@ -207,20 +228,6 @@ namespace Bodu.Security.Cryptography
 			if (disposed)
 				throw new ObjectDisposedException(nameof(PjW32));
 #endif
-		}
-
-		private void ProcessBlocks(byte[] array, int offset, int length)
-		{
-			int end = offset + length;
-			for (int i = offset; i < end; i++)
-			{
-				this.hashValue = (this.hashValue << 4) + array[i];
-				uint work = this.hashValue & 0xf0000000u;
-				if (work != 0)
-				{
-					this.hashValue = (this.hashValue ^ (work >> 28)) & 0x0FFFFFFF;
-				}
-			}
 		}
 	}
 }

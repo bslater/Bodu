@@ -201,7 +201,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		[TestMethod]
 		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), DynamicDataSourceType.Method)]
-		public void PadBlock_WhenInvalidInput_ShouldThrowExactly_WithArray(
+		public void PadBlock_WhenInvalidInput_WithArray_ShouldThrowExactly(
 			PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType, int? destinationLength = null)
 		{
 			byte[] input = Convert.FromHexString(inputHex);
@@ -225,7 +225,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		[TestMethod]
 		[DynamicData(nameof(CryptoUtilitiesTests.InvalidPaddingCases), DynamicDataSourceType.Method)]
-		public void PadBlock_WhenInvalidInput_ShouldThrowExactly_WithSpan(
+		public void PadBlock_WhenInvalidInput_WithSpan_ShouldThrowExactly(
 			PaddingMode padding, string inputHex, int blockSizeBytes, Type exceptionType, int? destinationLength = null)
 		{
 			byte[] input = Convert.FromHexString(inputHex);

@@ -13,7 +13,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes a 32-bit non-cryptographic hash using the APHash algorithm.
+	/// Computes a 32-bit non-cryptographic hash using the <c>APHash</c> algorithm.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -37,7 +37,7 @@ namespace Bodu.Security.Cryptography
 	{
 		private const uint DefaultCheckSumValue = 0xAAAAAAAA;
 
-		private uint hashValue;
+		private uint workingHash;
 		private ulong size;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
@@ -63,7 +63,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.hashValue = ApHash.DefaultCheckSumValue;
+			this.workingHash = ApHash.DefaultCheckSumValue;
 			this.size = 0;
 		}
 
@@ -74,7 +74,8 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.hashValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+				this.workingHash = 0;
 			}
 
 			this.disposed = true;
@@ -112,7 +113,7 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowIfDisposed();
 
-			var v = hashValue;
+			var v = workingHash;
 			foreach (var b in source)
 			{
 				if ((size & 1) == 0)
@@ -122,7 +123,7 @@ namespace Bodu.Security.Cryptography
 
 				size++;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -142,7 +143,7 @@ namespace Bodu.Security.Cryptography
 #endif
 
 			Span<byte> span = stackalloc byte[4];
-			MemoryMarshal.Write(span, in this.hashValue);
+			MemoryMarshal.Write(span, in this.workingHash);
 			return span.ToArray();
 		}
 

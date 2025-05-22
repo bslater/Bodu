@@ -18,5 +18,16 @@ namespace Bodu.Security.Cryptography
 		where TAlgorithm : AdlerBase<TModulo>, new()
 		where TVariant : Enum
 		where TModulo : unmanaged, INumber<TModulo>
-	{ }
+	{
+		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()
+		{
+			var list = new List<string>(base.GetFieldsToExcludeFromDisposeValidation());
+			list.AddRange([
+				"modulo",
+			]);
+
+			return list;
+		}
+
+	}
 }

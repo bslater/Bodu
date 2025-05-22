@@ -15,9 +15,9 @@ namespace Bodu.Security.Cryptography
 		[DataRow(63)]
 		[DataRow(128)]
 		[DataRow(-1)]
-		public void Ctor_WhenHashSizeIsInvalid_ShouldThrowArgumentException(int hashSize)
+		public void Ctor_WhenHashSizeIsInvalid_ShouldThrowExactly(int hashSize)
 		{
-			Assert.ThrowsException<ArgumentException>(() => new TestFletcherHash(hashSize));
+			Assert.ThrowsExactly<ArgumentException>(() => new TestFletcherHash(hashSize));
 		}
 
 		/// <summary>

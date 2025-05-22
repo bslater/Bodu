@@ -72,11 +72,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(129)]
 		[DataRow(256)]
 		[DataRow(int.MaxValue)]
-		public void TransformBlockSize_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
+		public void TransformBlockSize_WhenSetToInvalidValue_ShouldThrowExactly(int value)
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => algorithm.TransformBlockSize = value);
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => algorithm.TransformBlockSize = value);
 		}
 
 		/// <summary>

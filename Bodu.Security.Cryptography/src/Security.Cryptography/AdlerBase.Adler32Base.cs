@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Provides a reusable base class for Adler-32-style checksum algorithms using <see cref="uint" /> accumulators.
+	/// Provides a reusable base class for <c>Adler-32</c> style checksum algorithms using <see cref="uint" /> accumulators.
 	/// </summary>
 	/// <remarks>
 	/// <para>

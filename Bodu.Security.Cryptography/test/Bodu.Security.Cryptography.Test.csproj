@@ -21,6 +21,7 @@
     <Compile Remove="Security.Cryptography\Adler32Tests.ComputeHashAsync.cs" />
     <Compile Remove="Security.Cryptography\BernsteinTests.ComputeHash.cs" />
     <Compile Remove="Security.Cryptography\BernsteinTests.ComputeHashAsync.cs" />
+    <Compile Remove="Security.Cryptography\CityHashTests.cs" />
     <Compile Remove="Security.Cryptography\CrcLookupTableCacheTests.cs" />
     <Compile Remove="Security.Cryptography\CrcTests.ComputeHash.cs" />
     <Compile Remove="Security.Cryptography\CrcTests.ComputeHashAsync.cs" />

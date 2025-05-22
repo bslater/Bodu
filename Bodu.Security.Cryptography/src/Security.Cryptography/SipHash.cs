@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
+using System.Buffers.Binary;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -13,9 +14,8 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Provides the base implementation of the <see cref="SipHash" /> cryptographic hash algorithm - a fast, secure, and keyed pseudorandom
-	/// function optimized for short input messages. See the <see href="https://131002.net/siphash/">official SipHash specification</see>
-	/// for details.
+	/// Provides the base implementation of the <c>SipHash</c> cryptographic hash algorithm - a fast, secure, and keyed pseudorandom
+	/// function optimized for short input messages. See the official <a href="https://131002.net/siphash/">SipHash specification</a> for details.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -53,8 +53,9 @@ namespace Bodu.Security.Cryptography
 	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
 	/// signatures, or secure data integrity checks.</note>
 	/// </remarks>
-	public abstract class SipHash
-		: System.Security.Cryptography.KeyedHashAlgorithm
+	public abstract class SipHash<T>
+		: KeyedBlockHashAlgorithm<T>
+		where T : SipHash<T>, new()
 	{
 		/// <summary>
 		/// The fixed key size in bytes (128 bits).
@@ -84,11 +85,13 @@ namespace Bodu.Security.Cryptography
 
 		private int compressionRounds;
 		private int finalizationRounds;
-		private ulong length;
-		private int residualBytes;
 		private ulong v0, v1, v2, v3;
-		private readonly Memory<byte> residualByteBuffer;
 		private bool disposed = false;
+#if !NET6_0_OR_GREATER
+
+		// Required for .NET Standard 2.0 or older frameworks
+		private bool finalized;
+#endif
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SipHash" /> class with a specified hash size.
@@ -96,17 +99,17 @@ namespace Bodu.Security.Cryptography
 		/// <param name="hashSize">The desired size of the final hash in bits. Supported values are 64 or 128.</param>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="hashSize" /> is not supported.</exception>
 		protected SipHash(int hashSize)
+			: base(BlockSize)
 		{
 			if (Array.IndexOf(ValidHashSizes, hashSize) == -1)
-				throw new ArgumentException($"Invalid hashValue size {hashSize}. Valid hashValue sizes are: {string.Join(", ", ValidHashSizes)}", nameof(hashSize));
+				throw new ArgumentOutOfRangeException(nameof(hashSize),
+					string.Format(ResourceStrings.CryptographicException_InvalidHashSize, hashSize, string.Join(", ", ValidHashSizes)));
 
 			KeyValue = new byte[KeySize];
 			CryptoUtilities.FillWithRandomNonZeroBytes(KeyValue);
 			compressionRounds = MinCompressionRounds;
 			finalizationRounds = MinFinalizationRounds;
 			HashSizeValue = hashSize;
-			residualByteBuffer = new Memory<byte>(new byte[BlockSize]);
-			length = 0;
 			InitializeVectors();
 		}
 
@@ -199,7 +202,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfNull(value);
 				if (value.Length != KeySize)
-					throw new CryptographicException(string.Format(ResourceStrings.CryptographicException_InvalidKeySize, value.Length, SipHash.KeySize));
+					throw new CryptographicException(string.Format(ResourceStrings.CryptographicException_InvalidKeySize, value.Length, SipHash<T>.KeySize));
 
 				KeyValue = value.Copy();
 				InitializeVectors();
@@ -235,13 +238,11 @@ namespace Bodu.Security.Cryptography
 		public override void Initialize()
 		{
 			ThrowIfDisposed();
+			base.Initialize();
 #if !NET6_0_OR_GREATER
             State = 0;
             finalized = false;
 #endif
-			residualByteBuffer.Span.Clear();
-			length = 0;
-			residualBytes = 0;
 			InitializeVectors();
 		}
 
@@ -252,85 +253,14 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				residualByteBuffer.Span.Clear();
-				v0 = v1 = v2 = v3 = 0;
-				length = 0;
-				residualBytes = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
 
-				if (KeyValue is not null)
-				{
-					CryptographicOperations.ZeroMemory(KeyValue);
-					KeyValue = null!;
-				}
+				v0 = v1 = v2 = v3 = 0;
+				compressionRounds = finalizationRounds = 0;
 			}
 
 			disposed = true;
 			base.Dispose(disposing);
-		}
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="SipHash" /> algorithm.
-		/// </summary>
-		/// <param name="array">The byte array containing the data to be hashed.</param>
-		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
-		/// <param name="cbSize">The length of the data to process.</param>
-		protected override void HashCore(byte[] array, int ibStart, int cbSize)
-		{
-			ThrowIfDisposed();
-			length += (ulong)cbSize;
-			ProcessBlocks(array, ibStart, cbSize);
-		}
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Finalizes the <see cref="Elf64" /> hash computation after all input data has been processed, and returns the resulting hash value.
-		/// </summary>
-		/// <returns>A byte array containing the Elf64 result. The length is always 8 bytes, representing the 64-bit hash output.</returns>
-		/// <remarks>
-		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
-		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
-		/// </remarks>
-		protected override byte[] HashFinal()
-		{
-			ThrowIfDisposed();
-			return ProcessFinalBlock();
-		}
-
-		/// <summary>
-		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
-		/// indicating that the instance is in a finalized or non-configurable state.
-		/// </summary>
-		/// <remarks>
-		/// This method is used to prevent reconfiguration of algorithm parameters such as the key, number of rounds, or other settings once
-		/// hashing has begun. It ensures settings are immutable after initialization.
-		/// </remarks>
-		/// <exception cref="CryptographicUnexpectedOperationException">
-		/// Thrown when an attempt is made to modify the algorithm after it has entered a non-zero state, which indicates that hashing has
-		/// started or been finalized.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfInvalidState()
-		{
-			if (State != 0)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(disposed, this);
-#else
-			if (disposed)
-				throw new ObjectDisposedException(nameof(SipHash));
-#endif
 		}
 
 		/// <summary>
@@ -380,58 +310,34 @@ namespace Bodu.Security.Cryptography
 			v0 = r0; v1 = r1; v2 = r2; v3 = r3;
 		}
 
-		/// <summary>
-		/// Processes one or more blocks of input data into the SipHash internal state.
-		/// </summary>
-		/// <param name="buffer">The byte array containing the input data.</param>
-		/// <param name="offset">The byte offset in the buffer to start reading from.</param>
-		/// <param name="length">The number of bytes to process.</param>
-		/// <remarks>Handles buffering of partial blocks and invokes <see cref="ProcessBlock" /> for each complete block.</remarks>
-		private void ProcessBlocks(byte[] buffer, int offset, int length)
-		{
-			int pos = offset;
-			Span<byte> residualSpan = residualByteBuffer.Span;
+		///// <summary>
+		///// Processes one or more blocks of input data into the SipHash internal state.
+		///// </summary>
+		///// <param name="buffer">The byte array containing the input data.</param>
+		///// <param name="offset">The byte offset in the buffer to start reading from.</param>
+		///// <param name="length">The number of bytes to process.</param>
+		///// <remarks>Handles buffering of partial blocks and invokes <see cref="ProcessBlock" /> for each complete block.</remarks>
+		//private void ProcessBlocks(byte[] buffer, int offset, int length)
+		//{
+		//	int pos = offset;
+		//	Span<byte> residualSpan = residualByteBuffer.Span;
 
-			// Handle residual bytes from the previous call
-			if (residualBytes > 0)
-			{
-				int remaining = BlockSize - residualBytes;
+		// // Handle residual bytes from the previous call if (residualBytes > 0) { int remaining = BlockSize - residualBytes;
 
-				if (length >= remaining)
-				{
-					// Fill up the buffer and process one full block
-					buffer.AsSpan(pos, remaining).CopyTo(residualSpan[residualBytes..]);
+		// if (length >= remaining) { // Fill up the buffer and process one full block buffer.AsSpan(pos,
+		// remaining).CopyTo(residualSpan[residualBytes..]); ulong block = MemoryMarshal.Read<ulong>(residualSpan); ProcessBlock(block);
 
-					ulong block = MemoryMarshal.Read<ulong>(residualSpan);
-					ProcessBlock(block);
+		// residualBytes = 0; pos += remaining; } else { // Not enough to complete a block, just append to residuals buffer.AsSpan(pos,
+		// length).CopyTo(residualSpan[residualBytes..]); residualBytes += length; return; } }
 
-					residualBytes = 0;
-					pos += remaining;
-				}
-				else
-				{
-					// Not enough to complete a block, just append to residuals
-					buffer.AsSpan(pos, length).CopyTo(residualSpan[residualBytes..]);
+		// // Process full blocks directly from the input int end = offset + length; while (pos + BlockSize <= end) { ulong block =
+		// MemoryMarshal.Read<ulong>(buffer.AsSpan(pos, BlockSize)); ProcessBlock(block); pos += BlockSize; }
 
-					residualBytes += length;
-					return;
-				}
-			}
-
-			// Process full blocks directly from the input
-			int end = offset + length;
-			while (pos + BlockSize <= end)
-			{
-				ulong block = MemoryMarshal.Read<ulong>(buffer.AsSpan(pos, BlockSize));
-				ProcessBlock(block);
-				pos += BlockSize;
-			}
-
-			// Buffer any remaining residual bytes
-			residualBytes = end - pos;
-			if (residualBytes > 0)
-				buffer.AsSpan(pos, residualBytes).CopyTo(residualSpan);
-		}
+		//	// Buffer any remaining residual bytes
+		//	residualBytes = end - pos;
+		//	if (residualBytes > 0)
+		//		buffer.AsSpan(pos, residualBytes).CopyTo(residualSpan);
+		//}
 
 		/// <summary>
 		/// Processes a single 64-bit block of data using SipHash compression.
@@ -439,11 +345,24 @@ namespace Bodu.Security.Cryptography
 		/// <param name="block">The 64-bit block to process.</param>
 		/// <remarks>Updates internal state using <see cref="PerformSipRounds" /> and XOR operations.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ProcessBlock(ulong block)
+		protected override void ProcessBlock(ReadOnlySpan<byte> block)
 		{
-			v3 ^= block;
+			var b = BinaryPrimitives.ReadUInt64LittleEndian(block);
+			v3 ^= b;
 			PerformSipRounds(compressionRounds);
-			v0 ^= block;
+			v0 ^= b;
+		}
+
+		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength)
+		{
+			if ((uint)block.Length > 7)
+				throw new ArgumentOutOfRangeException(nameof(block), "Residual block must be 0–7 bytes.");
+
+			Span<byte> buffer = stackalloc byte[8];
+			block.CopyTo(buffer);
+			buffer[7] = (byte)messageLength;
+
+			return buffer.ToArray();
 		}
 
 		/// <summary>
@@ -451,23 +370,8 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		/// <returns>A byte array containing the final hash value (8 or 16 bytes).</returns>
 		/// <remarks>Combines all partial input and applies the finalization round logic based on the configured output size.</remarks>
-		private byte[] ProcessFinalBlock()
+		protected override byte[] ProcessFinalBlock()
 		{
-			Span<byte> finalBlock = stackalloc byte[8];
-
-			// Copy residual message bytes (0–7) into the lower bytes
-			residualByteBuffer.Span.Slice(0, residualBytes).CopyTo(finalBlock);
-
-			// Zero upper unused bytes
-			if (residualBytes < 8)
-				finalBlock.Slice(residualBytes).Clear();
-
-			ulong block = MemoryMarshal.Read<ulong>(finalBlock);
-
-			block |= length << 56;
-
-			ProcessBlock(block);
-
 			v2 ^= (HashSizeValue == 64) ? 0xffUL : 0xeeUL;
 			PerformSipRounds(finalizationRounds);
 

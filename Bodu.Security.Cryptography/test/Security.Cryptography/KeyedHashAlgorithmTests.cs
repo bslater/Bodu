@@ -6,7 +6,7 @@ namespace Bodu.Security.Cryptography
 	public abstract partial class KeyedHashAlgorithmTests<TTest, TAlgorithm, TVariant>
 		: Security.Cryptography.HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 		where TTest : HashAlgorithmTests<TTest, TAlgorithm, TVariant>, new()
-		where TAlgorithm : KeyedHashAlgorithm, new()
+		where TAlgorithm : KeyedBlockHashAlgorithm<TAlgorithm>, new()
 		where TVariant : Enum
 	{
 		/// <summary>

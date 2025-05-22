@@ -12,33 +12,21 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Security.Cryptography
 {
-	/// <summary>
-	/// Computes a 32-bit non-cryptographic hash using the APHash algorithm.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// APHash is a simple, fast, and non-cryptographic hashing algorithm designed for hash table lookups and similar use cases. It combines
-	/// bitwise and arithmetic operations with alternating logic based on the input index.
-	/// </para>
-	/// <para>The algorithm uses the following rules:</para>
-	/// <list type="number">
-	/// <item>
-	/// <description>Initialize the checksum to a fixed 32-bit constant (0xAAAAAAAA).</description>
-	/// </item>
-	/// <item>
-	/// <description>For each byte, use alternating XOR patterns depending on whether the index is even or odd.</description>
-	/// </item>
-	/// </list>
-	/// <note type="important">This algorithm is <b>not cryptographically secure</b>. It should not be used for password hashing, integrity
-	/// verification, or any security-sensitive applications.</note>
-	/// </remarks>
-	public sealed class CityHash
+	public abstract class CityHashBase<T>
 		: System.Security.Cryptography.HashAlgorithm
+		where T : CityHashBase<T>, new()
 	{
-		private const uint DefaultCheckSumValue = 0xAAAAAAAA;
+		protected const UInt64 K0 = 0xc3a5c85c97cb3127;
+		protected const UInt64 K1 = 0xb492b66fbe98f273;
+		protected const UInt64 K2 = 0x9ae16a3b2f90404f;
 
-		private uint hashValue;
-		private ulong size;
+		protected const UInt32 C1 = 0xcc9e2d51;
+		protected const UInt32 C2 = 0x1b873593;
+
+		protected const uint HashMagic = 0xe6546b64;
+
+		private static readonly int[] ValidHashSizes = { 32, 64, 128 };
+
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
@@ -46,20 +34,19 @@ namespace Bodu.Security.Cryptography
 		private bool finalized;
 #endif
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CityHash" /> class with a 32-bit hash size.
-		/// </summary>
-		public CityHash()
+		protected CityHashBase(int hashSize)
 		{
-			this.HashSizeValue = 32;
+			if (Array.IndexOf(ValidHashSizes, hashSize) == -1)
+				throw new ArgumentOutOfRangeException(nameof(hashSize),
+					string.Format(ResourceStrings.CryptographicException_InvalidHashSize, hashSize, string.Join(", ", ValidHashSizes)));
+
+			HashSizeValue = hashSize;
 			this.Initialize();
 		}
 
 		/// <inheritdoc />
 		public override void Initialize()
 		{
-			this.hashValue = CityHash.DefaultCheckSumValue;
-			this.size = 0;
 		}
 
 		/// <inheritdoc />
@@ -69,7 +56,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.hashValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
 			}
 
 			this.disposed = true;
@@ -78,7 +65,7 @@ namespace Bodu.Security.Cryptography
 
 		/// <inheritdoc />
 		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="CityHash" /> algorithm.
+		/// Processes a block of data by feeding it into the <see cref="CityHashBase{T}" /> algorithm.
 		/// </summary>
 		/// <param name="array">The byte array containing the data to be hashed.</param>
 		/// <param name="ibStart">The offset at which to start processing in the byte array.</param>
@@ -97,8 +84,10 @@ namespace Bodu.Security.Cryptography
 			HashCore(array.AsSpan(ibStart, cbSize));
 		}
 
+		private byte[]? _computedHash;
+
 		/// <summary>
-		/// Processes a block of data by feeding it into the <see cref="CityHash" /> algorithm.
+		/// Processes a block of data by feeding it into the <see cref="CityHashBase{T}" /> algorithm.
 		/// </summary>
 		/// <param name="source">
 		/// The input data to process. This method consumes the entire span and updates the internal checksum state accordingly.
@@ -107,24 +96,20 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowIfDisposed();
 
-			var v = hashValue;
-			foreach (var b in source)
-			{
-				if ((size & 1) == 0)
-					v ^= (v << 7) ^ b ^ (v >> 3);
-				else
-					v ^= ~((v << 11) ^ b ^ (v >> 5));
-
-				size++;
-			}
-			hashValue = v;
+			this._computedHash = ComputeHashCore(source);
 		}
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Finalizes the hash computation and returns the resulting hash as a byte array.
+		/// Performs the full hashing process on a complete input span. Used when ComputeHash is called in one shot (non-streaming).
 		/// </summary>
-		/// <returns>A 4-byte array containing the final 32-bit APHash result.</returns>
+		protected abstract byte[] ComputeHashCore(ReadOnlySpan<byte> source);
+
+		/// <summary>
+		/// Performs the final hash computation after all blocks have been processed. Only used if streaming (TransformBlock) is supported.
+		/// </summary>
+		protected virtual byte[] FinalizeHashCore() => Array.Empty<byte>();
+
+		/// <inheritdoc />
 		protected override byte[] HashFinal()
 		{
 			ThrowIfDisposed();
@@ -136,9 +121,24 @@ namespace Bodu.Security.Cryptography
 			this.State = 2;
 #endif
 
-			Span<byte> span = stackalloc byte[4];
-			MemoryMarshal.Write(span, in this.hashValue);
-			return span.ToArray();
+			return new byte[0];
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected static uint Mur(uint a, uint h) =>
+			unchecked((a * C1) ^ h.RotateBitsRight(17));
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected static uint Mix(uint h) =>
+			h ^ (h >> 16);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected static void Permute3(ref uint a, ref uint b, ref uint c)
+		{
+			uint t = a;
+			a = c;
+			c = b;
+			b = t;
 		}
 
 		/// <summary>
@@ -173,7 +173,7 @@ namespace Bodu.Security.Cryptography
 			ObjectDisposedException.ThrowIf(this.disposed, this);
 #else
 			if (this.disposed)
-				throw new ObjectDisposedException(nameof(Bernstein));
+				throw new ObjectDisposedException(nameof(T));
 #endif
 		}
 	}

@@ -26,16 +26,14 @@ namespace Bodu.Security.Cryptography
 		public void ComputeHash_WhenUsingIncrementalInput_ShouldMatchExpected(TVariant variant)
 		{
 			var algorithm = CreateAlgorithm(variant);
-			var count = algorithm.HashSize / 2;
-			byte[] input = new byte[count];
 			var expectedHashes = GetExpectedHashesForIncrementalInput(variant).ToArray();
 
-			if (!expectedHashes.Any())
+			if (expectedHashes.Length == 0)
 				Assert.Inconclusive($"No expected hashes defined for variant {variant}.");
 
-			Assert.AreEqual(expectedHashes.Length, count, "Expected hashes count should match the hash algorithm size.");
+			byte[] input = new byte[expectedHashes.Length];
 
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < expectedHashes.Length; i++)
 			{
 				byte[] expected = Convert.FromHexString(expectedHashes[i]);
 				input[i] = (byte)i;

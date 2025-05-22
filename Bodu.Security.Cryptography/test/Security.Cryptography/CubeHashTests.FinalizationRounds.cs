@@ -73,11 +73,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(0)]
 		[DataRow(4097)]
 		[DataRow(int.MaxValue)]
-		public void FinalizationRounds_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
+		public void FinalizationRounds_WhenSetToInvalidValue_ShouldThrowExactly(int value)
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => algorithm.FinalizationRounds = value);
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => algorithm.FinalizationRounds = value);
 		}
 
 		/// <summary>

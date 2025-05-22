@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Implementation of the cyclic redundancy check (CRC) error-detecting algorithm. This class cannot be inherited.
+	/// Implementation of the <c>CRC</c> (Cyclic Redundancy Check) error-detecting algorithm. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -29,7 +29,7 @@ namespace Bodu.Security.Cryptography
 		, IResumableHashAlgorithm
 	{
 		private readonly int hashSizeBytes;
-		private ulong crcValue;
+		private ulong workingHash;
 		private ulong[] table;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
@@ -101,7 +101,7 @@ namespace Bodu.Security.Cryptography
 			this.HashSizeValue = crcStandard.Size;
 			this.hashSizeBytes = (this.HashSizeValue + 7) / 8;
 
-			this.crcValue = this.ReflectIn
+			this.workingHash = this.ReflectIn
 				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
 				: this.InitialValue;
 		}
@@ -250,7 +250,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.crcValue = this.ReflectIn
+			this.workingHash = this.ReflectIn
 				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
 				: this.InitialValue;
 		}
@@ -359,15 +359,15 @@ namespace Bodu.Security.Cryptography
 		{
 			if (this.HashSizeValue >= 8)
 			{
-				this.crcValue = this.ReflectIn
-					? ProcessBytewiseReflected(data, this.crcValue, this.table)
-					: ProcessBytewiseNormal(data, this.crcValue, this.table, this.HashSizeValue - 8);
+				this.workingHash = this.ReflectIn
+					? ProcessBytewiseReflected(data, this.workingHash, this.table)
+					: ProcessBytewiseNormal(data, this.workingHash, this.table, this.HashSizeValue - 8);
 			}
 			else
 			{
-				this.crcValue = this.ReflectIn
-					? ProcessBitwiseReflected(data, this.crcValue, this.table)
-					: ProcessBitwiseNormal(data, this.crcValue, this.table, this.HashSizeValue - 1);
+				this.workingHash = this.ReflectIn
+					? ProcessBitwiseReflected(data, this.workingHash, this.table)
+					: ProcessBitwiseNormal(data, this.workingHash, this.table, this.HashSizeValue - 1);
 			}
 		}
 
@@ -481,14 +481,11 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.crcValue = 0;
+				this.workingHash = 0;
 				if (this.table is not null)
 				{
-					// Convert the ulong[] array to Span<byte> so we can securely zero the memory
-					Span<byte> byteSpan = MemoryMarshal.Cast<ulong, byte>(this.table.AsSpan());
-					CryptographicOperations.ZeroMemory(byteSpan);
-
-					// Now that the memory is zeroed, set the reference to null
+					CryptoUtilities.ClearAndNullify(ref HashValue);
+					CryptoUtilities.Clear(table.AsSpan());
 					this.table = null!;
 				}
 			}
@@ -563,11 +560,11 @@ namespace Bodu.Security.Cryptography
 
 			// Reflect final value if needed
 			if (this.ReflectIn ^ this.ReflectOut)
-				this.crcValue = CryptoUtilities.ReflectBits(this.crcValue, this.HashSizeValue);
+				this.workingHash = CryptoUtilities.ReflectBits(this.workingHash, this.HashSizeValue);
 
 			// Apply XOR and mask to match the width
-			this.crcValue ^= this.XOrOut;
-			this.crcValue &= ulong.MaxValue >> (64 - this.HashSizeValue);
+			this.workingHash ^= this.XOrOut;
+			this.workingHash &= ulong.MaxValue >> (64 - this.HashSizeValue);
 
 			if (destination.Length < this.hashSizeBytes)
 			{
@@ -577,7 +574,7 @@ namespace Bodu.Security.Cryptography
 
 			// Write to temp span using little-endian layout
 			Span<byte> temp = stackalloc byte[8];
-			Unsafe.WriteUnaligned(ref temp[0], this.crcValue);
+			Unsafe.WriteUnaligned(ref temp[0], this.workingHash);
 
 			// Slice from end so we always get correct width regardless of endian
 			temp.Slice(0, this.hashSizeBytes).CopyTo(destination);
@@ -595,17 +592,17 @@ namespace Bodu.Security.Cryptography
 			ThrowIfDisposed();
 
 			if (previousHash.Length != this.hashSizeBytes)
-				throw new ArgumentException("Hash length does not match the expected size.", nameof(previousHash));
+				throw new ArgumentException("Hash length does not match the expected length.", nameof(previousHash));
 
 			// Deserialize prior hash value
-			this.crcValue = this.HashSizeValue <= 32
+			this.workingHash = this.HashSizeValue <= 32
 				? BinaryPrimitives.ReadUInt32LittleEndian(previousHash)
 				: BinaryPrimitives.ReadUInt64LittleEndian(previousHash);
 
 			// Undo finalization
-			this.crcValue ^= this.XOrOut;
+			this.workingHash ^= this.XOrOut;
 			if (this.ReflectIn ^ this.ReflectOut)
-				this.crcValue = CryptoUtilities.ReflectBits(this.crcValue, this.HashSizeValue);
+				this.workingHash = CryptoUtilities.ReflectBits(this.workingHash, this.HashSizeValue);
 
 			// Continue hashing and finalize again
 			this.ProcessBlocks(newData);

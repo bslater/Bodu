@@ -71,11 +71,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(0)]
 		[DataRow(4097)]
 		[DataRow(int.MaxValue)]
-		public void Rounds_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
+		public void Rounds_WhenSetToInvalidValue_ShouldThrowExactly(int value)
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => algorithm.Rounds = value);
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => algorithm.Rounds = value);
 		}
 
 		/// <summary>

@@ -16,6 +16,16 @@ namespace Bodu.Security.Cryptography
 			SingleHashVariant.Default
 		};
 
+		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()
+		{
+			var list = new List<string>(base.GetFieldsToExcludeFromDisposeValidation());
+			list.AddRange([
+				"<DisposeCallCount>k__BackingField"
+			]);
+
+			return list;
+		}
+
 		/// <inheritdoc />
 		protected override MonitoringHashAlgorithm CreateAlgorithm() => new MonitoringHashAlgorithm();
 

@@ -9,7 +9,7 @@ using System;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Represents an optimized Adler-32 variant using a modulus of 65536 for better SIMD alignment.
+	/// Represents an optimized <c>Adler-32</c> variant using a modulus of 65536 for better SIMD alignment.
 	/// </summary>
 	/// <remarks>
 	/// <para>

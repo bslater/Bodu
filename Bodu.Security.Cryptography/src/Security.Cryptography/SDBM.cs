@@ -11,24 +11,32 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data by using the <see cref="SDBM" /> hash algorithm.
+	/// Provides a sealed implementation of the <c>SDBM</c> hash algorithm, a non-cryptographic hashing technique derived from the NDBM
+	/// database library. This algorithm is known for its simplicity and effectiveness in generating well-distributed 32-bit hash codes from
+	/// byte sequences.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Hash functions are a family of algorithms that map binary strings of an arbitrary length to small binary strings of a fixed length.
-	/// The <see cref="SDBM" /> algorithm is a non-cryptographic hash function.
+	/// <see cref="SDBM" /> is a classic string hashing algorithm that updates the internal state using the formula: <c><![CDATA[hash =
+	/// data[i] + (hash &lt;&lt; 6) + (hash &lt;&lt; 16) - hash]]></c>. This expression multiplies the previous hash by a large prime-like
+	/// factor and incorporates the new byte in a way that causes a strong avalanche effect for short and medium-length strings.
 	/// </para>
 	/// <para>
-	/// The <see cref="SDBM" /> class is a public-domain reimplementation of NDBM database library. See
-	/// <a href="http://www.cse.yorku.ca/~oz/hash.html">http://www.cse.yorku.ca/~oz/hash.html</a> for further information.
+	/// The algorithm gained popularity from its use in the public-domain NDBM (New Database Manager) library and is often cited in
+	/// discussions on hash table design. It produces good key distribution with minimal computational cost and is well-suited for in-memory
+	/// data structures, symbol resolution, and lookup tables.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
-	/// digital signatures, or any use case that requires secure integrity or confidentiality.</note>
+	/// <para>
+	/// For additional background, see the <a href="http://www.cse.yorku.ca/~oz/hash.html">Hash Functions page by Arash Partow</a>, which
+	/// describes the origin and comparative performance of the SDBM and other related hash functions.
+	/// </para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure. It must <b>not</b> be used for digital signatures,
+	/// password hashing, or data integrity checks in security-critical applications.</note>
 	/// </remarks>
 	public sealed class SDBM
 		: System.Security.Cryptography.HashAlgorithm
 	{
-		private uint hashValue;
+		private uint workingHash;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
@@ -77,7 +85,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.hashValue = 0;
+			this.workingHash = 0;
 		}
 
 		/// <inheritdoc />
@@ -115,12 +123,12 @@ namespace Bodu.Security.Cryptography
 			if (this.finalized)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
-			var v = hashValue;
+			var v = workingHash;
 			foreach (var b in source)
 			{
 				v = b + (v << 6) + (v << 16) - v;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -150,7 +158,7 @@ namespace Bodu.Security.Cryptography
 			State = 2;
 #endif
 			Span<byte> span = stackalloc byte[4];
-			BinaryPrimitives.WriteUInt32BigEndian(span, hashValue);
+			BinaryPrimitives.WriteUInt32BigEndian(span, workingHash);
 			return span.ToArray();
 		}
 
@@ -160,7 +168,9 @@ namespace Bodu.Security.Cryptography
 			if (disposed) return;
 			if (disposing)
 			{
-				hashValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				workingHash = 0;
 			}
 			disposed = true;
 			base.Dispose(disposing);

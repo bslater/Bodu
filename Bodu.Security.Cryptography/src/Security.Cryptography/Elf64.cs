@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes a 64-bit non-cryptographic hash using the ELF (Executable and Linkable Format) hashing algorithm.
+	/// Computes a 64-bit non-cryptographic hash using the <c>ELF</c> (Executable and Linkable Format) hashing algorithm.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -33,7 +33,7 @@ namespace Bodu.Security.Cryptography
 		: System.Security.Cryptography.HashAlgorithm
 	{
 		private ulong seedValue;
-		private ulong hashValue;
+		private ulong workingHash;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
@@ -111,7 +111,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.hashValue = this.seedValue;
+			this.workingHash = this.seedValue;
 		}
 
 		/// <inheritdoc />
@@ -146,7 +146,7 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowIfDisposed();
 
-			var v = hashValue;
+			var v = workingHash;
 			foreach (byte b in source)
 			{
 				v = (v << 4) + b;
@@ -155,7 +155,7 @@ namespace Bodu.Security.Cryptography
 				v ^= work >> 56;
 				v &= ~work;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -178,7 +178,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 2;
 #endif
 
-			return this.hashValue.GetBytes(asBigEndian: true);
+			return this.workingHash.GetBytes(asBigEndian: true);
 		}
 
 		///// <summary>
@@ -196,12 +196,12 @@ namespace Bodu.Security.Cryptography
 		//	int end = offset + length;
 		//	for (int i = offset; i < end; i++)
 		//	{
-		//		this.hashValue = (this.hashValue << 4) + array[i];
-		//		ulong work = this.hashValue & 0xF000000000000000UL;
+		//		this.workingHash = (this.workingHash << 4) + array[i];
+		//		ulong work = this.workingHash & 0xF000000000000000UL;
 		//		if (work != 0)
 		//		{
-		//			this.hashValue ^= work >> 56;
-		//			this.hashValue &= ~work;
+		//			this.workingHash ^= work >> 56;
+		//			this.workingHash &= ~work;
 		//		}
 		//	}
 		//}
@@ -232,7 +232,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.seedValue = this.hashValue = 0;
+				this.seedValue = this.workingHash = 0;
 			}
 
 			this.disposed = true;

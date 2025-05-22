@@ -6,7 +6,7 @@ namespace Bodu.Security.Cryptography
 	public abstract partial class SipHashTests<TTest, TAlgorithm>
 	{
 		/// <summary>
-		/// Verifies that the constructor throws an <see cref="ArgumentException" /> when provided an invalid <c>hashSize</c>.
+		/// Verifies that the constructor throws an <see cref="ArgumentOutOfRangeException" /> when provided an invalid <c>hashSize</c>.
 		/// </summary>
 		/// <param name="hashSize">The invalid hash size to test.</param>
 		[TestMethod]
@@ -15,9 +15,9 @@ namespace Bodu.Security.Cryptography
 		[DataRow(63)]
 		[DataRow(129)]
 		[DataRow(-1)]
-		public void Ctor_WhenHashSizeIsInvalid_ShouldThrowArgumentException(int hashSize)
+		public void Ctor_WhenHashSizeIsInvalid_ShouldThrowExactly(int hashSize)
 		{
-			Assert.ThrowsException<ArgumentException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				new TestSipHash(hashSize);
 			});
@@ -36,7 +36,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		private class TestSipHash
-		: SipHash
+		: SipHash<TAlgorithm>
 		{
 			public TestSipHash(int hashSize)
 				: base(hashSize)

@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Provides a generic base class for Adler-style checksum algorithms.
+	/// Provides a generic base class for <c>Adler</c> style checksum algorithms.
 	/// </summary>
 	/// <typeparam name="T">The unsigned numeric type used for internal state accumulation (e.g., <see cref="uint" />, <see cref="ulong" />).</typeparam>
 	/// <remarks>
@@ -53,7 +53,7 @@ namespace Bodu.Security.Cryptography
 			{
 				var t when t == typeof(uint) => 32,
 				var t when t == typeof(ulong) => 64,
-				_ => throw new NotSupportedException($"Unsupported hash size for type {typeof(T)}.")
+				_ => throw new NotSupportedException($"Unsupported hash length for type {typeof(T)}.")
 			};
 			partA = T.One;
 			partB = T.Zero;
@@ -189,6 +189,8 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
 				partA = partB = T.Zero;
 			}
 

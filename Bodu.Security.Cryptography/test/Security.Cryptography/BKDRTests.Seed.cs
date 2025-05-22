@@ -43,7 +43,7 @@ namespace Bodu.Security.Cryptography
 			byte[] input = new byte[] { 1, 2, 3 };
 			algorithm.TransformBlock(input, 0, input.Length, input, 0);
 
-			Assert.ThrowsException<CryptographicUnexpectedOperationException>(() => algorithm.Seed = 1234);
+			Assert.ThrowsExactly<CryptographicUnexpectedOperationException>(() => algorithm.Seed = 1234);
 		}
 
 		/// <summary>

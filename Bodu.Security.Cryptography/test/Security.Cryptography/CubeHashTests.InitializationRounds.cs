@@ -73,11 +73,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(0)]
 		[DataRow(4097)]
 		[DataRow(int.MaxValue)]
-		public void InitializationRounds_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
+		public void InitializationRounds_WhenSetToInvalidValue_ShouldThrowExactly(int value)
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => algorithm.InitializationRounds = value);
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => algorithm.InitializationRounds = value);
 		}
 
 		/// <summary>

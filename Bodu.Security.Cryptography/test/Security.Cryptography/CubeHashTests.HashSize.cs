@@ -78,11 +78,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(45)]
 		[DataRow(127)]
 		[DataRow(int.MaxValue)]
-		public void HashSize_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
+		public void HashSize_WhenSetToInvalidValue_ShouldThrowExactly(int value)
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => algorithm.HashSize = value);
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => algorithm.HashSize = value);
 		}
 
 		/// <summary>

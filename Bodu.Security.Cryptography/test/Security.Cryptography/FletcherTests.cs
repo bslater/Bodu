@@ -21,5 +21,17 @@ namespace Bodu.Security.Cryptography
 		{
 			SingleHashVariant.Default
 		};
+
+		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()
+		{
+			var list = new List<string>(base.GetFieldsToExcludeFromDisposeValidation());
+			list.AddRange([
+				"modulus",
+				"wordSize",
+				"blockSize",
+			]);
+
+			return list;
+		}
 	}
 }

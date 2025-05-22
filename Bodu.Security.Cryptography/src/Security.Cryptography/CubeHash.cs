@@ -7,13 +7,14 @@
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data by using the <see cref="CubeHash" /> hash algorithm. This class cannot be inherited.
+	/// Computes the hash for the input data by using the <c>CubeHash</c> hash algorithm. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -77,12 +78,12 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		public CubeHash()
 		{
-			this.HashSize = 512;
-			this.TransformBlockSize = 32;
-			this.Rounds = this.InitializationRounds = 16;
-			this.FinalizationRounds = 32;
-			this.bitLength = 0;
-			this.state = initializedState = new uint[32];
+			HashSize = 512;
+			TransformBlockSize = 32;
+			Rounds = InitializationRounds = 16;
+			FinalizationRounds = 32;
+			bitLength = 0;
+			state = initializedState = new uint[32];
 		}
 
 		/// <inheritdoc />
@@ -94,7 +95,7 @@ namespace Bodu.Security.Cryptography
 		/// transformation round is triggered internally. While this value does not impact the correctness of the hash, feeding data in
 		/// aligned blocks may improve performance in stream-based scenarios.
 		/// </remarks>
-		public override int InputBlockSize => this.TransformBlockSize;
+		public override int InputBlockSize => TransformBlockSize;
 
 		/// <inheritdoc />
 		/// <summary>
@@ -104,7 +105,7 @@ namespace Bodu.Security.Cryptography
 		/// This is equal to the configured <see cref="HashSize" /> divided by 8. For example, a 512-bit hash will produce an output block
 		/// of 64 bytes. This value corresponds to the full digest returned after <see cref="HashAlgorithm.HashFinal" /> is called.
 		/// </remarks>
-		public override int OutputBlockSize => this.HashSize / 8;
+		public override int OutputBlockSize => HashSize / 8;
 
 		/// <summary>
 		/// Gets or sets the number of finalization rounds applied after all input has been processed.
@@ -121,7 +122,7 @@ namespace Bodu.Security.Cryptography
 			get
 			{
 				ThrowIfDisposed();
-				return this.finalizationRounds;
+				return finalizationRounds;
 			}
 
 			set
@@ -129,7 +130,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
-				this.finalizationRounds = value;
+				finalizationRounds = value;
 				isInitializedStateCached = false;
 			}
 		}
@@ -151,7 +152,7 @@ namespace Bodu.Security.Cryptography
 			get
 			{
 				ThrowIfDisposed();
-				return this.HashSizeValue;
+				return HashSizeValue;
 			}
 
 			set
@@ -160,7 +161,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinHashSize, MaxHashSize);
 				ThrowHelper.ThrowIfNotPositiveMultipleOf(value, 8);
-				this.HashSizeValue = value;
+				HashSizeValue = value;
 				isInitializedStateCached = false;
 			}
 		}
@@ -180,7 +181,7 @@ namespace Bodu.Security.Cryptography
 			get
 			{
 				ThrowIfDisposed();
-				return this.initializationRounds;
+				return initializationRounds;
 			}
 
 			set
@@ -188,7 +189,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
-				this.initializationRounds = value;
+				initializationRounds = value;
 				isInitializedStateCached = false;
 			}
 		}
@@ -209,7 +210,7 @@ namespace Bodu.Security.Cryptography
 			get
 			{
 				ThrowIfDisposed();
-				return this.inputBlockSizeBits / 8;
+				return inputBlockSizeBits / 8;
 			}
 
 			set
@@ -217,7 +218,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinInputBlockSize, MaxInputBlockSize);
-				this.inputBlockSizeBits = value * 8;
+				inputBlockSizeBits = value * 8;
 				isInitializedStateCached = false;
 			}
 		}
@@ -236,7 +237,7 @@ namespace Bodu.Security.Cryptography
 			get
 			{
 				ThrowIfDisposed();
-				return this.rounds;
+				return rounds;
 			}
 
 			set
@@ -244,7 +245,7 @@ namespace Bodu.Security.Cryptography
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
 				ThrowHelper.ThrowIfOutOfRange(value, MinRounds, MaxRounds);
-				this.rounds = value;
+				rounds = value;
 				isInitializedStateCached = false;
 			}
 		}
@@ -306,10 +307,10 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowIfDisposed();
 #if !NET6_0_OR_GREATER
-            this.State = 0;
-            this.finalized = false;
+            State = 0;
+            finalized = false;
 #endif
-			this.bitLength = 0;
+			bitLength = 0;
 
 			EnsureInitialized();
 			InitializeVectors();
@@ -330,7 +331,7 @@ namespace Bodu.Security.Cryptography
             ThrowHelper.ThrowIfLessThan(offset, 0);
             ThrowHelper.ThrowIfLessThan(length, 0);
             ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, length);
-            if (this.finalized)
+            if (finalized)
                 throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 			EnsureInitialized();
@@ -351,11 +352,11 @@ namespace Bodu.Security.Cryptography
 			foreach (var b in source)
 			{
 				// XOR byte into current 32-bit word based on bit offset
-				this.state[this.bitLength / 32] ^= (uint)b << (8 * ((this.bitLength / 8) % 4));
-				if ((this.bitLength += 8) == this.inputBlockSizeBits)
+				state[bitLength / 32] ^= (uint)b << (8 * ((bitLength / 8) % 4));
+				if ((bitLength += 8) == inputBlockSizeBits)
 				{
-					this.PerformRounds(this.rounds);
-					this.bitLength = 0;
+					PerformRounds(rounds);
+					bitLength = 0;
 				}
 			}
 		}
@@ -377,28 +378,28 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowIfDisposed();
 #if !NET6_0_OR_GREATER
-            if (this.finalized)
+            if (finalized)
                 throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
-            this.finalized = true;
-            this.State = 2;
+            finalized = true;
+            State = 2;
 #endif
 			EnsureInitialized();
 
 			// Add padding bit to current word
-			uint pad = (uint)(128 >> (this.bitLength % 8));
-			pad <<= 8 * ((this.bitLength / 8) % 4);
-			this.state[this.bitLength / 32] ^= pad;
-			this.PerformRounds(this.rounds);
+			uint pad = (uint)(128 >> (bitLength % 8));
+			pad <<= 8 * ((bitLength / 8) % 4);
+			state[bitLength / 32] ^= pad;
+			PerformRounds(rounds);
 
 			// Finalization flag
-			this.state[31] ^= 1U;
-			this.PerformRounds(this.finalizationRounds);
+			state[31] ^= 1U;
+			PerformRounds(finalizationRounds);
 
-			int byteLength = this.HashSize / 8;
+			int byteLength = HashSize / 8;
 			byte[] result = GC.AllocateUninitializedArray<byte>(byteLength);
 			for (int i = 0; i < byteLength; i++)
 			{
-				result[i] = (byte)(this.state[i / 4] >> (8 * (i % 4)));
+				result[i] = (byte)(state[i / 4] >> (8 * (i % 4)));
 			}
 
 			return result;
@@ -410,21 +411,21 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void EnsureInitialized()
 		{
-			if (this.isInitializedStateCached)
+			if (isInitializedStateCached)
 				return;
 
-			this.state = new uint[32];
-			this.state[0] = (uint)this.HashSize / 8;
-			this.state[1] = (uint)this.TransformBlockSize;
-			this.state[2] = (uint)this.Rounds;
-			this.PerformRounds(this.initializationRounds);
-			this.initializedState = this.state.ToArray();
-			this.isInitializedStateCached = true;
+			state = new uint[32];
+			state[0] = (uint)HashSize / 8;
+			state[1] = (uint)TransformBlockSize;
+			state[2] = (uint)Rounds;
+			PerformRounds(initializationRounds);
+			initializedState = state.ToArray();
+			isInitializedStateCached = true;
 		}
 
 		private void InitializeVectors()
 		{
-			this.state = this.initializedState.ToArray();
+			state = initializedState.ToArray();
 		}
 
 		/// <summary>
@@ -434,7 +435,7 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void PerformRounds(int rounds)
 		{
-			Span<uint> stateSpan = this.state;
+			Span<uint> stateSpan = state;
 			Span<uint> temp = scratch;
 
 			for (int r = 0; r < rounds; r++)
@@ -487,18 +488,21 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override void Dispose(bool disposing)
 		{
-			if (this.disposed) return;
+			if (disposed) return;
 			if (disposing)
 			{
-				this.finalizationRounds = this.initializationRounds = this.rounds = this.inputBlockSizeBits = this.bitLength = 0;
-				if (this.state != null)
+				finalizationRounds = initializationRounds = rounds = inputBlockSizeBits = bitLength = 0;
+				if (state != null)
 				{
-					this.state.AsSpan().Clear();
-					this.state = null!;
+					CryptoUtilities.ClearAndNullify(ref HashValue);
+					CryptoUtilities.ClearAndNullify(ref state!);
+					CryptoUtilities.ClearAndNullify(ref initializedState!);
+					CryptoUtilities.Clear(scratch.AsSpan());
+					isInitializedStateCached = false;
 				}
 			}
 
-			this.disposed = true;
+			disposed = true;
 			base.Dispose(disposing);
 		}
 
@@ -509,9 +513,9 @@ namespace Bodu.Security.Cryptography
 		private void ThrowIfDisposed()
 		{
 #if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
+			ObjectDisposedException.ThrowIf(disposed, this);
 #else
-			if (this.disposed)
+			if (disposed)
 				throw new ObjectDisposedException(nameof(CubeHash));
 #endif
 		}
@@ -522,7 +526,7 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ThrowIfInvalidState()
 		{
-			if (this.State != 0)
+			if (State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
 		}
 	}

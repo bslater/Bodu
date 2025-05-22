@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data using the <see cref="Bernstein" /> (djb2) hash algorithm.
+	/// Computes the hash for the input data using the <c>Bernstein</c> (djb2) hash algorithm.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -50,7 +50,7 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		public const uint DefaultInitialValue = 5381U;
 
-		private uint hashValue;
+		private uint workingHash;
 		private uint initialValue;
 		private bool useModified;
 		private bool disposed = false;
@@ -66,7 +66,7 @@ namespace Bodu.Security.Cryptography
 		public Bernstein()
 		{
 			this.HashSizeValue = 32;
-			this.initialValue = this.hashValue = DefaultInitialValue;
+			this.initialValue = this.workingHash = DefaultInitialValue;
 			this.useModified = false;
 		}
 
@@ -130,7 +130,9 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				this.initialValue = 0;
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				this.initialValue = workingHash = 0;
 			}
 
 			this.disposed = true;
@@ -170,7 +172,7 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.hashValue = this.initialValue;
+			this.workingHash = this.initialValue;
 		}
 
 		/// <inheritdoc />
@@ -229,12 +231,12 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void HashOriginal(ReadOnlySpan<byte> data)
 		{
-			uint v = hashValue;
+			uint v = workingHash;
 			foreach (var b in data)
 			{
 				v = ((v << 5) + v) + b;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <summary>
@@ -249,12 +251,12 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void HashModified(ReadOnlySpan<byte> data)
 		{
-			uint v = hashValue;
+			uint v = workingHash;
 			foreach (byte b in data)
 			{
 				v = ((v << 5) + v) ^ b;
 			}
-			hashValue = v;
+			workingHash = v;
 		}
 
 		/// <inheritdoc />
@@ -290,7 +292,7 @@ namespace Bodu.Security.Cryptography
 #endif
 
 			Span<byte> span = stackalloc byte[4];
-			BinaryPrimitives.WriteUInt32BigEndian(span, this.hashValue); // Explicit big-endian output
+			BinaryPrimitives.WriteUInt32BigEndian(span, this.workingHash); // Explicit big-endian output
 			return span.ToArray();
 		}
 

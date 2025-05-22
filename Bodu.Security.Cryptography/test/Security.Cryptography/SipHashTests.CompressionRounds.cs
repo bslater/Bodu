@@ -11,11 +11,11 @@ namespace Bodu.Security.Cryptography
 		[DataRow(-1)]
 		[DataRow(0)]
 		[DataRow(1)]
-		public void CompressionRounds_WhenSetToInvalidValue_ShouldThrowArgumentOutOfRangeException(int value)
+		public void CompressionRounds_WhenSetToInvalidValue_ShouldThrowExactly(int value)
 		{
 			using var algorithm = this.CreateAlgorithm();
 
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				algorithm.CompressionRounds = value;
 			});

@@ -12,16 +12,26 @@ namespace Bodu.Security.Cryptography
 	public abstract partial class SipHashTests<TTest, TAlgorithm>
 		: KeyedHashAlgorithmTests<TTest, TAlgorithm, SipHashVariant>
 		where TTest : HashAlgorithmTests<TTest, TAlgorithm, SipHashVariant>, new()
-		where TAlgorithm : SipHash, new()
+		where TAlgorithm : SipHash<TAlgorithm>, new()
 	{
 		protected const int ExpectedKeySize = 16;
 
 		/// <inheritdoc />
 		protected override byte[] GenerateUniqueKey()
 		{
-			byte[] key = new byte[SipHash.KeySize];
+			byte[] key = new byte[SipHash<TAlgorithm>.KeySize];
 			CryptoUtilities.FillWithRandomNonZeroBytes(key);
 			return key;
+		}
+
+		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()
+		{
+			var list = new List<string>(base.GetFieldsToExcludeFromDisposeValidation());
+			list.AddRange([
+				"BlockSizeBytes"
+			]);
+
+			return list;
 		}
 
 		public override IEnumerable<SipHashVariant> GetHashAlgorithmVariants() => new[]
