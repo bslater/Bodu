@@ -153,5 +153,14 @@ namespace Bodu.Security.Cryptography
 				}
 			}
 		}
+
+		[DataTestMethod]
+		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
+		public void HashAlgorithm_TestData_Check(TVariant variant)
+		{
+			var emptyA = this.GetExpectedHashesForNamedInputs(variant)["Empty"];
+			var emptyB = this.GetExpectedHashesForIncrementalInput(variant)[0];
+			Assert.AreEqual(emptyA, emptyB, "Expected Hash value for 'Empty' Named Input should equal first item of Incremental Input");
+		}
 	}
 }

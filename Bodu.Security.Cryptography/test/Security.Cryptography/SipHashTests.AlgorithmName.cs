@@ -14,11 +14,12 @@ namespace Bodu.Security.Cryptography
 	{
 		[DataTestMethod]
 		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
-		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString(SipHashVariant variant)
+		public void AlgorithmName_WhenUsingVariant_ShouldReturnCorrectlyFormattedString(SipHashVariant variant)
 		{
 			using var algorithm = this.CreateAlgorithm(variant);
+			string expected = GetAlgorithmName(algorithm);
 
-			Assert.AreEqual($"SipHash-{algorithm.CompressionRounds}-{algorithm.FinalizationRounds}-{algorithm.HashSize}", algorithm.AlgorithmName);
+			Assert.AreEqual(expected, algorithm.AlgorithmName);
 		}
 
 		[TestMethod]
@@ -29,8 +30,12 @@ namespace Bodu.Security.Cryptography
 				CompressionRounds = 3,
 				FinalizationRounds = 5
 			};
+			string expected = GetAlgorithmName(algorithm);
 
-			Assert.AreEqual($"SipHash-{algorithm.CompressionRounds}-{algorithm.FinalizationRounds}-{algorithm.HashSize}", algorithm.AlgorithmName);
+			Assert.AreEqual(expected, algorithm.AlgorithmName);
 		}
+
+		private static string GetAlgorithmName(SipHash<TAlgorithm> algorithm) =>
+			$"SipHash-{algorithm.CompressionRounds}-{algorithm.FinalizationRounds}-{algorithm.HashSize}";
 	}
 }

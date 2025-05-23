@@ -13,7 +13,7 @@ namespace Bodu.Security.Cryptography
 	public abstract partial class FletcherTests<TTest, TAlgorithm>
 	{
 		[TestMethod]
-		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString()
+		public void AlgorithmName_WhenUsingVariant_ShouldReturnCorrectlyFormattedString()
 		{
 			using var algorithm = this.CreateAlgorithm();
 

@@ -14,7 +14,7 @@ namespace Bodu.Security.Cryptography
 	{
 		[DataTestMethod]
 		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
-		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString(TigerVariant variant)
+		public void AlgorithmName_WhenUsingVariant_ShouldReturnCorrectlyFormattedString(TigerVariant variant)
 		{
 			using var algorithm = this.CreateAlgorithm(variant);
 

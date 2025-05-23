@@ -14,11 +14,12 @@ namespace Bodu.Security.Cryptography
 	{
 		[DataTestMethod]
 		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
-		public void AlgorithmName_WhenUsingCustomRounds_ShouldReturnCorrectlyFormattedString(CubeHashVariants variant)
+		public void AlgorithmName_WhenUsingVariant_ShouldReturnCorrectlyFormattedString(CubeHashVariants variant)
 		{
 			using var algorithm = this.CreateAlgorithm(variant);
+			string expected = GetAlgorithmName(algorithm);
 
-			Assert.AreEqual($"CubeHash{algorithm.InitializationRounds}+{algorithm.Rounds}/{algorithm.TransformBlockSize}+{algorithm.FinalizationRounds}-{algorithm.HashSize}", algorithm.AlgorithmName);
+			Assert.AreEqual(expected, algorithm.AlgorithmName);
 		}
 
 		[TestMethod]
@@ -29,8 +30,12 @@ namespace Bodu.Security.Cryptography
 				InitializationRounds = 3,
 				Rounds = 5
 			};
+			string expected = GetAlgorithmName(algorithm);
 
-			Assert.AreEqual($"CubeHash{algorithm.InitializationRounds}+{algorithm.Rounds}/{algorithm.TransformBlockSize}+{algorithm.FinalizationRounds}-{algorithm.HashSize}", algorithm.AlgorithmName);
+			Assert.AreEqual(expected, algorithm.AlgorithmName);
 		}
+
+		private static string GetAlgorithmName(CubeHash algorithm) =>
+			$"CubeHash{algorithm.InitializationRounds}+{algorithm.Rounds}/{algorithm.TransformBlockSize}+{algorithm.FinalizationRounds}-{algorithm.HashSize}"
 	}
 }
