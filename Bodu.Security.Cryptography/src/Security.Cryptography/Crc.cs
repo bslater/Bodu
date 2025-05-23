@@ -21,8 +21,8 @@ namespace Bodu.Security.Cryptography
 	/// defined in the <see cref="CrcStandard" /> class, such as the polynomial, initial value, reflection settings, and XOR out value. It
 	/// provides methods for CRC calculation and updates using byte arrays.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
-	/// password hashing, or integrity verification in security-sensitive contexts.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class Crc
 		: System.Security.Cryptography.HashAlgorithm

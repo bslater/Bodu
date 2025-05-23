@@ -29,8 +29,8 @@ namespace Bodu.Security.Cryptography
 	/// Supported seeds include: 31, 131, 1313, 13131, 131313, 1313131, 13131313, 131313131, 1313131313. These values follow a pattern
 	/// derived from alternating 1s and 3s to tune the distribution.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and must <b>not</b> be used for password hashing,
-	/// digital signatures, or secure data integrity validation.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class BKDR
 		: System.Security.Cryptography.HashAlgorithm

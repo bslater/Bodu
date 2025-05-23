@@ -16,7 +16,7 @@ namespace Bodu.Security.Cryptography
 	/// <para>
 	/// Adler-32 is a non-cryptographic checksum algorithm developed by Mark Adler for use in the zlib compression library. It produces a
 	/// 32-bit checksum by maintaining two running sums (A and B), which are updated while reading input data and then combined into the
-	/// final result as <c><![CDATA[(B >> 16) | A]]></c>. This implementation follows the original specification using a modulus of 65521
+	/// final result as <c><![CDATA[(B << 16) | A]]></c>. This implementation follows the original specification using a modulus of 65521
 	/// (the largest prime less than 2 <sup>16</sup>).
 	/// </para>
 	/// <para>
@@ -24,7 +24,7 @@ namespace Bodu.Security.Cryptography
 	/// Adler-style checksums. Use this class when a standard, zlib-compatible Adler-32 checksum is required.
 	/// </para>
 	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
-	/// digital signatures, or tamper-proof integrity checks in security-critical applications.</note>
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class Adler32
 		: Adler32Base

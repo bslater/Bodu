@@ -29,8 +29,8 @@ namespace Bodu.Security.Cryptography
 	/// When computing multi-byte hashes (e.g., 64-bit), the algorithm is repeated for each byte of the result, often using different
 	/// initialization or byte offsets to reduce collisions.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure. It must <b>not</b> be used for digital signatures,
-	/// password hashing, or data integrity checks in security-critical applications.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed partial class Pearson
 		: System.Security.Cryptography.HashAlgorithm

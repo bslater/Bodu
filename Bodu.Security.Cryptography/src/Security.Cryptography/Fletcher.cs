@@ -24,12 +24,12 @@ namespace Bodu.Security.Cryptography
 	/// This implementation handles Fletcher hash sizes of 16, 32, and 64 bits. Derived classes (see <see cref="Fletcher16" />,
 	/// <see cref="Fletcher32" />, <see cref="Fletcher64" />) can implement specific hash sizes.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
-	/// password hashing, or integrity verification in security-sensitive contexts.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
-	public abstract class Fletcher<T>
-		: BlockHashAlgorithm<T>
-			where T : Fletcher<T>, new()
+	public abstract class Fletcher<TSelf>
+		: BlockHashAlgorithm<TSelf>
+			where TSelf : Fletcher<TSelf>, new()
 	{
 		private static readonly int[] ValidHashSizes = { 16, 32, 64 };
 
@@ -67,7 +67,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets the fully qualified algorithm name for this Fletcher variant, based on the configured hash output size.
+		/// Gets the fully qualified algorithm name, including the variant and hash output size.
 		/// </summary>
 		/// <value>
 		/// A string in the form <c>Fletcher-N</c>, where <c>N</c> is the number of bits in the final hash output (e.g., <c>Fletcher-32</c>

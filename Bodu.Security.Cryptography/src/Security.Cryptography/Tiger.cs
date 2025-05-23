@@ -33,8 +33,8 @@ namespace Bodu.Security.Cryptography
 	/// Tiger is well suited for fast, non-cryptographic checksums, fingerprinting, and hash table indexing. It is not intended for secure
 	/// integrity validation or cryptographic use.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
-	/// signatures, or secure data integrity checks.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed partial class Tiger
 		: BlockHashAlgorithm<Tiger>
@@ -52,21 +52,18 @@ namespace Bodu.Security.Cryptography
 		private static readonly int[] ValidHashSizes = { 128, 160, 192 };
 
 		/// <summary>
-		/// Gets the fully qualified algorithm name, including round configuration and hash output size.
+		/// Gets the fully qualified algorithm name, including the variant and hash output size.
 		/// </summary>
+		/// <value>A string in the form <c>Tiger/x</c>, where <c>x</c> is the number of bits in the final hash output.</value>
 		/// <remarks>
-		/// Follows the convention "SipHash-c-d-x", where:
-		/// <list type="bullet">
-		/// <item>
-		/// <description><c>c</c>: compression rounds</description>
-		/// </item>
-		/// <item>
-		/// <description><c>d</c>: finalization rounds</description>
-		/// </item>
-		/// <item>
-		/// <description><c>x</c>: output hash size in bits</description>
-		/// </item>
-		/// </list>
+		/// <para>
+		/// The name follows the convention <c>Tiger/x</c>, where <c>x</c> is the number of output bits—typically 128, 160, or 192. These
+		/// correspond to the standard Tiger variants: <c>Tiger/128</c>, <c>Tiger/160</c>, and <c>Tiger/192</c>.
+		/// </para>
+		/// <para>
+		/// The full 192-bit internal state is always computed. If a shorter output length is selected, the result is truncated after
+		/// finalization to match the configured <see cref="HashSize" />.
+		/// </para>
 		/// </remarks>
 		public string AlgorithmName =>
 			$"Tiger/{HashSizeValue}";
