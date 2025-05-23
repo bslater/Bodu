@@ -37,8 +37,8 @@ namespace Bodu.Security.Cryptography
 	/// This implementation is suitable for general-purpose use cases that require fast, deterministic hashing such as hash tables, string
 	/// interning, and symbol indexing.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure. It must <b>not</b> be used for digital signatures,
-	/// password hashing, or data integrity checks in security-critical applications.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class Pjw32
 		: System.Security.Cryptography.HashAlgorithm

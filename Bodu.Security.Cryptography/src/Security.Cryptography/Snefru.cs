@@ -55,8 +55,8 @@ namespace Bodu.Security.Cryptography
 	/// </description>
 	/// </item>
 	/// </list>
-	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
-	/// signatures, or secure data integrity checks.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public abstract partial class Snefru<T>
 		: BlockHashAlgorithm<T>

@@ -12,9 +12,12 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// <see cref="Fletcher32" /> is a non-cryptographic hash algorithm that computes a 32-bit checksum by iterating over the input data. It
-	/// was invented by Brian Kernighan and Dennis Ritchie, and is typically used for error-checking in applications such as network protocols.
+	/// <see cref="Fletcher32" /> is a lightweight checksum algorithm that produces a 32-bit output by iteratively processing input bytes
+	/// using two 16-bit rolling sums. It was introduced by Brian Kernighan and Dennis Ritchie and is commonly used in networking, file
+	/// validation, and embedded systems where error detection is required but cryptographic strength is not.
 	/// </para>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class Fletcher32
 		: Security.Cryptography.Fletcher<Fletcher32>

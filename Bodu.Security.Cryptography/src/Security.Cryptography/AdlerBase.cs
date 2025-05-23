@@ -26,8 +26,8 @@ namespace Bodu.Security.Cryptography
 	/// <para>
 	/// This class is designed for reuse, supports incremental block processing, and provides SIMD-accelerated and scalar fallback paths.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not cryptographically secure</b> and must not be used for password hashing, signature
-	/// schemes, or cryptographic integrity verification.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public abstract class AdlerBase<T>
 		: System.Security.Cryptography.HashAlgorithm

@@ -16,7 +16,7 @@ namespace Bodu.Security.Cryptography
 	/// <remarks>
 	/// <para>
 	/// This class specializes the generic <see cref="AdlerBase{T}" /> base class for 64-bit checksums. It implements finalization logic
-	/// specific to Adler-64 variants, combining the A and B accumulators into a 64-bit hash as: <c><![CDATA[(B >> 32) | A]]></c>.
+	/// specific to Adler-64 variants, combining the A and B accumulators into a 64-bit hash as: <c><![CDATA[(B << 32) | A]]></c>.
 	/// </para>
 	/// <para>
 	/// Derived classes such as <see cref="Adler64" /> supply the modulus 4294967291 (2^32 − 5) to support wide-range checksums with reduced

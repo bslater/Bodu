@@ -17,8 +17,8 @@ namespace Bodu.Security.Cryptography
 	/// <remarks>
 	/// <para>
 	/// <see cref="SDBM" /> is a classic string hashing algorithm that updates the internal state using the formula: <c><![CDATA[hash =
-	/// data[i] + (hash &lt;&lt; 6) + (hash &lt;&lt; 16) - hash]]></c>. This expression multiplies the previous hash by a large prime-like
-	/// factor and incorporates the new byte in a way that causes a strong avalanche effect for short and medium-length strings.
+	/// data[i] + (hash << 6) + (hash << 16) - hash]]></c>. This expression multiplies the previous hash by a large prime-like factor and
+	/// incorporates the new byte in a way that causes a strong avalanche effect for short and medium-length strings.
 	/// </para>
 	/// <para>
 	/// The algorithm gained popularity from its use in the public-domain NDBM (New Database Manager) library and is often cited in
@@ -29,8 +29,8 @@ namespace Bodu.Security.Cryptography
 	/// For additional background, see the <a href="http://www.cse.yorku.ca/~oz/hash.html">Hash Functions page by Arash Partow</a>, which
 	/// describes the origin and comparative performance of the SDBM and other related hash functions.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure. It must <b>not</b> be used for digital signatures,
-	/// password hashing, or data integrity checks in security-critical applications.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class SDBM
 		: System.Security.Cryptography.HashAlgorithm

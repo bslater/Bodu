@@ -41,7 +41,7 @@ namespace Bodu.Security.Cryptography
 	/// </list>
 	/// <para>Both versions produce a 32-bit integer hash from the input stream of bytes.</para>
 	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
-	/// digital signatures, or any use case that requires secure integrity or confidentiality.</note>
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class Bernstein
 		: System.Security.Cryptography.HashAlgorithm

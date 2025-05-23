@@ -5,8 +5,8 @@ using System.Security.Cryptography;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data using the <c>JSHash</c> hash algorithm. This
-	/// variant applies a non-cryptographic bitwise mixing function developed by Justin Sobel to produce a 32-bit hash value. This class cannot be inherited.
+	/// Computes the hash for the input data using the <c>JSHash</c> hash algorithm. This variant applies a non-cryptographic bitwise mixing
+	/// function developed by Justin Sobel to produce a 32-bit hash value. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -14,13 +14,14 @@ namespace Bodu.Security.Cryptography
 	/// permutationTable indexing and other non-cryptographic use cases where speed is preferred over security.
 	/// </para>
 	/// <para>The core hash function operates using the expression: <c><![CDATA[hash ^= (hash << 5) + (hash >> 2) + byte]]></c>.</para>
-	/// /// <para>
-	/// The computed hash is returned as a 4-byte array in the <b>system's native endianness</b>. On little-endian platforms (such as most modern desktops),
-	/// the least significant byte appears first. Consumers requiring a specific byte order (e.g., big-endian for network protocols) should normalize the
-	/// output using <see cref="System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(uint)" /> as needed.
+	/// ///
+	/// <para>
+	/// The computed hash is returned as a 4-byte array in the <b>system's native endianness</b>. On little-endian platforms (such as most
+	/// modern desktops), the least significant byte appears first. Consumers requiring a specific byte order (e.g., big-endian for network
+	/// protocols) should normalize the output using <see cref="System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(uint)" /> as needed.
 	/// </para>
-	///<note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
-	/// password hashing, or integrity verification in security-sensitive contexts.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class JSHash
 		: System.Security.Cryptography.HashAlgorithm

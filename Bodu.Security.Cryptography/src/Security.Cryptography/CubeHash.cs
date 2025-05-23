@@ -14,15 +14,26 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Bodu.Security.Cryptography
 {
 	/// <summary>
-	/// Computes the hash for the input data using the <c>CubeHash</c> hash algorithm. This variant applies a cryptographic permutation over
-	/// a 1024-bit state using a configurable number of initialization, transformation, and finalization rounds. This class cannot be inherited.
+	/// Computes the hash for the input data using the <c>CubeHash</c> cryptographic hash algorithm. This implementation applies a
+	/// permutation-based transformation over a 1024-bit internal state using configurable initialization, processing, and finalization
+	/// rounds. This class cannot be inherited.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// The <see cref="CubeHash" /> algorithm is a cryptographic hash function submitted to the NIST SHA-3 hash competition by Daniel J.
-	/// Bernstein. This implementation supports parameterized configuration to allow flexibility in hash size, round counts, and input block size.
+	/// <see cref="CubeHash" /> is a cryptographic hash function designed by Daniel J. Bernstein and submitted as a candidate to the NIST
+	/// SHA-3 competition. It uses a simple and highly parallelizable structure based on a fixed-size internal state that is updated through
+	/// a series of ARX-style (Addition, Rotation, XOR) operations.
 	/// </para>
-	/// <para>See also: <a href="https://en.wikipedia.org/wiki/CubeHash">https://en.wikipedia.org/wiki/CubeHash</a></para>
+	/// <para>
+	/// This implementation supports parameterized configuration of the number of initialization rounds, transformation rounds, and
+	/// finalization rounds, as well as variable hash output sizes and input block sizes. It is suitable for scenarios requiring
+	/// flexibility, performance, and cryptographic strength.
+	/// </para>
+	/// <para>
+	/// CubeHash is intended for use in security-sensitive contexts such as digital signatures, message authentication codes, and
+	/// general-purpose integrity verification where cryptographic strength is a requirement.
+	/// </para>
+	/// <para>For more information, see: <a href="https://en.wikipedia.org/wiki/CubeHash">https://en.wikipedia.org/wiki/CubeHash</a></para>
 	/// </remarks>
 	public sealed class CubeHash
 		: System.Security.Cryptography.HashAlgorithm
@@ -252,10 +263,10 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets the full CubeHash algorithm name in the canonical submission format.
+		/// Gets the fully qualified algorithm name, including the variant and hash output size.
 		/// </summary>
 		/// <remarks>
-		/// <para>Follows the CubeHash naming convention from the original submission: <c>CubeHashr+b/w+f-h</c>, where:</para>
+		/// <para>Follows the <see cref="CubeHash" /> naming convention from the original submission: <c>CubeHashr+b/w+f-h</c>, where:</para>
 		/// <list type="bullet">
 		/// <item>
 		/// <description><c>r</c> = number of initialization rounds</description>

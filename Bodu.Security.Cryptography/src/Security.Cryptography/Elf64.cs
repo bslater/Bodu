@@ -27,8 +27,8 @@ namespace Bodu.Security.Cryptography
 	/// <para>
 	/// An optional <see cref="Seed" /> value may be specified to alter the initial state. The seed cannot be changed once hashing begins.
 	/// </para>
-	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for digital signatures,
-	/// password hashing, or integrity verification in security-sensitive contexts.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class Elf64
 		: System.Security.Cryptography.HashAlgorithm

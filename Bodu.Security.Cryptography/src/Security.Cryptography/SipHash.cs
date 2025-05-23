@@ -50,8 +50,8 @@ namespace Bodu.Security.Cryptography
 	/// </description>
 	/// </item>
 	/// </list>
-	/// <note type="important">This algorithm is <b>not</b> suitable for cryptographic applications such as password hashing, digital
-	/// signatures, or secure data integrity checks.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public abstract class SipHash<T>
 		: KeyedBlockHashAlgorithm<T>
@@ -114,7 +114,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets the fully qualified algorithm name, including round configuration and hash output size.
+		/// Gets the fully qualified algorithm name, including the variant and hash output size.
 		/// </summary>
 		/// <remarks>
 		/// Follows the convention "SipHash-c-d-x", where:

@@ -13,8 +13,8 @@ namespace Bodu.Security.Cryptography
 	using System.Security.Cryptography;
 
 	/// <summary>
-	/// Base class for computing hashes using the <c>Fowler–Noll–Vo</c> ( <c>FNV</c>) hash algorithm family (FNV-1, FNV-1a). This class
-	/// cannot be inherited directly.
+	/// Base class for computing hashes using the <c>FNV</c> (Fowler-Noll-Vo) hash algorithm family (FNV-1, FNV-1a). This class cannot be
+	/// inherited directly.
 	/// </summary>
 	/// <remarks>
 	/// <para>
@@ -23,9 +23,18 @@ namespace Bodu.Security.Cryptography
 	/// <c>offset basis</c>, and processes each byte of input by combining multiplication with a large <c>FNV prime</c> and XOR operations.
 	/// </para>
 	/// <para>
-	/// This implementation serves as the foundation for specific hash widths and variants, including <see cref="Fnv1a32" />,
-	/// <see cref="Fnv1a64" />, and other FNV-family algorithms. Each variant may differ in output size (e.g., 32-bit, 64-bit) and update
-	/// order (multiply-then-XOR or XOR-then-multiply).
+	/// This implementation serves as the foundation for specific hash widths and variants of the FNV hash family. Variants differ by output
+	/// size, with 32-bit and 64-bit being common, and by the order of operations used to process each byte:
+	/// <list type="bullet">
+	/// <item>
+	/// <term>FNV-1</term>
+	/// <description>Performs multiplication followed by XOR</description>
+	/// </item>
+	/// <item>
+	/// <term>FNV-1a</term>
+	/// <description>Performs XOR followed by multiplication</description>
+	/// </item>
+	/// </list>
 	/// </para>
 	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
 	/// digital signatures, or integrity validation in security-sensitive applications.</note>

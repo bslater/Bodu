@@ -30,8 +30,8 @@ namespace Bodu.Security.Cryptography
 	/// <description>For each byte, use alternating XOR patterns depending on whether the index is even or odd.</description>
 	/// </item>
 	/// </list>
-	/// <note type="important">This algorithm is <b>not cryptographically secure</b>. It should not be used for password hashing, integrity
-	/// verification, or any security-sensitive applications.</note>
+	/// <note type="important">This algorithm is <b>not</b> cryptographically secure and should <b>not</b> be used for password hashing,
+	/// digital signatures, or integrity validation in security-sensitive applications.</note>
 	/// </remarks>
 	public sealed class ApHash
 		: System.Security.Cryptography.HashAlgorithm
