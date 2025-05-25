@@ -2,7 +2,6 @@
 # Global settings
 # ---------------------------------------------------------------------------------------------------------------
 
-# General
 end_of_line = crlf
 insert_final_newline = true
 trim_trailing_whitespace = true
@@ -13,13 +12,11 @@ indent_size = 4
 # XML documentation rules
 # ---------------------------------------------------------------------------------------------------------------
 
-dotnet_diagnostic.CS1591.severity = warning    # Missing XML comment for publicly visible type or member
-dotnet_diagnostic.CS1573.severity = warning    # Parameter has no matching <param>
-  tag
-  dotnet_diagnostic.CS1572.severity = warning    # <param>
-    tag has no matching parameter
-    dotnet_diagnostic.CS1711.severity = warning    # Type parameter missing <typeparam>
-      dotnet_diagnostic.CS1710.severity = warning    # Method type parameter missing <typeparam>
+dotnet_diagnostic.CS1591.severity = warning      # Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1573.severity = warning      # Parameter has no matching <param> tag
+dotnet_diagnostic.CS1572.severity = warning      # <param> tag has no matching parameter
+dotnet_diagnostic.CS1711.severity = warning      # Type parameter missing <typeparam>
+dotnet_diagnostic.CS1710.severity = warning      # Method type parameter missing <typeparam>
 
 # ---------------------------------------------------------------------------------------------------------------
 # Naming conventions
@@ -40,6 +37,10 @@ dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
 dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
 dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
 
+dotnet_naming_rule.private_fields_with_underscore.severity = suggestion
+dotnet_naming_rule.private_fields_with_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_with_underscore.style = underscore_prefix
+
 # Symbol specifications
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
@@ -50,6 +51,9 @@ dotnet_naming_symbols.types.applicable_accessibilities = public, internal, priva
 dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
 # Naming styles
 dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
@@ -57,11 +61,13 @@ dotnet_naming_style.begins_with_i.capitalization = pascal_case
 dotnet_naming_style.pascal_case.required_prefix =
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
+dotnet_naming_style.underscore_prefix.required_prefix = _
+dotnet_naming_style.underscore_prefix.capitalization = camel_case
+
 # ---------------------------------------------------------------------------------------------------------------
 # Code style rules
 # ---------------------------------------------------------------------------------------------------------------
 
-# General C# code styles
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_null_propagation = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
@@ -95,6 +101,8 @@ dotnet_style_qualification_for_field = false:silent
 dotnet_style_qualification_for_method = false:silent
 dotnet_style_qualification_for_property = false:silent
 dotnet_style_qualification_for_event = false:silent
+
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
 
 # ---------------------------------------------------------------------------------------------------------------
 # C# specific code style
@@ -164,9 +172,9 @@ csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimenta
 csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
 csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
 
-
 # ---------------------------------------------------------------------------------------------------------------
 # Standard file header template (dynamic {fileName} replacement)
-# Newlines must be represented as \n
 # ---------------------------------------------------------------------------------------------------------------
+
 file_header_template = // ---------------------------------------------------------------------------------------------------------------\n// <copyright file="{fileName}" company="PlaceholderCompany">\n//     Copyright (c) PlaceholderCompany. All rights reserved.\n// </copyright>\n// ---------------------------------------------------------------------------------------------------------------
+csharp_prefer_braces = true:silent
