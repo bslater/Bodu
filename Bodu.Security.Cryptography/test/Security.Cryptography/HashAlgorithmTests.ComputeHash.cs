@@ -6,6 +6,27 @@ namespace Bodu.Security.Cryptography
 {
 	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
+		/// <summary>
+		/// Returns test data that combines algorithm variants, named inputs, and expected hash results.
+		/// </summary>
+		/// <returns>A sequence of test case arguments: variant, input name, input bytes, and expected hash output.</returns>
+		/// <remarks>
+		/// This method is used to parameterize tests that verify the correctness of <see cref="HashAlgorithm.ComputeHash(byte[])" />
+		/// against known input-output pairs.
+		/// </remarks>
+		public static IEnumerable<object[]> ComputeHashNamedInputTestData()
+		{
+			var instance = new TTest();
+			foreach (var variant in instance.GetHashAlgorithmVariants())
+			{
+				var testVectors = instance.GetTestVectors(variant);
+				foreach (var vector in testVectors)
+				{
+					yield return new object[] { variant, vector.Name, vector.Input, vector.ExpectedHash };
+				}
+			}
+		}
+
 		[DataTestMethod]
 		[DynamicData(nameof(ComputeHashNamedInputTestData))]
 		public void ComputeHash_WhenUsingNamedInput_ShouldMatchExpected(TVariant variant, string testName, byte[] input, byte[] expected)
@@ -42,6 +63,8 @@ namespace Bodu.Security.Cryptography
 				Trace.WriteLineIf(actual != expected, $"Expected: {Convert.ToHexString(expected)}");
 				Trace.WriteLineIf(actual != expected, $"Actual  : {Convert.ToHexString(actual)}");
 				CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for variant '{variant}' at incremental length {i + 1}.");
+				if (!algorithm.CanReuseTransform)
+					algorithm = CreateAlgorithm(variant);
 			}
 		}
 
@@ -53,9 +76,10 @@ namespace Bodu.Security.Cryptography
 		public void ComputeHash_ShouldBeDeterministic(TVariant variant)
 		{
 			byte[] input = Enumerable.Range(0, 128).Select(i => (byte)(i % 256)).ToArray();
-			using var algorithm = this.CreateAlgorithm(variant);
-			byte[] hash1 = algorithm.ComputeHash(input);
-			byte[] hash2 = algorithm.ComputeHash(input);
+			using var algorithm1 = this.CreateAlgorithm(variant);
+			using var algorithm2 = this.CreateAlgorithm(variant);
+			byte[] hash1 = algorithm1.ComputeHash(input);
+			byte[] hash2 = algorithm2.ComputeHash(input);
 
 			CollectionAssert.AreEqual(hash1, hash2);
 		}
@@ -72,13 +96,14 @@ namespace Bodu.Security.Cryptography
 		[DataRow(1024)]
 		public void ComputeHash_WhenReusedWithSameInput_ShouldProduceIdenticalHashResults(int size)
 		{
-			using var algorithm = this.CreateAlgorithm();
+			using var algorithm1 = this.CreateAlgorithm();
+			using var algorithm2 = this.CreateAlgorithm();
 			byte[] input = new byte[size];
 			if (size > 0)
 				CryptoUtilities.FillWithRandomNonZeroBytes(input);
 
-			byte[] hashA = algorithm.ComputeHash(input);
-			byte[] hashB = algorithm.ComputeHash(input);
+			byte[] hashA = algorithm1.ComputeHash(input);
+			byte[] hashB = algorithm2.ComputeHash(input);
 
 			CollectionAssert.AreEqual(hashA, hashB);
 		}
@@ -93,13 +118,14 @@ namespace Bodu.Security.Cryptography
 		{
 			byte[] buffer = new byte[size];
 			byte[] expected = ExpectedEmptyInputHash;
-			using var algorithm = this.CreateAlgorithm();
+			using var algorithm1 = this.CreateAlgorithm();
+			using var algorithm2 = this.CreateAlgorithm();
 
-			byte[] actual = algorithm.ComputeHash(buffer, offset, count); CollectionAssert.AreEqual(expected, actual);
+			byte[] actual = algorithm1.ComputeHash(buffer, offset, count); CollectionAssert.AreEqual(expected, actual);
 
 			buffer[0] = 0xFF;
 			buffer[^1] = 0xFF;
-			actual = algorithm.ComputeHash(buffer, offset, count);
+			actual = algorithm2.ComputeHash(buffer, offset, count);
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
@@ -115,9 +141,10 @@ namespace Bodu.Security.Cryptography
 			CryptoUtilities.FillWithRandomNonZeroBytes(bufferA);
 			Array.Copy(bufferA, 0, bufferB, 1, bufferA.Length);
 
-			using var algorithm = this.CreateAlgorithm();
-			byte[] expected = algorithm.ComputeHash(bufferA);
-			byte[] actual = algorithm.ComputeHash(bufferB, 1, bufferA.Length);
+			using var algorithm1 = this.CreateAlgorithm();
+			using var algorithm2 = this.CreateAlgorithm();
+			byte[] expected = algorithm1.ComputeHash(bufferA);
+			byte[] actual = algorithm2.ComputeHash(bufferB, 1, bufferA.Length);
 			CollectionAssert.AreEqual(expected, actual);
 		}
 

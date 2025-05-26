@@ -37,7 +37,7 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override SipHash128 CreateAlgorithm() => new SipHash128
 		{
-			Key = Enumerable.Range(0, 16).Select(x => (byte)x).ToArray(),
+			Key = GetDeterministicKey(),
 			CompressionRounds = 2,
 			FinalizationRounds = 4,
 		};
@@ -48,9 +48,9 @@ namespace Bodu.Security.Cryptography
 				SipHashVariant.SipHash_2_4 => this.CreateAlgorithm(),
 				SipHashVariant.SipHash_4_8 => new SipHash128
 				{
+					Key = GetDeterministicKey(),
 					CompressionRounds = 4,
 					FinalizationRounds = 8,
-					Key = Enumerable.Range(0, 16).Select(x => (byte)x).ToArray()
 				},
 				_ => throw new ArgumentOutOfRangeException(nameof(variant))
 			};

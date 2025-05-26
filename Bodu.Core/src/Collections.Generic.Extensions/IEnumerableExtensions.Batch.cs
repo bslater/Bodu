@@ -12,6 +12,7 @@ using Bodu.Buffers;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Bodu.Collections.Generic.Extensions
@@ -131,15 +132,39 @@ namespace Bodu.Collections.Generic.Extensions
 		/// An <see cref="IEnumerable{T}" /> of <see cref="ReadOnlyMemory{TResult}" /> batches, reusing memory via a pooled buffer.
 		/// </returns>
 		/// <remarks>
-		/// <para>Use <c>foreach</c> to consume this sequence. Items in each batch share memory that is reused between iterations.</para>
-		/// <para>If you need to persist a batch beyond the enumeration step, make a defensive copy of the returned memory.</para>
+		/// <para>
+		/// Each batch shares memory from a pooled buffer that is reused across iterations to reduce allocations.
+		/// If you need to retain a batch after enumeration, make a defensive copy using <c>.ToArray()</c>.
+		/// </para>
+		/// <para>
+		/// This method should be consumed via <c>foreach</c>. Repeated enumeration creates new pooled buffers per call.
+		/// </para>
 		/// </remarks>
+		/// <example>
+		/// <code language="csharp">
+		/// <![CDATA[
+		/// Input:  Enumerable.Range(1, 10)
+		/// Batch size: 4
+		/// Selector: (x, i) => $"Item {i}: {x}"
+		///
+		/// Expected output:
+		/// Batch 1: "Item 0: 1", "Item 1: 2", "Item 2: 3", "Item 3: 4"
+		/// Batch 2: "Item 4: 5", "Item 5: 6", "Item 6: 7", "Item 7: 8"
+		/// Batch 3: "Item 8: 9", "Item 9: 10"
+		/// var source = Enumerable.Range(1, 10);
+		/// foreach (var batch in source.BatchPooled(4, (x, i) => $"Item {i}: {x}"))
+		/// {
+		///     Console.WriteLine($"[{string.Join(", ", batch.ToArray())}]");
+		/// }
+		///]]>
+		/// </code>
+		/// </example>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="size" /> is less than or equal to 0.</exception>
 		public static IEnumerable<ReadOnlyMemory<TResult>> BatchPooled<TSource, TResult>(
-			this IEnumerable<TSource> source,
-			int size,
-			Func<TSource, int, TResult> selector)
+				this IEnumerable<TSource> source,
+				int size,
+				Func<TSource, int, TResult> selector)
 		{
 			ThrowHelper.ThrowIfNull(source);
 			ThrowHelper.ThrowIfNull(selector);
@@ -151,59 +176,101 @@ namespace Bodu.Collections.Generic.Extensions
 			IEnumerable<ReadOnlyMemory<TResult>> BatchIterator()
 			{
 				using var enumerator = source.GetEnumerator();
-				using var buffer = new PooledBufferBuilder<TResult>(size);
+				var buffer = new PooledBufferBuilder<TResult>(size);
 
 				int index = 0;
 
-				while (enumerator.MoveNext())
+				try
 				{
-					buffer.Append(selector(enumerator.Current, index++));
-
-					if (buffer.Count == size)
+					while (enumerator.MoveNext())
 					{
-						yield return buffer.AsSpan().ToArray(); // Defensive copy
-						buffer.Dispose();
-						Unsafe.AsRef(in buffer) = new PooledBufferBuilder<TResult>(size); // Only legal in .NET 6+
-					}
-				}
+						buffer.Append(selector(enumerator.Current, index++));
 
-				if (buffer.Count > 0)
-					yield return buffer.AsSpan().Slice(0, buffer.Count).ToArray();
+						if (buffer.Count == size)
+						{
+							yield return buffer.AsSpan().ToArray(); // defensive copy
+							buffer.Dispose();
+							buffer = new PooledBufferBuilder<TResult>(size);
+						}
+					}
+
+					if (buffer.Count > 0)
+						yield return buffer.AsSpan().ToArray();
+				}
+				finally
+				{
+					buffer.Dispose();
+				}
 			}
 #elif NETSTANDARD2_1
-	IEnumerable<ReadOnlyMemory<TResult>> BatchIterator()
-	{
-		using var enumerator = source.GetEnumerator();
-		var buffer = new PooledBufferBuilder<TResult>(size);
-		int index = 0;
-
-		try
-		{
-			while (enumerator.MoveNext())
+			IEnumerable<ReadOnlyMemory<TResult>> BatchIterator()
 			{
-				buffer.Append(selector(enumerator.Current, index++));
+				using var enumerator = source.GetEnumerator();
+				var buffer = new PooledBufferBuilder<TResult>(size);
+				int index = 0;
 
-				if (buffer.Count == size)
+				try
 				{
-					yield return buffer.AsSpan().ToArray();
+					while (enumerator.MoveNext())
+					{
+						buffer.Append(selector(enumerator.Current, index++));
+
+						if (buffer.Count == size)
+						{
+							yield return buffer.AsSpan().ToArray(); // defensive copy
+							buffer.Dispose();
+							buffer = new PooledBufferBuilder<TResult>(size);
+						}
+					}
+
+					if (buffer.Count > 0)
+						yield return buffer.AsSpan().ToArray();
+				}
+				finally
+				{
 					buffer.Dispose();
-					buffer = new PooledBufferBuilder<TResult>(size); // Valid in .NET Standard 2.1 (no `using var`)
 				}
 			}
-
-			if (buffer.Count > 0)
-				yield return buffer.AsSpan().Slice(0, buffer.Count).ToArray();
-		}
-		finally
-		{
-			buffer.Dispose();
-		}
-	}
 #else
 #error BatchPooled is only supported on netstandard2.1 or greater
 #endif
 		}
 
-#endif
+		/// <summary>
+		/// Batches a sequence using a pooled array to reduce allocations.
+		/// </summary>
+		/// <typeparam name="TSource">The type of elements in the source sequence.</typeparam>
+		/// <param name="source">The source sequence to batch.</param>
+		/// <param name="size">The maximum number of items per batch.</param>
+		/// <returns>
+		/// An <see cref="IEnumerable{T}" /> of <see cref="ReadOnlyMemory{TSource}" /> batches.
+		/// </returns>
+		/// <remarks>
+		/// This overload returns untransformed batches of the original type.
+		/// </remarks>
+		/// <example>
+		/// <code language="csharp">
+		/// // Input:  Enumerable.Range(1, 9)
+		/// Batch size: 3
+		///
+		/// Expected output:
+		/// Batch 1: 1, 2, 3
+		/// Batch 2: 4, 5, 6
+		/// Batch 3: 7, 8, 9
+		/// var source = Enumerable.Range(1, 9);
+		/// foreach (var batch in source.BatchPooled(3))
+		/// {
+		///     Console.WriteLine(string.Join(", ", batch.ToArray()));
+		/// }
+		/// </code>
+		/// </example>
+		public static IEnumerable<ReadOnlyMemory<TSource>> BatchPooled<TSource>(
+				this IEnumerable<TSource> source,
+				int size)
+		{
+			return source.BatchPooled(size, static (x, _) => x);
+		}
 	}
 }
+
+#endif

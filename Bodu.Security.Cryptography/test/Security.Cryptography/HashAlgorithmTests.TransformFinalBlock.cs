@@ -14,15 +14,32 @@ namespace Bodu.Security.Cryptography
 		{
 			byte[] input = CryptoTestUtilities.SimpleTextAsciiBytes;
 
-			using var algorithm = this.CreateAlgorithm();
+			byte[] computeHashResult;
+			using (var computeAlg = this.CreateAlgorithm())
+			{
+				computeHashResult = computeAlg.ComputeHash(input);
+			}
 
-			algorithm.TransformBlock(input, 0, input.Length - 1, null, 0);
-			algorithm.TransformFinalBlock(input, input.Length - 1, 1);
+			if (this.CreateAlgorithm().CanReuseTransform)
+			{
+				using var algorithm = this.CreateAlgorithm();
 
-			byte[] transformResult = algorithm.Hash!;
-			byte[] computeHashResult = algorithm.ComputeHash(input);
+				algorithm.TransformBlock(input, 0, input.Length - 1, null, 0);
+				algorithm.TransformFinalBlock(input, input.Length - 1, 1);
 
-			CollectionAssert.AreEqual(computeHashResult, transformResult, "Hash results should be identical between block-based and full ComputeHash execution.");
+				byte[] transformResult = algorithm.Hash!;
+				CollectionAssert.AreEqual(computeHashResult, transformResult, "Hash results should be identical between block-based and full ComputeHash execution.");
+			}
+			else
+			{
+				using var transformAlg = this.CreateAlgorithm();
+
+				transformAlg.TransformBlock(input, 0, input.Length - 1, null, 0);
+				transformAlg.TransformFinalBlock(input, input.Length - 1, 1);
+
+				byte[] transformResult = transformAlg.Hash!;
+				CollectionAssert.AreEqual(computeHashResult, transformResult, "Hash results should be identical between block-based and full ComputeHash execution.");
+			}
 		}
 
 		/// <summary>
@@ -32,17 +49,34 @@ namespace Bodu.Security.Cryptography
 		[TestMethod]
 		public void TransformBlockAndFinalBlock_WhenInputIsEmpty_ShouldProduceExpectedHash()
 		{
-			using var algorithm = this.CreateAlgorithm();
 			byte[] expected = this.ExpectedEmptyInputHash;
 
-			// Case 1: TransformBlock followed by TransformFinalBlock
-			algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
-			algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-			CollectionAssert.AreEqual(expected, algorithm.Hash, "TransformBlock followed by TransformFinalBlock on empty input should match expected hash.");
+			if (this.CreateAlgorithm().CanReuseTransform)
+			{
+				using var algorithm = this.CreateAlgorithm();
 
-			// Case 2: TransformFinalBlock alone
-			algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-			CollectionAssert.AreEqual(expected, algorithm.Hash, "TransformFinalBlock alone on empty input should match expected hash.");
+				// Case 1: TransformBlock followed by TransformFinalBlock
+				algorithm.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
+				algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+				CollectionAssert.AreEqual(expected, algorithm.Hash, "TransformBlock followed by TransformFinalBlock on empty input should match expected hash.");
+
+				// Case 2: TransformFinalBlock alone on same instance
+				algorithm.Initialize();
+				algorithm.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+				CollectionAssert.AreEqual(expected, algorithm.Hash, "TransformFinalBlock alone on empty input should match expected hash.");
+			}
+			else
+			{
+				// One-shot case: use separate instances
+				using var algorithm1 = this.CreateAlgorithm();
+				algorithm1.TransformBlock(Array.Empty<byte>(), 0, 0, null, 0);
+				algorithm1.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+				CollectionAssert.AreEqual(expected, algorithm1.Hash, "TransformBlock followed by TransformFinalBlock on empty input should match expected hash.");
+
+				using var algorithm2 = this.CreateAlgorithm();
+				algorithm2.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+				CollectionAssert.AreEqual(expected, algorithm2.Hash, "TransformFinalBlock alone on empty input should match expected hash.");
+			}
 		}
 
 		/// <summary>
@@ -52,38 +86,70 @@ namespace Bodu.Security.Cryptography
 		[TestMethod]
 		public void TransformBlockAndFinalBlock_WhenInputIsSplitAcrossBlocks_ShouldProduceExpectedHash()
 		{
-			using var algorithm = this.CreateAlgorithm();
+			int blockSize;
+			byte[] input;
 
-			// Ensure input size is at least twice the input block size for testing.
-			int blockSize = algorithm.InputBlockSize;
-			byte[] input = new byte[Math.Max(blockSize * 2, 8)];
-			CryptoUtilities.FillWithRandomNonZeroBytes(input);  // Fill input with random bytes
-
-			byte[] expected = algorithm.ComputeHash(input);
-			algorithm.Initialize();
-
-			// If HandlePartialBlocks is true, simulate processing partial blocks
-			if (this.HandlePartialBlocks)
+			// Use a fresh instance to generate expected hash and determine block size
+			using (var initial = this.CreateAlgorithm())
 			{
-				// Split the input based on the actual block size
-				byte[] firstBlock = input.Take(blockSize).ToArray();
-				byte[] secondBlock = input.Skip(blockSize).ToArray();
+				blockSize = initial.InputBlockSize;
+				input = new byte[Math.Max(blockSize * 2, 8)];
+				CryptoUtilities.FillWithRandomNonZeroBytes(input);
+			}
 
-				algorithm.TransformBlock(firstBlock, 0, firstBlock.Length, null, 0);
-				algorithm.TransformFinalBlock(secondBlock, 0, secondBlock.Length);
+			byte[] expected;
+
+			// Compute the expected result via single-call ComputeHash
+			using (var reference = this.CreateAlgorithm())
+				expected = reference.ComputeHash(input);
+
+			// Split and hash using TransformBlock/TransformFinalBlock
+			if (this.CreateAlgorithm().CanReuseTransform)
+			{
+				using var algorithm = this.CreateAlgorithm();
+				algorithm.Initialize();
+
+				if (this.HandlePartialBlocks)
+				{
+					byte[] first = input.Take(blockSize).ToArray();
+					byte[] second = input.Skip(blockSize).ToArray();
+
+					algorithm.TransformBlock(first, 0, first.Length, null, 0);
+					algorithm.TransformFinalBlock(second, 0, second.Length);
+				}
+				else
+				{
+					algorithm.TransformFinalBlock(input, 0, input.Length);
+				}
+
+				CollectionAssert.AreEqual(expected, algorithm.Hash, "Split input should produce expected hash result.");
+
+				// Validate consistent access to final hash
+				CollectionAssert.AreEqual(expected, algorithm.Hash!, "Repeated access to Hash should be consistent.");
 			}
 			else
 			{
-				// Directly process the blocks without considering partial inputs
-				algorithm.TransformFinalBlock(input, 0, input.Length);
+				// One-shot MAC: Use a fresh instance for split input
+				using var splitAlg = this.CreateAlgorithm();
+
+				if (this.HandlePartialBlocks)
+				{
+					byte[] first = input.Take(blockSize).ToArray();
+					byte[] second = input.Skip(blockSize).ToArray();
+
+					splitAlg.TransformBlock(first, 0, first.Length, null, 0);
+					splitAlg.TransformFinalBlock(second, 0, second.Length);
+				}
+				else
+				{
+					splitAlg.TransformFinalBlock(input, 0, input.Length);
+				}
+
+				CollectionAssert.AreEqual(expected, splitAlg.Hash, "Split input should produce expected hash result.");
+
+				// Validate consistent access to final hash
+				CollectionAssert.AreEqual(expected, splitAlg.Hash!, "Repeated access to Hash should be consistent.");
 			}
-
-			// Verify that the result matches the expected hash
-			CollectionAssert.AreEqual(expected, algorithm.Hash, "Split input should produce expected hash result.");
-
-			// Verify subsequent accesses to Hash result in the same hashValue
-			byte[] repeatedAccess = algorithm.Hash!;
-			CollectionAssert.AreEqual(expected, repeatedAccess, "Multiple accesses to Hash should yield consistent result.");
 		}
 
 		/// <summary>
@@ -97,39 +163,31 @@ namespace Bodu.Security.Cryptography
 		[TestMethod]
 		public void TransformBlockAndFinalBlock_WithPartialBlockInputs_ShouldReturnExpectedHash()
 		{
-			using var algorithm = this.CreateAlgorithm();
-
 			var input = CryptoTestUtilities.ByteSequence0To255;
-			var expected = algorithm.ComputeHash(input);
+			byte[] expected;
 
-			algorithm.Initialize();
-
-			// If HandlePartialBlocks is true, simulate processing partial blocks
-			if (this.HandlePartialBlocks)
+			using (var reference = this.CreateAlgorithm())
 			{
-				int pos = 0;
-				Random rnd = new Random(); // Ensures a good random seed initialization
-				int size = Math.Max(algorithm.InputBlockSize - 1, 1);
-				int len = input.Length - size;
+				expected = reference.ComputeHash(input);
+			}
 
-				// Process the input in random-sized chunks that are not full blocks
-				while (pos < len)
-				{
-					int bytes = rnd.Next(1, size); // Ensures chunk size is smaller than the block size
-					algorithm.TransformBlock(input, pos, bytes, input, pos);
-					pos += bytes;
-				}
+			// One-shot vs. reusable path
+			if (this.CreateAlgorithm().CanReuseTransform)
+			{
+				using var algorithm = this.CreateAlgorithm();
+				algorithm.Initialize();
 
-				algorithm.TransformFinalBlock(input, pos, input.Length - pos);
+				FeedWithPartialBlocks(algorithm, input);
+
+				CollectionAssert.AreEqual(expected, algorithm.Hash, "Streamed hash with partial blocks should match expected result.");
 			}
 			else
 			{
-				// Directly process the blocks without considering partial inputs
-				algorithm.TransformFinalBlock(input, 0, input.Length);
-			}
+				using var algorithm = this.CreateAlgorithm();
+				FeedWithPartialBlocks(algorithm, input);
 
-			// Compare the computed hash from the full input to the streamed result
-			CollectionAssert.AreEqual(expected, algorithm.Hash);
+				CollectionAssert.AreEqual(expected, algorithm.Hash, "Streamed hash with partial blocks should match expected result.");
+			}
 		}
 
 		/// <summary>
@@ -184,6 +242,31 @@ namespace Bodu.Security.Cryptography
 			// For .NET 5 and later, subsequent calls to TransformFinalBlock are allowed. In this case, we do not expect an exception.
 			algorithm.TransformFinalBlock(buffer, 0, 0);
 #endif
+		}
+
+		private void FeedWithPartialBlocks(HashAlgorithm algorithm, byte[] input)
+		{
+			if (this.HandlePartialBlocks)
+			{
+				int pos = 0;
+				int size = Math.Max(algorithm.InputBlockSize - 1, 1);
+				int len = input.Length - size;
+
+				Random rnd = new Random();
+
+				while (pos < len)
+				{
+					int bytes = rnd.Next(1, size);
+					algorithm.TransformBlock(input, pos, bytes, null, 0);
+					pos += bytes;
+				}
+
+				algorithm.TransformFinalBlock(input, pos, input.Length - pos);
+			}
+			else
+			{
+				algorithm.TransformFinalBlock(input, 0, input.Length);
+			}
 		}
 	}
 }

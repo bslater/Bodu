@@ -9,7 +9,7 @@ namespace Bodu.Security.Cryptography
 		/// Verifies that the algorithm's key remains unchanged after hashing.
 		/// </summary>
 		[TestMethod]
-		public void ComputeHash_WhenHashing_ShouldPreserveKey()
+		public void ComputeHash_WhenHashing_ShouldRespectKeyRetentionPolicy()
 		{
 			byte[] key = this.GenerateUniqueKey();
 			byte[] data = new byte[256];
@@ -20,7 +20,14 @@ namespace Bodu.Security.Cryptography
 			_ = algorithm.ComputeHash(data);
 
 			// Validate key is unchanged
-			Assert.AreEqual(Convert.ToHexString(key), Convert.ToHexString(algorithm.Key), "Key was not preserved after hashing.");
+			if (algorithm.CanReuseTransform)
+
+				// Reusable hash algorithm: key should remain unchanged
+				CollectionAssert.AreEqual(key, algorithm.Key, "Key was unexpectedly modified by reusable algorithm.");
+			else
+
+				// One-shot: key should be cleared
+				CollectionAssert.AreNotEqual(key, algorithm.Key, "Key was not cleared after one-shot MAC computation.");
 		}
 
 		/// <summary>
@@ -32,11 +39,12 @@ namespace Bodu.Security.Cryptography
 			byte[] key = this.GenerateUniqueKey();
 			byte[] data = new byte[256];
 
-			using var algorithm = this.CreateAlgorithm();
-			algorithm.Key = key;
+			using var algorithm1 = this.CreateAlgorithm();
+			using var algorithm2 = this.CreateAlgorithm();
+			algorithm1.Key = algorithm2.Key = key;
 
-			byte[] hash1 = algorithm.ComputeHash(data);
-			byte[] hash2 = algorithm.ComputeHash(data);
+			byte[] hash1 = algorithm1.ComputeHash(data);
+			byte[] hash2 = algorithm2.ComputeHash(data);
 
 			CollectionAssert.AreEqual(hash1, hash2, "Hashes differ when using the same key and input.");
 		}

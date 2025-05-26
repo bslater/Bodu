@@ -36,6 +36,6 @@ namespace Bodu.Security.Cryptography
 		}
 
 		private static string GetAlgorithmName(CubeHash algorithm) =>
-			$"CubeHash{algorithm.InitializationRounds}+{algorithm.Rounds}/{algorithm.TransformBlockSize}+{algorithm.FinalizationRounds}-{algorithm.HashSize}"
+			$"CubeHash{algorithm.InitializationRounds}+{algorithm.Rounds}/{algorithm.TransformBlockSize}+{algorithm.FinalizationRounds}-{algorithm.HashSize}";
 	}
 }

@@ -48,7 +48,7 @@ namespace Bodu.Security.Cryptography
 
 		/// <summary>
 		/// Verifies that <see cref="HashAlgorithm" /> can be reused after finalizing a hash via
-		/// <see cref="HashAlgorithm.TransformFinalBlock" /> and reinitializing.
+		/// <see cref="HashAlgorithm.TransformFinalBlock" /> and reinitializing, if supported.
 		/// </summary>
 		[TestMethod]
 		public void Initialize_WhenCalledAfterFinalBlock_ShouldAllowNewHashComputation()
@@ -59,12 +59,23 @@ namespace Bodu.Security.Cryptography
 			algorithm.TransformFinalBlock(input, 0, input.Length);
 			byte[] hash1 = algorithm.Hash!;
 
-			algorithm.Initialize();
+			if (!algorithm.CanReuseTransform)
+			{
+				// For one-shot algorithms, reinitialization without re-keying is invalid. Confirm that the second hash is not equal or that
+				// key is cleared.
+				algorithm.Initialize();
 
-			byte[] hash2 = algorithm.ComputeHash(input);
+				// Either the key was cleared or a new random key was assigned; hash must differ.
+				byte[] hash2 = algorithm.ComputeHash(input);
+				CollectionAssert.AreNotEqual(hash1, hash2, "One-shot MAC should not yield the same result after reinitialization.");
+			}
+			else
+			{
+				algorithm.Initialize();
 
-			// Hashing the same input should return the same result after reinit
-			CollectionAssert.AreEqual(hash1, hash2, "Hashes should match after reinitializing with the same input.");
+				byte[] hash2 = algorithm.ComputeHash(input);
+				CollectionAssert.AreEqual(hash1, hash2, "Hashes should match after reinitializing with the same input.");
+			}
 		}
 
 		/// <summary>

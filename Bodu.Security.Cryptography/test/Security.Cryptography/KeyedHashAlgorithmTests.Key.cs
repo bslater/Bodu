@@ -5,6 +5,8 @@ namespace Bodu.Security.Cryptography
 {
 	public abstract partial class KeyedHashAlgorithmTests<TTest, TAlgorithm, TVariant>
 	{
+		protected virtual int ExpectedKeySize => 16;
+
 		/// <summary>
 		/// Verifies that setting a null key throws an <see cref="ArgumentNullException" />.
 		/// </summary>
@@ -65,7 +67,7 @@ namespace Bodu.Security.Cryptography
 		public void Key_WhenOriginalKeyIsMutated_ShouldNotAffectInternalKey()
 		{
 			using var algorithm = this.CreateAlgorithm();
-			byte[] key = Enumerable.Range(0, 16).Select(i => (byte)i).ToArray();
+			byte[] key = Enumerable.Range(0, ExpectedKeySize).Select(i => (byte)i).ToArray();
 			algorithm.Key = key;
 
 			// Mutate original key
@@ -161,22 +163,44 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Verifies that modifying the key after a hash operation does not influence the algorithm internals.
+		/// Verifies that modifying the original key array after assigning it to the algorithm does not affect internal state, provided the
+		/// algorithm supports reuse.
 		/// </summary>
 		[TestMethod]
-		public void Key_WhenModifiedAfterHashing_ShouldNotAffectInternalState()
+		public void Key_WhenModifiedAfterAssignment_ShouldNotAffectInternalState()
 		{
 			using var algorithm = this.CreateAlgorithm();
+
 			byte[] key = this.GenerateUniqueKey();
+			byte[] data = Enumerable.Repeat((byte)0x42, 64).ToArray();
+
 			algorithm.Key = key;
 
-			byte[] data = Enumerable.Repeat((byte)0x42, 64).ToArray();
+			// First hash with original key
 			byte[] hash1 = algorithm.ComputeHash(data);
 
+			// Mutate the original key array
 			key[0] ^= 0xFF;
-			byte[] hash2 = algorithm.ComputeHash(data);
 
-			CollectionAssert.AreEqual(hash1, hash2);
+			if (!algorithm.CanReuseTransform)
+			{
+				// For one-shot MACs like Poly1305, the second hash must use a new instance and key
+				using var algorithm2 = this.CreateAlgorithm();
+				byte[] newKey = this.GenerateUniqueKey();
+				algorithm2.Key = newKey;
+				byte[] hash2 = algorithm2.ComputeHash(data);
+
+				CollectionAssert.AreNotEqual(hash1, hash2,
+					"Expected different hash from new key after modifying external key array in a one-shot MAC.");
+			}
+			else
+			{
+				// For reusable hash algorithms, the key should remain internally stable
+				byte[] hash2 = algorithm.ComputeHash(data);
+
+				CollectionAssert.AreEqual(hash1, hash2,
+					"Hash output changed after modifying external key array, suggesting internal state is not protected.");
+			}
 		}
 
 		/// <summary>

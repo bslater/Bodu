@@ -39,17 +39,17 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		protected readonly int BlockSizeBytes; // Size of a single block (in bytes) to be processed per hash step
 
-		private readonly Memory<byte> residualByteBuffer; // Temporary buffer to hold incomplete blocks between HashCore calls
-		private int residualBytes;                        // Number of bytes currently in the residual buffer
-		private ulong totalLength;                        // Total length of data processed, used for padding
-		private bool disposed;                            // Tracks whether Dispose() has been called
+		private readonly Memory<byte> _residualByteBuffer; // Temporary buffer to hold incomplete blocks between HashCore calls
+		private int _residualBytes;                        // Number of bytes currently in the residual buffer
+		private ulong _totalLength;                        // Total length of data processed, used for padding
+		private bool _disposed;                            // Tracks whether Dispose() has been called
 
 #if !NET6_0_OR_GREATER
 
     /// <summary>
     /// Indicates whether the hash computation has been finalized. Used in .NET Standard environments.
     /// </summary>
-    protected bool finalized;
+    protected bool _finalized;
 #endif
 
 		/// <summary>
@@ -79,31 +79,31 @@ namespace Bodu.Security.Cryptography
 		{
 			ThrowHelper.ThrowIfLessThanOrEqual(blockSize, 0);
 			BlockSizeBytes = blockSize;
-			residualByteBuffer = new byte[BlockSizeBytes];
+			_residualByteBuffer = new byte[BlockSizeBytes];
 		}
 
 		/// <inheritdoc />
 		public override void Initialize()
 		{
 			// Clear internal buffers and reset state
-			residualByteBuffer.Span.Clear();
-			residualBytes = 0;
-			totalLength = 0;
+			_residualByteBuffer.Span.Clear();
+			_residualBytes = 0;
+			_totalLength = 0;
 		}
 
 		/// <inheritdoc />
 		protected override void Dispose(bool disposing)
 		{
-			if (disposed) return;
+			if (_disposed) return;
 
 			if (disposing)
 			{
-				CryptoUtilities.Clear(residualByteBuffer);
-				residualBytes = 0;
-				totalLength = 0;
+				CryptoUtilities.Clear(_residualByteBuffer);
+				_residualBytes = 0;
+				_totalLength = 0;
 			}
 
-			disposed = true;
+			_disposed = true;
 			base.Dispose(disposing);
 		}
 
@@ -118,28 +118,28 @@ namespace Bodu.Security.Cryptography
 		private void ProcessBlocks(ReadOnlySpan<byte> buffer)
 		{
 			int pos = 0;
-			totalLength += (ulong)buffer.Length;
+			_totalLength += (ulong)buffer.Length;
 
-			Span<byte> residualSpan = residualByteBuffer.Span;
+			Span<byte> residualSpan = _residualByteBuffer.Span;
 
 			// Attempt to fill a partial residual block if it exists
-			if (residualBytes > 0)
+			if (_residualBytes > 0)
 			{
-				int remaining = BlockSizeBytes - residualBytes;
+				int remaining = BlockSizeBytes - _residualBytes;
 
 				if (buffer.Length >= remaining)
 				{
 					// Complete residual block and process it
-					buffer.Slice(pos, remaining).CopyTo(residualSpan[residualBytes..]);
-					ProcessBlock(residualByteBuffer.Span);
-					residualBytes = 0;
+					buffer.Slice(pos, remaining).CopyTo(residualSpan[_residualBytes..]);
+					ProcessBlock(_residualByteBuffer.Span);
+					_residualBytes = 0;
 					pos += remaining;
 				}
 				else
 				{
 					// Not enough to complete a block, buffer it for later
-					buffer.CopyTo(residualSpan[residualBytes..]);
-					residualBytes += buffer.Length;
+					buffer.CopyTo(residualSpan[_residualBytes..]);
+					_residualBytes += buffer.Length;
 					return;
 				}
 			}
@@ -152,9 +152,9 @@ namespace Bodu.Security.Cryptography
 			}
 
 			// Buffer any trailing bytes that form an incomplete block
-			residualBytes = buffer.Length - pos;
-			if (residualBytes > 0)
-				buffer.Slice(pos, residualBytes).CopyTo(residualSpan);
+			_residualBytes = buffer.Length - pos;
+			if (_residualBytes > 0)
+				buffer.Slice(pos, _residualBytes).CopyTo(residualSpan);
 		}
 
 		/// <summary>
@@ -196,7 +196,7 @@ namespace Bodu.Security.Cryptography
         ThrowHelper.ThrowIfLessThan(ibStart, 0);
         ThrowHelper.ThrowIfLessThan(cbSize, 0);
         ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, ibStart, cbSize);
-        if (finalized)
+        if (_finalized)
             throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
@@ -227,7 +227,7 @@ namespace Bodu.Security.Cryptography
 			ThrowIfDisposed();
 
 #if !NET6_0_OR_GREATER
-        if (finalized)
+        if (_finalized)
             throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
@@ -271,24 +271,37 @@ namespace Bodu.Security.Cryptography
 			ThrowIfDisposed();
 
 #if !NET6_0_OR_GREATER
-        if (finalized)
+        if (_finalized)
             throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
 			if (ShouldPadFinalBlock())
 			{
-				// Generate padded final block and process all parts of it
-				var finalBlock = PadBlock(residualByteBuffer.Span.Slice(0, residualBytes), totalLength);
-				for (int i = 0; i < finalBlock.Length; i += BlockSizeBytes)
-					ProcessBlock(finalBlock.AsSpan(i, BlockSizeBytes));
+				var finalBlock = PadBlock(_residualByteBuffer.Span.Slice(0, _residualBytes), _totalLength);
+
+				if (AllowUnalignedFinalBlock)
+				{
+					ProcessBlock(finalBlock);
+				}
+				else
+				{
+					for (int i = 0; i < finalBlock.Length; i += BlockSizeBytes)
+						ProcessBlock(finalBlock.AsSpan(i, BlockSizeBytes));
+				}
 			}
-			else if (residualBytes > 0)
+			else if (_residualBytes > 0)
 			{
-				ProcessBlock(residualByteBuffer.Span.Slice(0, residualBytes));
+				ProcessBlock(_residualByteBuffer.Span.Slice(0, _residualBytes));
 			}
 
 			return ProcessFinalBlock();
 		}
+
+		/// <summary>
+		/// Gets a value indicating whether the final padded block must be sliced into aligned blocks, or whether the full padded result may
+		/// be passed as a single block (e.g., Poly1305-style).
+		/// </summary>
+		protected virtual bool AllowUnalignedFinalBlock => false;
 
 		/// <summary>
 		/// Determines whether the final block of input data should be padded before processing.
@@ -359,7 +372,7 @@ namespace Bodu.Security.Cryptography
 		protected void ThrowIfDisposed()
 		{
 #if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
+			ObjectDisposedException.ThrowIf(this._disposed, this);
 #else
         if (this.disposed)
             throw new ObjectDisposedException(nameof(T));

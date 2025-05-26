@@ -49,6 +49,8 @@ namespace Bodu.Security.Cryptography
 				Trace.WriteLineIf(actual != expected, $"Expected: {Convert.ToHexString(expected)}");
 				Trace.WriteLineIf(actual != expected, $"Actual  : {Convert.ToHexString(actual)}");
 				CollectionAssert.AreEqual(expected, actual, $"Hash mismatch for variant '{variant}' at incremental length {i + 1}.");
+				if (!algorithm.CanReuseTransform)
+					algorithm = CreateAlgorithm(variant);
 			}
 		}
 
@@ -60,12 +62,13 @@ namespace Bodu.Security.Cryptography
 		{
 			byte[] input = Enumerable.Range(0, 128).Select(i => (byte)(i % 256)).ToArray();
 
-			using var algorithm = this.CreateAlgorithm();
+			using var algorithm1 = this.CreateAlgorithm();
+			using var algorithm2 = this.CreateAlgorithm();
 			using var stream1 = new MemoryStream(input);
 			using var stream2 = new MemoryStream(input);
 
-			byte[] hash1 = await algorithm.ComputeHashAsync(stream1);
-			byte[] hash2 = await algorithm.ComputeHashAsync(stream2);
+			byte[] hash1 = await algorithm1.ComputeHashAsync(stream1);
+			byte[] hash2 = await algorithm2.ComputeHashAsync(stream2);
 
 			CollectionAssert.AreEqual(hash1, hash2);
 		}

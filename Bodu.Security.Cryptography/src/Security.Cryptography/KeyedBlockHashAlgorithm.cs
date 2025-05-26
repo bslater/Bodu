@@ -21,7 +21,7 @@ namespace Bodu.Security.Cryptography
 		: BlockHashAlgorithm<T>
 		where T : KeyedBlockHashAlgorithm<T>, new()
 	{
-		private bool disposed = false;
+		private bool _disposed = false;
 
 		/// <summary>
 		/// Internal storage for the key used in the algorithm. Always set using a defensive copy.
@@ -34,8 +34,7 @@ namespace Bodu.Security.Cryptography
 		/// <param name="blockSize">The fixed block size (in bytes) for the algorithm.</param>
 		protected KeyedBlockHashAlgorithm(int blockSize)
 			: base(blockSize)
-		{
-		}
+		{ }
 
 		/// <summary>
 		/// Gets or sets the secret key used by the hash algorithm.
@@ -74,7 +73,7 @@ namespace Bodu.Security.Cryptography
 		/// </remarks>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposed) return;
+			if (_disposed) return;
 
 			if (disposing)
 			{
@@ -85,7 +84,7 @@ namespace Bodu.Security.Cryptography
 				}
 			}
 
-			disposed = true;
+			_disposed = true;
 			base.Dispose(disposing);
 		}
 	}

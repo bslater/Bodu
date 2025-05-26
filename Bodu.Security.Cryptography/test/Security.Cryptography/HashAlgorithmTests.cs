@@ -19,9 +19,15 @@ namespace Bodu.Security.Cryptography
 	}
 
 	/// <summary>
-	/// Base class for reusable unit tests of hash algorithms.
+	/// Provides a reusable base class for verifying correctness and consistency of <see cref="HashAlgorithm" /> implementations.
 	/// </summary>
-	/// <typeparam name="T">The hash algorithm type under test.</typeparam>
+	/// <typeparam name="TTest">The concrete test type inheriting this class.</typeparam>
+	/// <typeparam name="TAlgorithm">The hash algorithm under test, which must derive from <see cref="HashAlgorithm" />.</typeparam>
+	/// <typeparam name="TVariant">The enumeration type used to represent algorithm configuration variants.</typeparam>
+	/// <remarks>
+	/// This class supplies a standardized infrastructure for testing keyed and unkeyed hash algorithms across multiple configurations,
+	/// including reusable hash verification, streaming support, variant differentiation, and named test vector evaluation.
+	/// </remarks>
 	public abstract partial class HashAlgorithmTests<TTest, TAlgorithm, TVariant>
 		: Security.Cryptography.CryptoTransformTests<TAlgorithm>
 		where TTest : HashAlgorithmTests<TTest, TAlgorithm, TVariant>, new()
@@ -29,27 +35,66 @@ namespace Bodu.Security.Cryptography
 		where TVariant : Enum
 	{
 		/// <summary>
-		/// Returns all variants to be tested.
+		/// Returns all supported algorithm variants to be tested for the current implementation.
 		/// </summary>
+		/// <returns>
+		/// A sequence of <typeparamref name="TVariant" /> values representing valid configuration variants for the algorithm under test.
+		/// </returns>
+		/// <remarks>
+		/// This method drives variant-specific tests. Each variant may represent a change in output size, internal round configuration, or
+		/// other algorithm-specific mode flags.
+		/// </remarks>
 		public abstract IEnumerable<TVariant> GetHashAlgorithmVariants();
 
-		// Property to control if partial blocks should be handled
+		/// <summary>
+		/// Gets a value indicating whether the algorithm supports partial input blocks during streaming.
+		/// </summary>
+		/// <remarks>
+		/// If <see langword="true" />, tests will process data in randomly sized chunks smaller than <see cref="ExpectedInputBlockSize" />
+		/// to verify streaming correctness. If <see langword="false" />, only block-aligned or single-pass input will be tested.
+		/// </remarks>
 		public virtual bool HandlePartialBlocks => true;
 
+		/// <summary>
+		/// Gets a value indicating whether the algorithm maintains state across transform operations.
+		/// </summary>
+		/// <remarks>
+		/// Stateless algorithms return <see langword="true" /> to indicate that each hash computation is independent of prior state.
+		/// Stateful algorithms must ensure correctness across reinitialization and partial block input.
+		/// </remarks>
 		public virtual bool IsStateless => false;
 
+		/// <summary>
+		/// Gets the default variant to use in non-parameterized test scenarios.
+		/// </summary>
+		/// <remarks>
+		/// The default variant represents the canonical or most common configuration of the algorithm under test. It is used for tests that
+		/// do not require variant-specific logic.
+		/// </remarks>
+		protected virtual TVariant DefaultVariant => GetHashAlgorithmVariants().First();
+
+		/// <summary>
+		/// Creates a new instance of the algorithm under test using the default variant.
+		/// </summary>
+		/// <returns>A fully initialized instance of <typeparamref name="TAlgorithm" /> configured with <see cref="DefaultVariant" />.</returns>
 		protected override TAlgorithm CreateAlgorithm() =>
 			this.CreateAlgorithm(DefaultVariant);
 
 		/// <summary>
-		/// Returns the default variant to use in parameterless scenarios.
+		/// Creates a new instance of the algorithm for the specified <paramref name="variant" />.
 		/// </summary>
-		protected virtual TVariant DefaultVariant => GetHashAlgorithmVariants().First();
+		/// <param name="variant">The variant to instantiate.</param>
+		/// <returns>A new instance of <typeparamref name="TAlgorithm" /> configured for the given variant.</returns>
+		protected abstract TAlgorithm CreateAlgorithm(TVariant variant);
 
 		/// <summary>
-		/// Returns the expected hash result when hashing an empty byte array using the default variant.
+		/// Gets the expected hash result for an empty input using the default algorithm variant.
 		/// </summary>
-		/// <exception cref="KeyNotFoundException">Thrown if the expected hash for the empty input is not defined for the default variant.</exception>
+		/// <exception cref="KeyNotFoundException">Thrown if no expected hash is defined for the "Empty" input and current variant.</exception>
+		/// <remarks>
+		/// This property is used to verify that the algorithm under test produces the correct result when hashing an empty input. Expected
+		/// results are sourced from <see cref="GetExpectedHashesForNamedInputs(TVariant)" />.
+		/// </remarks>
 		protected override byte[] ExpectedEmptyInputHash =>
 			Convert.FromHexString(
 				GetExpectedHashesForNamedInputs(DefaultVariant).TryGetValue("Empty", out var hex)
@@ -57,38 +102,46 @@ namespace Bodu.Security.Cryptography
 					: throw new KeyNotFoundException(
 						$"Expected hash for \"Empty\" input is not defined for variant '{DefaultVariant}'."));
 
-		protected abstract TAlgorithm CreateAlgorithm(TVariant variant);
-
 		/// <summary>
-		/// Returns expected hash outputs for well-known named test inputs (e.g., "Empty", "ABC").
+		/// Returns a dictionary of expected hash outputs for well-known named inputs, such as "Empty", "ABC", or "Zeros_16".
 		/// </summary>
+		/// <param name="variant">The algorithm variant to retrieve expected results for.</param>
+		/// <returns>A dictionary mapping input names to their expected hexadecimal hash strings for the specified variant.</returns>
 		protected abstract IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(TVariant variant);
 
 		/// <summary>
-		/// Returns expected hash outputs for incremental byte sequences input[0..i].
+		/// Returns a list of expected hash outputs for progressive incremental inputs such as input[0..i].
 		/// </summary>
+		/// <param name="variant">The algorithm variant to retrieve expected results for.</param>
+		/// <returns>A list of hexadecimal strings representing the hash outputs at each incremental step.</returns>
 		protected abstract IReadOnlyList<string> GetExpectedHashesForIncrementalInput(TVariant variant);
 
 		/// <summary>
-		/// Gets or sets the expected hashValue of the <see cref="HashAlgorithm.InputBlockSize" /> property. Default is 1 for stream-based algorithms.
+		/// Gets or sets the expected value of <see cref="HashAlgorithm.InputBlockSize" /> for the algorithm under test. Default is 1 for
+		/// streaming hash algorithms.
 		/// </summary>
 		protected virtual int ExpectedInputBlockSize { get; init; } = 1;
 
 		/// <summary>
-		/// Gets or sets the expected hashValue of the <see cref="HashAlgorithm.OutputBlockSize" /> property. Default is 1 for most hash algorithms.
+		/// Gets or sets the expected value of <see cref="HashAlgorithm.OutputBlockSize" /> for the algorithm under test. Default is 1 for
+		/// most hash algorithms.
 		/// </summary>
 		protected virtual int ExpectedOutputBlockSize { get; init; } = 1;
 
 		/// <summary>
-		/// Provides writable public properties from the hash algorithm under test for validation. This supports dynamic tests that check
-		/// whether setting properties after hashing begins throws expected exceptions.
+		/// Returns public writable properties of the algorithm under test for use in dynamic property validation.
 		/// </summary>
 		/// <returns>
-		/// An enumerable of object arrays, where each array contains a single <see cref="PropertyInfo" /> representing a writable property.
+		/// A collection of <see cref="PropertyInfo" /> arrays, each containing a single writable property. If no writable properties are
+		/// found, a single <see langword="null" /> entry is returned to indicate an inconclusive test case.
 		/// </returns>
+		/// <remarks>
+		/// This method supports validation of runtime immutability rules for cryptographic algorithms. It is commonly used to test whether
+		/// modifying certain properties after hashing has begun results in an exception.
+		/// </remarks>
 		protected static IEnumerable<object[]> GetWritableProperties()
 		{
-			var algorithmType = typeof(TAlgorithm); // T is the hash algorithm under test
+			var algorithmType = typeof(TAlgorithm);
 			var properties = algorithmType
 				.GetProperties(BindingFlags.Public | BindingFlags.Instance)
 				.Where(p => p.CanRead && p.CanWrite && p.GetIndexParameters().Length == 0)
@@ -97,7 +150,6 @@ namespace Bodu.Security.Cryptography
 
 			if (properties.Count == 0)
 			{
-				// Yield a marker to trigger the test with an inconclusive outcome
 				yield return new object[] { null! };
 				yield break;
 			}
@@ -107,8 +159,12 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Shared input vectors used across all hash algorithm tests.
+		/// Defines shared named input vectors used across all hash algorithm test cases.
 		/// </summary>
+		/// <remarks>
+		/// Each entry maps a semantic name (e.g., "Empty", "ABC", "Zeros_16") to a representative input payload. These inputs are used in
+		/// conjunction with expected output values returned by <see cref="GetExpectedHashesForNamedInputs(TVariant)" />.
+		/// </remarks>
 		protected static readonly IReadOnlyDictionary<string, byte[]> SharedInputs = new Dictionary<string, byte[]>
 		{
 			["Empty"] = Array.Empty<byte>(),
@@ -118,25 +174,18 @@ namespace Bodu.Security.Cryptography
 			["Sequential_0_255"] = Enumerable.Range(0, 255).Select(i => (byte)i).ToArray()
 		};
 
-		public static IEnumerable<object[]> ComputeHashNamedInputTestData()
-		{
-			var instance = new TTest();
-			foreach (var variant in instance.GetHashAlgorithmVariants())
-			{
-				var testVectors = instance.GetTestVectors(variant);
-				foreach (var vector in testVectors)
-				{
-					yield return new object[] { variant, vector.Name, vector.Input, vector.ExpectedHash };
-				}
-			}
-		}
-
+		/// <summary>
+		/// Returns test case parameters for each defined algorithm variant.
+		/// </summary>
+		/// <returns>An enumerable of <see cref="TVariant" /> values wrapped in object arrays.</returns>
 		public static IEnumerable<object[]> HashAlgorithmVariants() =>
 			new TTest().GetHashAlgorithmVariants().Select(variant => new object[] { variant });
 
 		/// <summary>
-		/// Combines shared inputs with expected outputs into test vectors.
+		/// Combines shared input vectors with expected output values to generate test vectors for a specific variant.
 		/// </summary>
+		/// <param name="variant">The variant to generate test vectors for.</param>
+		/// <returns>A sequence of <see cref="HashTestVector" /> instances representing named test inputs and their expected hash results.</returns>
 		protected virtual IEnumerable<HashTestVector> GetTestVectors(TVariant variant)
 		{
 			var expected = GetExpectedHashesForNamedInputs(variant);
@@ -154,13 +203,21 @@ namespace Bodu.Security.Cryptography
 			}
 		}
 
+		/// <summary>
+		/// Verifies that the expected hash for the "Empty" named input matches the first entry in the incremental hash vector set.
+		/// </summary>
+		/// <param name="variant">The algorithm variant under test.</param>
+		/// <remarks>
+		/// This ensures consistency between fixed test vectors (e.g., "Empty") and the incremental output series, where the first
+		/// incremental hash corresponds to hashing zero bytes.
+		/// </remarks>
 		[DataTestMethod]
 		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
 		public void HashAlgorithm_TestData_Check(TVariant variant)
 		{
 			var emptyA = this.GetExpectedHashesForNamedInputs(variant)["Empty"];
 			var emptyB = this.GetExpectedHashesForIncrementalInput(variant)[0];
-			Assert.AreEqual(emptyA, emptyB, "Expected Hash value for 'Empty' Named Input should equal first item of Incremental Input");
+			Assert.AreEqual(emptyA, emptyB, "Expected hash value for 'Empty' named input should equal the first item of incremental input.");
 		}
 	}
 }
