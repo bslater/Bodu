@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DaysOfWeekSet.Comparable.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DaysOfWeekSet.Comparable.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -13,7 +13,6 @@ namespace Bodu
 		, System.IComparable<byte>
 		, System.IComparable
 	{
-		/// <inheritdoc />
 		/// <summary>
 		/// Compares this instance to a specified <see cref="object" /> and returns an indication of their relative values.
 		/// </summary>

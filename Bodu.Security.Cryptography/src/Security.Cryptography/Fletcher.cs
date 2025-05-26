@@ -6,7 +6,6 @@
 
 using Bodu.Extensions;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
@@ -34,23 +33,17 @@ namespace Bodu.Security.Cryptography
 		private static readonly int[] ValidHashSizes = { 16, 32, 64 };
 
 		private readonly ulong modulus;
+		private bool disposed = false;
 		private ulong partA;
 		private ulong partB;
-		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
 		private bool finalized;
 #endif
 
-		/// <inheritdoc />
-		public override int InputBlockSize => BlockSizeBytes;
-
-		/// <inheritdoc />
-		public override int OutputBlockSize => BlockSizeBytes;
-
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Fletcher" /> class with the specified hash size.
+		/// Initializes a new instance of the <see cref="Fletcher{TSelf}" /> class with the specified hash size.
 		/// </summary>
 		/// <param name="hashSize">The hash size in bits. Valid values are 16, 32, or 64.</param>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="hashSize" /> is not 16, 32, or 64.</exception>
@@ -79,7 +72,56 @@ namespace Bodu.Security.Cryptography
 		public string AlgorithmName =>
 			$"Fletcher-{HashSizeValue}";
 
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
 		/// <inheritdoc />
+		public override int InputBlockSize => BlockSizeBytes;
+
+		/// <inheritdoc />
+		public override int OutputBlockSize => BlockSizeBytes;
+
+		/// <inheritdoc />
+		public override void Initialize()
+		{
+			ThrowIfDisposed();
+			base.Initialize();
+#if !NET6_0_OR_GREATER
+			this.State = 0;
+			this.finalized = false;
+#endif
+			this.partA = this.partB = 0;
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (this.disposed) return;
@@ -96,64 +138,12 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
-		/// </remarks>
-		public override bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
-		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
-		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
-
-		/// <summary>
-		/// Initializes the internal state of the hash algorithm.
-		/// </summary>
-		public override void Initialize()
-		{
-			ThrowIfDisposed();
-			base.Initialize();
-#if !NET6_0_OR_GREATER
-			this.State = 0;
-			this.finalized = false;
-#endif
-			this.partA = this.partB = 0;
-		}
-
-		/// <inheritdoc />
 		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength)
 		{
 			Span<byte> buffer = stackalloc byte[BlockSizeBytes];
 			block.CopyTo(buffer);
 			return buffer.ToArray();
 		}
-
-		/// <inheritdoc />
-		protected override byte[] ProcessFinalBlock()
-		{
-			// Combine partA and partB into the final hash value
-			ulong finalHash = (this.partA << (this.HashSizeValue / 2)) | this.partB;
-
-			// Convert to a byte array and take the size
-			return finalHash.GetBytes().SliceInternal(0, HashSizeValue / 8);
-		}
-
-		/// <inheritdoc />
-		protected override bool ShouldPadFinalBlock() => false;
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -169,5 +159,18 @@ namespace Bodu.Security.Cryptography
 			this.partA = (this.partA + b) % this.modulus;
 			this.partB = (this.partB + this.partA) % this.modulus;
 		}
+
+		/// <inheritdoc />
+		protected override byte[] ProcessFinalBlock()
+		{
+			// Combine partA and partB into the final hash value
+			ulong finalHash = (this.partA << (this.HashSizeValue / 2)) | this.partB;
+
+			// Convert to a byte array and take the size
+			return finalHash.GetBytes().SliceInternal(0, HashSizeValue / 8);
+		}
+
+		/// <inheritdoc />
+		protected override bool ShouldPadFinalBlock() => false;
 	}
 }

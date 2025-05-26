@@ -1,5 +1,4 @@
-﻿using System;
-using System.Buffers.Binary;
+﻿using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -63,12 +62,18 @@ namespace Bodu.Security.Cryptography
 		where T : Snefru<T>, new()
 	{
 		private const int TotalWords = 16;                              // number of 32-bit words in the working buffer.
+		private static readonly int Mask = TotalWords - 1;
 		private static readonly int[] Shifts = [16, 8, 16, 24];         // fixed bitwise rotation amounts applied after each S-box round.
-		private static readonly int Mask = TotalWords - 1;              // bitmask to constrain index calculations to the buffer length.
+		private static readonly int[] ValidHashSizes = { 128, 256 };
+
+		// bitmask to constrain index calculations to the buffer length.
 		private readonly uint[] buffer = new uint[TotalWords];          // internal working buffer used for permutation and round processing.
+
 		private readonly uint[] state;                                  // internal state used to accumulate the hash output across input blocks.
-		private static readonly int[] ValidHashSizes = { 128, 256 };    // valid Snefru hash sizes (in bits).
+
+		// valid Snefru hash sizes (in bits).
 		private bool disposed = false;
+
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -95,8 +100,31 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Reinitializes the hash algorithm and resets its internal state.
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
 		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
+		/// <inheritdoc />
 		public override void Initialize()
 		{
 			ThrowIfDisposed();
@@ -106,13 +134,40 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Clears the internal state array to prepare for new input.
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void InitializeState() => Array.Clear(state);
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposed) return;
 
-		/// <inheritdoc />
-		/// <remarks>The Snefru hash requires double-sized padding (2× block size) to support internal transformation logic.</remarks>
+			if (disposing)
+			{
+				CryptoUtilities.Clear(MemoryMarshal.AsBytes(buffer.AsSpan()));
+				CryptoUtilities.Clear(MemoryMarshal.AsBytes(state.AsSpan()));
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+			}
+
+			disposed = true;
+			base.Dispose(disposing);
+		}
+
+		/// <summary>
+		/// Pads the final input block for the <c>Snefru</c> hash algorithm by appending zeros and encoding the total message length.
+		/// </summary>
+		/// <param name="block">The final block of unprocessed input, typically containing fewer than <c>BlockSize</c> bytes.</param>
+		/// <param name="messageLength">The total number of bytes processed prior to this block (excluding the current partial block).</param>
+		/// <returns>
+		/// A padded byte array of exactly <c>2 × BlockSize</c> bytes, containing the input block followed by zeros and an 8-byte big-endian
+		/// length field. The result is aligned for final compression and ready for use by <see cref="ProcessBlock(ReadOnlySpan{byte})" />.
+		/// </returns>
+		/// <remarks>
+		/// Snefru's final padding block is double the standard block size to support its dual-block internal buffer design. The method pads
+		/// the input block with zeros and appends a 64-bit big-endian integer representing the total message length (in bits).
+		/// </remarks>
 		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength)
 		{
 			int paddedLength = 2 * BlockSizeBytes;
@@ -120,6 +175,44 @@ namespace Bodu.Security.Cryptography
 			block.CopyTo(padded);
 			BinaryPrimitives.WriteUInt64BigEndian(padded.Slice(paddedLength - 8), messageLength << 3);
 			return padded.Slice(0, paddedLength).ToArray();
+		}
+
+		/// <summary>
+		/// Transforms a single 512-bit block using Snefru S-box and rotation rounds. Updates internal state via XOR with permuted buffer values.
+		/// </summary>
+		/// <param name="block">The 64-byte input block to hash.</param>
+		/// <remarks>
+		/// The method performs 8 rounds, each consisting of 4 shifts and S-box applications, to mix input entropy into the state.
+		/// </remarks>
+		protected override void ProcessBlock(ReadOnlySpan<byte> block)
+		{
+			state.AsSpan().CopyTo(buffer);
+			LoadBlockToBuffer(block, buffer.AsSpan(state.Length));
+
+			for (int round = 0; round < 8; round++)
+			{
+				foreach (int shift in Shifts)
+				{
+					ApplySBoxRounds(round);
+					RotateWords(shift);
+				}
+			}
+
+			for (int i = 0; i < state.Length; i++)
+			{
+				state[i] ^= buffer[Mask - i];
+			}
+		}
+
+		/// <summary>
+		/// Finalizes the hash computation by serializing the internal state to a byte array in big-endian format.
+		/// </summary>
+		/// <returns>The computed hash as a byte array.</returns>
+		protected override byte[] ProcessFinalBlock()
+		{
+			byte[] output = new byte[state.Length * sizeof(uint)];
+			WriteStateBigEndian(state, output);
+			return output;
 		}
 
 		/// <summary>
@@ -171,21 +264,11 @@ namespace Bodu.Security.Cryptography
 			}
 		}
 
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			if (disposed) return;
-
-			if (disposing)
-			{
-				CryptoUtilities.Clear(MemoryMarshal.AsBytes(buffer.AsSpan()));
-				CryptoUtilities.Clear(MemoryMarshal.AsBytes(state.AsSpan()));
-				CryptoUtilities.ClearAndNullify(ref HashValue);
-			}
-
-			disposed = true;
-			base.Dispose(disposing);
-		}
+		/// <summary>
+		/// Clears the internal state array to prepare for new input.
+		/// </summary>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void InitializeState() => Array.Clear(state);
 
 		/// <summary>
 		/// Performs a circular left bitwise rotation on each word in the internal buffer.
@@ -198,45 +281,6 @@ namespace Bodu.Security.Cryptography
 			{
 				buffer[i] = (buffer[i] >> shiftAmount) | (buffer[i] << (32 - shiftAmount));
 			}
-		}
-
-		/// <summary>
-		/// Transforms a single 512-bit block using Snefru S-box and rotation rounds. Updates internal state via XOR with permuted buffer values.
-		/// </summary>
-		/// <param name="block">The 64-byte input block to hash.</param>
-		/// <remarks>
-		/// The method performs 8 rounds, each consisting of 4 shifts and S-box applications, to mix input entropy into the state.
-		/// </remarks>
-		protected override void ProcessBlock(ReadOnlySpan<byte> block)
-		{
-			state.AsSpan().CopyTo(buffer);
-			LoadBlockToBuffer(block, buffer.AsSpan(state.Length));
-
-			for (int round = 0; round < 8; round++)
-			{
-				foreach (int shift in Shifts)
-				{
-					ApplySBoxRounds(round);
-					RotateWords(shift);
-				}
-			}
-
-			for (int i = 0; i < state.Length; i++)
-			{
-				state[i] ^= buffer[Mask - i];
-			}
-		}
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Finalizes the hash computation by serializing the internal state to a byte array in big-endian format.
-		/// </summary>
-		/// <returns>The computed hash as a byte array.</returns>
-		protected override byte[] ProcessFinalBlock()
-		{
-			byte[] output = new byte[state.Length * sizeof(uint)];
-			WriteStateBigEndian(state, output);
-			return output;
 		}
 	}
 }

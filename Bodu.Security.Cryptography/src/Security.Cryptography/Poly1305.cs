@@ -5,13 +5,9 @@
 // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Extensions;
-using System;
 using System.Buffers.Binary;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Threading.Tasks.Dataflow;
 
 namespace Bodu.Security.Cryptography
 {
@@ -52,10 +48,14 @@ namespace Bodu.Security.Cryptography
 
 		private static readonly int BlockSize = 16;
 
+		private readonly uint[] _acc = new uint[5];
+		private readonly uint[] _key = new uint[4];
 		private readonly uint[] _r = new uint[5];    // Polynomial key
-		private readonly uint[] _key = new uint[4];    // Encrypted nonce
+
+		// Encrypted nonce
 		private readonly uint[] _s = new uint[4];    // Precomputed 5 * r[1..4]
-		private readonly uint[] _acc = new uint[5];  // Polynomial accumulator
+
+		// Polynomial accumulator
 
 		private bool disposed = false;
 
@@ -71,11 +71,38 @@ namespace Bodu.Security.Cryptography
 			InitializeKey();
 		}
 
-		/// <inheritdoc />
-		public override int InputBlockSize => BlockSize;
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <returns>
+		/// <see langword="false" /> for <see cref="Poly1305" />, which is a one-time authenticator that must not be reused with the same key.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <see cref="Poly1305" /> is a one-time message authentication code (MAC) algorithm. Reusing the same instance with the same key
+		/// for multiple messages violates the security guarantees of the algorithm and may lead to forgery attacks.
+		/// </para>
+		/// <para>
+		/// This implementation clears the key material after finalization to prevent accidental reuse. To compute a new MAC, a new instance
+		/// must be created with a fresh key.
+		/// </para>
+		/// </remarks>
+		public override bool CanReuseTransform => false;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
 
 		/// <inheritdoc />
-		public override int OutputBlockSize => BlockSize;
+		public override int InputBlockSize => BlockSize;
 
 		/// <inheritdoc />
 		public override byte[] Key
@@ -101,36 +128,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns>
-		/// <see langword="false" /> for <see cref="Poly1305" />, which is a one-time authenticator that must not be reused with the same key.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <see cref="Poly1305" /> is a one-time message authentication code (MAC) algorithm. Reusing the same instance with the same key
-		/// for multiple messages violates the security guarantees of the algorithm and may lead to forgery attacks.
-		/// </para>
-		/// <para>
-		/// This implementation clears the key material after finalization to prevent accidental reuse. To compute a new MAC, a new instance
-		/// must be created with a fresh key.
-		/// </para>
-		/// </remarks>
-		public override bool CanReuseTransform => false;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashAlgorithm.HashCore" /> call.
-		/// </summary>
-		/// <returns><see langword="true" /> if multiple input blocks can be processed sequentially; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// <para>
-		/// <see cref="Poly1305" /> supports input that spans multiple 16-byte blocks. Input data is accumulated and processed
-		/// block-by-block using polynomial arithmetic, allowing streaming or chunked data input through repeated calls to <see cref="HashAlgorithm.TransformBlock" />.
-		/// </para>
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
+		public override int OutputBlockSize => BlockSize;
 
 		/// <inheritdoc />
 		public override void Initialize()
@@ -149,7 +147,13 @@ namespace Bodu.Security.Cryptography
 			InitializeKey();
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposed) return;
@@ -171,37 +175,8 @@ namespace Bodu.Security.Cryptography
 		/// Initializes internal key parameters from the <see cref="Key" /> value.
 		/// </summary>
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void InitializeKey()
-		{
-			ReadOnlySpan<byte> key = KeyValue;
-
-			// Load and clamp the first 128 bits of the key as the polynomial 'r' key Clamp 'r' by setting/clearing specific bits to avoid
-			// vulnerabilities as per RFC 8439, Section 2.5.1
-			uint t0 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(0));
-			uint t1 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(4));
-			uint t2 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(8));
-			uint t3 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(12));
-
-			// Split 128-bit r into 5 x 26-bit limbs with clamping (see RFC for bitmask values)
-			_r[0] = t0 & 0x03FFFFFFU;
-			_r[1] = ((t0 >> 26) | (t1 << 6)) & 0x03FFFF03U;
-			_r[2] = ((t1 >> 20) | (t2 << 12)) & 0x03FFC0FFU;
-			_r[3] = ((t2 >> 14) | (t3 << 18)) & 0x03F03FFFU;
-			_r[4] = (t3 >> 8) & 0x000FFFFFU;
-
-			// Precompute 5*r[i] values to optimize carry-reduction step later
-			_s[0] = _r[1] * 5;
-			_s[1] = _r[2] * 5;
-			_s[2] = _r[3] * 5;
-			_s[3] = _r[4] * 5;
-
-			// Load the second half of the key (s), which will be added during final tag computation
-			_key[0] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(16));
-			_key[1] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(20));
-			_key[2] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(24));
-			_key[3] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(28));
-		}
+		/// <inheritdoc />
+		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength) => throw new NotImplementedException();
 
 		/// <inheritdoc />
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -307,7 +282,36 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override bool ShouldPadFinalBlock() => false;
 
-		/// <inheritdoc />
-		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength) => throw new NotImplementedException();
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void InitializeKey()
+		{
+			ReadOnlySpan<byte> key = KeyValue;
+
+			// Load and clamp the first 128 bits of the key as the polynomial 'r' key Clamp 'r' by setting/clearing specific bits to avoid
+			// vulnerabilities as per RFC 8439, Section 2.5.1
+			uint t0 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(0));
+			uint t1 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(4));
+			uint t2 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(8));
+			uint t3 = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(12));
+
+			// Split 128-bit r into 5 x 26-bit limbs with clamping (see RFC for bitmask values)
+			_r[0] = t0 & 0x03FFFFFFU;
+			_r[1] = ((t0 >> 26) | (t1 << 6)) & 0x03FFFF03U;
+			_r[2] = ((t1 >> 20) | (t2 << 12)) & 0x03FFC0FFU;
+			_r[3] = ((t2 >> 14) | (t3 << 18)) & 0x03F03FFFU;
+			_r[4] = (t3 >> 8) & 0x000FFFFFU;
+
+			// Precompute 5*r[i] values to optimize carry-reduction step later
+			_s[0] = _r[1] * 5;
+			_s[1] = _r[2] * 5;
+			_s[2] = _r[3] * 5;
+			_s[3] = _r[4] * 5;
+
+			// Load the second half of the key (s), which will be added during final tag computation
+			_key[0] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(16));
+			_key[1] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(20));
+			_key[2] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(24));
+			_key[3] = BinaryPrimitives.ReadUInt32LittleEndian(key.Slice(28));
+		}
 	}
 }

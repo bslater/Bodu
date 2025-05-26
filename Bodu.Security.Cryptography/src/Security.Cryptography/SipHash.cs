@@ -19,8 +19,8 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// <see cref="SipHash" /> is a keyed hash function that requires a 128-bit (16-byte) secret key. It operates on short messages using a
-	/// sequence of Add-Rotate-XOR (ARX) mixing steps across four 64-bit state variables ( <c>v0</c> through <c>v3</c>). The algorithm is
+	/// <see cref="SipHash{T}" /> is a keyed hash function that requires a 128-bit (16-byte) secret key. It operates on short messages using
+	/// a sequence of Add-Rotate-XOR (ARX) mixing steps across four 64-bit state variables ( <c>v0</c> through <c>v3</c>). The algorithm is
 	/// resistant to hash-flooding attacks and is particularly effective for securing hash tables.
 	/// </para>
 	/// <para>
@@ -73,7 +73,6 @@ namespace Bodu.Security.Cryptography
 		public const int MinFinalizationRounds = 4;
 
 		private static readonly int BlockSize = 8;
-		private static readonly int[] ValidHashSizes = { 64, 128 };
 
 		private static readonly ulong[] InitialStates = new ulong[]
 		{
@@ -83,10 +82,11 @@ namespace Bodu.Security.Cryptography
 			0x7465646279746573UL,
 		};
 
+		private static readonly int[] ValidHashSizes = { 64, 128 };
 		private int compressionRounds;
+		private bool disposed = false;
 		private int finalizationRounds;
 		private ulong v0, v1, v2, v3;
-		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -94,7 +94,7 @@ namespace Bodu.Security.Cryptography
 #endif
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SipHash" /> class with a specified hash size.
+		/// Initializes a new instance of the <see cref="SipHash{T}" /> class with a specified hash size.
 		/// </summary>
 		/// <param name="hashSize">The desired size of the final hash in bits. Supported values are 64 or 128.</param>
 		/// <exception cref="ArgumentException">Thrown if <paramref name="hashSize" /> is not supported.</exception>
@@ -134,11 +134,43 @@ namespace Bodu.Security.Cryptography
 			$"SipHash-{CompressionRounds}-{FinalizationRounds}-{HashSizeValue}";
 
 		/// <summary>
-		/// Gets or sets the number of compression rounds performed per message block.
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
 		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if the value is less than <see cref="MinCompressionRounds" />.</exception>
-		/// <exception cref="ObjectDisposedException">Instance has been disposed and its members are accessed.</exception>
-		/// <exception cref="CryptographicUnexpectedOperationException">The hash computation has already started.</exception>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
+		/// <summary>
+		/// Gets or sets the number of compression rounds applied to each input block during the SipHash computation.
+		/// </summary>
+		/// <value>A positive integer greater than or equal to <see cref="MinCompressionRounds" />. The default is 2.</value>
+		/// <remarks>
+		/// Compression rounds are performed for every 8-byte message block before finalization. Increasing this value improves diffusion
+		/// and resistance to hash-flooding attacks, but also increases computation time.
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when the assigned value is less than <see cref="MinCompressionRounds" />.</exception>
+		/// <exception cref="ObjectDisposedException">Thrown if the algorithm instance has been disposed.</exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// Thrown if the hash computation has already begun and the property is modified mid-operation.
+		/// </exception>
 		public int CompressionRounds
 		{
 			get
@@ -158,11 +190,18 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets or sets the number of finalization rounds performed after all input has been processed.
+		/// Gets or sets the number of finalization rounds executed after all message blocks have been absorbed.
 		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if the value is less than <see cref="MinFinalizationRounds" />.</exception>
-		/// <exception cref="ObjectDisposedException">Instance has been disposed and its members are accessed.</exception>
-		/// <exception cref="CryptographicUnexpectedOperationException">The hash computation has already started.</exception>
+		/// <value>A positive integer greater than or equal to <see cref="MinFinalizationRounds" />. The default is 4.</value>
+		/// <remarks>
+		/// Finalization rounds strengthen the avalanche effect after all input is processed. Increasing this value improves security at the
+		/// cost of additional computation during final hash derivation.
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when the assigned value is less than <see cref="MinFinalizationRounds" />.</exception>
+		/// <exception cref="ObjectDisposedException">Thrown if the algorithm instance has been disposed.</exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// Thrown if the hash computation has already begun and the property is modified mid-operation.
+		/// </exception>
 		public int FinalizationRounds
 		{
 			get
@@ -183,9 +222,6 @@ namespace Bodu.Security.Cryptography
 
 		/// <inheritdoc />
 		public override int InputBlockSize => BlockSize;
-
-		/// <inheritdoc />
-		public override int OutputBlockSize => BlockSize;
 
 		/// <inheritdoc />
 		public override byte[] Key
@@ -210,29 +246,7 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
-		/// </remarks>
-		public override bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
-		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
-		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
+		public override int OutputBlockSize => BlockSize;
 
 		/// <inheritdoc />
 		public override void Initialize()
@@ -246,7 +260,13 @@ namespace Bodu.Security.Cryptography
 			InitializeVectors();
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposed) return;
@@ -261,6 +281,66 @@ namespace Bodu.Security.Cryptography
 
 			disposed = true;
 			base.Dispose(disposing);
+		}
+
+		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength)
+		{
+			if ((uint)block.Length > 7)
+				throw new ArgumentOutOfRangeException(nameof(block), "Residual block must be 0–7 bytes.");
+
+			Span<byte> buffer = stackalloc byte[8];
+			block.CopyTo(buffer);
+			buffer[7] = (byte)messageLength;
+
+			return buffer.ToArray();
+		}
+
+		/// <summary>
+		/// Processes a single 64-bit block of data using SipHash compression.
+		/// </summary>
+		/// <param name="block">The 64-bit block to process.</param>
+		/// <remarks>Updates internal state using <see cref="PerformSipRounds" /> and XOR operations.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected override void ProcessBlock(ReadOnlySpan<byte> block)
+		{
+			var b = BinaryPrimitives.ReadUInt64LittleEndian(block);
+			v3 ^= b;
+			PerformSipRounds(compressionRounds);
+			v0 ^= b;
+		}
+
+		//	// Buffer any remaining residual bytes
+		//	residualBytes = end - pos;
+		//	if (residualBytes > 0)
+		//		buffer.AsSpan(pos, residualBytes).CopyTo(residualSpan);
+		//}
+		/// <summary>
+		/// Finalizes the hash computation and produces the output hash value.
+		/// </summary>
+		/// <returns>A byte array containing the final hash value (8 or 16 bytes).</returns>
+		/// <remarks>Combines all partial input and applies the finalization round logic based on the configured output size.</remarks>
+		protected override byte[] ProcessFinalBlock()
+		{
+			v2 ^= (HashSizeValue == 64) ? 0xffUL : 0xeeUL;
+			PerformSipRounds(finalizationRounds);
+
+			byte[] hash = new byte[HashSizeValue / 8];
+
+			// First 64-bit output
+			ulong h0 = v0 ^ v1 ^ v2 ^ v3;
+			MemoryMarshal.Write(hash.AsSpan(0, 8), in h0);
+
+			// Optional second block for SipHash-128
+			if (HashSizeValue == 128)
+			{
+				v1 ^= 0xdd;
+				PerformSipRounds(finalizationRounds);
+
+				ulong h1 = v0 ^ v1 ^ v2 ^ v3;
+				MemoryMarshal.Write(hash.AsSpan(8, 8), in h1);
+			}
+
+			return hash;
 		}
 
 		/// <summary>
@@ -332,66 +412,5 @@ namespace Bodu.Security.Cryptography
 
 		// // Process full blocks directly from the input int end = offset + length; while (pos + BlockSize <= end) { ulong block =
 		// MemoryMarshal.Read<ulong>(buffer.AsSpan(pos, BlockSize)); ProcessBlock(block); pos += BlockSize; }
-
-		//	// Buffer any remaining residual bytes
-		//	residualBytes = end - pos;
-		//	if (residualBytes > 0)
-		//		buffer.AsSpan(pos, residualBytes).CopyTo(residualSpan);
-		//}
-
-		/// <summary>
-		/// Processes a single 64-bit block of data using SipHash compression.
-		/// </summary>
-		/// <param name="block">The 64-bit block to process.</param>
-		/// <remarks>Updates internal state using <see cref="PerformSipRounds" /> and XOR operations.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected override void ProcessBlock(ReadOnlySpan<byte> block)
-		{
-			var b = BinaryPrimitives.ReadUInt64LittleEndian(block);
-			v3 ^= b;
-			PerformSipRounds(compressionRounds);
-			v0 ^= b;
-		}
-
-		protected override byte[] PadBlock(ReadOnlySpan<byte> block, ulong messageLength)
-		{
-			if ((uint)block.Length > 7)
-				throw new ArgumentOutOfRangeException(nameof(block), "Residual block must be 0–7 bytes.");
-
-			Span<byte> buffer = stackalloc byte[8];
-			block.CopyTo(buffer);
-			buffer[7] = (byte)messageLength;
-
-			return buffer.ToArray();
-		}
-
-		/// <summary>
-		/// Finalizes the hash computation and produces the output hash value.
-		/// </summary>
-		/// <returns>A byte array containing the final hash value (8 or 16 bytes).</returns>
-		/// <remarks>Combines all partial input and applies the finalization round logic based on the configured output size.</remarks>
-		protected override byte[] ProcessFinalBlock()
-		{
-			v2 ^= (HashSizeValue == 64) ? 0xffUL : 0xeeUL;
-			PerformSipRounds(finalizationRounds);
-
-			byte[] hash = new byte[HashSizeValue / 8];
-
-			// First 64-bit output
-			ulong h0 = v0 ^ v1 ^ v2 ^ v3;
-			MemoryMarshal.Write(hash.AsSpan(0, 8), in h0);
-
-			// Optional second block for SipHash-128
-			if (HashSizeValue == 128)
-			{
-				v1 ^= 0xdd;
-				PerformSipRounds(finalizationRounds);
-
-				ulong h1 = v0 ^ v1 ^ v2 ^ v3;
-				MemoryMarshal.Write(hash.AsSpan(8, 8), in h1);
-			}
-
-			return hash;
-		}
 	}
 }

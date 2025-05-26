@@ -24,8 +24,8 @@ namespace Bodu.Security.Cryptography
 	/// </remarks>
 	public sealed class Fnv132 : Fnv
 	{
-		private const ulong Prime = 0x01000193UL;
 		private const ulong OffsetBasis = 0x811C9DC5UL;
+		private const ulong Prime = 0x01000193UL;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Fnv132" /> class using standard FNV-1 32-bit parameters.

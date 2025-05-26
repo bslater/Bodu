@@ -4,12 +4,9 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using System.Drawing;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Security.Cryptography
 {
@@ -49,6 +46,11 @@ namespace Bodu.Security.Cryptography
 		public const int MaxInputBlockSize = 128;
 
 		/// <summary>
+		/// The maximum number of rounds permitted for initialization, processing, or finalization.
+		/// </summary>
+		public const int MaxRounds = 4096;
+
+		/// <summary>
 		/// The minimum allowable size of the computed hash, in bits.
 		/// </summary>
 		public const int MinHashSize = 8;
@@ -63,24 +65,24 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		public const int MinRounds = 1;
 
-		/// <summary>
-		/// The maximum number of rounds permitted for initialization, processing, or finalization.
-		/// </summary>
-		public const int MaxRounds = 4096;
+		private readonly uint[] scratch = new uint[16];
+
+		private int bitLength;
+
+		private bool disposed = false;
 
 		// Internal algorithm parameters
 		private int finalizationRounds;
 
 		private int initializationRounds;
-		private int inputBlockSizeBits;
-		private int bitLength; // tracks number of bits consumed
-		private int rounds;
-		private uint[] state;
-		private bool disposed = false;
-		private readonly uint[] scratch = new uint[16];
-		private bool isInitializedStateCached = false;
 		private uint[] initializedState;
+		private int inputBlockSizeBits;
+		private bool isInitializedStateCached = false;
 
+		// tracks number of bits consumed
+		private int rounds;
+
+		private uint[] state;
 #if !NET6_0_OR_GREATER
         private bool finalized; // flag to block reuse in older .NET
 #endif
@@ -98,26 +100,57 @@ namespace Bodu.Security.Cryptography
 			state = initializedState = new uint[32];
 		}
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Gets the input block size, in bytes, used by consumers of the <see cref="CubeHash" /> algorithm, such as <see cref="System.Security.Cryptography.CryptoStream" />.
+		/// Gets the fully qualified algorithm name, including the variant and hash output size.
 		/// </summary>
 		/// <remarks>
-		/// This value reflects the configured <see cref="TransformBlockSize" />, which determines how many bytes are accumulated before a
-		/// transformation round is triggered internally. While this value does not impact the correctness of the hash, feeding data in
-		/// aligned blocks may improve performance in stream-based scenarios.
+		/// <para>Follows the <see cref="CubeHash" /> naming convention from the original submission: <c>CubeHashr+b/w+f-h</c>, where:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <description><c>r</c> = number of initialization rounds</description>
+		/// </item>
+		/// <item>
+		/// <description><c>b</c> = number of transformation rounds per block</description>
+		/// </item>
+		/// <item>
+		/// <description><c>w</c> = block size in bytes</description>
+		/// </item>
+		/// <item>
+		/// <description><c>f</c> = number of finalization rounds</description>
+		/// </item>
+		/// <item>
+		/// <description><c>h</c> = hash size in bits</description>
+		/// </item>
+		/// </list>
+		/// <para>Example: <c>CubeHash16+32/32+32-256</c></para>
 		/// </remarks>
-		public override int InputBlockSize => TransformBlockSize;
+		public string AlgorithmName =>
+			$"CubeHash{InitializationRounds}+{Rounds}/{TransformBlockSize}+{FinalizationRounds}-{HashSize}";
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Gets the output block size, in bytes, of the final computed hash value.
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
 		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
 		/// <remarks>
-		/// This is equal to the configured <see cref="HashSize" /> divided by 8. For example, a 512-bit hash will produce an output block
-		/// of 64 bytes. This value corresponds to the full digest returned after <see cref="HashAlgorithm.HashFinal" /> is called.
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
 		/// </remarks>
-		public override int OutputBlockSize => HashSize / 8;
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
 
 		/// <summary>
 		/// Gets or sets the number of finalization rounds applied after all input has been processed.
@@ -207,33 +240,23 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets or sets the size, in bytes, of the input block used by the CubeHash algorithm to determine when to perform a state transformation.
+		/// Gets the input block size, in bytes, used by consumers of the <see cref="CubeHash" /> algorithm, such as <see cref="System.Security.Cryptography.CryptoStream" />.
 		/// </summary>
 		/// <remarks>
-		/// Unlike <see cref="HashAlgorithm.InputBlockSize" />, which is advisory, this property directly affects the output of the hash
-		/// function. When the number of accumulated input bytes reaches <c>TransformBlockSize</c>, a transformation round is triggered.
-		/// Modifying this value changes the frequency of internal state updates, impacting both performance and security characteristics.
+		/// This value reflects the configured <see cref="TransformBlockSize" />, which determines how many bytes are accumulated before a
+		/// transformation round is triggered internally. While this value does not impact the correctness of the hash, feeding data in
+		/// aligned blocks may improve performance in stream-based scenarios.
 		/// </remarks>
-		/// <exception cref="ArgumentOutOfRangeException">Value is not within range <see cref="MinInputBlockSize" /> to <see cref="MaxInputBlockSize" />.</exception>
-		/// <exception cref="ObjectDisposedException">Instance has been disposed and its members are accessed.</exception>
-		/// <exception cref="CryptographicUnexpectedOperationException">The hash computation has already started.</exception>
-		public int TransformBlockSize
-		{
-			get
-			{
-				ThrowIfDisposed();
-				return inputBlockSizeBits / 8;
-			}
+		public override int InputBlockSize => TransformBlockSize;
 
-			set
-			{
-				ThrowIfDisposed();
-				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfOutOfRange(value, MinInputBlockSize, MaxInputBlockSize);
-				inputBlockSizeBits = value * 8;
-				isInitializedStateCached = false;
-			}
-		}
+		/// <summary>
+		/// Gets the output block size, in bytes, of the final computed hash value.
+		/// </summary>
+		/// <remarks>
+		/// This is equal to the configured <see cref="HashSize" /> divided by 8. For example, a 512-bit hash will produce an output block
+		/// of 64 bytes. This value corresponds to the full digest returned after <see cref="HashAlgorithm.HashFinal" /> is called.
+		/// </remarks>
+		public override int OutputBlockSize => HashSize / 8;
 
 		/// <summary>
 		/// Gets or sets the number of transformation rounds applied to each full input block.
@@ -263,56 +286,33 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets the fully qualified algorithm name, including the variant and hash output size.
+		/// Gets or sets the size, in bytes, of the input block used by the CubeHash algorithm to determine when to perform a state transformation.
 		/// </summary>
 		/// <remarks>
-		/// <para>Follows the <see cref="CubeHash" /> naming convention from the original submission: <c>CubeHashr+b/w+f-h</c>, where:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <description><c>r</c> = number of initialization rounds</description>
-		/// </item>
-		/// <item>
-		/// <description><c>b</c> = number of transformation rounds per block</description>
-		/// </item>
-		/// <item>
-		/// <description><c>w</c> = block size in bytes</description>
-		/// </item>
-		/// <item>
-		/// <description><c>f</c> = number of finalization rounds</description>
-		/// </item>
-		/// <item>
-		/// <description><c>h</c> = hash size in bits</description>
-		/// </item>
-		/// </list>
-		/// <para>Example: <c>CubeHash16+32/32+32-256</c></para>
+		/// Unlike <see cref="HashAlgorithm.InputBlockSize" />, which is advisory, this property directly affects the output of the hash
+		/// function. When the number of accumulated input bytes reaches <c>TransformBlockSize</c>, a transformation round is triggered.
+		/// Modifying this value changes the frequency of internal state updates, impacting both performance and security characteristics.
 		/// </remarks>
-		public string AlgorithmName =>
-			$"CubeHash{InitializationRounds}+{Rounds}/{TransformBlockSize}+{FinalizationRounds}-{HashSize}";
+		/// <exception cref="ArgumentOutOfRangeException">Value is not within range <see cref="MinInputBlockSize" /> to <see cref="MaxInputBlockSize" />.</exception>
+		/// <exception cref="ObjectDisposedException">Instance has been disposed and its members are accessed.</exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">The hash computation has already started.</exception>
+		public int TransformBlockSize
+		{
+			get
+			{
+				ThrowIfDisposed();
+				return inputBlockSizeBits / 8;
+			}
 
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
-		/// </remarks>
-		public override bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
-		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
-		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
+			set
+			{
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
+				ThrowHelper.ThrowIfOutOfRange(value, MinInputBlockSize, MaxInputBlockSize);
+				inputBlockSizeBits = value * 8;
+				isInitializedStateCached = false;
+			}
+		}
 
 		/// <inheritdoc />
 		public override void Initialize()
@@ -326,6 +326,33 @@ namespace Bodu.Security.Cryptography
 
 			EnsureInitialized();
 			InitializeVectors();
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposed) return;
+			if (disposing)
+			{
+				finalizationRounds = initializationRounds = rounds = inputBlockSizeBits = bitLength = 0;
+				if (state != null)
+				{
+					CryptoUtilities.ClearAndNullify(ref HashValue);
+					CryptoUtilities.ClearAndNullify(ref state!);
+					CryptoUtilities.ClearAndNullify(ref initializedState!);
+					CryptoUtilities.Clear(scratch.AsSpan());
+					isInitializedStateCached = false;
+				}
+			}
+
+			disposed = true;
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -526,27 +553,6 @@ namespace Bodu.Security.Cryptography
 
 				temp.CopyTo(stateSpan.Slice(16));
 			}
-		}
-
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			if (disposed) return;
-			if (disposing)
-			{
-				finalizationRounds = initializationRounds = rounds = inputBlockSizeBits = bitLength = 0;
-				if (state != null)
-				{
-					CryptoUtilities.ClearAndNullify(ref HashValue);
-					CryptoUtilities.ClearAndNullify(ref state!);
-					CryptoUtilities.ClearAndNullify(ref initializedState!);
-					CryptoUtilities.Clear(scratch.AsSpan());
-					isInitializedStateCached = false;
-				}
-			}
-
-			disposed = true;
-			base.Dispose(disposing);
 		}
 
 		/// <summary>

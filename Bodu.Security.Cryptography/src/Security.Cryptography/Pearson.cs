@@ -36,6 +36,37 @@ namespace Bodu.Security.Cryptography
 		: System.Security.Cryptography.HashAlgorithm
 	{
 		/// <summary>
+		/// The maximum allowable hash size in bits.
+		/// </summary>
+		public const int MaxHashSize = 2048;
+
+		/// <summary>
+		/// The minimum allowable hash size in bits.
+		/// </summary>
+		public const int MinHashSize = 8;
+
+		private bool disposed = false;
+
+		private bool isFirstByte;
+
+		private byte[] permutationTable;
+
+		private PearsonTableType tableType;
+
+		private byte[] workingHash;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Pearson" /> class with a default 8-bit hash size.
+		/// </summary>
+		public Pearson()
+		{
+			permutationTable = GetPermutationTable(PearsonTableType.Pearson);
+			HashSizeValue = MinHashSize;
+			workingHash = new byte[HashSizeValue / 8];
+			isFirstByte = true;
+		}
+
+		/// <summary>
 		/// Defines the available permutation table presets that can be used with the <see cref="Pearson" /> hashing algorithm.
 		/// </summary>
 		public enum PearsonTableType
@@ -86,21 +117,6 @@ namespace Bodu.Security.Cryptography
 			UserDefined
 		}
 
-		/// <summary>
-		/// The minimum allowable hash size in bits.
-		/// </summary>
-		public const int MinHashSize = 8;
-
-		/// <summary>
-		/// The maximum allowable hash size in bits.
-		/// </summary>
-		public const int MaxHashSize = 2048;
-
-		private bool isFirstByte;
-		private byte[] workingHash;
-		private byte[] permutationTable;
-		private bool disposed = false;
-		private PearsonTableType tableType;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -108,37 +124,81 @@ namespace Bodu.Security.Cryptography
 #endif
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Pearson" /> class with a default 8-bit hash size.
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
 		/// </summary>
-		public Pearson()
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
+		/// <summary>
+		/// Gets or sets the size, in bits, of the hash.
+		/// </summary>
+		/// <exception cref="CryptographicException">Thrown if modified after hashing has started.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if size is outside valid bounds.</exception>
+		/// <exception cref="ArgumentException">Thrown if the hash size is not divisible by 8.</exception>
+		public new int HashSize
 		{
-			permutationTable = GetPermutationTable(PearsonTableType.Pearson);
-			HashSizeValue = MinHashSize;
-			workingHash = new byte[HashSizeValue / 8];
-			isFirstByte = true;
+			get
+			{
+				ThrowIfDisposed();
+
+				return HashSizeValue;
+			}
+
+			set
+			{
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
+				ThrowHelper.ThrowIfOutOfRange(value, MinHashSize, MaxHashSize);
+				ThrowHelper.ThrowIfNotPositiveMultipleOf(value, 8);
+
+				HashSizeValue = value;
+				Initialize();
+			}
 		}
 
 		/// <summary>
-		/// Returns the predefined permutation table for the specified <see cref="PearsonTableType" />.
+		/// Gets or sets the 256-byte permutation table used by the Pearson algorithm.
 		/// </summary>
-		/// <param name="type">The type of permutation table to retrieve.</param>
-		/// <returns>A 256-byte permutation table.</returns>
-		/// <exception cref="InvalidOperationException">
-		/// Thrown when <paramref name="type" /> is <see cref="PearsonTableType.UserDefined" />. In this case, the table must be explicitly
-		/// provided via the <c>Table</c> property on the <see cref="Pearson" /> instance.
-		/// </exception>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="type" /> is not a recognized value.</exception>
-		private static byte[] GetPermutationTable(PearsonTableType type) =>
-			type switch
+		/// <exception cref="CryptographicException">Thrown if modified after hashing has begun.</exception>
+		/// <exception cref="ArgumentException">Thrown if the table is not 256 bytes or contains duplicate values.</exception>
+		public byte[] Table
+		{
+			get
 			{
-				PearsonTableType.Pearson => PearsonTable.Value.ToArray(),
-				PearsonTableType.AESSBox => AESSBoxTable.Value.ToArray(),
-				PearsonTableType.CRC32HighByte => CRC32HighByteTable.Value.ToArray(),
-				PearsonTableType.SHA256Constants => SHA256ConstantsTable.Value.ToArray(),
-				PearsonTableType.UserDefined => throw new InvalidOperationException(
-					"UserDefined t type requires an explicit 256-byte permutation t to be set using the Table property."),
-				_ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown PearsonTableType workingHash.")
-			};
+				ThrowIfDisposed();
+				return permutationTable.Copy();
+			}
+
+			set
+			{
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
+				if (value == null || value.Length != 256 || value.Distinct().Count() != 256)
+					throw new ArgumentException("Table must contain 256 unique bytes.", nameof(value));
+
+				permutationTable = value.Copy();
+				tableType = PearsonTableType.UserDefined;
+			}
+		}
 
 		/// <summary>
 		/// Gets or sets the predefined permutation table type used by the Pearson hashing algorithm.
@@ -186,83 +246,6 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
-		/// </remarks>
-		public override bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
-		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
-		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
-
-		/// <summary>
-		/// Gets or sets the 256-byte permutation table used by the Pearson algorithm.
-		/// </summary>
-		/// <exception cref="CryptographicException">Thrown if modified after hashing has begun.</exception>
-		/// <exception cref="ArgumentException">Thrown if the table is not 256 bytes or contains duplicate values.</exception>
-		public byte[] Table
-		{
-			get
-			{
-				ThrowIfDisposed();
-				return permutationTable.Copy();
-			}
-
-			set
-			{
-				ThrowIfDisposed();
-				ThrowIfInvalidState();
-				if (value == null || value.Length != 256 || value.Distinct().Count() != 256)
-					throw new ArgumentException("Table must contain 256 unique bytes.", nameof(value));
-
-				permutationTable = value.Copy();
-				tableType = PearsonTableType.UserDefined;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the size, in bits, of the hash.
-		/// </summary>
-		/// <exception cref="CryptographicException">Thrown if modified after hashing has started.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if size is outside valid bounds.</exception>
-		/// <exception cref="ArgumentException">Thrown if the hash size is not divisible by 8.</exception>
-		public new int HashSize
-		{
-			get
-			{
-				ThrowIfDisposed();
-
-				return HashSizeValue;
-			}
-
-			set
-			{
-				ThrowIfDisposed();
-				ThrowIfInvalidState();
-				ThrowHelper.ThrowIfOutOfRange(value, MinHashSize, MaxHashSize);
-				ThrowHelper.ThrowIfNotPositiveMultipleOf(value, 8);
-
-				HashSizeValue = value;
-				Initialize();
-			}
-		}
-
-		/// <inheritdoc />
 		public override void Initialize()
 		{
 			ThrowIfDisposed();
@@ -274,7 +257,13 @@ namespace Bodu.Security.Cryptography
 			isFirstByte = true;
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposed) return;
@@ -412,23 +401,26 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
-		/// indicating that the instance is in a finalized or non-configurable state.
+		/// Returns the predefined permutation table for the specified <see cref="PearsonTableType" />.
 		/// </summary>
-		/// <remarks>
-		/// This method is used to prevent reconfiguration of algorithm parameters such as the key, number of rounds, or other settings once
-		/// hashing has begun. It ensures settings are immutable after initialization.
-		/// </remarks>
-		/// <exception cref="CryptographicUnexpectedOperationException">
-		/// Thrown when an attempt is made to modify the algorithm after it has entered a non-zero state, which indicates that hashing has
-		/// started or been finalized.
+		/// <param name="type">The type of permutation table to retrieve.</param>
+		/// <returns>A 256-byte permutation table.</returns>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown when <paramref name="type" /> is <see cref="PearsonTableType.UserDefined" />. In this case, the table must be explicitly
+		/// provided via the <c>Table</c> property on the <see cref="Pearson" /> instance.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfInvalidState()
-		{
-			if (State != 0)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="type" /> is not a recognized value.</exception>
+		private static byte[] GetPermutationTable(PearsonTableType type) =>
+			type switch
+			{
+				PearsonTableType.Pearson => PearsonTable.Value.ToArray(),
+				PearsonTableType.AESSBox => AESSBoxTable.Value.ToArray(),
+				PearsonTableType.CRC32HighByte => CRC32HighByteTable.Value.ToArray(),
+				PearsonTableType.SHA256Constants => SHA256ConstantsTable.Value.ToArray(),
+				PearsonTableType.UserDefined => throw new InvalidOperationException(
+					"UserDefined t type requires an explicit 256-byte permutation t to be set using the Table property."),
+				_ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown PearsonTableType workingHash.")
+			};
 
 		/// <summary>
 		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
@@ -445,6 +437,25 @@ namespace Bodu.Security.Cryptography
 			if (disposed)
 				throw new ObjectDisposedException(nameof(Elf64));
 #endif
+		}
+
+		/// <summary>
+		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
+		/// indicating that the instance is in a finalized or non-configurable state.
+		/// </summary>
+		/// <remarks>
+		/// This method is used to prevent reconfiguration of algorithm parameters such as the key, number of rounds, or other settings once
+		/// hashing has begun. It ensures settings are immutable after initialization.
+		/// </remarks>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// Thrown when an attempt is made to modify the algorithm after it has entered a non-zero state, which indicates that hashing has
+		/// started or been finalized.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfInvalidState()
+		{
+			if (State != 0)
+				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
 		}
 
 		/// <summary>

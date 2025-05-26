@@ -4,10 +4,8 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using Bodu.Extensions;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
@@ -51,10 +49,10 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		public const uint DefaultInitialValue = 5381U;
 
-		private uint workingHash;
+		private bool disposed = false;
 		private uint initialValue;
 		private bool useModified;
-		private bool disposed = false;
+		private uint workingHash;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -66,10 +64,35 @@ namespace Bodu.Security.Cryptography
 		/// </summary>
 		public Bernstein()
 		{
-			this.HashSizeValue = 32;
-			this.initialValue = this.workingHash = DefaultInitialValue;
-			this.useModified = false;
+			HashSizeValue = 32;
+			initialValue = workingHash = DefaultInitialValue;
+			useModified = false;
 		}
+
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
 
 		/// <summary>
 		/// Gets or sets the initial seed value used to start the hash computation.
@@ -83,7 +106,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 
-				return this.initialValue;
+				return initialValue;
 			}
 
 			set
@@ -91,8 +114,8 @@ namespace Bodu.Security.Cryptography
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
 
-				this.initialValue = value;
-				this.Initialize();
+				initialValue = value;
+				Initialize();
 			}
 		}
 
@@ -111,7 +134,7 @@ namespace Bodu.Security.Cryptography
 			{
 				ThrowIfDisposed();
 
-				return this.useModified;
+				return useModified;
 			}
 
 			set
@@ -119,51 +142,10 @@ namespace Bodu.Security.Cryptography
 				ThrowIfDisposed();
 				ThrowIfInvalidState();
 
-				this.useModified = value;
-				this.Initialize();
+				useModified = value;
+				Initialize();
 			}
 		}
-
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			if (this.disposed) return;
-
-			if (disposing)
-			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
-
-				this.initialValue = workingHash = 0;
-			}
-
-			this.disposed = true;
-			base.Dispose(disposing);
-		}
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
-		/// </remarks>
-		public override bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
-		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
-		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
 
 		/// <inheritdoc />
 		public override void Initialize()
@@ -173,7 +155,29 @@ namespace Bodu.Security.Cryptography
 			this.State = 0;
 			this.finalized = false;
 #endif
-			this.workingHash = this.initialValue;
+			workingHash = initialValue;
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposed) return;
+
+			if (disposing)
+			{
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				initialValue = workingHash = 0;
+			}
+
+			disposed = true;
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -207,7 +211,7 @@ namespace Bodu.Security.Cryptography
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
-			if (this.useModified)
+			if (useModified)
 				HashModified(array.AsSpan(ibStart, cbSize));
 			else
 				HashOriginal(array.AsSpan(ibStart, cbSize));
@@ -230,48 +234,10 @@ namespace Bodu.Security.Cryptography
 		throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
 #endif
 
-			if (this.useModified)
+			if (useModified)
 				HashModified(source);
 			else
 				HashOriginal(source);
-		}
-
-		/// <summary>
-		/// Updates the internal hash state using the original Bernstein hash algorithm (hash = hash * 33 + b).
-		/// </summary>
-		/// <param name="data">
-		/// The input data to hash. Each byte is processed sequentially and combined into the internal hash state using addition.
-		/// </param>
-		/// <remarks>This implementation corresponds to the original "djb2" hash function commonly used in hash table implementations.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HashOriginal(ReadOnlySpan<byte> data)
-		{
-			uint v = workingHash;
-			foreach (var b in data)
-			{
-				v = ((v << 5) + v) + b;
-			}
-			workingHash = v;
-		}
-
-		/// <summary>
-		/// Updates the internal hash state using the modified Bernstein hash algorithm (hash = hash * 33 ^ b).
-		/// </summary>
-		/// <param name="data">
-		/// The input data to hash. Each byte is processed sequentially and combined into the internal hash state using XOR.
-		/// </param>
-		/// <remarks>
-		/// This variation of the Bernstein hash function replaces the addition step with a bitwise XOR operation for alternative mixing behavior.
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HashModified(ReadOnlySpan<byte> data)
-		{
-			uint v = workingHash;
-			foreach (byte b in data)
-			{
-				v = ((v << 5) + v) ^ b;
-			}
-			workingHash = v;
 		}
 
 		/// <summary>
@@ -315,8 +281,63 @@ namespace Bodu.Security.Cryptography
 #endif
 
 			Span<byte> span = stackalloc byte[4];
-			BinaryPrimitives.WriteUInt32BigEndian(span, this.workingHash); // Explicit big-endian output
+			BinaryPrimitives.WriteUInt32BigEndian(span, workingHash); // Explicit big-endian output
 			return span.ToArray();
+		}
+
+		/// <summary>
+		/// Updates the internal hash state using the modified Bernstein hash algorithm (hash = hash * 33 ^ b).
+		/// </summary>
+		/// <param name="data">
+		/// The input data to hash. Each byte is processed sequentially and combined into the internal hash state using XOR.
+		/// </param>
+		/// <remarks>
+		/// This variation of the Bernstein hash function replaces the addition step with a bitwise XOR operation for alternative mixing behavior.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HashModified(ReadOnlySpan<byte> data)
+		{
+			uint v = workingHash;
+			foreach (byte b in data)
+			{
+				v = ((v << 5) + v) ^ b;
+			}
+			workingHash = v;
+		}
+
+		/// <summary>
+		/// Updates the internal hash state using the original Bernstein hash algorithm (hash = hash * 33 + b).
+		/// </summary>
+		/// <param name="data">
+		/// The input data to hash. Each byte is processed sequentially and combined into the internal hash state using addition.
+		/// </param>
+		/// <remarks>This implementation corresponds to the original "djb2" hash function commonly used in hash table implementations.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HashOriginal(ReadOnlySpan<byte> data)
+		{
+			uint v = workingHash;
+			foreach (var b in data)
+			{
+				v = ((v << 5) + v) + b;
+			}
+			workingHash = v;
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
+		/// </summary>
+		/// <exception cref="ObjectDisposedException">
+		/// Thrown when any public method or property is accessed after the instance has been disposed.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfDisposed()
+		{
+#if NET8_0_OR_GREATER
+			ObjectDisposedException.ThrowIf(disposed, this);
+#else
+			if (this.disposed)
+				throw new ObjectDisposedException(nameof(Bernstein));
+#endif
 		}
 
 		/// <summary>
@@ -334,25 +355,8 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ThrowIfInvalidState()
 		{
-			if (this.State != 0)
+			if (State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
-#else
-			if (this.disposed)
-				throw new ObjectDisposedException(nameof(Bernstein));
-#endif
 		}
 	}
 }

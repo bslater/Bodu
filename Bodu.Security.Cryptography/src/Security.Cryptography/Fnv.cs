@@ -6,7 +6,6 @@
 
 namespace Bodu.Security.Cryptography
 {
-	using Bodu.Extensions;
 	using System;
 	using System.Buffers.Binary;
 	using System.Runtime.CompilerServices;
@@ -45,11 +44,11 @@ namespace Bodu.Security.Cryptography
 	{
 		private static readonly int[] ValidHashSizes = { 16, 32, 64 };
 
-		private readonly bool useFnv1a;
 		private readonly ulong offsetBasis;
 		private readonly ulong prime;
-		private ulong workingHash;
+		private readonly bool useFnv1a;
 		private bool disposed = false;
+		private ulong workingHash;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -93,33 +92,6 @@ namespace Bodu.Security.Cryptography
 			this.useFnv1a = useFnv1a;
 		}
 
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			if (disposed) return;
-
-			if (disposing)
-			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
-
-				workingHash = 0;
-			}
-
-			disposed = true;
-			base.Dispose(disposing);
-		}
-
-		/// <inheritdoc />
-		public override void Initialize()
-		{
-			ThrowIfDisposed();
-#if !NET6_0_OR_GREATER
-			this.State = 0;
-			this.finalized = false;
-#endif
-			workingHash = offsetBasis;
-		}
-
 		/// <summary>
 		/// Gets the fully qualified algorithm name, including the variant and hash output size.
 		/// </summary>
@@ -136,6 +108,64 @@ namespace Bodu.Security.Cryptography
 		/// </value>
 		public string AlgorithmName
 			=> $"FNV-{(useFnv1a ? "1a" : "1")}-{HashSizeValue}";
+
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
+		/// <inheritdoc />
+		public override void Initialize()
+		{
+			ThrowIfDisposed();
+#if !NET6_0_OR_GREATER
+			this.State = 0;
+			this.finalized = false;
+#endif
+			workingHash = offsetBasis;
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposed) return;
+
+			if (disposing)
+			{
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				workingHash = 0;
+			}
+
+			disposed = true;
+			base.Dispose(disposing);
+		}
 
 		/// <summary>
 		/// Processes a segment of the input byte array and feeds it into the <see cref="Fnv" /> hashing algorithm. This method updates the
@@ -169,6 +199,28 @@ namespace Bodu.Security.Cryptography
 #endif
 
 			HashCore(array.AsSpan(ibStart, cbSize));
+		}
+
+		/// <summary>
+		/// Processes the entirety of the input <paramref name="source" /> and feeds it into the <see cref="Fnv" /> hashing algorithm. This
+		/// method updates the internal hash state accordingly by consuming the entire input span.
+		/// </summary>
+		/// <param name="source">The input byte span containing the data to hash.</param>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// The hash algorithm has already been finalized and cannot accept more input data.
+		/// </exception>
+		protected override void HashCore(ReadOnlySpan<byte> source)
+		{
+			ThrowIfDisposed();
+
+#if !NET6_0_OR_GREATER
+	if (finalized)
+		throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+#endif
+			if (useFnv1a)
+				HashCoreFNV1a(source);
+			else
+				HashCoreFNV1(source);
 		}
 
 		/// <summary>
@@ -223,25 +275,24 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Processes the entirety of the input <paramref name="source" /> and feeds it into the <see cref="Fnv" /> hashing algorithm. This
-		/// method updates the internal hash state accordingly by consuming the entire input span.
+		/// Applies the original <c>FNV-1</c> hash transformation to the specified input data by performing multiplication followed by a
+		/// bitwise XOR using the configured FNV prime. This method updates the internal hash state for each byte of the input span.
 		/// </summary>
-		/// <param name="source">The input byte span containing the data to hash.</param>
-		/// <exception cref="CryptographicUnexpectedOperationException">
-		/// The hash algorithm has already been finalized and cannot accept more input data.
-		/// </exception>
-		protected override void HashCore(ReadOnlySpan<byte> source)
+		/// <param name="source">The input span containing the data to hash.</param>
+		/// <remarks>
+		/// This method implements the FNV-1 variant, which multiplies the current hash by the FNV prime before XORing each input byte. It
+		/// is intended for internal use and invoked only when <c>useFnv1a</c> is <c>false</c>.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void HashCoreFNV1(ReadOnlySpan<byte> source)
 		{
-			ThrowIfDisposed();
-
-#if !NET6_0_OR_GREATER
-	if (finalized)
-		throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
-#endif
-			if (useFnv1a)
-				HashCoreFNV1a(source);
-			else
-				HashCoreFNV1(source);
+			var hash = workingHash;
+			for (int i = 0; i < source.Length; i++)
+			{
+				hash *= prime;
+				hash ^= source[i];
+			}
+			workingHash = hash;
 		}
 
 		/// <summary>
@@ -266,24 +317,20 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Applies the original <c>FNV-1</c> hash transformation to the specified input data by performing multiplication followed by a
-		/// bitwise XOR using the configured FNV prime. This method updates the internal hash state for each byte of the input span.
+		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
 		/// </summary>
-		/// <param name="source">The input span containing the data to hash.</param>
-		/// <remarks>
-		/// This method implements the FNV-1 variant, which multiplies the current hash by the FNV prime before XORing each input byte. It
-		/// is intended for internal use and invoked only when <c>useFnv1a</c> is <c>false</c>.
-		/// </remarks>
+		/// <exception cref="ObjectDisposedException">
+		/// Thrown when any public method or property is accessed after the instance has been disposed.
+		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void HashCoreFNV1(ReadOnlySpan<byte> source)
+		private void ThrowIfDisposed()
 		{
-			var hash = workingHash;
-			for (int i = 0; i < source.Length; i++)
-			{
-				hash *= prime;
-				hash ^= source[i];
-			}
-			workingHash = hash;
+#if NET8_0_OR_GREATER
+			ObjectDisposedException.ThrowIf(disposed, this);
+#else
+			if (disposed)
+				throw new ObjectDisposedException(nameof(Fnv));
+#endif
 		}
 
 		/// <summary>
@@ -303,23 +350,6 @@ namespace Bodu.Security.Cryptography
 		{
 			if (State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(disposed, this);
-#else
-			if (disposed)
-				throw new ObjectDisposedException(nameof(Fnv));
-#endif
 		}
 	}
 }

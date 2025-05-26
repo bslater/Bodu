@@ -27,7 +27,7 @@ namespace Bodu.Security.Cryptography
 		: Bodu.Security.Cryptography.AdlerBase<uint>
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Adler" /> class.
+		/// Initializes a new instance of the <see cref="Adler32Base" /> class.
 		/// </summary>
 		protected Adler32Base(uint modulo)
 			: base(modulo)

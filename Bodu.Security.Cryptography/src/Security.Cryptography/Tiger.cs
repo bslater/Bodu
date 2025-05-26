@@ -3,15 +3,10 @@
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
-using Bodu.Extensions;
-using System;
 using System.Buffers.Binary;
-using System.Drawing;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Security.Cryptography
 {
@@ -41,32 +36,13 @@ namespace Bodu.Security.Cryptography
 	{
 		private const int MaxOutputBits = 192;
 
+		private static readonly int[] ValidHashSizes = { 128, 160, 192 };
 		private bool disposed;
-
-		private TigerHashingVariant variant = TigerHashingVariant.Tiger;
 
 		private ulong state0 = 0x0123456789ABCDEF;
 		private ulong state1 = 0xFEDCBA9876543210;
 		private ulong state2 = 0xF096A5B4C3B2E187;
-
-		private static readonly int[] ValidHashSizes = { 128, 160, 192 };
-
-		/// <summary>
-		/// Gets the fully qualified algorithm name, including the variant and hash output size.
-		/// </summary>
-		/// <value>A string in the form <c>Tiger/x</c>, where <c>x</c> is the number of bits in the final hash output.</value>
-		/// <remarks>
-		/// <para>
-		/// The name follows the convention <c>Tiger/x</c>, where <c>x</c> is the number of output bits—typically 128, 160, or 192. These
-		/// correspond to the standard Tiger variants: <c>Tiger/128</c>, <c>Tiger/160</c>, and <c>Tiger/192</c>.
-		/// </para>
-		/// <para>
-		/// The full 192-bit internal state is always computed. If a shorter output length is selected, the result is truncated after
-		/// finalization to match the configured <see cref="HashSize" />.
-		/// </para>
-		/// </remarks>
-		public string AlgorithmName =>
-			$"Tiger/{HashSizeValue}";
+		private TigerHashingVariant variant = TigerHashingVariant.Tiger;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Tiger" /> class with a 192-bit output hash size.
@@ -86,6 +62,79 @@ namespace Bodu.Security.Cryptography
 					string.Format(ResourceStrings.CryptographicException_InvalidHashSize, hashSize, string.Join(", ", ValidHashSizes)));
 
 			this.HashSizeValue = hashSize;
+		}
+
+		/// <summary>
+		/// Gets the fully qualified algorithm name, including the variant and hash output size.
+		/// </summary>
+		/// <value>A string in the form <c>Tiger/x</c>, where <c>x</c> is the number of bits in the final hash output.</value>
+		/// <remarks>
+		/// <para>
+		/// The name follows the convention <c>Tiger/x</c>, where <c>x</c> is the number of output bits—typically 128, 160, or 192. These
+		/// correspond to the standard Tiger variants: <c>Tiger/128</c>, <c>Tiger/160</c>, and <c>Tiger/192</c>.
+		/// </para>
+		/// <para>
+		/// The full 192-bit internal state is always computed. If a shorter output length is selected, the result is truncated after
+		/// finalization to match the configured <see cref="HashSize" />.
+		/// </para>
+		/// </remarks>
+		public string AlgorithmName =>
+			$"Tiger/{HashSizeValue}";
+
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
+		/// <summary>
+		/// Gets or sets the size, in bits, of the final computed hash output.
+		/// </summary>
+		/// <remarks>
+		/// Valid values are <c>128</c>, <c>160</c>, or <c>192</c>. This determines how many bits of the internal state are returned in the
+		/// final digest. Larger sizes increase output strength but may reduce compatibility with some Tiger implementations.
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the value is not 128, 160, or 192.</exception>
+		/// <exception cref="ObjectDisposedException">The algorithm instance has been disposed.</exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">Thrown if the hash computation has already started.</exception>
+		public new int HashSize
+		{
+			get
+			{
+				ThrowIfDisposed();
+				return this.HashSizeValue;
+			}
+
+			set
+			{
+				ThrowIfDisposed();
+				ThrowIfInvalidState();
+
+				if (Array.IndexOf(ValidHashSizes, value) == -1)
+					throw new ArgumentOutOfRangeException(nameof(value),
+						string.Format(ResourceStrings.CryptographicException_InvalidHashSize, value, string.Join(", ", ValidHashSizes)));
+
+				this.HashSizeValue = value;
+			}
 		}
 
 		/// <summary>
@@ -131,37 +180,6 @@ namespace Bodu.Security.Cryptography
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the size, in bits, of the final computed hash output.
-		/// </summary>
-		/// <remarks>
-		/// Valid values are <c>128</c>, <c>160</c>, or <c>192</c>. This determines how many bits of the internal state are returned in the
-		/// final digest. Larger sizes increase output strength but may reduce compatibility with some Tiger implementations.
-		/// </remarks>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if the value is not 128, 160, or 192.</exception>
-		/// <exception cref="ObjectDisposedException">The algorithm instance has been disposed.</exception>
-		/// <exception cref="CryptographicUnexpectedOperationException">Thrown if the hash computation has already started.</exception>
-		public new int HashSize
-		{
-			get
-			{
-				ThrowIfDisposed();
-				return this.HashSizeValue;
-			}
-
-			set
-			{
-				ThrowIfDisposed();
-				ThrowIfInvalidState();
-
-				if (Array.IndexOf(ValidHashSizes, value) == -1)
-					throw new ArgumentOutOfRangeException(nameof(value),
-						string.Format(ResourceStrings.CryptographicException_InvalidHashSize, value, string.Join(", ", ValidHashSizes)));
-
-				this.HashSizeValue = value;
-			}
-		}
-
 		/// <inheritdoc />
 		public override void Initialize()
 		{
@@ -176,7 +194,13 @@ namespace Bodu.Security.Cryptography
 			state2 = 0xF096A5B4C3B2E187;
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposed) return;
@@ -218,6 +242,14 @@ namespace Bodu.Security.Cryptography
 			return padded.Slice(0, totalLength).ToArray();
 		}
 
+		/// <inheritdoc />
+		protected override void ProcessBlock(ReadOnlySpan<byte> block)
+		{
+			Span<ulong> blockWords = stackalloc ulong[8];
+			MemoryMarshal.Cast<byte, ulong>(block).CopyTo(blockWords);
+			TransformBlock(blockWords);
+		}
+
 		/// <summary>
 		/// Finalizes the hash computation and produces the output hash value.
 		/// </summary>
@@ -231,6 +263,21 @@ namespace Bodu.Security.Cryptography
 			BinaryPrimitives.WriteUInt64LittleEndian(output[16..24], state2);
 
 			return output.Slice(0, HashSizeValue / 8).ToArray();
+		}
+
+		/// <summary>
+		/// Applies one full "pass" of eight Tiger mixing rounds with the specified multiplier.
+		/// </summary>
+		private static void DoPass(ref ulong a, ref ulong b, ref ulong c, ReadOnlySpan<ulong> x, int mul)
+		{
+			Round(ref a, ref b, ref c, x[0], mul);
+			Round(ref b, ref c, ref a, x[1], mul);
+			Round(ref c, ref a, ref b, x[2], mul);
+			Round(ref a, ref b, ref c, x[3], mul);
+			Round(ref b, ref c, ref a, x[4], mul);
+			Round(ref c, ref a, ref b, x[5], mul);
+			Round(ref a, ref b, ref c, x[6], mul);
+			Round(ref b, ref c, ref a, x[7], mul);
 		}
 
 		/// <summary>
@@ -256,49 +303,6 @@ namespace Bodu.Security.Cryptography
 			x[7] -= x[6] ^ 0x0123456789ABCDEFUL;
 		}
 
-		/// <inheritdoc />
-		protected override void ProcessBlock(ReadOnlySpan<byte> block)
-		{
-			Span<ulong> blockWords = stackalloc ulong[8];
-			MemoryMarshal.Cast<byte, ulong>(block).CopyTo(blockWords);
-			TransformBlock(blockWords);
-		}
-
-		/// <summary>
-		/// Transforms the state using the Tiger compression function.
-		/// </summary>
-		/// <param name="blockWords">The 512-bit input block represented as 8 x 64-bit words.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void TransformBlock(Span<ulong> blockWords)
-		{
-			ulong a = state0, b = state1, c = state2;
-
-			DoPass(ref a, ref b, ref c, blockWords, 5);
-			KeySchedule(blockWords);
-			DoPass(ref c, ref a, ref b, blockWords, 7);
-			KeySchedule(blockWords);
-			DoPass(ref b, ref c, ref a, blockWords, 9);
-
-			this.state0 = a ^ this.state0;
-			this.state1 = b - this.state1;
-			this.state2 = c + this.state2;
-		}
-
-		/// <summary>
-		/// Applies one full "pass" of eight Tiger mixing rounds with the specified multiplier.
-		/// </summary>
-		private static void DoPass(ref ulong a, ref ulong b, ref ulong c, ReadOnlySpan<ulong> x, int mul)
-		{
-			Round(ref a, ref b, ref c, x[0], mul);
-			Round(ref b, ref c, ref a, x[1], mul);
-			Round(ref c, ref a, ref b, x[2], mul);
-			Round(ref a, ref b, ref c, x[3], mul);
-			Round(ref b, ref c, ref a, x[4], mul);
-			Round(ref c, ref a, ref b, x[5], mul);
-			Round(ref a, ref b, ref c, x[6], mul);
-			Round(ref b, ref c, ref a, x[7], mul);
-		}
-
 		/// <summary>
 		/// Performs a single Tiger mixing round on three state values and one message word.
 		/// </summary>
@@ -320,6 +324,26 @@ namespace Bodu.Security.Cryptography
 				SBox0[(byte)(tmp >> 56)];
 
 			b = tmp * (ulong)mul;
+		}
+
+		/// <summary>
+		/// Transforms the state using the Tiger compression function.
+		/// </summary>
+		/// <param name="blockWords">The 512-bit input block represented as 8 x 64-bit words.</param>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void TransformBlock(Span<ulong> blockWords)
+		{
+			ulong a = state0, b = state1, c = state2;
+
+			DoPass(ref a, ref b, ref c, blockWords, 5);
+			KeySchedule(blockWords);
+			DoPass(ref c, ref a, ref b, blockWords, 7);
+			KeySchedule(blockWords);
+			DoPass(ref b, ref c, ref a, blockWords, 9);
+
+			this.state0 = a ^ this.state0;
+			this.state1 = b - this.state1;
+			this.state2 = c + this.state2;
 		}
 	}
 }

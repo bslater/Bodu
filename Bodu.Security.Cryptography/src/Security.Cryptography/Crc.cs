@@ -28,10 +28,13 @@ namespace Bodu.Security.Cryptography
 		: System.Security.Cryptography.HashAlgorithm
 		, IResumableHashAlgorithm
 	{
+		// Static thread-safe global cache property
+		private static Lazy<CrcLookupTableCache> globalLookupTableCache = new Lazy<CrcLookupTableCache>(() => new CrcLookupTableCache());
+
 		private readonly int hashSizeBytes;
-		private ulong workingHash;
-		private ulong[] table;
 		private bool disposed = false;
+		private ulong[] table;
+		private ulong workingHash;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -107,61 +110,6 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
-		/// Gets the name of the CRC standard.
-		/// </summary>
-		/// <value>The name of the CRC algorithm.</value>
-		public string Name { get; private set; }
-
-		/// <summary>
-		/// Gets the size, in bits, of the CRC checksum.
-		/// </summary>
-		/// <value>The size of the CRC in bits.</value>
-		public int Size { get; private set; }
-
-		/// <summary>
-		/// Gets the polynomial used in the CRC calculation.
-		/// </summary>
-		/// <value>The polynomial value used in the CRC calculation.</value>
-		public ulong Polynomial { get; private set; }
-
-		/// <summary>
-		/// Gets the initial value used in the CRC calculation.
-		/// </summary>
-		/// <value>The initial value for the CRC calculation.</value>
-		public ulong InitialValue { get; private set; }
-
-		/// <summary>
-		/// Gets a value indicating whether the data data is reflected during the CRC calculation.
-		/// </summary>
-		/// <value><see langword="true" /> if data data is reflected; otherwise, <see langword="false" />.</value>
-		public bool ReflectIn { get; private set; }
-
-		/// <summary>
-		/// Gets a value indicating whether the CRC result is reflected before XORing with <see cref="XOrOut" />.
-		/// </summary>
-		/// <value><see langword="true" /> if the result is reflected; otherwise, <see langword="false" />.</value>
-		public bool ReflectOut { get; private set; }
-
-		/// <summary>
-		/// Gets the value to XOR the final CRC result with.
-		/// </summary>
-		/// <value>The XOR value for the final CRC result.</value>
-		public ulong XOrOut { get; private set; }
-
-		/// <summary>
-		/// Gets the <see cref="CrcStandard" /> used by this instance to perform the CRC operation.
-		/// </summary>
-		/// <value>The CRC parameters containing details such as polynomial, size, and reflection settings.</value>
-		/// <remarks>
-		/// This property gives access to the configuration used for CRC calculation. The user can inspect the CRC parameters, including the
-		/// polynomial, initial value, and reflection settings.
-		/// </remarks>
-		public CrcStandard CrcStandard => new CrcStandard(this.Name, this.Size, this.Polynomial, this.InitialValue, this.ReflectIn, this.ReflectOut, this.XOrOut);
-
-		// Static thread-safe global cache property
-		private static Lazy<CrcLookupTableCache> globalLookupTableCache = new Lazy<CrcLookupTableCache>(() => new CrcLookupTableCache());
-
-		/// <summary>
 		/// Gets or sets the global cache used to manage CRC lookup tables.
 		/// </summary>
 		/// <exception cref="InvalidOperationException">Thrown when setting the <see cref="GlobalCache" /> as <see langword="null" />.</exception>
@@ -183,76 +131,101 @@ namespace Bodu.Security.Cryptography
 			}
 		}
 
-		/// <inheritdoc />
-		public override bool Equals(object? obj)
-		{
-			return obj is Crc other &&
-				   string.Equals(this.Name, other.Name, StringComparison.Ordinal) &&
-				   this.Size == other.Size &&
-				   this.Polynomial == other.Polynomial &&
-				   this.InitialValue == other.InitialValue &&
-				   this.ReflectIn == other.ReflectIn &&
-				   this.ReflectOut == other.ReflectOut &&
-				   this.XOrOut == other.XOrOut;
-		}
-
-		/// <inheritdoc />
-		public override int GetHashCode()
-		{
-			return HashCode.Combine(
-				this.Name,
-				this.Size,
-				this.Polynomial,
-				this.InitialValue,
-				this.ReflectIn,
-				this.ReflectOut,
-				this.XOrOut
-			);
-		}
-
-		/// <inheritdoc />
 		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
 		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
 		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
 		/// </remarks>
 		public override bool CanReuseTransform => true;
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" /> call.
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
 		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
 		/// <summary>
-		/// Initializes the current instance of the <see cref="Crc" /> class using the initial value from the CRC parameters.
+		/// Gets the <see cref="CrcStandard" /> used by this instance to perform the CRC operation.
 		/// </summary>
+		/// <value>The CRC parameters containing details such as polynomial, size, and reflection settings.</value>
 		/// <remarks>
-		/// This method initializes the internal state (CRC value) based on the specified CRC parameters. If
-		/// <see cref="CrcStandard.ReflectIn" /> is true, the initial value is reversed.
+		/// This property gives access to the configuration used for CRC calculation. The user can inspect the CRC parameters, including the
+		/// polynomial, initial value, and reflection settings.
 		/// </remarks>
-		public override void Initialize()
+		public CrcStandard CrcStandard => new CrcStandard(this.Name, this.Size, this.Polynomial, this.InitialValue, this.ReflectIn, this.ReflectOut, this.XOrOut);
+
+		/// <summary>
+		/// Gets the initial value used in the CRC calculation.
+		/// </summary>
+		/// <value>The initial value for the CRC calculation.</value>
+		public ulong InitialValue { get; private set; }
+
+		/// <summary>
+		/// Gets the name of the CRC standard.
+		/// </summary>
+		/// <value>The name of the CRC algorithm.</value>
+		public string Name { get; private set; }
+
+		/// <summary>
+		/// Gets the polynomial used in the CRC calculation.
+		/// </summary>
+		/// <value>The polynomial value used in the CRC calculation.</value>
+		public ulong Polynomial { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating whether the data data is reflected during the CRC calculation.
+		/// </summary>
+		/// <value><see langword="true" /> if data data is reflected; otherwise, <see langword="false" />.</value>
+		public bool ReflectIn { get; private set; }
+
+		/// <summary>
+		/// Gets a value indicating whether the CRC result is reflected before XORing with <see cref="XOrOut" />.
+		/// </summary>
+		/// <value><see langword="true" /> if the result is reflected; otherwise, <see langword="false" />.</value>
+		public bool ReflectOut { get; private set; }
+
+		/// <summary>
+		/// Gets the size, in bits, of the CRC checksum.
+		/// </summary>
+		/// <value>The size of the CRC in bits.</value>
+		public int Size { get; private set; }
+
+		/// <summary>
+		/// Gets the value to XOR the final CRC result with.
+		/// </summary>
+		/// <value>The XOR value for the final CRC result.</value>
+		public ulong XOrOut { get; private set; }
+
+		/// <summary>
+		/// Computes the CRC hash of the specified input data contained in the provided <see cref="ReadOnlySpan{Byte}" />.
+		/// </summary>
+		/// <param name="data">The input data to compute the hash for.</param>
+		/// <returns>A byte array containing the computed CRC hash value.</returns>
+		/// <remarks>
+		/// This method initializes the internal CRC state, processes the input data using the configured CRC variant, and finalizes the
+		/// result into a hash of the appropriate size. It supports both reflected and unreflected input, and will apply bytewise or bitwise
+		/// logic based on the parameters defined in <see cref="CrcStandard" />.
+		/// </remarks>
+		public byte[] ComputeHash(ReadOnlySpan<byte> data)
 		{
-			ThrowIfDisposed();
-#if !NET6_0_OR_GREATER
-			this.State = 0;
-			this.finalized = false;
-#endif
-			this.workingHash = this.ReflectIn
-				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
-				: this.InitialValue;
+			this.Initialize();
+			this.ProcessBlocks(data);
+
+			byte[] buffer = new byte[this.hashSizeBytes];
+			TryFinalizeHash(buffer, out _);
+			return buffer;
 		}
 
 		/// <inheritdoc />
@@ -294,266 +267,71 @@ namespace Bodu.Security.Cryptography
 			return buffer;
 		}
 
-		/// <summary>
-		/// Processes a segment of the input byte array and feeds it into the <see cref="Crc" /> hashing algorithm. This method updates the
-		/// internal state by processing <paramref name="cbSize" /> bytes starting at the specified <paramref name="ibStart" /> offset.
-		/// </summary>
-		/// <param name="array">The input byte array containing the data to hash.</param>
-		/// <param name="ibStart">The zero-based index in <paramref name="array" /> at which to begin reading data.</param>
-		/// <param name="cbSize">The number of bytes to process from <paramref name="array" />.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// <para><paramref name="ibStart" /> is less than 0.</para>
-		/// <para>-or-</para>
-		/// <para><paramref name="cbSize" /> is less than 0.</para>
-		/// </exception>
-		/// <exception cref="ArgumentException">
-		/// <paramref name="ibStart" /> and <paramref name="cbSize" /> specify a range that exceeds the length of <paramref name="array" />.
-		/// </exception>
-		/// <exception cref="CryptographicUnexpectedOperationException">
-		/// The hash algorithm has already been finalized and cannot accept more input data.
-		/// </exception>
-		protected override void HashCore(byte[] array, int ibStart, int cbSize)
+		/// <inheritdoc />
+		public override bool Equals(object? obj)
 		{
-			ThrowHelper.ThrowIfNull(array);
+			return obj is Crc other &&
+				   string.Equals(this.Name, other.Name, StringComparison.Ordinal) &&
+				   this.Size == other.Size &&
+				   this.Polynomial == other.Polynomial &&
+				   this.InitialValue == other.InitialValue &&
+				   this.ReflectIn == other.ReflectIn &&
+				   this.ReflectOut == other.ReflectOut &&
+				   this.XOrOut == other.XOrOut;
+		}
+
+		/// <inheritdoc />
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(
+				this.Name,
+				this.Size,
+				this.Polynomial,
+				this.InitialValue,
+				this.ReflectIn,
+				this.ReflectOut,
+				this.XOrOut
+			);
+		}
+
+		/// <inheritdoc />
+		public override void Initialize()
+		{
 			ThrowIfDisposed();
 #if !NET6_0_OR_GREATER
-			ThrowHelper.ThrowIfLessThan(ibStart, 0);
-			ThrowHelper.ThrowIfLessThan(cbSize, 0);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, cbSize);
-			if (this.finalized)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+			this.State = 0;
+			this.finalized = false;
 #endif
-
-			Span<byte> span = array.AsSpan().Slice(ibStart, cbSize);
-			ProcessBlocks(span);
+			this.workingHash = this.ReflectIn
+				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
+				: this.InitialValue;
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Finalizes the CRC (Cyclic Redundancy Check) computation after all input data has been processed, and returns the resulting
-		/// checksum value.
-		/// </summary>
-		/// <returns>
-		/// A byte array containing the CRC result. The length depends on the configured <see cref="HashAlgorithm.HashSize" />, which is
-		/// determined by the CRC standard supplied when the instance was created (e.g., 8 bits = 1 byte, 32 bits = 4 bytes, 64 bits = 8 bytes).
-		/// </returns>
 		/// <remarks>
-		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
-		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// This method reverses finalization on <paramref name="previousHash" /> by undoing the XOR and reflection (if applicable),
+		/// continues the CRC computation with <paramref name="newData" />, and finalizes the result into <paramref name="destination" />.
 		/// </remarks>
-		protected override byte[] HashFinal()
+		public bool TryComputeHashFrom(ReadOnlySpan<byte> previousHash, ReadOnlySpan<byte> newData, Span<byte> destination, out int bytesWritten)
 		{
-#if !NET6_0_OR_GREATER
-			if (this.finalized)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
-			this.finalized = true;
-			this.State = 2;
-#endif
+			ThrowIfDisposed();
 
-			byte[] result = new byte[this.hashSizeBytes];
-			TryFinalizeHash(result, out _);
-			return result;
-		}
+			if (previousHash.Length != this.hashSizeBytes)
+				throw new ArgumentException("Hash length does not match the expected length.", nameof(previousHash));
 
-		/// <summary>
-		/// Processes the data in the provided <see cref="ReadOnlySpan{Byte}" /> and calculates the CRC hash value based on the CRC standard
-		/// and reflection option.
-		/// </summary>
-		/// <param name="data">The array of bytes to process for CRC hashing.</param>
-		/// <remarks>
-		/// This method performs the core CRC calculation by iterating over the byte array, applying bitwise operations based on the CRC
-		/// reflection settings. If reflection is enabled, the method processes the data with a different approach than when reflection is
-		/// disabled. The CRC value is updated incrementally with each byte in the array.
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ProcessBlocks(ReadOnlySpan<byte> data)
-		{
-			if (this.HashSizeValue >= 8)
-			{
-				this.workingHash = this.ReflectIn
-					? ProcessBytewiseReflected(data, this.workingHash, this.table)
-					: ProcessBytewiseNormal(data, this.workingHash, this.table, this.HashSizeValue - 8);
-			}
-			else
-			{
-				this.workingHash = this.ReflectIn
-					? ProcessBitwiseReflected(data, this.workingHash, this.table)
-					: ProcessBitwiseNormal(data, this.workingHash, this.table, this.HashSizeValue - 1);
-			}
-		}
+			// Deserialize prior hash value
+			this.workingHash = this.HashSizeValue <= 32
+				? BinaryPrimitives.ReadUInt32LittleEndian(previousHash)
+				: BinaryPrimitives.ReadUInt64LittleEndian(previousHash);
 
-		/// <summary>
-		/// Processes the data using a bytewise CRC algorithm with data reflection. Each byte is XORed with the low byte of the current CRC
-		/// value, then used as a permutationTable index.
-		/// </summary>
-		/// <param name="data">The data data to be processed.</param>
-		/// <param name="crc">The initial CRC state value.</param>
-		/// <param name="table">The CRC lookup permutationTable to use.</param>
-		/// <returns>The updated CRC value.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong ProcessBytewiseReflected(ReadOnlySpan<byte> data, ulong crc, ulong[] table)
-		{
-			foreach (byte b in data)
-			{
-				crc = (crc >> 8) ^ table[(byte)(crc ^ b)];
-			}
-			return crc;
-		}
+			// Undo finalization
+			this.workingHash ^= this.XOrOut;
+			if (this.ReflectIn ^ this.ReflectOut)
+				this.workingHash = CryptoUtilities.ReflectBits(this.workingHash, this.HashSizeValue);
 
-		/// <summary>
-		/// Processes the data using a bytewise CRC algorithm without data reflection. The index is computed from the top bits of the CRC
-		/// XORed with the data byte.
-		/// </summary>
-		/// <param name="data">The data data to be processed.</param>
-		/// <param name="crc">The initial CRC state value.</param>
-		/// <param name="table">The CRC lookup permutationTable to use.</param>
-		/// <param name="shift">The number of bits to shift to extract the high byte of the CRC.</param>
-		/// <returns>The updated CRC value.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong ProcessBytewiseNormal(ReadOnlySpan<byte> data, ulong crc, ulong[] table, int shift)
-		{
-			foreach (byte b in data)
-			{
-				crc = (crc << 8) ^ table[(byte)((crc >> shift) ^ b)];
-			}
-			return crc;
-		}
-
-		/// <summary>
-		/// Processes the data using a bitwise CRC algorithm with data reflection. Each bit is processed individually, LSB first, using
-		/// 1-bit shifts and permutationTable lookups.
-		/// </summary>
-		/// <param name="data">The data data to be processed.</param>
-		/// <param name="crc">The initial CRC state value.</param>
-		/// <param name="table">The CRC lookup permutationTable to use.</param>
-		/// <returns>The updated CRC value.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong ProcessBitwiseReflected(ReadOnlySpan<byte> data, ulong crc, ulong[] table)
-		{
-			foreach (byte b in data)
-			{
-				for (int i = 0; i < 8; i++)
-				{
-					ulong inputBit = (ulong)((b >> i) & 1);
-					ulong crcBit = crc & 1;
-					crc = (crc >> 1) ^ table[inputBit ^ crcBit];
-				}
-			}
-			return crc;
-		}
-
-		/// <summary>
-		/// Processes the data using a bitwise CRC algorithm without data reflection. Each bit is processed individually, MSB first, using
-		/// 1-bit shifts and permutationTable lookups.
-		/// </summary>
-		/// <param name="data">The data data to be processed.</param>
-		/// <param name="crc">The initial CRC state value.</param>
-		/// <param name="table">The CRC lookup permutationTable to use.</param>
-		/// <param name="shift">The number of bits to shift to extract the high bit of the CRC.</param>
-		/// <returns>The updated CRC value.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static ulong ProcessBitwiseNormal(ReadOnlySpan<byte> data, ulong crc, ulong[] table, int shift)
-		{
-			foreach (byte b in data)
-			{
-				for (int i = 0; i < 8; i++)
-				{
-					ulong inputBit = (ulong)((b >> (7 - i)) & 1);
-					ulong crcBit = (crc >> shift) & 1;
-					crc = (crc << 1) ^ table[inputBit ^ crcBit];
-				}
-			}
-			return crc;
-		}
-
-		/// <summary>
-		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
-		/// indicating that the instance is in a finalized or non-configurable state.
-		/// </summary>
-		/// <remarks>
-		/// This method is used to prevent reconfiguration of algorithm parameters such as the key, number of rounds, or other settings once
-		/// hashing has begun. It ensures settings are immutable after initialization.
-		/// </remarks>
-		/// <exception cref="CryptographicUnexpectedOperationException">
-		/// Thrown when an attempt is made to modify the algorithm after it has entered a non-zero state, which indicates that hashing has
-		/// started or been finalized.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfInvalidState()
-		{
-			if (this.State != 0)
-				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
-		{
-			if (this.disposed) return;
-
-			if (disposing)
-			{
-				this.workingHash = 0;
-				if (this.table is not null)
-				{
-					CryptoUtilities.ClearAndNullify(ref HashValue);
-					CryptoUtilities.Clear(table.AsSpan());
-					this.table = null!;
-				}
-			}
-
-			this.disposed = true;
-			base.Dispose(disposing);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
-#else
-			if (this.disposed)
-				throw new ObjectDisposedException(nameof(Crc));
-#endif
-		}
-
-		/// <inheritdoc />
-		protected override bool TryHashFinal(Span<byte> destination, out int bytesWritten)
-		{
-#if !NET6_0_OR_GREATER
-				if (this.finalized)
-					throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
-				this.finalized = true;
-				this.State = 2;
-#endif
-
-			return TryFinalizeHash(destination, out bytesWritten);
-		}
-
-		/// <summary>
-		/// Computes the CRC hash of the specified input data contained in the provided <see cref="ReadOnlySpan{Byte}" />.
-		/// </summary>
-		/// <param name="data">The input data to compute the hash for.</param>
-		/// <returns>A byte array containing the computed CRC hash value.</returns>
-		/// <remarks>
-		/// This method initializes the internal CRC state, processes the input data using the configured CRC variant, and finalizes the
-		/// result into a hash of the appropriate size. It supports both reflected and unreflected input, and will apply bytewise or bitwise
-		/// logic based on the parameters defined in <see cref="CrcStandard" />.
-		/// </remarks>
-		public byte[] ComputeHash(ReadOnlySpan<byte> data)
-		{
-			this.Initialize();
-			this.ProcessBlocks(data);
-
-			byte[] buffer = new byte[this.hashSizeBytes];
-			TryFinalizeHash(buffer, out _);
-			return buffer;
+			// Continue hashing and finalize again
+			this.ProcessBlocks(newData);
+			return this.TryFinalizeHash(destination, out bytesWritten);
 		}
 
 		/// <summary>
@@ -594,31 +372,251 @@ namespace Bodu.Security.Cryptography
 			return true;
 		}
 
-		/// <inheritdoc />
-		/// <remarks>
-		/// This method reverses finalization on <paramref name="previousHash" /> by undoing the XOR and reflection (if applicable),
-		/// continues the CRC computation with <paramref name="newData" />, and finalizes the result into <paramref name="destination" />.
-		/// </remarks>
-		public bool TryComputeHashFrom(ReadOnlySpan<byte> previousHash, ReadOnlySpan<byte> newData, Span<byte> destination, out int bytesWritten)
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
 		{
+			if (this.disposed) return;
+
+			if (disposing)
+			{
+				this.workingHash = 0;
+				if (this.table is not null)
+				{
+					CryptoUtilities.ClearAndNullify(ref HashValue);
+					CryptoUtilities.Clear(table.AsSpan());
+					this.table = null!;
+				}
+			}
+
+			this.disposed = true;
+			base.Dispose(disposing);
+		}
+
+		/// <summary>
+		/// Processes a segment of the input byte array and feeds it into the <see cref="Crc" /> hashing algorithm. This method updates the
+		/// internal state by processing <paramref name="cbSize" /> bytes starting at the specified <paramref name="ibStart" /> offset.
+		/// </summary>
+		/// <param name="array">The input byte array containing the data to hash.</param>
+		/// <param name="ibStart">The zero-based index in <paramref name="array" /> at which to begin reading data.</param>
+		/// <param name="cbSize">The number of bytes to process from <paramref name="array" />.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="array" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// <para><paramref name="ibStart" /> is less than 0.</para>
+		/// <para>-or-</para>
+		/// <para><paramref name="cbSize" /> is less than 0.</para>
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// <paramref name="ibStart" /> and <paramref name="cbSize" /> specify a range that exceeds the length of <paramref name="array" />.
+		/// </exception>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// The hash algorithm has already been finalized and cannot accept more input data.
+		/// </exception>
+		protected override void HashCore(byte[] array, int ibStart, int cbSize)
+		{
+			ThrowHelper.ThrowIfNull(array);
 			ThrowIfDisposed();
+#if !NET6_0_OR_GREATER
+			ThrowHelper.ThrowIfLessThan(ibStart, 0);
+			ThrowHelper.ThrowIfLessThan(cbSize, 0);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, offset, cbSize);
+			if (this.finalized)
+				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+#endif
 
-			if (previousHash.Length != this.hashSizeBytes)
-				throw new ArgumentException("Hash length does not match the expected length.", nameof(previousHash));
+			Span<byte> span = array.AsSpan().Slice(ibStart, cbSize);
+			ProcessBlocks(span);
+		}
 
-			// Deserialize prior hash value
-			this.workingHash = this.HashSizeValue <= 32
-				? BinaryPrimitives.ReadUInt32LittleEndian(previousHash)
-				: BinaryPrimitives.ReadUInt64LittleEndian(previousHash);
+		/// <summary>
+		/// Finalizes the CRC (Cyclic Redundancy Check) computation after all input data has been processed, and returns the resulting
+		/// checksum value.
+		/// </summary>
+		/// <returns>
+		/// A byte array containing the CRC result. The length depends on the configured <see cref="HashAlgorithm.HashSize" />, which is
+		/// determined by the CRC standard supplied when the instance was created (e.g., 8 bits = 1 byte, 32 bits = 4 bytes, 64 bits = 8 bytes).
+		/// </returns>
+		/// <remarks>
+		/// The hash reflects all data previously supplied via <see cref="HashCore(byte[], int, int)" />. Once finalized, the internal state
+		/// is invalidated and <see cref="HashAlgorithm.Initialize" /> must be called before reusing the instance.
+		/// </remarks>
+		protected override byte[] HashFinal()
+		{
+#if !NET6_0_OR_GREATER
+			if (this.finalized)
+				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+			this.finalized = true;
+			this.State = 2;
+#endif
 
-			// Undo finalization
-			this.workingHash ^= this.XOrOut;
-			if (this.ReflectIn ^ this.ReflectOut)
-				this.workingHash = CryptoUtilities.ReflectBits(this.workingHash, this.HashSizeValue);
+			byte[] result = new byte[this.hashSizeBytes];
+			TryFinalizeHash(result, out _);
+			return result;
+		}
 
-			// Continue hashing and finalize again
-			this.ProcessBlocks(newData);
-			return this.TryFinalizeHash(destination, out bytesWritten);
+		/// <inheritdoc />
+		protected override bool TryHashFinal(Span<byte> destination, out int bytesWritten)
+		{
+#if !NET6_0_OR_GREATER
+				if (this.finalized)
+					throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_AlreadyFinalized);
+				this.finalized = true;
+				this.State = 2;
+#endif
+
+			return TryFinalizeHash(destination, out bytesWritten);
+		}
+
+		/// <summary>
+		/// Processes the data using a bitwise CRC algorithm without data reflection. Each bit is processed individually, MSB first, using
+		/// 1-bit shifts and permutationTable lookups.
+		/// </summary>
+		/// <param name="data">The data data to be processed.</param>
+		/// <param name="crc">The initial CRC state value.</param>
+		/// <param name="table">The CRC lookup permutationTable to use.</param>
+		/// <param name="shift">The number of bits to shift to extract the high bit of the CRC.</param>
+		/// <returns>The updated CRC value.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong ProcessBitwiseNormal(ReadOnlySpan<byte> data, ulong crc, ulong[] table, int shift)
+		{
+			foreach (byte b in data)
+			{
+				for (int i = 0; i < 8; i++)
+				{
+					ulong inputBit = (ulong)((b >> (7 - i)) & 1);
+					ulong crcBit = (crc >> shift) & 1;
+					crc = (crc << 1) ^ table[inputBit ^ crcBit];
+				}
+			}
+			return crc;
+		}
+
+		/// <summary>
+		/// Processes the data using a bitwise CRC algorithm with data reflection. Each bit is processed individually, LSB first, using
+		/// 1-bit shifts and permutationTable lookups.
+		/// </summary>
+		/// <param name="data">The data data to be processed.</param>
+		/// <param name="crc">The initial CRC state value.</param>
+		/// <param name="table">The CRC lookup permutationTable to use.</param>
+		/// <returns>The updated CRC value.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong ProcessBitwiseReflected(ReadOnlySpan<byte> data, ulong crc, ulong[] table)
+		{
+			foreach (byte b in data)
+			{
+				for (int i = 0; i < 8; i++)
+				{
+					ulong inputBit = (ulong)((b >> i) & 1);
+					ulong crcBit = crc & 1;
+					crc = (crc >> 1) ^ table[inputBit ^ crcBit];
+				}
+			}
+			return crc;
+		}
+
+		/// <summary>
+		/// Processes the data using a bytewise CRC algorithm without data reflection. The index is computed from the top bits of the CRC
+		/// XORed with the data byte.
+		/// </summary>
+		/// <param name="data">The data data to be processed.</param>
+		/// <param name="crc">The initial CRC state value.</param>
+		/// <param name="table">The CRC lookup permutationTable to use.</param>
+		/// <param name="shift">The number of bits to shift to extract the high byte of the CRC.</param>
+		/// <returns>The updated CRC value.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong ProcessBytewiseNormal(ReadOnlySpan<byte> data, ulong crc, ulong[] table, int shift)
+		{
+			foreach (byte b in data)
+			{
+				crc = (crc << 8) ^ table[(byte)((crc >> shift) ^ b)];
+			}
+			return crc;
+		}
+
+		/// <summary>
+		/// Processes the data using a bytewise CRC algorithm with data reflection. Each byte is XORed with the low byte of the current CRC
+		/// value, then used as a permutationTable index.
+		/// </summary>
+		/// <param name="data">The data data to be processed.</param>
+		/// <param name="crc">The initial CRC state value.</param>
+		/// <param name="table">The CRC lookup permutationTable to use.</param>
+		/// <returns>The updated CRC value.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static ulong ProcessBytewiseReflected(ReadOnlySpan<byte> data, ulong crc, ulong[] table)
+		{
+			foreach (byte b in data)
+			{
+				crc = (crc >> 8) ^ table[(byte)(crc ^ b)];
+			}
+			return crc;
+		}
+
+		/// <summary>
+		/// Processes the data in the provided <see cref="ReadOnlySpan{Byte}" /> and calculates the CRC hash value based on the CRC standard
+		/// and reflection option.
+		/// </summary>
+		/// <param name="data">The array of bytes to process for CRC hashing.</param>
+		/// <remarks>
+		/// This method performs the core CRC calculation by iterating over the byte array, applying bitwise operations based on the CRC
+		/// reflection settings. If reflection is enabled, the method processes the data with a different approach than when reflection is
+		/// disabled. The CRC value is updated incrementally with each byte in the array.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ProcessBlocks(ReadOnlySpan<byte> data)
+		{
+			if (this.HashSizeValue >= 8)
+			{
+				this.workingHash = this.ReflectIn
+					? ProcessBytewiseReflected(data, this.workingHash, this.table)
+					: ProcessBytewiseNormal(data, this.workingHash, this.table, this.HashSizeValue - 8);
+			}
+			else
+			{
+				this.workingHash = this.ReflectIn
+					? ProcessBitwiseReflected(data, this.workingHash, this.table)
+					: ProcessBitwiseNormal(data, this.workingHash, this.table, this.HashSizeValue - 1);
+			}
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
+		/// </summary>
+		/// <exception cref="ObjectDisposedException">
+		/// Thrown when any public method or property is accessed after the instance has been disposed.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfDisposed()
+		{
+#if NET8_0_OR_GREATER
+			ObjectDisposedException.ThrowIf(this.disposed, this);
+#else
+			if (this.disposed)
+				throw new ObjectDisposedException(nameof(Crc));
+#endif
+		}
+
+		/// <summary>
+		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
+		/// indicating that the instance is in a finalized or non-configurable state.
+		/// </summary>
+		/// <remarks>
+		/// This method is used to prevent reconfiguration of algorithm parameters such as the key, number of rounds, or other settings once
+		/// hashing has begun. It ensures settings are immutable after initialization.
+		/// </remarks>
+		/// <exception cref="CryptographicUnexpectedOperationException">
+		/// Thrown when an attempt is made to modify the algorithm after it has entered a non-zero state, which indicates that hashing has
+		/// started or been finalized.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfInvalidState()
+		{
+			if (this.State != 0)
+				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
 		}
 	}
 }
