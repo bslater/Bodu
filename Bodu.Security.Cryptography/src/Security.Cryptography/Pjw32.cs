@@ -96,7 +96,7 @@ namespace Bodu.Security.Cryptography
 		/// <param name="disposing">
 		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
 		/// </param>
-		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		/// <remarks>Ensures all internal secrets are overwritten with zeros before releasing resources.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposed) return;
