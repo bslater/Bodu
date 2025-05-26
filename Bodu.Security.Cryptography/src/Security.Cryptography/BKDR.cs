@@ -3,12 +3,9 @@
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
-using System;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
-
-using Bodu.Extensions;
 
 namespace Bodu.Security.Cryptography
 {
@@ -45,9 +42,9 @@ namespace Bodu.Security.Cryptography
 			31U, 131U, 1313U, 13131U, 131313U, 1313131U, 13131313U, 131313131U, 1313131313U
 		};
 
+		private bool disposed = false;
 		private uint seedValue;
 		private uint workingHash;
-		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 		private bool finalized;
 #endif
@@ -61,6 +58,31 @@ namespace Bodu.Security.Cryptography
 			HashSizeValue = 32;
 			Initialize();
 		}
+
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
 
 		/// <summary>
 		/// Gets or sets the seed value used in the BKDR hash algorithm.
@@ -92,31 +114,6 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
-		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
-		/// </remarks>
-		public override bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
-		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
-		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
-		/// </remarks>
-		public override bool CanTransformMultipleBlocks => true;
-
-		/// <inheritdoc />
 		public override void Initialize()
 		{
 			ThrowIfDisposed();
@@ -125,6 +122,26 @@ namespace Bodu.Security.Cryptography
 			finalized = false;
 #endif
 			workingHash = seedValue;
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposed) return;
+			if (disposing)
+			{
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				workingHash = seedValue = 0;
+			}
+			disposed = true;
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -226,18 +243,21 @@ namespace Bodu.Security.Cryptography
 			return span.ToArray();
 		}
 
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
+		/// <summary>
+		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
+		/// </summary>
+		/// <exception cref="ObjectDisposedException">
+		/// Thrown when any public method or property is accessed after the instance has been disposed.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfDisposed()
 		{
-			if (disposed) return;
-			if (disposing)
-			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
-
-				workingHash = seedValue = 0;
-			}
-			disposed = true;
-			base.Dispose(disposing);
+#if NET8_0_OR_GREATER
+			ObjectDisposedException.ThrowIf(disposed, this);
+#else
+			if (disposed)
+				throw new ObjectDisposedException(nameof(BKDR));
+#endif
 		}
 
 		/// <summary>
@@ -257,23 +277,6 @@ namespace Bodu.Security.Cryptography
 		{
 			if (State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(disposed, this);
-#else
-			if (disposed)
-				throw new ObjectDisposedException(nameof(BKDR));
-#endif
 		}
 	}
 }

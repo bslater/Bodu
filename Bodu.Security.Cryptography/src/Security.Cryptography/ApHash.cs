@@ -3,12 +3,9 @@
 //     Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
-using Bodu.Extensions;
-using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bodu.Security.Cryptography
 {
@@ -38,9 +35,9 @@ namespace Bodu.Security.Cryptography
 	{
 		private const uint DefaultCheckSumValue = 0xAAAAAAAA;
 
-		private uint workingHash;
-		private ulong size;
 		private bool disposed = false;
+		private ulong size;
+		private uint workingHash;
 #if !NET6_0_OR_GREATER
 
 		// Required for .NET Standard 2.0 or older frameworks
@@ -56,6 +53,31 @@ namespace Bodu.Security.Cryptography
 			this.Initialize();
 		}
 
+		/// <summary>
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
+		/// </remarks>
+		public override bool CanReuseTransform => true;
+
+		/// <summary>
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
+		/// </summary>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
+		/// <remarks>
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
+		/// </remarks>
+		public override bool CanTransformMultipleBlocks => true;
+
 		/// <inheritdoc />
 		public override void Initialize()
 		{
@@ -68,7 +90,13 @@ namespace Bodu.Security.Cryptography
 			this.size = 0;
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
 		protected override void Dispose(bool disposing)
 		{
 			if (this.disposed) return;
@@ -187,6 +215,23 @@ namespace Bodu.Security.Cryptography
 		}
 
 		/// <summary>
+		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
+		/// </summary>
+		/// <exception cref="ObjectDisposedException">
+		/// Thrown when any public method or property is accessed after the instance has been disposed.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfDisposed()
+		{
+#if NET8_0_OR_GREATER
+			ObjectDisposedException.ThrowIf(this.disposed, this);
+#else
+			if (this.disposed)
+				throw new ObjectDisposedException(nameof(Bernstein));
+#endif
+		}
+
+		/// <summary>
 		/// Throws a <see cref="CryptographicUnexpectedOperationException" /> if the hash algorithm has already started processing data,
 		/// indicating that the instance is in a finalized or non-configurable state.
 		/// </summary>
@@ -203,23 +248,6 @@ namespace Bodu.Security.Cryptography
 		{
 			if (this.State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(this.disposed, this);
-#else
-			if (this.disposed)
-				throw new ObjectDisposedException(nameof(Bernstein));
-#endif
 		}
 	}
 }

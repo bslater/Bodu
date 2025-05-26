@@ -4,9 +4,6 @@
 // </copyright>
 // ---------------------------------------------------------------------------------------------------------------
 
-using Bodu.Extensions;
-using System.Buffers.Binary;
-using System.Drawing;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -33,9 +30,17 @@ namespace Bodu.Security.Cryptography
 		: System.Security.Cryptography.HashAlgorithm
 		where T : unmanaged, INumber<T>
 	{
-		private readonly T modulo;
+		/// <summary>
+		/// The first part of the Adler checksum accumulator, typically initialized to 1.
+		/// </summary>
 		protected T partA;
+
+		/// <summary>
+		/// The second part of the Adler checksum accumulator, which accumulates the cumulative sum of <see cref="partA" />.
+		/// </summary>
 		protected T partB;
+
+		private readonly T modulo;
 		private bool disposed = false;
 #if !NET6_0_OR_GREATER
 
@@ -59,34 +64,32 @@ namespace Bodu.Security.Cryptography
 			partB = T.Zero;
 		}
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Gets a value indicating whether the current hash algorithm instance can be reused after the hash computation is finalized.
+		/// Gets a value indicating whether this transform instance can be reused after a hash operation is completed.
 		/// </summary>
-		/// <returns><see langword="true" /> if the current instance supports reuse via <see cref="Initialize" />; otherwise, <see langword="false" />.</returns>
+		/// <value>
+		/// <see langword="true" /> if the transform supports multiple hash computations via <see cref="HashAlgorithm.Initialize" />;
+		/// otherwise, <see langword="false" />.
+		/// </value>
 		/// <remarks>
-		/// When this property returns <see langword="true" />, you may call <see cref="Initialize" /> after computing a hash to reset the
-		/// internal state and perform a new hash computation without creating a new instance.
+		/// Reusable transforms allow the internal state to be reset for subsequent operations using the same instance. One-shot algorithms
+		/// that clear sensitive key material after finalization typically return <see langword="false" />.
 		/// </remarks>
 		public override bool CanReuseTransform => true;
 
-		/// <inheritdoc />
 		/// <summary>
-		/// Gets a value indicating whether multiple blocks can be transformed in a single <see cref="HashCore" /> call.
+		/// Gets a value indicating whether this transform supports processing multiple blocks of data in a single operation.
 		/// </summary>
-		/// <returns>
-		/// <see langword="true" /> if the implementation supports processing multiple blocks in a single operation; otherwise, <see langword="false" />.
-		/// </returns>
+		/// <value>
+		/// <see langword="true" /> if multiple input blocks can be transformed in sequence without intermediate finalization; otherwise, <see langword="false" />.
+		/// </value>
 		/// <remarks>
-		/// Most hash algorithms support processing multiple input blocks in a single call to <see cref="HashAlgorithm.TransformBlock" /> or
-		/// <see cref="HashAlgorithm.HashCore(byte[], int, int)" />, making this property typically return <see langword="true" />. Override
-		/// this to return <see langword="false" /> for algorithms that require strict block-by-block input.
+		/// Most hash algorithms and block ciphers support multi-block transformations for streaming input. If <see langword="false" />, the
+		/// transform must be invoked one block at a time.
 		/// </remarks>
 		public override bool CanTransformMultipleBlocks => true;
 
-		/// <summary>
-		/// Initializes or resets the internal state for a new checksum computation.
-		/// </summary>
+		/// <inheritdoc />
 		public override void Initialize()
 		{
 #if !NET6_0_OR_GREATER
@@ -96,6 +99,28 @@ namespace Bodu.Security.Cryptography
 			ThrowIfDisposed();
 			partA = T.One;
 			partB = T.Zero;
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the algorithm and clears the key from memory.
+		/// </summary>
+		/// <param name="disposing">
+		/// <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.
+		/// </param>
+		/// <remarks>This override ensures all sensitive information is zero out to avoid leaking secrets before disposal.</remarks>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposed) return;
+
+			if (disposing)
+			{
+				CryptoUtilities.ClearAndNullify(ref HashValue);
+
+				partA = partB = T.Zero;
+			}
+
+			disposed = true;
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -196,20 +221,21 @@ namespace Bodu.Security.Cryptography
 			partB = pB;
 		}
 
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
+		/// <summary>
+		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
+		/// </summary>
+		/// <exception cref="ObjectDisposedException">
+		/// Thrown when any public method or property is accessed after the instance has been disposed.
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected void ThrowIfDisposed()
 		{
-			if (disposed) return;
-
-			if (disposing)
-			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
-
-				partA = partB = T.Zero;
-			}
-
-			disposed = true;
-			base.Dispose(disposing);
+#if NET8_0_OR_GREATER
+			ObjectDisposedException.ThrowIf(disposed, this);
+#else
+			if (disposed)
+				throw new ObjectDisposedException(nameof(Adler));
+#endif
 		}
 
 		/// <summary>
@@ -229,23 +255,6 @@ namespace Bodu.Security.Cryptography
 		{
 			if (State != 0)
 				throw new CryptographicUnexpectedOperationException(ResourceStrings.CryptographicException_ReconfigurationNotAllowed);
-		}
-
-		/// <summary>
-		/// Throws an <see cref="ObjectDisposedException" /> if the algorithm instance has been disposed.
-		/// </summary>
-		/// <exception cref="ObjectDisposedException">
-		/// Thrown when any public method or property is accessed after the instance has been disposed.
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected void ThrowIfDisposed()
-		{
-#if NET8_0_OR_GREATER
-			ObjectDisposedException.ThrowIf(disposed, this);
-#else
-			if (disposed)
-				throw new ObjectDisposedException(nameof(Adler));
-#endif
 		}
 	}
 }
