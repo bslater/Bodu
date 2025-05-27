@@ -237,7 +237,7 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected void ThrowIfInvalidTweakSize(
 			byte[] tweak,
-			[CallerArgumentExpression("tweak")] string? paramName = null)
+			[CallerArgumentExpression("_tweakSchedule")] string? paramName = null)
 		{
 			ArgumentNullException.ThrowIfNull(tweak, paramName);
 			this.ThrowIfInvalidTweakSize(tweak.Length * 8, paramName);
