@@ -22,9 +22,10 @@ namespace Bodu.Extensions
 		/// This method always calculates the result using the proleptic Gregorian calendar (i.e., the calendar used internally by
 		/// <see cref="DateTime" />), regardless of the current culture or calendar settings.
 		/// </para>
-		/// <para>The result is equivalent to <c>DateTime.DaysInMonth(dateTime.Year, dateTime.Month)</c>.</para>
-		/// <note>This method does not reflect calendar systems such as <see cref="HebrewCalendar" />, <see cref="HijriCalendar" />, or
-		/// <see cref="JapaneseCalendar" />, even if the current culture specifies one.</note>
+		/// <para>
+		/// For culture-specific results, use the <see cref="DaysInMonth(DateTime, CultureInfo)" /> or
+		/// <see cref="DaysInMonth(DateTime, Calendar)" /> overloads.
+		/// </para>
 		/// </remarks>
 		public static int DaysInMonth(this DateTime dateTime) =>
 			DateTime.DaysInMonth(dateTime.Year, dateTime.Month);

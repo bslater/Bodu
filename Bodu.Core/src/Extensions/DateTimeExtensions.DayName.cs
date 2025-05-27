@@ -19,10 +19,8 @@ namespace Bodu.Extensions
 		/// <param name="dateTime">The <see cref="DateTime" /> whose <see cref="DateTime.DayOfWeek" /> value is used to determine the name.</param>
 		/// <returns>A <see cref="string" /> containing the localized full name of the day of the week, formatted using <see cref="CultureInfo.CurrentCulture" />.</returns>
 		/// <remarks>
-		/// <para>
-		/// This method retrieves the day name from the <see cref="DateTimeFormatInfo.DayNames" /> property of the current culture’s <see cref="DateTimeFormatInfo" />.
-		/// </para>
-		/// <note>This method is functionally equivalent to calling <c>DayName(null)</c>.</note>
+		/// <para>This method uses the <see cref="DateTimeFormatInfo.DayNames" /> method of the current culture to return the day name.</para>
+		/// <para>For culture-specific results, use the <see cref="DayName(DateTime, CultureInfo)" /> overload.</para>
 		/// </remarks>
 		public static string DayName(this DateTime dateTime) =>
 			dateTime.DayName(null!);
@@ -41,8 +39,7 @@ namespace Bodu.Extensions
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// This method retrieves the day name from the <see cref="DateTimeFormatInfo.DayNames" /> property of the
-		/// <see cref="DateTimeFormatInfo" /> associated with the specified or current culture.
+		/// This method uses the <see cref="DateTimeFormatInfo.DayNames" /> method of the specified or current culture to return the day name.
 		/// </para>
 		/// </remarks>
 		public static string DayName(this DateTime dateTime, CultureInfo culture) =>

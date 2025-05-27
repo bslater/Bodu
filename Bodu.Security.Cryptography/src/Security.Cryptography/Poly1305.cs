@@ -274,7 +274,7 @@ namespace Bodu.Security.Cryptography
 			BinaryPrimitives.WriteUInt32LittleEndian(tag.Slice(12), (uint)f3);
 
 			// Clear key immediately after use to prevent reuse
-			CryptoUtilities.ClearAndNullify(ref KeyValue);
+			CryptoUtilities.ClearAndNullify(ref KeyValue!);
 
 			return tag.ToArray();
 		}
