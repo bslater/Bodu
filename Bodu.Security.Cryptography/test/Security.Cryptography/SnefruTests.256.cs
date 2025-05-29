@@ -13,17 +13,17 @@ namespace Bodu.Security.Cryptography
 	public partial class Snefru256Tests
 		: Security.Cryptography.SnefruTests<Snefru256Tests, Snefru256>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		/// <inheritdoc />
 		protected override Snefru256 CreateAlgorithm() => new Snefru256();
 
-		protected override Snefru256 CreateAlgorithm(SingleHashVariant variant) => new Snefru256();
+		protected override Snefru256 CreateAlgorithm(SingleTestVariant variant) => new Snefru256();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"A4DF4C0A4AF3DAD3B7E9F4200144F74D6F44F875AB32715F5664119D676F8D19",
 			"D40C2A1AC28B11A875157CCB3BB2E75FBAC5138CA354005381080F67BCA0093B",
@@ -155,7 +155,7 @@ namespace Bodu.Security.Cryptography
 			"90D3159EEBC30B3235406FDFA90DD8FD23F86470EF095781B189FBE230CDCE49",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "A4DF4C0A4AF3DAD3B7E9F4200144F74D6F44F875AB32715F5664119D676F8D19",
 			["ABC"] = "BB01E1770CFBC7D39187A068274E9553E552DEDD354C4EC35506E1559A3FD15B",

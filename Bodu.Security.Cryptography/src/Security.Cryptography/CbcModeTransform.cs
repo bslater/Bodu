@@ -43,7 +43,7 @@ namespace Bodu.Security.Cryptography
 		{
 			int blockSize = cipher.BlockSize;
 
-			ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(input, blockSize);
+			ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(input, blockSize, throwIfZero: false);
 			ThrowHelper.ThrowIfSpanLengthIsInsufficient(output, 0, input.Length);
 
 			Span<byte> tempBlock = stackalloc byte[blockSize];

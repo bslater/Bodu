@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Bodu.Security.Cryptography
 {
 	public partial class PearsonTests
-		: Security.Cryptography.HashAlgorithmTests<PearsonTests, Pearson, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<PearsonTests, Pearson, SingleTestVariant>
 	{
 		/// <summary>
 		/// Verifies that a valid user-defined table with 256 unique bytes can be assigned successfully.

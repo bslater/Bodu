@@ -14,13 +14,13 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	[TestClass]
 	public abstract partial class SnefruTests<TTest, TAlgorithm>
-		: Security.Cryptography.HashAlgorithmTests<TTest, TAlgorithm, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<TTest, TAlgorithm, SingleTestVariant>
 		where TTest : SnefruTests<TTest, TAlgorithm>, new()
 		where TAlgorithm : Snefru<TAlgorithm>, new()
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()
@@ -39,7 +39,7 @@ namespace Bodu.Security.Cryptography
 			["1234567890"] = Encoding.UTF8.GetBytes("12345678901234567890123456789012345678901234567890123456789012345678901234567890")
 		};
 
-		protected override IEnumerable<HashTestVector> GetTestVectors(SingleHashVariant variant)
+		protected override IEnumerable<KnownAnswerTest> GetTestVectors(SingleTestVariant variant)
 		{
 			foreach (var vector in base.GetTestVectors(variant))
 				yield return vector;
@@ -49,11 +49,11 @@ namespace Bodu.Security.Cryptography
 			{
 				if (expected.TryGetValue(name, out var hex))
 				{
-					yield return new HashTestVector
+					yield return new KnownAnswerTest
 					{
 						Name = name,
 						Input = input,
-						ExpectedHash = Convert.FromHexString(hex)
+						ExpectedOutput = Convert.FromHexString(hex)
 					};
 				}
 			}

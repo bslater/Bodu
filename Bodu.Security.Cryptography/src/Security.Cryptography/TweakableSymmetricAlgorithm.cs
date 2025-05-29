@@ -113,6 +113,10 @@ namespace Bodu.Security.Cryptography
 		public override ICryptoTransform CreateDecryptor() =>
 			this.CreateDecryptor(this.Key, this.IV, this.Tweak);
 
+		/// <inheritdoc />
+		public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[]? rgbIV) =>
+			this.CreateDecryptor(rgbKey, rgbIV, this.Tweak);
+
 		/// <summary>
 		/// Creates a symmetric decryptor object using the specified key, IV, and tweak.
 		/// </summary>
@@ -121,6 +125,10 @@ namespace Bodu.Security.Cryptography
 		/// <param name="tweak">The tweak value to use.</param>
 		/// <returns>An <see cref="ICryptoTransform" /> instance for decryption.</returns>
 		public abstract ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV, byte[] tweak);
+
+		/// <inheritdoc />
+		public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[]? rgbIV) =>
+			this.CreateEncryptor(rgbKey, rgbIV, this.Tweak);
 
 		/// <inheritdoc />
 		public override ICryptoTransform CreateEncryptor() =>
@@ -145,28 +153,6 @@ namespace Bodu.Security.Cryptography
 		public abstract void GenerateTweak();
 
 		/// <summary>
-		/// Attempts to create a symmetric encryptor using span-based key, IV, and tweak values.
-		/// </summary>
-		/// <param name="key">The encryption key as a read-only span.</param>
-		/// <param name="iv">The initialization vector as a read-only span.</param>
-		/// <param name="tweak">The tweak value as a read-only span.</param>
-		/// <param name="transform">The resulting <see cref="ICryptoTransform" /> instance if successful.</param>
-		/// <returns><see langword="true" /> if the encryptor was created successfully; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// This method provides a span-based alternative to <see cref="CreateEncryptor(byte[], byte[], byte[])" />. The default
-		/// implementation converts the inputs to arrays. Override for custom span handling.
-		/// </remarks>
-		public virtual bool TryCreateEncryptor(
-			ReadOnlySpan<byte> key,
-			ReadOnlySpan<byte> iv,
-			ReadOnlySpan<byte> tweak,
-			out ICryptoTransform transform)
-		{
-			transform = this.CreateEncryptor(key.ToArray(), iv.ToArray(), tweak.ToArray());
-			return true;
-		}
-
-		/// <summary>
 		/// Attempts to create a symmetric decryptor using span-based key, IV, and tweak values.
 		/// </summary>
 		/// <param name="key">The encryption key as a read-only span.</param>
@@ -185,6 +171,28 @@ namespace Bodu.Security.Cryptography
 			out ICryptoTransform transform)
 		{
 			transform = this.CreateDecryptor(key.ToArray(), iv.ToArray(), tweak.ToArray());
+			return true;
+		}
+
+		/// <summary>
+		/// Attempts to create a symmetric encryptor using span-based key, IV, and tweak values.
+		/// </summary>
+		/// <param name="key">The encryption key as a read-only span.</param>
+		/// <param name="iv">The initialization vector as a read-only span.</param>
+		/// <param name="tweak">The tweak value as a read-only span.</param>
+		/// <param name="transform">The resulting <see cref="ICryptoTransform" /> instance if successful.</param>
+		/// <returns><see langword="true" /> if the encryptor was created successfully; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		/// This method provides a span-based alternative to <see cref="CreateEncryptor(byte[], byte[], byte[])" />. The default
+		/// implementation converts the inputs to arrays. Override for custom span handling.
+		/// </remarks>
+		public virtual bool TryCreateEncryptor(
+			ReadOnlySpan<byte> key,
+			ReadOnlySpan<byte> iv,
+			ReadOnlySpan<byte> tweak,
+			out ICryptoTransform transform)
+		{
+			transform = this.CreateEncryptor(key.ToArray(), iv.ToArray(), tweak.ToArray());
 			return true;
 		}
 
@@ -210,21 +218,16 @@ namespace Bodu.Security.Cryptography
 			return false;
 		}
 
-		/// <summary>
-		/// Throws a <see cref="CryptographicException" /> if the tweak has not been set or generated.
-		/// </summary>
-		/// <exception cref="CryptographicException">
-		/// Thrown when the tweak value is empty, indicating it has not been initialized or generated.
-		/// </exception>
-		/// <remarks>
-		/// This method ensures that the <see cref="Tweak" /> property is not accessed in an uninitialized state. It is recommended to call
-		/// <see cref="GenerateTweak" /> or assign a value to <see cref="Tweak" /> before use.
-		/// </remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected void ThrowIfTweakNotSet()
+		/// <inheritdoc />
+		protected override void Dispose(bool disposing)
 		{
-			if (TweakValue is null || TweakValue.Length == 0)
-				throw new CryptographicException(ResourceStrings.CryptographicException_TweakNotSet);
+			if (disposing && TweakValue.Length > 0)
+			{
+				CryptographicOperations.ZeroMemory(this.TweakValue);
+				this.TweakValue = Array.Empty<byte>();
+			}
+
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
@@ -237,7 +240,7 @@ namespace Bodu.Security.Cryptography
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected void ThrowIfInvalidTweakSize(
 			byte[] tweak,
-			[CallerArgumentExpression("_tweakSchedule")] string? paramName = null)
+			[CallerArgumentExpression("TweakSchedule")] string? paramName = null)
 		{
 			ArgumentNullException.ThrowIfNull(tweak, paramName);
 			this.ThrowIfInvalidTweakSize(tweak.Length * 8, paramName);
@@ -255,28 +258,25 @@ namespace Bodu.Security.Cryptography
 			[CallerArgumentExpression("bitLength")] string? paramName = null)
 		{
 			if (!ValidTweakSize(bitLength))
-			{
-				string validSizes = string.Join(", ",
-					this.LegalTweakSizes.Select(ks =>
-						ks.SkipSize == 0
-							? ks.MinSize.ToString()
-							: $"{ks.MinSize}-{ks.MaxSize} step {ks.SkipSize}"));
-
 				throw new CryptographicException(
-					string.Format(ResourceStrings.CryptographicException_InvalidTweakSize, bitLength, validSizes));
-			}
+					string.Format(ResourceStrings.CryptographicException_InvalidTweakSize, bitLength, CryptoUtilities.FormatLegalSizes(LegalTweakSizes)));
 		}
 
-		/// <inheritdoc />
-		protected override void Dispose(bool disposing)
+		/// <summary>
+		/// Throws a <see cref="CryptographicException" /> if the tweak has not been set or generated.
+		/// </summary>
+		/// <exception cref="CryptographicException">
+		/// Thrown when the tweak value is empty, indicating it has not been initialized or generated.
+		/// </exception>
+		/// <remarks>
+		/// This method ensures that the <see cref="Tweak" /> property is not accessed in an uninitialized state. It is recommended to call
+		/// <see cref="GenerateTweak" /> or assign a value to <see cref="Tweak" /> before use.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		protected void ThrowIfTweakNotSet()
 		{
-			if (disposing && TweakValue.Length > 0)
-			{
-				CryptographicOperations.ZeroMemory(this.TweakValue);
-				this.TweakValue = Array.Empty<byte>();
-			}
-
-			base.Dispose(disposing);
+			if (TweakValue is null || TweakValue.Length == 0)
+				throw new CryptographicException(ResourceStrings.CryptographicException_TweakNotSet);
 		}
 	}
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Bodu.Security.Cryptography
 {
 	public partial class PearsonTests
-		: Security.Cryptography.HashAlgorithmTests<PearsonTests, Pearson, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<PearsonTests, Pearson, SingleTestVariant>
 	{
 		/// <summary>
 		/// Provides test data for each predefined <see cref="Pearson.PearsonTableType" /> (excluding UserDefined).

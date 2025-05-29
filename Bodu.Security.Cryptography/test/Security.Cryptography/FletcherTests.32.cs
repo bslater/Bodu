@@ -22,9 +22,9 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override Fletcher32 CreateAlgorithm() => new Fletcher32();
 
-		protected override Fletcher32 CreateAlgorithm(SingleHashVariant variant) => new Fletcher32();
+		protected override Fletcher32 CreateAlgorithm(SingleTestVariant variant) => new Fletcher32();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"00000000",
 			"00000000",
@@ -44,7 +44,7 @@ namespace Bodu.Security.Cryptography
 			"BDA83138",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "00000000",
 			["ABC"] = "84C54284",

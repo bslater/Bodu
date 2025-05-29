@@ -21,5 +21,21 @@ namespace Bodu.Security.Cryptography
 	/// </remarks>
 	public static partial class CryptoUtilities
 	{
+		/// <summary>
+		/// Returns a comma-separated string of valid key sizes (in bits) from the provided <see cref="KeySizes" /> array.
+		/// </summary>
+		/// <param name="keySizes">An array of <see cref="KeySizes" /> objects specifying allowed key sizes.</param>
+		/// <returns>A string containing all supported key sizes in ascending order, or an empty string if none.</returns>
+		internal static string FormatLegalSizes(KeySizes[]? keySizes) =>
+			keySizes is null || keySizes.Length == 0
+				? string.Empty
+				: string.Join(", ",
+					keySizes
+						.SelectMany(ks => ks.SkipSize == 0
+							? new[] { ks.MinSize }
+							: Enumerable.Range(0, ((ks.MaxSize - ks.MinSize) / ks.SkipSize) + 1)
+								.Select(i => ks.MinSize + i * ks.SkipSize))
+						.Distinct()
+						.OrderBy(size => size));
 	}
 }

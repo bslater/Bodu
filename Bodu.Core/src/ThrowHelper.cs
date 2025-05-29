@@ -2109,21 +2109,25 @@ namespace Bodu
 #if NETSTANDARD2_1_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a valid multiple of a given divisor, optionally allowing
+		/// zero-length spans.
 		/// </summary>
 		/// <typeparam name="T">The element type of the span.</typeparam>
 		/// <param name="span">The span to check.</param>
-		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
+		/// <param name="divisor">The divisor that the span length must be a multiple of.</param>
+		/// <param name="throwIfZero">
+		/// If <c>true</c>, throws an exception when <paramref name="span" /> is empty. If <c>false</c>, allows zero-length spans to pass
+		/// the check.
+		/// </param>
 		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Thrown when <paramref name="span" /> has an invalid length (zero when <paramref name="throwIfZero" /> is <c>true</c> or not a
+		/// multiple of <paramref name="divisor" />).
 		/// Message: "Length of the Span must be a multiple of {0}."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
 			ReadOnlySpan<T> span,
-			int divisor,
-			Func<string, Exception>? func = null)
+			int divisor)
 		{
 			if (span.Length == 0 || span.Length % divisor != 0)
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), nameof(span));
@@ -2131,25 +2135,30 @@ namespace Bodu
 #elif NET5_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a valid multiple of a given divisor, optionally allowing
+		/// zero-length spans.
 		/// </summary>
 		/// <typeparam name="T">The element type of the span.</typeparam>
 		/// <param name="span">The span to check.</param>
-		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
-		/// <param name="paramName">The name of the span parameter.</param>
+		/// <param name="divisor">The divisor that the span length must be a multiple of.</param>
+		/// <param name="throwIfZero">
+		/// If <c>true</c>, throws an exception when <paramref name="span" /> is empty. If <c>false</c>, allows zero-length spans to pass
+		/// the check.
+		/// </param>
+		/// <param name="paramName">The name of the span parameter. Supplied by the compiler.</param>
 		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Thrown when <paramref name="span" /> has an invalid length (zero when <paramref name="throwIfZero" /> is <c>true</c> or not a
+		/// multiple of <paramref name="divisor" />).
 		/// Message: "Length of the Span must be a multiple of {0}."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
 			ReadOnlySpan<T> span,
 			int divisor,
-			Func<string, Exception>? func = null,
+			bool throwIfZero = true,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
-			if (span.Length == 0 || span.Length % divisor != 0)
+			if ((throwIfZero && span.Length == 0) || (span.Length % divisor != 0))
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), paramName);
 		}
 

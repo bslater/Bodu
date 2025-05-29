@@ -11,19 +11,19 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	[TestClass]
 	public partial class SDBMTests
-		: Security.Cryptography.HashAlgorithmTests<SDBMTests, SDBM, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<SDBMTests, SDBM, SingleTestVariant>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		/// <inheritdoc />
 		protected override SDBM CreateAlgorithm() => new SDBM();
 
-		protected override SDBM CreateAlgorithm(SingleHashVariant variant) => new SDBM();
+		protected override SDBM CreateAlgorithm(SingleTestVariant variant) => new SDBM();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"00000000",
 			"00000000",
@@ -43,7 +43,7 @@ namespace Bodu.Security.Cryptography
 			"D1F1B1C7",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "00000000",
 			["ABC"] = "20440042",

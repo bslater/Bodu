@@ -13,13 +13,13 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	[TestClass]
 	public abstract partial class FnvTests<TTest, TAlgorithm>
-		: HashAlgorithmTests<TTest, TAlgorithm, SingleHashVariant>
-		where TTest : HashAlgorithmTests<TTest, TAlgorithm, SingleHashVariant>, new()
+		: HashAlgorithmTests<TTest, TAlgorithm, SingleTestVariant>
+		where TTest : HashAlgorithmTests<TTest, TAlgorithm, SingleTestVariant>, new()
 		where TAlgorithm : Fnv, new()
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()

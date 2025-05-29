@@ -12,15 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithmExtensionTests.cs" />
     <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithmExtensionTests.Decrypt.cs" />
     <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithmExtensionTests.Encrypt.cs" />
-    <Compile Remove="Security.Cryptography\Adler32CTests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\Adler32CTests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\Adler32Tests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\Adler32Tests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\BernsteinTests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\BernsteinTests.ComputeHashAsync.cs" />
     <Compile Remove="Security.Cryptography\CityHashTests.cs" />
     <Compile Remove="Security.Cryptography\CrcLookupTableCacheTests.cs" />
     <Compile Remove="Security.Cryptography\CrcTests.ComputeHash.cs" />
@@ -30,23 +23,6 @@
     <Compile Remove="Security.Cryptography\CrcTests.Equals.cs" />
     <Compile Remove="Security.Cryptography\CrcTests.GetHashCode.cs" />
     <Compile Remove="Security.Cryptography\CrcTests.TryComputeHashFrom.cs" />
-    <Compile Remove="Security.Cryptography\CubeHashTests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\CubeHashTests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\Elf64Tests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\Elf64Tests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher16Tests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher16Tests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher16Tests.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher32Tests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher32Tests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher32Tests.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher64Tests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher64Tests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\Fletcher64Tests.cs" />
-    <Compile Remove="Security.Cryptography\JSHashTests.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\JSHashTests.ComputeHashAsync.cs" />
-    <Compile Remove="Security.Cryptography\SipHashTests.128.ComputeHash.cs" />
-    <Compile Remove="Security.Cryptography\SipHashTests.128.ComputeHashAsync.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -79,6 +79,15 @@ namespace Bodu {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length of the block must be {0}..
+        /// </summary>
+        internal static string CryptographicException_InvalidBlockLength {
+            get {
+                return ResourceManager.GetString("CryptographicException_InvalidBlockLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Length of the block must be a multiple of {0}..
         /// </summary>
         internal static string CryptographicException_InvalidBlockLengthMultipleOf {
@@ -93,6 +102,15 @@ namespace Bodu {
         internal static string CryptographicException_InvalidHashSize {
             get {
                 return ResourceManager.GetString("CryptographicException_InvalidHashSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid IV size: {0}. Valid sizes are: {1}..
+        /// </summary>
+        internal static string CryptographicException_InvalidIVSize {
+            get {
+                return ResourceManager.GetString("CryptographicException_InvalidIVSize", resourceCulture);
             }
         }
         

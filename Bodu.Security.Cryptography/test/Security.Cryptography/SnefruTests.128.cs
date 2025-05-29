@@ -13,17 +13,17 @@ namespace Bodu.Security.Cryptography
 	public partial class Snefru128Tests
 		: Security.Cryptography.SnefruTests<Snefru128Tests, Snefru128>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		/// <inheritdoc />
 		protected override Snefru128 CreateAlgorithm() => new Snefru128();
 
-		protected override Snefru128 CreateAlgorithm(SingleHashVariant variant) => new Snefru128();
+		protected override Snefru128 CreateAlgorithm(SingleTestVariant variant) => new Snefru128();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"AA2532A1422095F6E8DBFF85FD6EF2BC",
 			"7DFE4B884ACBCE230EEAAC73DE1A6E7E",
@@ -91,7 +91,7 @@ namespace Bodu.Security.Cryptography
 			"193E2FFAE3DC6A5AABB7FD6B46E203BB",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "AA2532A1422095F6E8DBFF85FD6EF2BC",
 			["ABC"] = "26C6CC5A5789D5F737335B305DE80218",
