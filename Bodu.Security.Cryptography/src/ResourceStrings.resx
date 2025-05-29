@@ -123,11 +123,17 @@
   <data name="CryptographicException_AlreadyFinalized" xml:space="preserve">
     <value>TransformFinalBlock has already been called for this hash computation.</value>
   </data>
+  <data name="CryptographicException_InvalidBlockLength" xml:space="preserve">
+    <value>Length of the block must be {0}.</value>
+  </data>
   <data name="CryptographicException_InvalidBlockLengthMultipleOf" xml:space="preserve">
     <value>Length of the block must be a multiple of {0}.</value>
   </data>
   <data name="CryptographicException_InvalidHashSize" xml:space="preserve">
     <value>Invalid hash size: {0}. Valid sizes are: {1}.</value>
+  </data>
+  <data name="CryptographicException_InvalidIVSize" xml:space="preserve">
+    <value>Invalid IV size: {0}. Valid sizes are: {1}.</value>
   </data>
   <data name="CryptographicException_InvalidKeySize" xml:space="preserve">
     <value>Invalid key size: {0}. Valid sizes are: {1}.</value>

@@ -60,7 +60,7 @@ namespace Bodu.Security.Cryptography
 			["Hello"] = Encoding.UTF8.GetBytes("Hello")
 		};
 
-		protected override IEnumerable<HashTestVector> GetTestVectors(SipHashVariant variant)
+		protected override IEnumerable<KnownAnswerTest> GetTestVectors(SipHashVariant variant)
 		{
 			foreach (var vector in base.GetTestVectors(variant))
 				yield return vector;
@@ -70,11 +70,11 @@ namespace Bodu.Security.Cryptography
 			{
 				if (expected.TryGetValue(name, out var hex))
 				{
-					yield return new HashTestVector
+					yield return new KnownAnswerTest
 					{
 						Name = name,
 						Input = input,
-						ExpectedHash = Convert.FromHexString(hex)
+						ExpectedOutput = Convert.FromHexString(hex)
 					};
 				}
 			}

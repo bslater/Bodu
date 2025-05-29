@@ -11,19 +11,19 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	[TestClass]
 	public partial class JSHashTests
-		: Security.Cryptography.HashAlgorithmTests<JSHashTests, JSHash, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<JSHashTests, JSHash, SingleTestVariant>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		/// <inheritdoc />
 		protected override JSHash CreateAlgorithm() => new JSHash();
 
-		protected override JSHash CreateAlgorithm(SingleHashVariant variant) => new JSHash();
+		protected override JSHash CreateAlgorithm(SingleTestVariant variant) => new JSHash();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"A7C6674E",
 			"2E00F5AE",
@@ -43,7 +43,7 @@ namespace Bodu.Security.Cryptography
 			"1D01A1F7",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "A7C6674E",
 			["ABC"] = "37889B1A",

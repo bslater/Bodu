@@ -88,7 +88,7 @@ namespace Bodu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Length of the array must be {0}..
+        ///   Looks up a localized string similar to The array length must be exactly {0}..
         /// </summary>
         internal static string Arg_Invalid_ArrayLength {
             get {

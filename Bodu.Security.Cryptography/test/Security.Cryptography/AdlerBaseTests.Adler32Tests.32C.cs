@@ -13,17 +13,17 @@ namespace Bodu.Security.Cryptography
 	public partial class Adler32CTests
 		: Adler32BaseTests<Adler32CTests, Adler32C>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		/// <inheritdoc />
 		protected override Adler32C CreateAlgorithm() => new Adler32C();
 
-		protected override Adler32C CreateAlgorithm(SingleHashVariant variant) => new Adler32C();
+		protected override Adler32C CreateAlgorithm(SingleTestVariant variant) => new Adler32C();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"00000001",
 			"00010001",
@@ -43,7 +43,7 @@ namespace Bodu.Security.Cryptography
 			"023F006A",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "00000001",
 			["ABC"] = "018D00C7",

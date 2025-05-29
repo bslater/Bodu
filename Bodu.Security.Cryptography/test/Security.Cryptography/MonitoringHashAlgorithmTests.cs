@@ -9,11 +9,11 @@ namespace Bodu.Security.Cryptography
 {
 	[TestClass]
 	public partial class MonitoringHashAlgorithmTests
-		: Security.Cryptography.HashAlgorithmTests<MonitoringHashAlgorithmTests, MonitoringHashAlgorithm, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<MonitoringHashAlgorithmTests, MonitoringHashAlgorithm, SingleTestVariant>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		protected override IEnumerable<string> GetFieldsToExcludeFromDisposeValidation()
@@ -29,9 +29,9 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override MonitoringHashAlgorithm CreateAlgorithm() => new MonitoringHashAlgorithm();
 
-		protected override MonitoringHashAlgorithm CreateAlgorithm(SingleHashVariant variant) => new MonitoringHashAlgorithm();
+		protected override MonitoringHashAlgorithm CreateAlgorithm(SingleTestVariant variant) => new MonitoringHashAlgorithm();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"00000000",
 			"00000000",
@@ -51,7 +51,7 @@ namespace Bodu.Security.Cryptography
 			"69000000",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "00000000",
 			["ABC"] = "C6000000",

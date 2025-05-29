@@ -121,7 +121,7 @@
     <value>{0} action must be initialized with no {1} items.</value>
   </data>
   <data name="Arg_Invalid_ArrayLength" xml:space="preserve">
-    <value>Length of the array must be {0}.</value>
+    <value>The array length must be exactly {0}.</value>
   </data>
   <data name="Arg_Invalid_ArrayTooShort" xml:space="preserve">
     <value>Array is too short. Required minimum is {0} from a specified index.</value>

@@ -9,18 +9,18 @@ namespace Bodu.Security.Cryptography
 {
 	[TestClass]
 	public partial class PearsonTests
-		: Security.Cryptography.HashAlgorithmTests<PearsonTests, Pearson, SingleHashVariant>
+		: Security.Cryptography.HashAlgorithmTests<PearsonTests, Pearson, SingleTestVariant>
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 
 		protected override Pearson CreateAlgorithm() => new Pearson();
 
-		protected override Pearson CreateAlgorithm(SingleHashVariant variant) => new Pearson();
+		protected override Pearson CreateAlgorithm(SingleTestVariant variant) => new Pearson();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"00",
 			"01",
@@ -28,7 +28,7 @@ namespace Bodu.Security.Cryptography
 			"17" ,
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "00",
 			["ABC"] = "1A",

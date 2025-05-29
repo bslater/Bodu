@@ -22,9 +22,9 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override Fletcher64 CreateAlgorithm() => new Fletcher64();
 
-		protected override Fletcher64 CreateAlgorithm(SingleHashVariant variant) => new Fletcher64();
+		protected override Fletcher64 CreateAlgorithm(SingleTestVariant variant) => new Fletcher64();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"0000000000000000",
 			"0000000000000000",
@@ -60,7 +60,7 @@ namespace Bodu.Security.Cryptography
 			"9E99755169807870",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "0000000000000000",
 			["ABC"] = "0043424100434241",

@@ -207,6 +207,65 @@ namespace Bodu
 #else
 
 		/// <summary>
+		/// Throws an exception if the specified <paramref name="array" /> is not exactly the expected <paramref name="expectedLength" />.
+		/// </summary>
+		/// <param name="array">The array to validate.</param>
+		/// <param name="expectedLength">The exact number of elements that <paramref name="array" /> must contain.</param>
+		/// <param name="paramName">The name of the array parameter to include in exception messages.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="array.Length" /> does not match <paramref name="expectedLength" />.
+		/// Message: "The array length must be exactly {expectedLength}."
+		/// </exception>
+		/// <remarks>
+		/// This method ensures that the provided array has the exact number of elements required for the operation to proceed safely. It is
+		/// commonly used in cryptographic APIs or buffer transformations where fixed-size input is mandatory (e.g., 16 bytes for a block,
+		/// 32 bytes for a key).
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthInvalid(
+			Array array,
+			int expectedLength,
+			[CallerArgumentExpression(nameof(array))] string? paramName = null)
+		{
+			if (array is null)
+				throw new ArgumentNullException(paramName);
+
+			if (array.Length != expectedLength)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_ArrayLength, expectedLength),
+					paramName);
+		}
+
+		/// <summary>
+		/// Throws an exception if the specified <paramref name="array" /> is not exactly the expected <paramref name="expectedLength" />.
+		/// </summary>
+		/// <param name="array">The array to validate.</param>
+		/// <param name="expectedLength">The exact number of elements that <paramref name="array" /> must contain.</param>
+		/// <param name="paramName">The name of the array parameter to include in exception messages.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="array.Length" /> does not match <paramref name="expectedLength" />.
+		/// Message: "The array length must be exactly {expectedLength}."
+		/// </exception>
+		/// <remarks>
+		/// This method ensures that the provided array has the exact number of elements required for the operation to proceed safely. It is
+		/// commonly used in cryptographic APIs or buffer transformations where fixed-size input is mandatory (e.g., 16 bytes for a block,
+		/// 32 bytes for a key).
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthInvalid<T>(
+			ReadOnlySpan<T> array,
+			int expectedLength,
+			[CallerArgumentExpression(nameof(array))] string? paramName = null)
+		{
+			if (array.Length != expectedLength)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_ArrayLength, expectedLength),
+					paramName);
+		}
+
+		/// <summary>
 		/// Throws an exception if the array does not have enough elements from the specified index to accommodate the required length.
 		/// </summary>
 		/// <param name="array">The array to validate. Must be non-null and single-dimensional.</param>
@@ -324,6 +383,63 @@ namespace Bodu
 #if NETSTANDARD2_0_OR_GREATER
 
 		/// <summary>
+		/// Throws an exception if the specified <paramref name="array" /> is not exactly the expected <paramref name="expectedLength" />.
+		/// </summary>
+		/// <param name="array">The array to validate.</param>
+		/// <param name="expectedLength">The exact number of elements that <paramref name="array" /> must contain.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="array.Length" /> does not match <paramref name="expectedLength" />.
+		/// Message: "The array length must be exactly {expectedLength}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthInvalid(
+			Array array,
+			int expectedLength)
+		{
+			if (array is null)
+				throw new ArgumentNullException(nameof(array));
+
+			if (array.Length != expectedLength)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_ArrayLength, expectedLength),
+					nameof(array));
+		}
+
+#else
+#endif
+
+#if NETSTANDARD2_0_OR_GREATER
+
+		/// <summary>
+		/// Throws an exception if the specified <paramref name="array" /> is not exactly the expected <paramref name="expectedLength" />.
+		/// </summary>
+		/// <param name="array">The array to validate.</param>
+		/// <param name="expectedLength">The exact number of elements that <paramref name="array" /> must contain.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="array.Length" /> does not match <paramref name="expectedLength" />.
+		/// Message: "The array length must be exactly {expectedLength}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthInvalid(
+			Array array,
+			int expectedLength)
+		{
+			if (array is null)
+				throw new ArgumentNullException(nameof(array));
+
+			if (array.Length != expectedLength)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_ArrayLength, expectedLength),
+					nameof(array));
+		}
+
+#else
+#endif
+#if NETSTANDARD2_0_OR_GREATER
+
+		/// <summary>
 		/// Throws an exception if the specified <paramref name="index" /> and <paramref name="count" /> define a segment that exceeds the
 		/// bounds of the <paramref name="array" />.
 		/// </summary>
@@ -361,6 +477,27 @@ namespace Bodu
 		}
 
 #else
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// </summary>
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Message: "Length of the Span must be a multiple of {0}."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthNotPositiveMultipleOf<T>(
+			Span<T> span,
+			int divisor,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
+		{
+			if (span.Length == 0 || span.Length % divisor != 0)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), paramName);
+		}
 
 		/// <summary>
 		/// Throws an exception if the specified <paramref name="index" /> and <paramref name="count" /> define a segment that exceeds the
@@ -1416,6 +1553,140 @@ namespace Bodu
 #else
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the object is not assignable to type <typeparamref name="T" />.
+		/// </summary>
+		/// <typeparam name="T">The target type to validate against.</typeparam>
+		/// <param name="value">The value to check.</param>
+		/// <param name="paramName">The name of the value parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is null and
+		/// <typeparamref name="T" /> is a non-nullable value type.
+		/// Message: "Object must be of type {0}."
+		/// </exception>
+		/// <remarks>Null is only allowed if <typeparamref name="T" /> is a reference or nullable type.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNotOfType<T>(
+			object? value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value is null)
+			{
+				if (default(T) is not null)
+					throw new ArgumentException(
+						string.Format(ResourceStrings.Arg_Invalid_MustBeOfType, typeof(T)),
+						paramName);
+			}
+			else if (value is not T)
+			{
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_MustBeOfType, typeof(T)),
+					paramName);
+			}
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not a positive multiple of the specified divisor.
+		/// </summary>
+		/// <param name="value">The value to validate.</param>
+		/// <param name="divisor">The required positive divisor.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> is not greater than zero or not divisible by <paramref name="divisor" />.
+		/// Message: "The value must be a positive number and a multiple of {0}."
+		/// </exception>
+		/// <remarks>Useful for validating aligned buffer sizes, memory boundaries, or block-aligned lengths.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNotPositiveMultipleOf(
+			int value,
+			int divisor,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value <= 0 || value % divisor != 0)
+				throw new ArgumentOutOfRangeException(paramName,
+					string.Format(ResourceStrings.Arg_Invalid_PositiveMultipleOf, divisor));
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not equal to zero.
+		/// </summary>
+		/// <typeparam name="T">A type that supports equality comparison.</typeparam>
+		/// <param name="value">The value to validate.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="value" /> is not zero.
+		/// Message: "The value must be zero."
+		/// </exception>
+		/// <remarks>Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.</remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNotZero<T>(
+			T value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+			where T : IEquatable<T>
+		{
+			if (!value.Equals(default!))
+				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireZero);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <c>null</c>.
+		/// </summary>
+		/// <typeparam name="T">The type of the object.</typeparam>
+		/// <param name="value">The value to check.</param>
+		/// <param name="paramName">The name of the parameter being validated.</param>
+		/// <exception cref="ArgumentNullException">
+		/// Thrown if <paramref name="value" /> is <c>null</c>.
+		/// Message: "Value cannot be null."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNull<T>(
+			T value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value is null)
+				throw new ArgumentNullException(paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, with a custom message.
+		/// </summary>
+		/// <typeparam name="T">The type of the value.</typeparam>
+		/// <param name="value">The value to validate.</param>
+		/// <param name="message">A custom error message for the exception.</param>
+		/// <param name="paramName">The parameter name.</param>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNull<T>(
+			T value,
+			string message,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value is null)
+				throw new ArgumentNullException(paramName, message);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentNullException" /> if the string is <c>null</c>, or an <see cref="ArgumentException" /> if it is empty.
+		/// </summary>
+		/// <param name="value">The string value to validate.</param>
+		/// <param name="paramName">The name of the parameter.</param>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="value" /> is an empty string.
+		/// Message: "The string was either null or empty."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfNullOrEmpty(
+			string value,
+			[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		{
+			if (value is null)
+				throw new ArgumentNullException(paramName);
+
+			if (value.Length == 0)
+				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringNullOrEmpty, paramName);
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the specified value is not within the given range.
 		/// </summary>
 		/// <typeparam name="T">A type that implements <see cref="IComparable{T}" />.</typeparam>
@@ -1495,39 +1766,6 @@ namespace Bodu
 		}
 
 #else
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the object is not assignable to type <typeparamref name="T" />.
-		/// </summary>
-		/// <typeparam name="T">The target type to validate against.</typeparam>
-		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the value parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is null and
-		/// <typeparamref name="T" /> is a non-nullable value type.
-		/// Message: "Object must be of type {0}."
-		/// </exception>
-		/// <remarks>Null is only allowed if <typeparamref name="T" /> is a reference or nullable type.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotOfType<T>(
-			object? value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value is null)
-			{
-				if (default(T) is not null)
-					throw new ArgumentException(
-						string.Format(ResourceStrings.Arg_Invalid_MustBeOfType, typeof(T)),
-						paramName);
-			}
-			else if (value is not T)
-			{
-				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Invalid_MustBeOfType, typeof(T)),
-					paramName);
-			}
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER
@@ -1553,29 +1791,6 @@ namespace Bodu
 		}
 
 #else
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not a positive multiple of the specified divisor.
-		/// </summary>
-		/// <param name="value">The value to validate.</param>
-		/// <param name="divisor">The required positive divisor.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> is not greater than zero or not divisible by <paramref name="divisor" />.
-		/// Message: "The value must be a positive number and a multiple of {0}."
-		/// </exception>
-		/// <remarks>Useful for validating aligned buffer sizes, memory boundaries, or block-aligned lengths.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotPositiveMultipleOf(
-			int value,
-			int divisor,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value <= 0 || value % divisor != 0)
-				throw new ArgumentOutOfRangeException(paramName,
-					string.Format(ResourceStrings.Arg_Invalid_PositiveMultipleOf, divisor));
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER
@@ -1600,28 +1815,6 @@ namespace Bodu
 		}
 
 #else
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is not equal to zero.
-		/// </summary>
-		/// <typeparam name="T">A type that supports equality comparison.</typeparam>
-		/// <param name="value">The value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="value" /> is not zero.
-		/// Message: "The value must be zero."
-		/// </exception>
-		/// <remarks>Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.</remarks>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNotZero<T>(
-			T value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-			where T : IEquatable<T>
-		{
-			if (!value.Equals(default!))
-				throw new ArgumentOutOfRangeException(paramName, ResourceStrings.Arg_OutOfRange_RequireZero);
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER
@@ -1643,26 +1836,6 @@ namespace Bodu
 		}
 
 #else
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <c>null</c>.
-		/// </summary>
-		/// <typeparam name="T">The type of the object.</typeparam>
-		/// <param name="value">The value to check.</param>
-		/// <param name="paramName">The name of the parameter being validated.</param>
-		/// <exception cref="ArgumentNullException">
-		/// Thrown if <paramref name="value" /> is <c>null</c>.
-		/// Message: "Value cannot be null."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNull<T>(
-			T value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value is null)
-				throw new ArgumentNullException(paramName);
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER
@@ -1684,25 +1857,6 @@ namespace Bodu
 		}
 
 #else
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, with a custom message.
-		/// </summary>
-		/// <typeparam name="T">The type of the value.</typeparam>
-		/// <param name="value">The value to validate.</param>
-		/// <param name="message">A custom error message for the exception.</param>
-		/// <param name="paramName">The parameter name.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNull<T>(
-			T value,
-			string message,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value is null)
-				throw new ArgumentNullException(paramName, message);
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER
@@ -1728,29 +1882,6 @@ namespace Bodu
 		}
 
 #else
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the string is <c>null</c>, or an <see cref="ArgumentException" /> if it is empty.
-		/// </summary>
-		/// <param name="value">The string value to validate.</param>
-		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> is an empty string.
-		/// Message: "The string was either null or empty."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfNullOrEmpty(
-			string value,
-			[CallerArgumentExpression(nameof(value))] string? paramName = null)
-		{
-			if (value is null)
-				throw new ArgumentNullException(paramName);
-
-			if (value.Length == 0)
-				throw new ArgumentException(ResourceStrings.Arg_Invalid_StringNullOrEmpty, paramName);
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER
@@ -1945,7 +2076,7 @@ namespace Bodu
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthIsInsufficient<T>(
-			Span<T> span, int index, int requiredLength)
+			ReadOnlySpan<T> span, int index, int requiredLength)
 		{
 			if (span.Length - index < requiredLength)
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), nameof(span));
@@ -1978,21 +2109,25 @@ namespace Bodu
 #if NETSTANDARD2_1_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a valid multiple of a given divisor, optionally allowing
+		/// zero-length spans.
 		/// </summary>
 		/// <typeparam name="T">The element type of the span.</typeparam>
 		/// <param name="span">The span to check.</param>
-		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
+		/// <param name="divisor">The divisor that the span length must be a multiple of.</param>
+		/// <param name="throwIfZero">
+		/// If <c>true</c>, throws an exception when <paramref name="span" /> is empty. If <c>false</c>, allows zero-length spans to pass
+		/// the check.
+		/// </param>
 		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Thrown when <paramref name="span" /> has an invalid length (zero when <paramref name="throwIfZero" /> is <c>true</c> or not a
+		/// multiple of <paramref name="divisor" />).
 		/// Message: "Length of the Span must be a multiple of {0}."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
 			ReadOnlySpan<T> span,
-			int divisor,
-			Func<string, Exception>? func = null)
+			int divisor)
 		{
 			if (span.Length == 0 || span.Length % divisor != 0)
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), nameof(span));
@@ -2000,25 +2135,30 @@ namespace Bodu
 #elif NET5_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
+		/// Throws an <see cref="ArgumentException" /> if the span length is not a valid multiple of a given divisor, optionally allowing
+		/// zero-length spans.
 		/// </summary>
 		/// <typeparam name="T">The element type of the span.</typeparam>
 		/// <param name="span">The span to check.</param>
-		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="func">A factory for a custom exception (unused in default implementation).</param>
-		/// <param name="paramName">The name of the span parameter.</param>
+		/// <param name="divisor">The divisor that the span length must be a multiple of.</param>
+		/// <param name="throwIfZero">
+		/// If <c>true</c>, throws an exception when <paramref name="span" /> is empty. If <c>false</c>, allows zero-length spans to pass
+		/// the check.
+		/// </param>
+		/// <param name="paramName">The name of the span parameter. Supplied by the compiler.</param>
 		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
+		/// Thrown when <paramref name="span" /> has an invalid length (zero when <paramref name="throwIfZero" /> is <c>true</c> or not a
+		/// multiple of <paramref name="divisor" />).
 		/// Message: "Length of the Span must be a multiple of {0}."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
 			ReadOnlySpan<T> span,
 			int divisor,
-			Func<string, Exception>? func = null,
+			bool throwIfZero = true,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
-			if (span.Length == 0 || span.Length % divisor != 0)
+			if ((throwIfZero && span.Length == 0) || (span.Length % divisor != 0))
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), paramName);
 		}
 
@@ -2047,28 +2187,6 @@ namespace Bodu
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanLengthMultipleOf, divisor), nameof(span));
 		}
 #elif NET5_0_OR_GREATER
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the span length is not a positive multiple of a given divisor.
-		/// </summary>
-		/// <typeparam name="T">The element type of the span.</typeparam>
-		/// <param name="span">The span to check.</param>
-		/// <param name="divisor">The divisor that span length must be a multiple of.</param>
-		/// <param name="paramName">The name of the span parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length == 0 || span.Length % divisor != 0</c>.
-		/// Message: "Length of the Span must be a multiple of {0}."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfArrayLengthNotPositiveMultipleOf<T>(
-			Span<T> span,
-			int divisor,
-			[CallerArgumentExpression(nameof(span))] string? paramName = null)
-		{
-			if (span.Length == 0 || span.Length % divisor != 0)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayLengthMultipleOf, divisor), paramName);
-		}
-
 #endif
 
 #if NETSTANDARD2_0_OR_GREATER

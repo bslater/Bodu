@@ -16,7 +16,7 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	[TestClass]
 	public partial class Poly1305Tests
-		: KeyedHashAlgorithmTests<Poly1305Tests, Poly1305, SingleHashVariant>
+		: KeyedHashAlgorithmTests<Poly1305Tests, Poly1305, SingleTestVariant>
 	{
 		protected override int ExpectedKeySize => 32;
 
@@ -59,13 +59,13 @@ namespace Bodu.Security.Cryptography
 			CollectionAssert.AreEqual(expected, actual);
 		}
 
-		protected override Poly1305 CreateAlgorithm(SingleHashVariant variant) => this.CreateAlgorithm();
+		protected override Poly1305 CreateAlgorithm(SingleTestVariant variant) => this.CreateAlgorithm();
 
 		private static readonly IReadOnlyDictionary<string, byte[]> CustomInputs = new Dictionary<string, byte[]>
 		{
 		};
 
-		protected override IEnumerable<HashTestVector> GetTestVectors(SingleHashVariant variant)
+		protected override IEnumerable<KnownAnswerTest> GetTestVectors(SingleTestVariant variant)
 		{
 			foreach (var vector in base.GetTestVectors(variant))
 				yield return vector;
@@ -75,11 +75,11 @@ namespace Bodu.Security.Cryptography
 			{
 				if (expected.TryGetValue(name, out var hex))
 				{
-					yield return new HashTestVector
+					yield return new KnownAnswerTest
 					{
 						Name = name,
 						Input = input,
-						ExpectedHash = Convert.FromHexString(hex)
+						ExpectedOutput = Convert.FromHexString(hex)
 					};
 				}
 			}
@@ -95,7 +95,7 @@ namespace Bodu.Security.Cryptography
 			return list;
 		}
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) =>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) =>
 			 new Dictionary<string, string>
 			 {
 				 ["Empty"] = "101112131415161718191A1B1C1D1E1F",
@@ -105,7 +105,7 @@ namespace Bodu.Security.Cryptography
 				 ["Sequential_0_255"] = "4816CA3A2F556AFDF5D1A395518DA0FE",
 			 };
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) =>
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) =>
 			 new[]
 				{
 					"101112131415161718191A1B1C1D1E1F",
@@ -174,9 +174,9 @@ namespace Bodu.Security.Cryptography
 					"61ABE275B6D2CCF0911FE932877A6643",
 				};
 
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 	}
 }

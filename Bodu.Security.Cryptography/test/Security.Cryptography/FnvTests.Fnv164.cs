@@ -22,9 +22,9 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override Fnv164 CreateAlgorithm() => new Fnv164();
 
-		protected override Fnv164 CreateAlgorithm(SingleHashVariant variant) => new Fnv164();
+		protected override Fnv164 CreateAlgorithm(SingleTestVariant variant) => new Fnv164();
 
-		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleHashVariant variant) => new[]
+		protected override IReadOnlyList<string> GetExpectedHashesForIncrementalInput(SingleTestVariant variant) => new[]
 		{
 			"CBF29CE484222325",
 			"AF63BD4C8601B7DF",
@@ -60,7 +60,7 @@ namespace Bodu.Security.Cryptography
 			"3FD7DCC63786D55E",
 		};
 
-		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleHashVariant variant) => new Dictionary<string, string>
+		protected override IReadOnlyDictionary<string, string> GetExpectedHashesForNamedInputs(SingleTestVariant variant) => new Dictionary<string, string>
 		{
 			["Empty"] = "CBF29CE484222325",
 			["ABC"] = "D86FEA186B53126B",

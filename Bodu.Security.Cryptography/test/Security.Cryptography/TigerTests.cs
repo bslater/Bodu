@@ -83,7 +83,7 @@ namespace Bodu.Security.Cryptography
 			["Tiger"] = Encoding.UTF8.GetBytes("Tiger")
 		};
 
-		protected override IEnumerable<HashTestVector> GetTestVectors(TigerTests.TigerVariant variant)
+		protected override IEnumerable<KnownAnswerTest> GetTestVectors(TigerTests.TigerVariant variant)
 		{
 			foreach (var vector in base.GetTestVectors(variant))
 				yield return vector;
@@ -93,11 +93,11 @@ namespace Bodu.Security.Cryptography
 			{
 				if (expected.TryGetValue(name, out var hex))
 				{
-					yield return new HashTestVector
+					yield return new KnownAnswerTest
 					{
 						Name = name,
 						Input = input,
-						ExpectedHash = Convert.FromHexString(hex)
+						ExpectedOutput = Convert.FromHexString(hex)
 					};
 				}
 			}

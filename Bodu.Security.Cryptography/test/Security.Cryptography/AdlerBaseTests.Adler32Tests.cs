@@ -13,13 +13,13 @@ namespace Bodu.Security.Cryptography
 	/// </summary>
 	[TestClass]
 	public abstract partial class Adler32BaseTests<TTest, TAlgorithm>
-		: AdlerBaseTests<TTest, TAlgorithm, SingleHashVariant, uint>
+		: AdlerBaseTests<TTest, TAlgorithm, SingleTestVariant, uint>
 		where TTest : Adler32BaseTests<TTest, TAlgorithm>, new()
 		where TAlgorithm : Adler32Base, new()
 	{
-		public override IEnumerable<SingleHashVariant> GetHashAlgorithmVariants() => new[]
+		public override IEnumerable<SingleTestVariant> GetHashAlgorithmVariants() => new[]
 		{
-			SingleHashVariant.Default
+			SingleTestVariant.Default
 		};
 	}
 }

@@ -14,7 +14,7 @@ namespace Bodu.Security.Cryptography
 	{
 		[DataTestMethod]
 		[DynamicData(nameof(HashAlgorithmVariants), DynamicDataSourceType.Method)]
-		public void AlgorithmName_WhenUsingVariant_ShouldReturnCorrectlyFormattedString(SingleHashVariant variant)
+		public void AlgorithmName_WhenUsingVariant_ShouldReturnCorrectlyFormattedString(SingleTestVariant variant)
 		{
 			using var algorithm = this.CreateAlgorithm(variant);
 			string typeName = algorithm.GetType().Name;
