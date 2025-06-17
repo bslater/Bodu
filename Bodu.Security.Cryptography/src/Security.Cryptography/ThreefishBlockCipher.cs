@@ -51,8 +51,8 @@ namespace Bodu.Security.Cryptography
 		/// <exception cref="ArgumentException">Thrown if <paramref name="key" /> or <paramref name="tweak" /> has an invalid length.</exception>
 		protected ThreefishBlockCipher(ReadOnlySpan<byte> key, ReadOnlySpan<byte> tweak)
 		{
-			ThrowHelper.ThrowIfArrayLengthInvalid(key, BlockSize);
-			ThrowHelper.ThrowIfArrayLengthInvalid(tweak, 16);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(key, BlockSize);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(tweak, 16);
 
 			// Key schedule initialization: 4 words + parity + duplicated key
 			KeySchedule = new ulong[BlockWords * 2 + 1];
@@ -157,8 +157,8 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.Clear(KeySchedule);  // Securely zeros content
-				CryptoUtilities.Clear(TweakSchedule);
+				CryptoHelpers.Clear(KeySchedule);  // Securely zeros content
+				CryptoHelpers.Clear(TweakSchedule);
 			}
 
 			_disposed = true;

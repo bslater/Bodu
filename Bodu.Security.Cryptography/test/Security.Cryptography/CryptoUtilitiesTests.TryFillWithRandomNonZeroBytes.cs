@@ -15,7 +15,7 @@ namespace Bodu.Security.Cryptography
 		public void TryFillWithRandomNonZeroBytes_WhenBufferCanBeFilled_ShouldReturnTrue()
 		{
 			Span<byte> span = stackalloc byte[32];
-			bool result = CryptoUtilities.TryFillWithRandomNonZeroBytes(span);
+			bool result = CryptoHelpers.TryFillWithRandomNonZeroBytes(span);
 			Assert.IsTrue(result);
 			foreach (byte b in span)
 			{

@@ -42,7 +42,6 @@ namespace Bodu.Security.Cryptography
 		/// Initializes a new instance of the <see cref="Threefish" /> class with the specified block, key, and tweak sizes.
 		/// </summary>
 		/// <param name="blockSizeBits">The block size in bits. Must match the Threefish variant block size.</param>
-		/// <param name="keySizeBits">The key size in bits. Must match the Threefish variant key size.</param>
 		/// <param name="tweakSizeBits">The tweak size in bits. Typically 128 bits for all Threefish variants.</param>
 		protected Threefish(int blockSizeBits, int tweakSizeBits)
 		{
@@ -86,15 +85,15 @@ namespace Bodu.Security.Cryptography
 
 		/// <inheritdoc />
 		public override void GenerateIV() =>
-			IVValue = CryptoUtilities.GetRandomNonZeroBytes(BlockSizeBytes);
+			IVValue = CryptoHelpers.GetRandomNonZeroBytes(BlockSizeBytes);
 
 		/// <inheritdoc />
 		public override void GenerateKey() =>
-			KeyValue = CryptoUtilities.GetRandomNonZeroBytes(KeySizeBytes);
+			KeyValue = CryptoHelpers.GetRandomNonZeroBytes(KeySizeBytes);
 
 		/// <inheritdoc />
 		public override void GenerateTweak() =>
-			TweakValue = CryptoUtilities.GetRandomNonZeroBytes(DefaultTweakSizeBytes);
+			TweakValue = CryptoHelpers.GetRandomNonZeroBytes(DefaultTweakSizeBytes);
 
 		/// <summary>
 		/// Instantiates the concrete Threefish block cipher with the specified key and tweak.
@@ -115,15 +114,15 @@ namespace Bodu.Security.Cryptography
 		{
 			if (key.Length != KeySizeBytes)
 				throw new CryptographicException(
-					string.Format(ResourceStrings.CryptographicException_InvalidKeySize, key.Length * 8, CryptoUtilities.FormatLegalSizes(LegalKeySizesValue)));
+					string.Format(ResourceStrings.CryptographicException_InvalidKeySize, key.Length * 8, CryptoHelpers.FormatLegalSizes(LegalKeySizesValue)));
 
 			if (iv.Length != BlockSizeBytes)
 				throw new CryptographicException(
-					string.Format(ResourceStrings.CryptographicException_InvalidIVSize, key.Length * 8, CryptoUtilities.FormatLegalSizes(LegalBlockSizes)));
+					string.Format(ResourceStrings.CryptographicException_InvalidIVSize, key.Length * 8, CryptoHelpers.FormatLegalSizes(LegalBlockSizes)));
 
 			if (tweak.Length != DefaultTweakSizeBytes)
 				throw new CryptographicException(
-					string.Format(ResourceStrings.CryptographicException_InvalidTweakSize, key.Length * 8, CryptoUtilities.FormatLegalSizes(LegalTweakSizes)));
+					string.Format(ResourceStrings.CryptographicException_InvalidTweakSize, key.Length * 8, CryptoHelpers.FormatLegalSizes(LegalTweakSizes)));
 		}
 	}
 }

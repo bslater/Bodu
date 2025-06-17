@@ -12,8 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithmExtensionTests.Decrypt.cs" />
-    <Compile Remove="Security.Cryptography.Extensions\SymmetricAlgorithmExtensionTests.Encrypt.cs" />
     <Compile Remove="Security.Cryptography\CityHashTests.cs" />
     <Compile Remove="Security.Cryptography\CrcLookupTableCacheTests.cs" />
     <Compile Remove="Security.Cryptography\CrcTests.ComputeHash.cs" />

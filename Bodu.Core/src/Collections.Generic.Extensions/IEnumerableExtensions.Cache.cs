@@ -54,9 +54,9 @@ namespace Bodu.Collections.Generic.Extensions
 		{
 			private readonly IEnumerable<T> _source;
 			private volatile List<T>? _cache;
+			private IEnumerator<T>? _enumerator;
 			private volatile ExceptionDispatchInfo? _exception;
 			private int _exceptionIndex = -1;
-			private IEnumerator<T>? _enumerator;
 			private int _initializationState; // 0 = not initialized, 1 = initializing, 2 = initialized
 
 			/// <summary>
@@ -67,12 +67,6 @@ namespace Bodu.Collections.Generic.Extensions
 			{
 				_source = source ?? throw new ArgumentNullException(nameof(source));
 			}
-
-			/// <inheritdoc />
-			public IEnumerator<T> GetEnumerator() => new Enumerator(this);
-
-			/// <inheritdoc />
-			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 			/// <summary>
 			/// Disposes internal state and resets cached items and the source enumerator.
@@ -85,6 +79,12 @@ namespace Bodu.Collections.Generic.Extensions
 				_exceptionIndex = -1;
 				_initializationState = 0;
 			}
+
+			/// <inheritdoc />
+			public IEnumerator<T> GetEnumerator() => new Enumerator(this);
+
+			/// <inheritdoc />
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 			/// <summary>
 			/// Ensures the cache is initialized and the source enumerator is safely acquired.
@@ -159,6 +159,12 @@ namespace Bodu.Collections.Generic.Extensions
 				/// <inheritdoc />
 				object IEnumerator.Current => Current;
 
+				/// <summary>
+				/// Disposes the enumerator. No-op for this implementation.
+				/// </summary>
+				public void Dispose()
+				{ }
+
 				/// <inheritdoc />
 				public bool MoveNext()
 				{
@@ -183,10 +189,16 @@ namespace Bodu.Collections.Generic.Extensions
 					{
 						// Another thread is currently fetching the next item; spin and retry
 						SpinWait spin = default;
-						while (_index >= (_parent._cache?.Count ?? 0))
-							spin.SpinOnce();
+						while (true)
+						{
+							if (_index < (_parent._cache?.Count ?? 0))
+								return true;
 
-						return true;
+							if (_parent._enumerator == null)
+								return false;
+
+							spin.SpinOnce();
+						}
 					}
 
 					try
@@ -222,12 +234,6 @@ namespace Bodu.Collections.Generic.Extensions
 				/// <exception cref="NotSupportedException">Always thrown.</exception>
 				public void Reset() =>
 					throw new NotSupportedException();
-
-				/// <summary>
-				/// Disposes the enumerator. No-op for this implementation.
-				/// </summary>
-				public void Dispose()
-				{ }
 			}
 		}
 	}

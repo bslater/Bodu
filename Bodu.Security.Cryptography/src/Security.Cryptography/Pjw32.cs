@@ -102,7 +102,7 @@ namespace Bodu.Security.Cryptography
 			if (disposed) return;
 			if (disposing)
 			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoHelpers.ClearAndNullify(ref HashValue);
 
 				workingHash = 0;
 			}

@@ -25,6 +25,10 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
     <Compile Remove="Extensions\DateOnly*.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Text\**" />
+    <None Remove="Text\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0" PrivateAssets="all" />

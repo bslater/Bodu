@@ -9,7 +9,7 @@ namespace Bodu.Security.Cryptography
 {
 	[TestClass]
 	public partial class SimpleReversingTweakableSymmetricAlgorithmTests
-		: TweakableSymmetricAlgorithmTests<SimpleReversingTweakableSymmetricAlgorithm>
+		: TweakableSymmetricAlgorithmTests<SimpleReversingTweakableSymmetricAlgorithmTests, SimpleReversingTweakableSymmetricAlgorithm>
 	{
 		/// <inheritdoc />
 		protected override SimpleReversingTweakableSymmetricAlgorithm CreateAlgorithm() => new SimpleReversingTweakableSymmetricAlgorithm();

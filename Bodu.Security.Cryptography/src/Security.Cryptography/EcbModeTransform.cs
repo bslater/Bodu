@@ -42,7 +42,7 @@ namespace Bodu.Security.Cryptography
 			int blockSize = cipher.BlockSize;
 
 			ThrowHelper.ThrowIfSpanLengthNotPositiveMultipleOf(input, blockSize);
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(output, 0, input.Length);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(output, 0, input.Length);
 
 			for (int offset = 0; offset < input.Length; offset += blockSize)
 			{

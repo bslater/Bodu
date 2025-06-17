@@ -106,7 +106,7 @@ namespace Bodu.Security.Cryptography
 					string.Format(ResourceStrings.CryptographicException_InvalidHashSize, hashSize, string.Join(", ", ValidHashSizes)));
 
 			KeyValue = new byte[KeySize];
-			CryptoUtilities.FillWithRandomNonZeroBytes(KeyValue);
+			CryptoHelpers.FillWithRandomNonZeroBytes(KeyValue);
 			compressionRounds = MinCompressionRounds;
 			finalizationRounds = MinFinalizationRounds;
 			HashSizeValue = hashSize;
@@ -273,7 +273,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoHelpers.ClearAndNullify(ref HashValue);
 
 				v0 = v1 = v2 = v3 = 0;
 				compressionRounds = finalizationRounds = 0;

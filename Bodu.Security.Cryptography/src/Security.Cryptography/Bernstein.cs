@@ -171,7 +171,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoHelpers.ClearAndNullify(ref HashValue);
 
 				initialValue = workingHash = 0;
 			}

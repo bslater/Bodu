@@ -343,10 +343,10 @@ namespace Bodu.Security.Cryptography
 				finalizationRounds = initializationRounds = rounds = inputBlockSizeBits = bitLength = 0;
 				if (state != null)
 				{
-					CryptoUtilities.ClearAndNullify(ref HashValue);
-					CryptoUtilities.ClearAndNullify(ref state!);
-					CryptoUtilities.ClearAndNullify(ref initializedState!);
-					CryptoUtilities.Clear(scratch.AsSpan());
+					CryptoHelpers.ClearAndNullify(ref HashValue);
+					CryptoHelpers.ClearAndNullify(ref state!);
+					CryptoHelpers.ClearAndNullify(ref initializedState!);
+					CryptoHelpers.Clear(scratch.AsSpan());
 					isInitializedStateCached = false;
 				}
 			}

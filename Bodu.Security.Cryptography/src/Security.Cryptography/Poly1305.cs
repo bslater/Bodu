@@ -67,7 +67,7 @@ namespace Bodu.Security.Cryptography
 		{
 			HashSizeValue = 128;
 			KeyValue = new byte[KeySize];
-			CryptoUtilities.FillWithRandomNonZeroBytes(KeyValue);
+			CryptoHelpers.FillWithRandomNonZeroBytes(KeyValue);
 			InitializeKey();
 		}
 
@@ -141,7 +141,7 @@ namespace Bodu.Security.Cryptography
 			if (KeyValue is null || KeyValue.Length != KeySize)
 			{
 				KeyValue = new byte[KeySize];
-				CryptoUtilities.FillWithRandomNonZeroBytes(KeyValue);
+				CryptoHelpers.FillWithRandomNonZeroBytes(KeyValue);
 			}
 
 			InitializeKey();
@@ -160,7 +160,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoHelpers.ClearAndNullify(ref HashValue);
 				Array.Clear(_acc);
 				Array.Clear(_r);
 				Array.Clear(_key);
@@ -274,7 +274,7 @@ namespace Bodu.Security.Cryptography
 			BinaryPrimitives.WriteUInt32LittleEndian(tag.Slice(12), (uint)f3);
 
 			// Clear key immediately after use to prevent reuse
-			CryptoUtilities.ClearAndNullify(ref KeyValue!);
+			CryptoHelpers.ClearAndNullify(ref KeyValue!);
 
 			return tag.ToArray();
 		}

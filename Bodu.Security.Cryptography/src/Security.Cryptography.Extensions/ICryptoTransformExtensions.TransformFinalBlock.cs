@@ -75,7 +75,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		/// <returns>A new byte array containing the final transformed output.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="cryptoTransform"/> is <c>null</c>.</exception>
 		/// <remarks>
-		/// <para>This method uses a <see cref="CryptoStream"/> to write the input and finalize the block.</para>
+		/// <para>This method uses a <see cref="CryptoStreamBen"/> to write the input and finalize the block.</para>
 		/// <para>It avoids intermediate allocations and is suitable for performance-sensitive scenarios.</para>
 		/// </remarks>
 		/// <example>
@@ -91,7 +91,7 @@ namespace Bodu.Security.Cryptography.Extensions
 			ThrowHelper.ThrowIfNull(cryptoTransform);
 
 			using MemoryStream ms = new MemoryStream(input.Length + cryptoTransform.OutputBlockSize);
-			using CryptoStream cryptoStream = new CryptoStream(ms, cryptoTransform, CryptoStreamMode.Write);
+			using CryptoStreamBen cryptoStream = new CryptoStreamBen(ms, cryptoTransform, CryptoStreamMode.Write);
 
 			cryptoStream.Write(input);
 			cryptoStream.FlushFinalBlock();

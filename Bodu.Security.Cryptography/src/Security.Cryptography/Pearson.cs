@@ -270,9 +270,9 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
-				CryptoUtilities.ClearAndNullify(ref permutationTable!);
-				CryptoUtilities.ClearAndNullify(ref workingHash!);
+				CryptoHelpers.ClearAndNullify(ref HashValue);
+				CryptoHelpers.ClearAndNullify(ref permutationTable!);
+				CryptoHelpers.ClearAndNullify(ref workingHash!);
 
 				isFirstByte = false;
 			}

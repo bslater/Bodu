@@ -206,7 +206,7 @@ namespace Bodu.Security.Cryptography
 			if (disposed) return;
 			if (disposing)
 			{
-				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoHelpers.ClearAndNullify(ref HashValue);
 
 				state0 = state1 = state2 = 0;
 			}

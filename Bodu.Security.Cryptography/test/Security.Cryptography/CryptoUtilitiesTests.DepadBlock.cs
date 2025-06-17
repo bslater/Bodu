@@ -93,7 +93,7 @@ namespace Bodu.Security.Cryptography
 			byte[] input = Convert.FromHexString(inputHex);
 			byte[] expected = Convert.FromHexString(expectedHex);
 
-			var result = CryptoUtilities.DepadBlock(padding, input.Length, input, 0, input.Length);
+			var result = CryptoHelpers.DepadBlock(padding, input.Length, input, 0, input.Length);
 
 			CollectionAssert.AreEqual(expected, result);
 		}
@@ -113,7 +113,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[input.Length]
 				: new byte[input.Length];
 
-			_ = CryptoUtilities.DepadBlock(padding, input.Length, input, destination);
+			_ = CryptoHelpers.DepadBlock(padding, input.Length, input, destination);
 
 			Assert.IsTrue(destination.Slice(0, expected.Length).SequenceEqual(expected));
 		}
@@ -133,7 +133,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[input.Length]
 				: new byte[input.Length];
 
-			var result = CryptoUtilities.DepadBlock(padding, input.Length, input, destination);
+			var result = CryptoHelpers.DepadBlock(padding, input.Length, input, destination);
 
 			Assert.AreEqual(expected.Length, result);
 		}
@@ -154,7 +154,7 @@ namespace Bodu.Security.Cryptography
 
 			try
 			{
-				_ = CryptoUtilities.DepadBlock(padding, blockSize, input, 0, input.Length);
+				_ = CryptoHelpers.DepadBlock(padding, blockSize, input, 0, input.Length);
 				Assert.Fail($"Expected {exceptionType.Name} was not thrown.");
 			}
 			catch (Exception ex)

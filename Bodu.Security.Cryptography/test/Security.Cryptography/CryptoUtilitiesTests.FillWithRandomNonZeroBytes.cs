@@ -15,7 +15,7 @@ namespace Bodu.Security.Cryptography
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void FillWithRandomNonZeroBytes_WhenBufferIsNull_ShouldThrowExactly()
 		{
-			CryptoUtilities.FillWithRandomNonZeroBytes(null);
+			CryptoHelpers.FillWithRandomNonZeroBytes(null);
 		}
 
 		/// <summary>
@@ -25,7 +25,7 @@ namespace Bodu.Security.Cryptography
 		[ExpectedException(typeof(ArgumentException))]
 		public void FillWithRandomNonZeroBytes_WhenBufferIsEmpty_ShouldThrowExactly()
 		{
-			CryptoUtilities.FillWithRandomNonZeroBytes(Array.Empty<byte>());
+			CryptoHelpers.FillWithRandomNonZeroBytes(Array.Empty<byte>());
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace Bodu.Security.Cryptography
 		public void FillWithRandomNonZeroBytes_WhenBufferHasLength_ShouldContainNoZeroBytes()
 		{
 			byte[] buffer = new byte[32];
-			CryptoUtilities.FillWithRandomNonZeroBytes(buffer);
+			CryptoHelpers.FillWithRandomNonZeroBytes(buffer);
 			CollectionAssert.DoesNotContain(buffer, (byte)0);
 		}
 
@@ -46,7 +46,7 @@ namespace Bodu.Security.Cryptography
 		public void FillWithRandomNonZeroBytesSpan_WhenCalled_ShouldContainNoZeroBytes()
 		{
 			Span<byte> span = stackalloc byte[32];
-			CryptoUtilities.FillWithRandomNonZeroBytes(span);
+			CryptoHelpers.FillWithRandomNonZeroBytes(span);
 			foreach (byte b in span)
 			{
 				Assert.AreNotEqual(0, b);

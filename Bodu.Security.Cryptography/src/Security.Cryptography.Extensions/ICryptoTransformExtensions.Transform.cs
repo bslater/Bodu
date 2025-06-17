@@ -109,7 +109,7 @@ namespace Bodu.Security.Cryptography.Extensions
 			byte[] buffer = new byte[bufferSize];
 			int totalBytesRead = 0;
 
-			using CryptoStream cryptoStream = new CryptoStream(targetStream, transform, CryptoStreamMode.Write);
+			using CryptoStreamBen cryptoStream = new CryptoStreamBen(targetStream, transform, CryptoStreamMode.Write, leaveOpen: true);
 			int bytesRead;
 
 			while ((bytesRead = sourceStream.Read(buffer, 0, buffer.Length)) > 0)
@@ -135,10 +135,10 @@ namespace Bodu.Security.Cryptography.Extensions
 		public static int Transform(this ICryptoTransform transform, ReadOnlySpan<byte> input, Span<byte> destination)
 		{
 			ThrowHelper.ThrowIfNull(transform);
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(destination, 0, input.Length + transform.OutputBlockSize);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(destination, 0, input.Length + transform.OutputBlockSize);
 
 			using var ms = new MemoryStream(destination.Length);
-			using var cryptoStream = new CryptoStream(ms, transform, CryptoStreamMode.Write);
+			using var cryptoStream = new CryptoStreamBen(ms, transform, CryptoStreamMode.Write);
 			cryptoStream.Write(input);
 			cryptoStream.FlushFinalBlock();
 
@@ -162,7 +162,7 @@ namespace Bodu.Security.Cryptography.Extensions
 			=> transform.Transform(input.Span, destination.Span);
 
 		/// <summary>
-		/// Performs the core transformation logic on a span of bytes using a <see cref="CryptoStream" />.
+		/// Performs the core transformation logic on a span of bytes using a <see cref="CryptoStreamBen" />.
 		/// </summary>
 		/// <param name="cryptoTransform">The cryptographic transform to apply.</param>
 		/// <param name="input">The span of input bytes to transform.</param>
@@ -173,7 +173,7 @@ namespace Bodu.Security.Cryptography.Extensions
 		internal static byte[] TransformInternal(ICryptoTransform cryptoTransform, ReadOnlySpan<byte> input)
 		{
 			using MemoryStream ms = new MemoryStream(input.Length + cryptoTransform.OutputBlockSize);
-			using CryptoStream cryptoStream = new CryptoStream(ms, cryptoTransform, CryptoStreamMode.Write);
+			using CryptoStreamBen cryptoStream = new CryptoStreamBen(ms, cryptoTransform, CryptoStreamMode.Write);
 
 			cryptoStream.Write(input);
 			cryptoStream.FlushFinalBlock();

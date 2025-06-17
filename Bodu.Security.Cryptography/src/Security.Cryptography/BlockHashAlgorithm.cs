@@ -98,7 +98,7 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.Clear(_residualByteBuffer);
+				CryptoHelpers.Clear(_residualByteBuffer);
 				_residualBytes = 0;
 				_totalLength = 0;
 			}

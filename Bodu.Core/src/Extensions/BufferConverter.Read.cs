@@ -66,7 +66,7 @@ namespace Bodu.Extensions
 #else
 			int elementSize = Marshal.SizeOf<T>();
 #endif
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, elementSize);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(sourceSpan, 0, elementSize);
 
 			return MemoryMarshal.Read<T>(sourceSpan.Slice(0, elementSize));
 		}

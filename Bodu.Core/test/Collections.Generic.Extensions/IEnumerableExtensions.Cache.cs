@@ -3,54 +3,43 @@
 namespace Bodu.Collections.Generic.Extensions
 {
 	[TestClass]
-	public sealed partial class IEnumerableExtensionsTests_Cacheh : EnumerableTests
+	public sealed partial class IEnumerableExtensionsTests_Cache : EnumerableTests
 	{
 		[TestMethod]
-		public void Cache_WhenSourceIsNull_ShouldThrowExactly()
+		public void Cache_ShouldDeferExecution()
 		{
-			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			AssertExecutionIsDeferred("Cache", s => s.Cache(), YieldingSequence());
+		}
+
+		[TestMethod]
+		public void Cache_ShouldEnumerateOnDemand()
+		{
+			AssertExecutionOccursOnEnumeration("Cache", s => s.Cache(), YieldingSequence());
+		}
+
+		[TestMethod]
+		public void Cache_WhenEnumeratedFromMultipleThreads_ShouldReturnConsistentResults()
+		{
+			var tracker = new TrackingEnumerable<int>(YieldingSequence());
+			var actual = tracker.Cache();
+
+			Parallel.For(0, 5, _ =>
 			{
-				IEnumerableExtensions.Cache<int>(null!);
+				var result = actual.ToList();
+				CollectionAssert.AreEqual(YieldingSequence().ToArray(), result);
 			});
-		}
-
-		[TestMethod]
-		public void Cache_WhenSourceIsCollection_ShouldReturnSameInstance()
-		{
-			var source = new List<int> { 1, 2, 3 };
-			var actual = source.Cache();
-
-			Assert.AreSame(source, actual);
-		}
-
-		[TestMethod]
-		public void Cache_WhenSourceIsReadOnlyCollection_ShouldReturnSameInstance()
-		{
-			var source = Array.AsReadOnly(new[] { 1, 2, 3 });
-			var actual = source.Cache();
-
-			Assert.AreSame(source, actual);
-		}
-
-		[TestMethod]
-		public void Cache_WhenSourceIsAlreadyCached_ShouldReturnSameInstance()
-		{
-			var source = Enumerable.Range(1, 3).Cache();
-			var result = source.Cache();
-
-			Assert.AreSame(source, result);
 		}
 
 		[TestMethod]
 		public void Cache_WhenEnumeratedTwice_ShouldEnumerateSourceOnlyOnce()
 		{
-			var tracker = new TrackingEnumerable<int>(new[] { 1, 2, 3 });
+			var tracker = new TrackingEnumerable<int>(YieldingSequence());
 			var actual = tracker.Cache();
 			var first = actual.ToList();
 			var second = actual.ToList();
 
 			CollectionAssert.AreEqual(first, second);
-			Assert.AreEqual(3, tracker.ItemsEnumerated);
+			Assert.AreEqual(YieldingSequence().Count(), tracker.ItemsEnumerated);
 		}
 
 		[TestMethod]
@@ -68,40 +57,42 @@ namespace Bodu.Collections.Generic.Extensions
 
 			CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 5 }, result);
 			Assert.AreEqual(5, tracker.ItemsEnumerated);
-
-			static IEnumerable<int> YieldingSequence()
-			{
-				yield return 1;
-				yield return 2;
-				yield return 3;
-				yield return 4;
-				yield return 5;
-			}
 		}
 
 		[TestMethod]
-		public void Cache_WhenSourceThrowsDuringEnumeration_ShouldThrowOnFirstEnumeration()
+		public void Cache_WhenSourceIsAlreadyCached_ShouldReturnSameInstance()
 		{
-			// Arrange
-			var source = new TrackingEnumerable<int>(ThrowingSequence());
-			var cached = source.Cache();
-			var enumerator = cached.GetEnumerator();
+			var source = Enumerable.Range(1, 3).Cache();
+			var result = source.Cache();
 
-			// Act: First item succeeds
-			Assert.IsTrue(enumerator.MoveNext());
-			Assert.AreEqual(1, enumerator.Current);
+			Assert.AreSame(source, result);
+		}
 
-			// Assert: Second item throws
-			Assert.ThrowsException<InvalidOperationException>(() =>
+		[TestMethod]
+		public void Cache_WhenSourceIsCollection_ShouldReturnSameInstance()
+		{
+			var source = new List<int> { 1, 2, 3 };
+			var actual = source.Cache();
+
+			Assert.AreSame(source, actual);
+		}
+
+		[TestMethod]
+		public void Cache_WhenSourceIsNull_ShouldThrowExactly()
+		{
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
 			{
-				enumerator.MoveNext();
+				IEnumerableExtensions.Cache<int>(null!);
 			});
+		}
 
-			static IEnumerable<int> ThrowingSequence()
-			{
-				yield return 1;
-				throw new InvalidOperationException("Test");
-			}
+		[TestMethod]
+		public void Cache_WhenSourceIsReadOnlyCollection_ShouldReturnSameInstance()
+		{
+			var source = Array.AsReadOnly(new[] { 1, 2, 3 });
+			var actual = source.Cache();
+
+			Assert.AreSame(source, actual);
 		}
 
 		[TestMethod]
@@ -129,62 +120,24 @@ namespace Bodu.Collections.Generic.Extensions
 				{
 				}
 			});
-
-			static IEnumerable<int> ThrowingSequence()
-			{
-				yield return 1;
-				throw new InvalidOperationException("Test");
-			}
 		}
 
 		[TestMethod]
-		public void Cache_WhenEnumeratedFromMultipleThreads_ShouldReturnConsistentResults()
+		public void Cache_WhenSourceThrowsDuringEnumeration_ShouldThrowOnFirstEnumeration()
 		{
-			var values = Enumerable.Range(0, 100).ToArray();
-			var tracker = new TrackingEnumerable<int>(values);
-			var actual = tracker.Cache();
+			// Arrange
+			var source = new TrackingEnumerable<int>(ThrowingSequence());
+			var cached = source.Cache();
+			var enumerator = cached.GetEnumerator();
 
-			Parallel.For(0, 5, _ =>
-			{
-				var result = actual.ToList();
-				CollectionAssert.AreEqual(values, result);
-			});
-		}
+			// Act: First item succeeds
+			Assert.IsTrue(enumerator.MoveNext());
+			Assert.AreEqual(1, enumerator.Current);
 
-		[TestMethod]
-		public void Enumerator_Current_WhenBeforeMoveNext_ShouldThrowInvalidOperationException()
-		{
-			var actual = new[] { 1 }.Cache();
-			var enumerator = actual.GetEnumerator();
-
+			// Assert: Second item throws
 			Assert.ThrowsException<InvalidOperationException>(() =>
 			{
-				_ = enumerator.Current;
-			});
-		}
-
-		[TestMethod]
-		public void Enumerator_Current_WhenAfterEnd_ShouldThrowInvalidOperationException()
-		{
-			var actual = new[] { 1 }.Cache();
-			var enumerator = actual.GetEnumerator();
-			while (enumerator.MoveNext()) { }
-
-			Assert.ThrowsException<InvalidOperationException>(() =>
-			{
-				_ = enumerator.Current;
-			});
-		}
-
-		[TestMethod]
-		public void Enumerator_Reset_ShouldThrowNotSupportedException()
-		{
-			var actual = new[] { 1 }.Cache();
-			var enumerator = actual.GetEnumerator();
-
-			Assert.ThrowsExactly<NotSupportedException>(() =>
-			{
-				enumerator.Reset();
+				enumerator.MoveNext();
 			});
 		}
 
@@ -214,24 +167,58 @@ namespace Bodu.Collections.Generic.Extensions
 
 			// Assert: Ensure second enumeration is treated as a fresh sequence
 			AssertExecutionOccursOnEnumeration("Cache", s => s.Cache(), YieldingSequence());
+		}
 
-			static IEnumerable<int> YieldingSequence()
+		[TestMethod]
+		public void Enumerator_Current_WhenAfterEnd_ShouldThrowInvalidOperationException()
+		{
+			var actual = YieldingSequence().Cache();
+			var enumerator = actual.GetEnumerator();
+			while (enumerator.MoveNext()) { }
+
+			Assert.ThrowsException<InvalidOperationException>(() =>
 			{
-				yield return 1;
-				yield return 2;
-			}
+				_ = enumerator.Current;
+			});
 		}
 
 		[TestMethod]
-		public void Cache_ShouldDeferExecution()
+		public void Enumerator_Current_WhenBeforeMoveNext_ShouldThrowInvalidOperationException()
 		{
-			AssertExecutionIsDeferred("Cache", s => s.Cache(), new[] { 1, 2, 3 });
+			var actual = YieldingSequence().Cache();
+			var enumerator = actual.GetEnumerator();
+
+			Assert.ThrowsException<InvalidOperationException>(() =>
+			{
+				_ = enumerator.Current;
+			});
 		}
 
 		[TestMethod]
-		public void Cache_ShouldEnumerateOnDemand()
+		public void Enumerator_Reset_ShouldThrowNotSupportedException()
 		{
-			AssertExecutionOccursOnEnumeration("Cache", s => s.Cache(), new[] { 1, 2, 3 });
+			var actual = YieldingSequence().Cache();
+			var enumerator = actual.GetEnumerator();
+
+			Assert.ThrowsExactly<NotSupportedException>(() =>
+			{
+				enumerator.Reset();
+			});
+		}
+
+		private static IEnumerable<int> ThrowingSequence()
+		{
+			yield return 1;
+			throw new InvalidOperationException("Test");
+		}
+
+		private static IEnumerable<int> YieldingSequence()
+		{
+			yield return 1;
+			yield return 2;
+			yield return 3;
+			yield return 4;
+			yield return 5;
 		}
 	}
 }

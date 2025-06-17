@@ -20,7 +20,7 @@ namespace Bodu.Security.Cryptography
 			byte[] input = Convert.FromHexString(inputHex);
 			Span<byte> destination = new byte[input.Length];
 
-			bool result = CryptoUtilities.TryDepadBlock(padding, input.Length, input, destination, out int written);
+			bool result = CryptoHelpers.TryDepadBlock(padding, input.Length, input, destination, out int written);
 
 			Assert.IsTrue(result);
 		}
@@ -38,7 +38,7 @@ namespace Bodu.Security.Cryptography
 			var expectedLength = expected.Length;
 			Span<byte> destination = new byte[input.Length];
 
-			CryptoUtilities.TryDepadBlock(padding, input.Length, input, destination, out int written);
+			CryptoHelpers.TryDepadBlock(padding, input.Length, input, destination, out int written);
 
 			Assert.AreEqual(expectedLength, written);
 		}
@@ -56,7 +56,7 @@ namespace Bodu.Security.Cryptography
 			var expectedLength = expected.Length;
 			Span<byte> destination = new byte[input.Length];
 
-			CryptoUtilities.TryDepadBlock(padding, input.Length, input, destination, out int written);
+			CryptoHelpers.TryDepadBlock(padding, input.Length, input, destination, out int written);
 
 			CollectionAssert.AreEqual(input.Take(expectedLength).ToArray(), destination.Slice(0, written).ToArray());
 		}
@@ -71,7 +71,7 @@ namespace Bodu.Security.Cryptography
 			byte[] input = Convert.FromHexString(inputHex);
 			Span<byte> destination = new byte[input.Length];
 
-			bool result = CryptoUtilities.TryDepadBlock(padding, blockSizeBytes, input, destination, out int written);
+			bool result = CryptoHelpers.TryDepadBlock(padding, blockSizeBytes, input, destination, out int written);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(0, written);

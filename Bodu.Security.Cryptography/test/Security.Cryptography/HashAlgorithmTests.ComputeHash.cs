@@ -113,7 +113,7 @@ namespace Bodu.Security.Cryptography
 		{
 			byte[] bufferA = new byte[256];
 			byte[] bufferB = new byte[257];
-			CryptoUtilities.FillWithRandomNonZeroBytes(bufferA);
+			CryptoHelpers.FillWithRandomNonZeroBytes(bufferA);
 			Array.Copy(bufferA, 0, bufferB, 1, bufferA.Length);
 
 			using var algorithm1 = this.CreateAlgorithm();
@@ -155,7 +155,7 @@ namespace Bodu.Security.Cryptography
 			using var algorithm2 = this.CreateAlgorithm();
 			byte[] input = new byte[size];
 			if (size > 0)
-				CryptoUtilities.FillWithRandomNonZeroBytes(input);
+				CryptoHelpers.FillWithRandomNonZeroBytes(input);
 
 			byte[] hashA = algorithm1.ComputeHash(input);
 			byte[] hashB = algorithm2.ComputeHash(input);

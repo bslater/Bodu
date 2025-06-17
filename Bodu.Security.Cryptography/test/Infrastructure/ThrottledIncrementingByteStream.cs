@@ -11,20 +11,33 @@ namespace Bodu.Infrastructure
 	public sealed class ThrottledIncrementingByteStream
 		: IncrementingByteStream
 	{
+		private readonly int _throttleDelayMs;
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ThrottledIncrementingByteStream" /> class with the specified total number of bytes.
 		/// </summary>
 		/// <param name="totalCount">The total number of bytes the stream will return.</param>
-		public ThrottledIncrementingByteStream(int totalCount)
+		public ThrottledIncrementingByteStream(int totalCount, int readDelay = 1000)
 			: base(totalCount)
 		{
+			_throttleDelayMs = readDelay;
 		}
 
 		/// <inheritdoc />
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			Thread.Sleep(1000); // simulate delay
+			Thread.Sleep(_throttleDelayMs); // simulate delay
 			return base.Read(buffer, offset, count);
+		}
+
+		public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+		{
+			await Task.Delay(_throttleDelayMs, cancellationToken); // simulate delay
+
+			// explicitly handle cancellation
+			cancellationToken.ThrowIfCancellationRequested();
+
+			return await base.ReadAsync(buffer, cancellationToken);
 		}
 	}
 }

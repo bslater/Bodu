@@ -61,7 +61,7 @@ namespace Bodu.Security.Cryptography
 		{
 			using T algorithm = this.CreateAlgorithm();
 			byte[] iv = new byte[algorithm.BlockSize / 8];
-			CryptoUtilities.FillWithRandomNonZeroBytes(iv);
+			CryptoHelpers.FillWithRandomNonZeroBytes(iv);
 
 			algorithm.Key = iv;
 			CollectionAssert.AreEqual(iv, algorithm.Key);
@@ -75,7 +75,7 @@ namespace Bodu.Security.Cryptography
 		{
 			using T algorithm = this.CreateAlgorithm();
 			byte[] iv = new byte[algorithm.BlockSize / 8];
-			CryptoUtilities.FillWithRandomNonZeroBytes(iv);
+			CryptoHelpers.FillWithRandomNonZeroBytes(iv);
 
 			algorithm.Key = iv;
 			Assert.AreNotSame(iv, algorithm.Key);
@@ -89,7 +89,7 @@ namespace Bodu.Security.Cryptography
 		{
 			using T algorithm = this.CreateAlgorithm();
 			byte[] iv = new byte[algorithm.BlockSize / 8];
-			CryptoUtilities.FillWithRandomNonZeroBytes(iv);
+			CryptoHelpers.FillWithRandomNonZeroBytes(iv);
 
 			algorithm.Key = iv;
 			byte[] ivCopy = algorithm.Key;

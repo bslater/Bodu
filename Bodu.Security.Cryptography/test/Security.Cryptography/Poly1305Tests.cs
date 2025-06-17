@@ -24,7 +24,7 @@ namespace Bodu.Security.Cryptography
 		protected override byte[] GenerateUniqueKey()
 		{
 			byte[] key = new byte[ExpectedKeySize];
-			CryptoUtilities.FillWithRandomNonZeroBytes(key);
+			CryptoHelpers.FillWithRandomNonZeroBytes(key);
 			return key;
 		}
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bodu.Extensions;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
@@ -28,182 +30,187 @@ namespace Bodu.Security.Cryptography
 		/// <summary>
 		/// Specifies the tweak sizes, in bits, that are supported by the algorithm.
 		/// </summary>
-		protected KeySizes[] LegalTweakSizesValue = Array.Empty<KeySizes>();
+		/// <remarks>
+		/// This backing field defines the range of acceptable tweak sizes for a given algorithm. It is used internally by the
+		/// <see cref="LegalTweakSizes" /> property.
+		/// </remarks>
+		[MaybeNull] protected KeySizes[] LegalTweakSizesValue = null!;
 
 		/// <summary>
-		/// Stores the currently configured tweak size in bits.
+		/// Stores the currently configured tweak size, in bits, for the algorithm instance.
 		/// </summary>
+		/// <remarks>
+		/// This backing field represents the effective size of the tweak currently configured via <see cref="TweakSize" /> or <see cref="Tweak" />.
+		/// </remarks>
 		protected int TweakSizeValue = 0;
 
 		/// <summary>
-		/// Stores the current tweak value.
+		/// Stores the current tweak value used by the algorithm.
 		/// </summary>
-		protected byte[] TweakValue = Array.Empty<byte>();
+		/// <remarks>
+		/// The value stored here is used internally and may be cleared or regenerated via <see cref="Dispose" />,
+		/// <see cref="GenerateTweak" />, or changes to <see cref="TweakSize" />. Defensive copies are used when accessing or assigning
+		/// through the <see cref="Tweak" /> property.
+		/// </remarks>
+		protected byte[]? TweakValue = null!;
+
+		private bool _disposed;
 
 		/// <summary>
 		/// Gets the tweak sizes, in bits, that are supported by the symmetric algorithm.
 		/// </summary>
-		/// <returns>An array of <see cref="KeySizes" /> values indicating valid tweak sizes.</returns>
+		/// <value>
+		/// An array of <see cref="KeySizes" /> instances indicating the valid minimum, maximum, and step sizes supported for tweak values.
+		/// </value>
+		/// <remarks>
+		/// This property returns a cloned copy of the internal tweak size definitions to prevent external modification. Override this
+		/// property in derived types to define custom tweak size support for a specific algorithm.
+		/// </remarks>
 		public virtual KeySizes[] LegalTweakSizes =>
-			this.LegalTweakSizesValue.ToArray();
+			(KeySizes[])LegalTweakSizesValue.Clone();
 
 		/// <summary>
-		/// Gets or sets the tweak value for the algorithm.
+		/// Gets or sets the tweak value for the symmetric algorithm.
 		/// </summary>
-		/// <value>The tweak value as a byte array.</value>
-		/// <exception cref="ArgumentNullException">Thrown if the value is <see langword="null" />.</exception>
+		/// <value>A byte array representing the tweak to be used. Must conform to one of the valid lengths specified by <see cref="LegalTweakSizes" />.</value>
+		/// <exception cref="ArgumentNullException">Thrown when the value is <see langword="null" />.</exception>
 		/// <exception cref="CryptographicException">
-		/// Thrown if the tweak value has not been set, or if the provided <paramref name="value" /> length is not supported by <see cref="LegalTweakSizes" />.
+		/// Thrown when the tweak size is invalid or the tweak has not been set and <see cref="TweakSize" /> is missing or invalid.
 		/// </exception>
 		/// <remarks>
-		/// The provided value must conform to one of the allowed sizes defined in <see cref="LegalTweakSizes" />. A defensive copy is made
-		/// during assignment and retrieval.
+		/// If the tweak is not explicitly set, it will be lazily generated via <see cref="GenerateTweak" />. Defensive copies are made
+		/// during assignment and retrieval to prevent external mutation.
 		/// </remarks>
 		public virtual byte[] Tweak
 		{
 			get
 			{
-				ThrowIfTweakNotSet();
+				ThrowIfDisposed();
+				if (TweakValue == null)
+					GenerateTweak();
 
-				return TweakValue.ToArray();
+				return TweakValue.Copy()!; // defensive copy
 			}
 
 			set
 			{
-				this.ThrowIfInvalidTweakSize(value);
+				ThrowIfDisposed();
+				ArgumentNullException.ThrowIfNull(value);
 
-				TweakValue = value.ToArray();
+				ThrowIfInvalidTweakSize(value.Length * 8);
+
+				TweakValue = value.Copy(); // defensive copy
 				TweakSizeValue = value.Length * 8;
 			}
 		}
 
 		/// <summary>
-		/// Gets or sets the size, in bits, of the tweak used by the algorithm.
+		/// Gets or sets the size, in bits, of the tweak value for the algorithm.
 		/// </summary>
-		/// <value>The configured tweak size, in bits, as defined by the implementation.</value>
-		/// <exception cref="CryptographicException">Thrown if the specified tweak size is not supported by <see cref="LegalTweakSizes" />.</exception>
-		/// <remarks>
-		/// When a new tweak size is assigned, the current <see cref="Tweak" /> value is cleared and reset to an empty byte array. This
-		/// ensures that any previously configured tweak does not remain valid if its length no longer matches the new size.
-		/// </remarks>
+		/// <value>An integer representing the bit length of the tweak. Must match one of the values defined in <see cref="LegalTweakSizes" />.</value>
+		/// <exception cref="CryptographicException">Thrown when the value does not match a valid tweak size defined in <see cref="LegalTweakSizes" />.</exception>
+		/// <remarks>Changing this value clears the current tweak. A new one can be generated via <see cref="GenerateTweak" />.</remarks>
 		public virtual int TweakSize
 		{
-			get => this.TweakSizeValue;
+			get
+			{
+				ThrowIfDisposed();
+				return TweakSizeValue;
+			}
 
 			set
 			{
-				this.ThrowIfInvalidTweakSize(value);
+				ThrowIfDisposed();
+				ThrowIfInvalidTweakSize(value);
 
-				this.TweakSizeValue = value;
-				this.TweakValue = Array.Empty<byte>();
+				TweakSizeValue = value;
+				TweakValue = null; // Clear previous tweak
 			}
 		}
 
-		/// <summary>
-		/// Gets a read-only span view of the current tweak value.
-		/// </summary>
-		/// <remarks>
-		/// This property exposes the current tweak as a <see cref="ReadOnlySpan{Byte}" /> for efficient access in span-based cryptographic
-		/// operations. If no tweak has been set, this span is empty.
-		/// </remarks>
-		protected ReadOnlySpan<byte> TweakSpan =>
-			this.TweakValue.AsSpan(0, this.TweakSizeValue / 8);
-
 		/// <inheritdoc />
 		public override ICryptoTransform CreateDecryptor() =>
-			this.CreateDecryptor(this.Key, this.IV, this.Tweak);
+			CreateDecryptor(Key, IV, Tweak);
 
 		/// <inheritdoc />
 		public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[]? rgbIV) =>
-			this.CreateDecryptor(rgbKey, rgbIV, this.Tweak);
+			CreateDecryptor(rgbKey, rgbIV, Tweak);
 
 		/// <summary>
-		/// Creates a symmetric decryptor object using the specified key, IV, and tweak.
+		/// Creates a symmetric decryptor using the specified key, initialization vector (IV), and tweak value.
 		/// </summary>
-		/// <param name="rgbKey">The encryption key.</param>
-		/// <param name="rgbIV">The initialization vector.</param>
-		/// <param name="tweak">The tweak value to use.</param>
-		/// <returns>An <see cref="ICryptoTransform" /> instance for decryption.</returns>
+		/// <param name="rgbKey">The secret key to use for decryption.</param>
+		/// <param name="rgbIV">The initialization vector to use for the decryption operation.</param>
+		/// <param name="tweak">The tweak value that modifies the decryption process.</param>
+		/// <returns>An <see cref="ICryptoTransform" /> instance that can be used to perform the decryption.</returns>
+		/// <exception cref="ArgumentNullException">
+		/// Thrown if <paramref name="rgbKey" />, <paramref name="rgbIV" />, or <paramref name="tweak" /> is <see langword="null" />.
+		/// </exception>
+		/// <exception cref="CryptographicException">
+		/// Thrown if any input does not conform to the expected size, format, or algorithm-specific constraints.
+		/// </exception>
+		/// <remarks>
+		/// This method must be implemented by derived types to support decryption with a tweak, as required by tweakable block ciphers such
+		/// as Threefish.
+		/// </remarks>
 		public abstract ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV, byte[] tweak);
 
 		/// <inheritdoc />
 		public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[]? rgbIV) =>
-			this.CreateEncryptor(rgbKey, rgbIV, this.Tweak);
+			CreateEncryptor(rgbKey, rgbIV, Tweak);
 
 		/// <inheritdoc />
 		public override ICryptoTransform CreateEncryptor() =>
-			this.CreateEncryptor(this.Key, this.IV, this.Tweak);
+			CreateEncryptor(Key, IV, Tweak);
 
 		/// <summary>
-		/// Creates a symmetric encryptor object using the specified key, IV, and tweak.
+		/// Creates a symmetric encryptor using the specified key, initialization vector (IV), and tweak value.
 		/// </summary>
-		/// <param name="rgbKey">The encryption key.</param>
-		/// <param name="rgbIV">The initialization vector.</param>
-		/// <param name="tweak">The tweak value to use.</param>
-		/// <returns>An <see cref="ICryptoTransform" /> instance for encryption.</returns>
+		/// <param name="rgbKey">The secret key to use for encryption.</param>
+		/// <param name="rgbIV">The initialization vector to use for the encryption operation.</param>
+		/// <param name="tweak">The tweak value that modifies the encryption process.</param>
+		/// <returns>An <see cref="ICryptoTransform" /> instance that can be used to perform the encryption.</returns>
+		/// <exception cref="ArgumentNullException">
+		/// Thrown if <paramref name="rgbKey" />, <paramref name="rgbIV" />, or <paramref name="tweak" /> is <see langword="null" />.
+		/// </exception>
+		/// <exception cref="CryptographicException">
+		/// Thrown if any input does not conform to the expected size, format, or algorithm-specific constraints.
+		/// </exception>
+		/// <remarks>
+		/// This method must be implemented by derived types to support encryption with a tweak, as required by tweakable block ciphers such
+		/// as Threefish.
+		/// </remarks>
 		public abstract ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV, byte[] tweak);
 
 		/// <summary>
-		/// Generates a new tweak value for use by the algorithm.
+		/// Generates a new tweak value for the algorithm based on the current <see cref="TweakSize" />.
 		/// </summary>
+		/// <exception cref="CryptographicException">Thrown if <see cref="TweakSize" /> is not configured to a valid size.</exception>
 		/// <remarks>
-		/// This method should populate the <see cref="Tweak" /> property with a valid value based on the current <see cref="TweakSize" />.
-		/// Implementations must ensure the generated tweak conforms to <see cref="LegalTweakSizes" />.
+		/// <para>
+		/// This method initializes the tweak with random or algorithm-specific data. The generated size will match the current
+		/// <see cref="TweakSize" />. If no size has been set, an exception will be thrown.
+		/// </para>
 		/// </remarks>
 		public abstract void GenerateTweak();
 
 		/// <summary>
-		/// Attempts to create a symmetric decryptor using span-based key, IV, and tweak values.
+		/// Determines whether the specified tweak size, in bits, is supported by the algorithm.
 		/// </summary>
-		/// <param name="key">The encryption key as a read-only span.</param>
-		/// <param name="iv">The initialization vector as a read-only span.</param>
-		/// <param name="tweak">The tweak value as a read-only span.</param>
-		/// <param name="transform">The resulting <see cref="ICryptoTransform" /> instance if successful.</param>
-		/// <returns><see langword="true" /> if the decryptor was created successfully; otherwise, <see langword="false" />.</returns>
+		/// <param name="length">The tweak size to validate, in bits.</param>
+		/// <returns>
+		/// <see langword="true" /> if the specified size matches any of the valid configurations in <see cref="LegalTweakSizes" />;
+		/// otherwise, <see langword="false" />.
+		/// </returns>
 		/// <remarks>
-		/// This method provides a span-based alternative to <see cref="CreateDecryptor(byte[], byte[], byte[])" />. The default
-		/// implementation converts the inputs to arrays. Override for custom span handling.
+		/// <para>
+		/// This method checks the specified bit length against all entries in <see cref="LegalTweakSizes" />. A size is considered valid if
+		/// it falls within the defined range and aligns with the specified skip size (if any).
+		/// </para>
 		/// </remarks>
-		public virtual bool TryCreateDecryptor(
-			ReadOnlySpan<byte> key,
-			ReadOnlySpan<byte> iv,
-			ReadOnlySpan<byte> tweak,
-			out ICryptoTransform transform)
-		{
-			transform = this.CreateDecryptor(key.ToArray(), iv.ToArray(), tweak.ToArray());
-			return true;
-		}
-
-		/// <summary>
-		/// Attempts to create a symmetric encryptor using span-based key, IV, and tweak values.
-		/// </summary>
-		/// <param name="key">The encryption key as a read-only span.</param>
-		/// <param name="iv">The initialization vector as a read-only span.</param>
-		/// <param name="tweak">The tweak value as a read-only span.</param>
-		/// <param name="transform">The resulting <see cref="ICryptoTransform" /> instance if successful.</param>
-		/// <returns><see langword="true" /> if the encryptor was created successfully; otherwise, <see langword="false" />.</returns>
-		/// <remarks>
-		/// This method provides a span-based alternative to <see cref="CreateEncryptor(byte[], byte[], byte[])" />. The default
-		/// implementation converts the inputs to arrays. Override for custom span handling.
-		/// </remarks>
-		public virtual bool TryCreateEncryptor(
-			ReadOnlySpan<byte> key,
-			ReadOnlySpan<byte> iv,
-			ReadOnlySpan<byte> tweak,
-			out ICryptoTransform transform)
-		{
-			transform = this.CreateEncryptor(key.ToArray(), iv.ToArray(), tweak.ToArray());
-			return true;
-		}
-
-		/// <summary>
-		/// Determines whether the specified tweak size, in bits, is valid for this algorithm.
-		/// </summary>
-		/// <param name="length">The tweak size in bits.</param>
-		/// <returns><see langword="true" /> if the size is valid; otherwise, <see langword="false" />.</returns>
 		public bool ValidTweakSize(int length)
 		{
-			foreach (var size in this.LegalTweakSizes)
+			foreach (var size in LegalTweakSizes)
 			{
 				if (length < size.MinSize || length > size.MaxSize)
 					continue;
@@ -221,10 +228,20 @@ namespace Bodu.Security.Cryptography
 		/// <inheritdoc />
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && TweakValue.Length > 0)
+			if (!_disposed)
 			{
-				CryptographicOperations.ZeroMemory(this.TweakValue);
-				this.TweakValue = Array.Empty<byte>();
+				if (disposing)
+				{
+					if (TweakValue is not null && TweakValue.Length > 0)
+					{
+						CryptographicOperations.ZeroMemory(TweakValue);
+						TweakValue = Array.Empty<byte>();
+					}
+
+					TweakSizeValue = 0;
+				}
+
+				_disposed = true;
 			}
 
 			base.Dispose(disposing);
@@ -243,15 +260,16 @@ namespace Bodu.Security.Cryptography
 			[CallerArgumentExpression("TweakSchedule")] string? paramName = null)
 		{
 			ArgumentNullException.ThrowIfNull(tweak, paramName);
-			this.ThrowIfInvalidTweakSize(tweak.Length * 8, paramName);
+			ThrowIfInvalidTweakSize(tweak.Length * 8, paramName);
 		}
 
 		/// <summary>
-		/// Throws if the specified bit length is not a valid tweak size for this algorithm.
+		/// Throws an exception if the specified bit length is not a valid tweak size for this algorithm.
 		/// </summary>
-		/// <param name="bitLength">The tweak size in bits.</param>
-		/// <param name="paramName">The name of the parameter, automatically inferred if not specified.</param>
-		/// <exception cref="CryptographicException">Thrown when <paramref name="bitLength" /> is not supported by <see cref="LegalTweakSizes" />.</exception>
+		/// <param name="bitLength">The length of the tweak in bits.</param>
+		/// <param name="paramName">The name of the calling parameter.</param>
+		/// <exception cref="CryptographicException">Thrown if the specified bit length is not among the legal sizes defined by <see cref="LegalTweakSizes" />.</exception>
+		/// <remarks>This method should be used internally to validate programmatic assignment to <see cref="TweakSize" /> or <see cref="Tweak" />.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected void ThrowIfInvalidTweakSize(
 			int bitLength,
@@ -259,24 +277,28 @@ namespace Bodu.Security.Cryptography
 		{
 			if (!ValidTweakSize(bitLength))
 				throw new CryptographicException(
-					string.Format(ResourceStrings.CryptographicException_InvalidTweakSize, bitLength, CryptoUtilities.FormatLegalSizes(LegalTweakSizes)));
+					string.Format(ResourceStrings.CryptographicException_InvalidTweakSize, bitLength, CryptoHelpers.FormatLegalSizes(LegalTweakSizes)));
 		}
 
 		/// <summary>
-		/// Throws a <see cref="CryptographicException" /> if the tweak has not been set or generated.
+		/// Throws if the tweak has not been set or generated.
 		/// </summary>
-		/// <exception cref="CryptographicException">
-		/// Thrown when the tweak value is empty, indicating it has not been initialized or generated.
-		/// </exception>
+		/// <exception cref="CryptographicException">Thrown if the internal tweak value is <see langword="null" /> or empty.</exception>
 		/// <remarks>
-		/// This method ensures that the <see cref="Tweak" /> property is not accessed in an uninitialized state. It is recommended to call
-		/// <see cref="GenerateTweak" /> or assign a value to <see cref="Tweak" /> before use.
+		/// Call this method before using the <see cref="Tweak" /> or <see cref="TweakSpan" /> properties to ensure that the tweak has been initialized.
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected void ThrowIfTweakNotSet()
 		{
 			if (TweakValue is null || TweakValue.Length == 0)
 				throw new CryptographicException(ResourceStrings.CryptographicException_TweakNotSet);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ThrowIfDisposed()
+		{
+			if (_disposed)
+				throw new ObjectDisposedException(GetType().Name);
 		}
 	}
 }

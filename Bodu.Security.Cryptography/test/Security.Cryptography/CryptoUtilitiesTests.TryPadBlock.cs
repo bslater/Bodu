@@ -22,7 +22,7 @@ namespace Bodu.Security.Cryptography
 			int expectedLength = expectedHex.Length / 2;
 			Span<byte> destination = new byte[expectedLength];
 
-			bool result = CryptoUtilities.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
+			bool result = CryptoHelpers.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
 
 			Assert.IsTrue(result);
 		}
@@ -40,7 +40,7 @@ namespace Bodu.Security.Cryptography
 			int expectedLength = expectedHex.Length / 2;
 			Span<byte> destination = new byte[expectedLength];
 
-			var result = CryptoUtilities.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
+			var result = CryptoHelpers.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
 
 			Assert.AreEqual(expectedLength, written);
 		}
@@ -58,7 +58,7 @@ namespace Bodu.Security.Cryptography
 			int expectedLength = expectedHex.Length / 2;
 			Span<byte> destination = new byte[expectedLength];
 
-			CryptoUtilities.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
+			CryptoHelpers.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
 
 			Assert.IsTrue(destination.Slice(0, input.Length).SequenceEqual(input));
 		}
@@ -79,7 +79,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[destinationLength.Value]
 				: new byte[destinationLength.Value];
 
-			bool result = CryptoUtilities.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
+			bool result = CryptoHelpers.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
 
 			Assert.IsFalse(result);
 		}
@@ -100,7 +100,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[destinationLength.Value]
 				: new byte[destinationLength.Value];
 
-			_ = CryptoUtilities.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
+			_ = CryptoHelpers.TryPadBlock(padding, blockSizeBytes, input, destination, out int written);
 
 			Assert.AreEqual(0, written);
 		}

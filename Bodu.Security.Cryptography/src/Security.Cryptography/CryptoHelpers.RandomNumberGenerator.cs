@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public static partial class CryptoUtilities
+	public static partial class CryptoHelpers
 	{
 		/// <summary>
 		/// Fills the provided byte array with cryptographically secure random bytes, ensuring that no byte is equal to <c>0x00</c>.

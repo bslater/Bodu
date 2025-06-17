@@ -99,8 +99,8 @@ namespace Bodu.Extensions
 			int byteCount = count * elementSize;
 
 			// ThrowHelper will handle range and size checks
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(sourceSpan, 0, byteCount);
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(targetSpan, 0, count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(sourceSpan, 0, byteCount);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(targetSpan, 0, count);
 
 			MemoryMarshal.Cast<byte, T>(sourceSpan.Slice(0, byteCount)).CopyTo(targetSpan.Slice(0, count));
 		}

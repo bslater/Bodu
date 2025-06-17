@@ -29,7 +29,7 @@ namespace Bodu.Security.Cryptography
 			ThrowHelper.ThrowIfOutOfRange(size, CrcStandard.MinSize, CrcStandard.MaxSize);
 
 			string cacheKey = $"{size}_{polynomial}_{reflectIn}";
-			return localCache.GetOrAdd(cacheKey, key => CrcUtility.BuildLookupTable(size, polynomial, reflectIn)).ToImmutableArray();
+			return localCache.GetOrAdd(cacheKey, key => CrcLookupTableBuilder.BuildLookupTable(size, polynomial, reflectIn)).ToImmutableArray();
 		}
 	}
 }

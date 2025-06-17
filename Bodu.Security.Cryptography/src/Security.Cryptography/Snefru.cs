@@ -146,9 +146,9 @@ namespace Bodu.Security.Cryptography
 
 			if (disposing)
 			{
-				CryptoUtilities.Clear(MemoryMarshal.AsBytes(buffer.AsSpan()));
-				CryptoUtilities.Clear(MemoryMarshal.AsBytes(state.AsSpan()));
-				CryptoUtilities.ClearAndNullify(ref HashValue);
+				CryptoHelpers.Clear(MemoryMarshal.AsBytes(buffer.AsSpan()));
+				CryptoHelpers.Clear(MemoryMarshal.AsBytes(state.AsSpan()));
+				CryptoHelpers.ClearAndNullify(ref HashValue);
 			}
 
 			disposed = true;

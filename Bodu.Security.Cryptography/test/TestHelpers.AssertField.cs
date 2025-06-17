@@ -73,7 +73,7 @@ namespace Bodu
 
 			// Span<T> and ReadOnlySpan<T> cannot be retrieved via reflection
 			if (fieldType == typeof(Span<byte>) || fieldType == typeof(ReadOnlySpan<byte>))
-				throw new NotSupportedException("Span<T> fields cannot be reliably checked via reflection.");
+				throw new NotSupportedException("Span<TAlgorithm> fields cannot be reliably checked via reflection.");
 
 			throw new NotSupportedException($"Unsupported field type: {fieldType}");
 		}

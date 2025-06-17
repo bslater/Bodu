@@ -87,7 +87,7 @@ namespace Bodu.Security.Cryptography
 				// Zero out the key material to avoid leaking secrets in memory
 				if (KeyValue is not null)
 				{
-					CryptoUtilities.ClearAndNullify(ref KeyValue!);
+					CryptoHelpers.ClearAndNullify(ref KeyValue!);
 				}
 			}
 

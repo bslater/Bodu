@@ -32,6 +32,19 @@ namespace Bodu.Security.Cryptography
 		public Threefish512()
 			: base(512, 128) { }
 
+		/// <summary>
+		/// Creates a new instance of the <see cref="Threefish512" /> class with the default configuration.
+		/// </summary>
+		/// <returns>A new instance of <see cref="Threefish512" />.</returns>
+		/// <remarks>
+		/// The newly created algorithm instance will have its key, initialization vector (IV), and tweak generated automatically as needed
+		/// upon first use.
+		/// </remarks>
+		public new static Threefish512 Create()
+		{
+			return new Threefish512();
+		}
+
 		/// <inheritdoc />
 		protected override IBlockCipher CreateCipher(byte[] key, byte[] tweak) =>
 			new Threefish512Cipher(key, tweak);

@@ -55,21 +55,34 @@ namespace Bodu.Infrastructure
 		/// </summary>
 		public bool IsCryptoTransformDisposed { get; private set; }
 
-		/// <inheritdoc />
-		public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
-			=> CreateTransform(rgbKey, rgbIV, TransformMode.Encrypt);
+		/// <summary>
+		/// Creates a new instance of the <see cref="SimpleReversingSymmetricAlgorithm" /> class with the default configuration.
+		/// </summary>
+		/// <returns>A new instance of <see cref="SimpleReversingSymmetricAlgorithm" />.</returns>
+		/// <remarks>
+		/// The newly created algorithm instance will have its key, initialization vector (IV), and tweak generated automatically as needed
+		/// upon first use.
+		/// </remarks>
+		public new static SimpleReversingSymmetricAlgorithm Create()
+		{
+			return new SimpleReversingSymmetricAlgorithm();
+		}
 
 		/// <inheritdoc />
 		public override ICryptoTransform CreateDecryptor(byte[] rgbKey, byte[] rgbIV)
 			=> CreateTransform(rgbKey, rgbIV, TransformMode.Decrypt);
 
 		/// <inheritdoc />
+		public override ICryptoTransform CreateEncryptor(byte[] rgbKey, byte[] rgbIV)
+			=> CreateTransform(rgbKey, rgbIV, TransformMode.Encrypt);
+
+		/// <inheritdoc />
 		public override void GenerateIV()
-			=> IVValue = CryptoUtilities.GetRandomNonZeroBytes(BlockSize / 8);
+			=> IVValue = CryptoHelpers.GetRandomNonZeroBytes(BlockSize / 8);
 
 		/// <inheritdoc />
 		public override void GenerateKey()
-			=> KeyValue = CryptoUtilities.GetRandomNonZeroBytes(KeySize / 8);
+			=> KeyValue = CryptoHelpers.GetRandomNonZeroBytes(KeySize / 8);
 
 		/// <summary>
 		/// Sets the key size in bits for the algorithm.
@@ -77,22 +90,6 @@ namespace Bodu.Infrastructure
 		/// <param name="size">The key size in bits.</param>
 		public void SetKeySize(int size)
 			=> KeySizeValue = size;
-
-		/// <summary>
-		/// Fills the provided <paramref name="destination" /> span with a randomly generated key.
-		/// </summary>
-		/// <param name="destination">The span to fill with key bytes.</param>
-		/// <returns>True if the span was large enough to hold the key; otherwise, false.</returns>
-		/// <remarks>The required length is <c>KeySize / 8</c> bytes. If the span is too small, no data is written.</remarks>
-		public bool TryGenerateKey(Span<byte> destination)
-		{
-			int required = KeySize / 8;
-			if (destination.Length < required)
-				return false;
-
-			CryptoUtilities.FillWithRandomNonZeroBytes(destination.Slice(0, required));
-			return true;
-		}
 
 		/// <summary>
 		/// Fills the provided <paramref name="destination" /> span with a randomly generated IV.
@@ -106,7 +103,23 @@ namespace Bodu.Infrastructure
 			if (destination.Length < required)
 				return false;
 
-			CryptoUtilities.FillWithRandomNonZeroBytes(destination.Slice(0, required));
+			CryptoHelpers.FillWithRandomNonZeroBytes(destination.Slice(0, required));
+			return true;
+		}
+
+		/// <summary>
+		/// Fills the provided <paramref name="destination" /> span with a randomly generated key.
+		/// </summary>
+		/// <param name="destination">The span to fill with key bytes.</param>
+		/// <returns>True if the span was large enough to hold the key; otherwise, false.</returns>
+		/// <remarks>The required length is <c>KeySize / 8</c> bytes. If the span is too small, no data is written.</remarks>
+		public bool TryGenerateKey(Span<byte> destination)
+		{
+			int required = KeySize / 8;
+			if (destination.Length < required)
+				return false;
+
+			CryptoHelpers.FillWithRandomNonZeroBytes(destination.Slice(0, required));
 			return true;
 		}
 
@@ -121,8 +134,8 @@ namespace Bodu.Infrastructure
 		{
 			IsCryptoTransformDisposed = false;
 
-			key ??= CryptoUtilities.GetRandomNonZeroBytes(KeySizeValue / 8);
-			iv ??= CryptoUtilities.GetRandomNonZeroBytes(BlockSizeValue / 8);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(key, KeySizeValue / 8);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(iv, BlockSizeValue / 8);
 
 			var transform = new SimpleReversingCryptoTransform(
 				BlockSizeValue,

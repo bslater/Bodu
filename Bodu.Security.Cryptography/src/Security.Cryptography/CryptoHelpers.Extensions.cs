@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Bodu.Security.Cryptography
 {
-	public static partial class CryptoUtilities
+	public static partial class CryptoHelpers
 	{
 		/// <summary>
 		/// Reverses the order of the least significant <paramref name="bitLength" /> bits in the specified <paramref name="value" />.

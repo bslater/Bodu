@@ -223,9 +223,8 @@ namespace Bodu
 		/// 32 bytes for a key).
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfArrayLengthInvalid(
-			Array array,
-			int expectedLength,
+		public static void ThrowIfArrayLengthIsInsufficient(
+			Array array, int expectedLength,
 			[CallerArgumentExpression(nameof(array))] string? paramName = null)
 		{
 			if (array is null)
@@ -254,9 +253,35 @@ namespace Bodu
 		/// 32 bytes for a key).
 		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfArrayLengthInvalid<T>(
-			ReadOnlySpan<T> array,
-			int expectedLength,
+		public static void ThrowIfArrayLengthIsInsufficient<T>(
+			ReadOnlySpan<T> array, int expectedLength,
+			[CallerArgumentExpression(nameof(array))] string? paramName = null)
+		{
+			if (array.Length != expectedLength)
+				throw new ArgumentException(
+					string.Format(ResourceStrings.Arg_Invalid_ArrayLength, expectedLength),
+					paramName);
+		}
+
+		/// <summary>
+		/// Throws an exception if the specified <paramref name="array" /> is not exactly the expected <paramref name="expectedLength" />.
+		/// </summary>
+		/// <param name="array">The array to validate.</param>
+		/// <param name="expectedLength">The exact number of elements that <paramref name="array" /> must contain.</param>
+		/// <param name="paramName">The name of the array parameter to include in exception messages.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <paramref name="array.Length" /> does not match <paramref name="expectedLength" />.
+		/// Message: "The array length must be exactly {expectedLength}."
+		/// </exception>
+		/// <remarks>
+		/// This method ensures that the provided array has the exact number of elements required for the operation to proceed safely. It is
+		/// commonly used in cryptographic APIs or buffer transformations where fixed-size input is mandatory (e.g., 16 bytes for a block,
+		/// 32 bytes for a key).
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthIsInsufficient<T>(
+			Span<T> array, int expectedLength,
 			[CallerArgumentExpression(nameof(array))] string? paramName = null)
 		{
 			if (array.Length != expectedLength)
@@ -317,6 +342,48 @@ namespace Bodu
 #else
 
 		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
+		/// </summary>
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="index">The index from which to measure the remaining length.</param>
+		/// <param name="requiredLength">The required number of elements.</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
+		/// Message: "Span is too short. Required minimum is {0} from a specified index."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthIsInsufficient<T>(
+			ReadOnlySpan<T> span, int index, int requiredLength,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
+		{
+			if (span.Length - index < requiredLength)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
+		}
+
+		/// <summary>
+		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
+		/// </summary>
+		/// <typeparam name="T">The element type of the span.</typeparam>
+		/// <param name="span">The span to check.</param>
+		/// <param name="index">The index from which to measure the remaining length.</param>
+		/// <param name="requiredLength">The required number of elements.</param>
+		/// <param name="paramName">The name of the span parameter.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
+		/// Message: "Span is too short. Required minimum is {0} from a specified index."
+		/// </exception>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void ThrowIfArrayLengthIsInsufficient<T>(
+			Span<T> span, int index, int requiredLength,
+			[CallerArgumentExpression(nameof(span))] string? paramName = null)
+		{
+			if (span.Length - index < requiredLength)
+				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
+		}
+
+		/// <summary>
 		/// Throws an <see cref="ArgumentException" /> if the array has zero length.
 		/// </summary>
 		/// <param name="array">The array to check.</param>
@@ -370,8 +437,7 @@ namespace Bodu
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfArrayLengthNotPositiveMultipleOf(
-			Array array,
-			int divisor,
+			Array array, int divisor,
 			[CallerArgumentExpression(nameof(array))] string? paramName = null)
 		{
 			if (array.Length == 0 || array.Length % divisor != 0)
@@ -491,8 +557,7 @@ namespace Bodu
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfArrayLengthNotPositiveMultipleOf<T>(
-			Span<T> span,
-			int divisor,
+			Span<T> span, int divisor,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
 			if (span.Length == 0 || span.Length % divisor != 0)
@@ -523,9 +588,7 @@ namespace Bodu
 		/// within valid bounds. It ensures that no out-of-range access occurs when operating on a subrange.
 		/// </remarks>
 		public static void ThrowIfArrayOffsetOrCountInvalid(
-			Array array,
-			int index,
-			int count,
+			Array array, int index, int count,
 			[CallerArgumentExpression(nameof(array))] string? paramArrayName = null,
 			[CallerArgumentExpression(nameof(index))] string? paramIndexName = null,
 			[CallerArgumentExpression(nameof(count))] string? paramCountName = null)
@@ -626,8 +689,7 @@ namespace Bodu
 		/// <remarks>Performs a minimum count check on the collection.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfCollectionTooSmall<T>(
-			ICollection<T> collection,
-			int minCount,
+			ICollection<T> collection, int minCount,
 			[CallerArgumentExpression(nameof(collection))] string? paramName = null)
 		{
 			if (collection.Count < minCount)
@@ -741,8 +803,7 @@ namespace Bodu
 		/// <remarks>Use this method when validating that a subset operation will not exceed the size of the source.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfCountExceedsAvailable(
-			int count,
-			int available,
+			int count, int available,
 			[CallerArgumentExpression(nameof(count))] string? paramName = null)
 		{
 			if (count < 0 || count > available)
@@ -1597,8 +1658,7 @@ namespace Bodu
 		/// <remarks>Useful for validating aligned buffer sizes, memory boundaries, or block-aligned lengths.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNotPositiveMultipleOf(
-			int value,
-			int divisor,
+			int value, int divisor,
 			[CallerArgumentExpression(nameof(value))] string? paramName = null)
 		{
 			if (value <= 0 || value % divisor != 0)
@@ -1656,8 +1716,7 @@ namespace Bodu
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNull<T>(
-			T value,
-			string message,
+			T value, string message,
 			[CallerArgumentExpression(nameof(value))] string? paramName = null)
 		{
 			if (value is null)
@@ -2037,28 +2096,6 @@ namespace Bodu
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), nameof(span));
 		}
 #elif NET5_0_OR_GREATER
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
-		/// </summary>
-		/// <typeparam name="T">The element type of the span.</typeparam>
-		/// <param name="span">The span to check.</param>
-		/// <param name="index">The index from which to measure the remaining length.</param>
-		/// <param name="requiredLength">The required number of elements.</param>
-		/// <param name="paramName">The name of the span parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
-		/// Message: "Span is too short. Required minimum is {0} from a specified index."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfSpanLengthIsInsufficient<T>(
-			ReadOnlySpan<T> span, int index, int requiredLength,
-			[CallerArgumentExpression(nameof(span))] string? paramName = null)
-		{
-			if (span.Length - index < requiredLength)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
-		}
-
 #endif
 
 #if NETSTANDARD2_1_OR_GREATER
@@ -2082,28 +2119,6 @@ namespace Bodu
 				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_SpanTooShort, requiredLength), nameof(span));
 		}
 #elif NET5_0_OR_GREATER
-
-		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the remaining length of the span from the given index is less than required.
-		/// </summary>
-		/// <typeparam name="T">The element type of the span.</typeparam>
-		/// <param name="span">The span to check.</param>
-		/// <param name="index">The index from which to measure the remaining length.</param>
-		/// <param name="requiredLength">The required number of elements.</param>
-		/// <param name="paramName">The name of the span parameter.</param>
-		/// <exception cref="ArgumentException">
-		/// Thrown when <c>span.Length - index &lt; requiredLength</c>.
-		/// Message: "Span is too short. Required minimum is {0} from a specified index."
-		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static void ThrowIfSpanLengthIsInsufficient<T>(
-			Span<T> span, int index, int requiredLength,
-			[CallerArgumentExpression(nameof(span))] string? paramName = null)
-		{
-			if (span.Length - index < requiredLength)
-				throw new ArgumentException(string.Format(ResourceStrings.Arg_Invalid_ArrayTooShort, requiredLength), paramName);
-		}
-
 #endif
 
 #if NETSTANDARD2_1_OR_GREATER
@@ -2153,9 +2168,7 @@ namespace Bodu
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfSpanLengthNotPositiveMultipleOf<T>(
-			ReadOnlySpan<T> span,
-			int divisor,
-			bool throwIfZero = true,
+			ReadOnlySpan<T> span, int divisor, bool throwIfZero = true,
 			[CallerArgumentExpression(nameof(span))] string? paramName = null)
 		{
 			if ((throwIfZero && span.Length == 0) || (span.Length % divisor != 0))

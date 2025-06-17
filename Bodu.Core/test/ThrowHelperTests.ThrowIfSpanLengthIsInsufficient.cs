@@ -16,7 +16,7 @@ namespace Bodu
 			var span = new int[spanLength];
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
-				ThrowHelper.ThrowIfSpanLengthIsInsufficient(new ReadOnlySpan<int>(span), offset, count);
+				ThrowHelper.ThrowIfArrayLengthIsInsufficient(new ReadOnlySpan<int>(span), offset, count);
 			});
 		}
 
@@ -27,7 +27,7 @@ namespace Bodu
 		public void ThrowIfSpanLengthIsInsufficient_ReadOnlySpan_WhenSufficient_ShouldNotThrow(int spanLength, int offset, int count)
 		{
 			ReadOnlySpan<int> span = new int[spanLength];
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(span, offset, count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(span, offset, count);
 		}
 
 		[DataTestMethod]
@@ -38,7 +38,7 @@ namespace Bodu
 			var span = new int[spanLength];
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
-				ThrowHelper.ThrowIfSpanLengthIsInsufficient(span.AsSpan(), offset, count);
+				ThrowHelper.ThrowIfArrayLengthIsInsufficient(span.AsSpan(), offset, count);
 			});
 		}
 
@@ -49,7 +49,7 @@ namespace Bodu
 		public void ThrowIfSpanLengthIsInsufficient_Span_WhenSufficient_ShouldNotThrow(int spanLength, int offset, int count)
 		{
 			Span<int> span = new int[spanLength];
-			ThrowHelper.ThrowIfSpanLengthIsInsufficient(span, offset, count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(span, offset, count);
 		}
 	}
 }

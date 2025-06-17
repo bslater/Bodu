@@ -19,7 +19,7 @@ namespace Bodu.Security.Cryptography
 	/// including optional inlining for performance.
 	/// </para>
 	/// </remarks>
-	public static partial class CryptoUtilities
+	public static partial class CryptoHelpers
 	{
 		/// <summary>
 		/// Returns a comma-separated string of valid key sizes (in bits) from the provided <see cref="KeySizes" /> array.

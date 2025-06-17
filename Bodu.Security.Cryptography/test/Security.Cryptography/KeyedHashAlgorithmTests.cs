@@ -49,7 +49,7 @@ namespace Bodu.Security.Cryptography
 		protected virtual byte[] GenerateUniqueKey()
 		{
 			byte[] key = new byte[ExpectedKeySize];
-			CryptoUtilities.FillWithRandomNonZeroBytes(key);
+			CryptoHelpers.FillWithRandomNonZeroBytes(key);
 			return key;
 		}
 

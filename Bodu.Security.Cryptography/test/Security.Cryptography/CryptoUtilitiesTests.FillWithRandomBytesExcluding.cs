@@ -15,7 +15,7 @@ namespace Bodu.Security.Cryptography
 		public void FillWithRandomBytesExcluding_WhenForbiddenByteIsGiven_ShouldNotBeInResult()
 		{
 			Span<byte> span = stackalloc byte[64];
-			CryptoUtilities.FillWithRandomBytesExcluding(0xFF, span);
+			CryptoHelpers.FillWithRandomBytesExcluding(0xFF, span);
 			foreach (byte b in span)
 			{
 				Assert.AreNotEqual(0xFF, b);

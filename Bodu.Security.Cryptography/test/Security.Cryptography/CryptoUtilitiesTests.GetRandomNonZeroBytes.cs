@@ -15,7 +15,7 @@ namespace Bodu.Security.Cryptography
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void GetRandomNonZeroBytes_WhenLengthIsLessThanOrEqualToZero_ShouldThrowExactly()
 		{
-			_ = CryptoUtilities.GetRandomNonZeroBytes(0);
+			_ = CryptoHelpers.GetRandomNonZeroBytes(0);
 		}
 
 		/// <summary>
@@ -24,7 +24,7 @@ namespace Bodu.Security.Cryptography
 		[TestMethod]
 		public void GetRandomNonZeroBytes_WhenValidLength_ShouldReturnArrayWithOnlyNonZeroBytes()
 		{
-			byte[] result = CryptoUtilities.GetRandomNonZeroBytes(32);
+			byte[] result = CryptoHelpers.GetRandomNonZeroBytes(32);
 			Assert.AreEqual(32, result.Length);
 			CollectionAssert.DoesNotContain(result, (byte)0);
 		}

@@ -13,30 +13,12 @@ namespace Bodu.Infrastructure
 	public sealed class SimpleReversingCryptoTransform : ICryptoTransform, IAsyncDisposable
 	{
 		private readonly int blockSizeBytes;
+		private readonly byte[] depadBuffer;
 		private readonly PaddingMode paddingMode;
 		private readonly TransformMode transformMode;
 		private readonly byte[]? tweak;
-		private readonly byte[] depadBuffer;
-
-		private bool hasDepadBlock;
 		private bool disposed;
-
-		/// <inheritdoc />
-		public int InputBlockSize => blockSizeBytes;
-
-		/// <inheritdoc />
-		public int OutputBlockSize => blockSizeBytes;
-
-		/// <inheritdoc />
-		public bool CanReuseTransform => true;
-
-		/// <inheritdoc />
-		public bool CanTransformMultipleBlocks => true;
-
-		/// <summary>
-		/// Occurs when the transform is disposed.
-		/// </summary>
-		public event EventHandler? Disposed;
+		private bool hasDepadBlock;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="SimpleReversingCryptoTransform" /> class.
@@ -56,6 +38,40 @@ namespace Bodu.Infrastructure
 			this.transformMode = transformMode;
 			this.tweak = tweak;
 			depadBuffer = new byte[blockSizeBytes];
+		}
+
+		/// <summary>
+		/// Occurs when the transform is disposed.
+		/// </summary>
+		public event EventHandler? Disposed;
+
+		/// <inheritdoc />
+		public bool CanReuseTransform => true;
+
+		/// <inheritdoc />
+		public bool CanTransformMultipleBlocks => true;
+
+		/// <inheritdoc />
+		public int InputBlockSize => blockSizeBytes;
+
+		/// <inheritdoc />
+		public int OutputBlockSize => blockSizeBytes;
+
+		/// <inheritdoc />
+		public void Dispose()
+		{
+			if (!disposed)
+			{
+				disposed = true;
+				Disposed?.Invoke(this, EventArgs.Empty);
+			}
+		}
+
+		/// <inheritdoc />
+		public ValueTask DisposeAsync()
+		{
+			Dispose();
+			return ValueTask.CompletedTask;
 		}
 
 		/// <inheritdoc />
@@ -91,21 +107,33 @@ namespace Bodu.Infrastructure
 				if (paddingMode == PaddingMode.None && input.Length % blockSizeBytes != 0)
 					throw new CryptographicException("Input is not a multiple of block size.");
 
-				int paddedLength = ((input.Length + blockSizeBytes - 1) / blockSizeBytes) * blockSizeBytes;
+				int paddedLength = ((input.Length / blockSizeBytes) + 1) * blockSizeBytes;
 				byte[] pooled = ArrayPool<byte>.Shared.Rent(paddedLength);
 				Span<byte> padded = pooled.AsSpan(0, paddedLength);
-				int finalLength = CryptoUtilities.PadBlock(paddingMode, blockSizeBytes, input, padded);
+
+				int finalLength = CryptoHelpers.PadBlock(paddingMode, blockSizeBytes, input, padded);
 				TransformBlocks(padded.Slice(0, finalLength), padded);
+
 				byte[] encrypted = padded.Slice(0, finalLength).ToArray();
 				ArrayPool<byte>.Shared.Return(pooled, clearArray: true);
 				return encrypted;
 			}
 
-			// For decryption, combine depad buffer if previously stored, then transform
+			// --- Decryption path --- Special case: if input is empty and there's no depad buffer, treat as empty output
+			if (input.Length == 0 && !hasDepadBlock)
+			{
+				// For padding modes that require block alignment, this would be invalid input
+				if (paddingMode != PaddingMode.None && paddingMode != PaddingMode.Zeros)
+					throw new CryptographicException("Cannot decrypt empty input with padding.");
+				return Array.Empty<byte>();
+			}
+
+			// Calculate expected buffer length (accounting for possible stored depad block)
 			int totalLength = hasDepadBlock ? input.Length + blockSizeBytes : input.Length;
 			byte[] decryptBuffer = ArrayPool<byte>.Shared.Rent(totalLength);
 			Span<byte> buffer = decryptBuffer.AsSpan(0, totalLength);
 
+			// Copy depad block (if present), then append current input
 			if (hasDepadBlock)
 			{
 				depadBuffer.AsSpan().CopyTo(buffer);
@@ -116,29 +144,31 @@ namespace Bodu.Infrastructure
 				input.CopyTo(buffer);
 			}
 
+			// Transform all blocks in-place
 			TransformBlocks(buffer, buffer);
 
+			// Prepare destination buffer for depadded result
 			byte[] output = ArrayPool<byte>.Shared.Rent(buffer.Length);
 			Span<byte> destination = output.AsSpan(0, buffer.Length);
-			int resultLength = CryptoUtilities.DepadBlock(paddingMode, blockSizeBytes, buffer, destination);
 
+			int resultLength = CryptoHelpers.DepadBlock(paddingMode, blockSizeBytes, buffer, destination);
 			byte[] decrypted = destination.Slice(0, resultLength).ToArray();
+
 			ArrayPool<byte>.Shared.Return(decryptBuffer, clearArray: true);
 			ArrayPool<byte>.Shared.Return(output, clearArray: true);
 			return decrypted;
 		}
 
 		/// <summary>
-		/// Transforms a span of data in fixed-size blocks using reversal and optional tweak logic.
+		/// Validates the buffer and range inputs for safety.
 		/// </summary>
-		private int TransformBlocks(ReadOnlySpan<byte> input, Span<byte> output)
+		private static void ValidateBuffer(byte[] buffer, int offset, int count)
 		{
-			int total = 0;
-			for (; total + blockSizeBytes <= input.Length; total += blockSizeBytes)
-			{
-				TransformBlockInternal(input.Slice(total, blockSizeBytes), output.Slice(total, blockSizeBytes));
-			}
-			return total;
+			ArgumentNullException.ThrowIfNull(buffer);
+			ArgumentOutOfRangeException.ThrowIfNegative(offset);
+			ArgumentOutOfRangeException.ThrowIfNegative(count);
+			if (offset + count > buffer.Length)
+				throw new ArgumentOutOfRangeException(nameof(offset), "Invalid buffer range.");
 		}
 
 		/// <summary>
@@ -170,6 +200,15 @@ namespace Bodu.Infrastructure
 		}
 
 		/// <summary>
+		/// Throws an exception if this instance has already been disposed.
+		/// </summary>
+		private void ThrowIfDisposed()
+		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(SimpleReversingCryptoTransform));
+		}
+
+		/// <summary>
 		/// Performs reversal and optional tweak on a single block.
 		/// </summary>
 		private void TransformBlockInternal(ReadOnlySpan<byte> input, Span<byte> output)
@@ -193,41 +232,16 @@ namespace Bodu.Infrastructure
 		}
 
 		/// <summary>
-		/// Throws an exception if this instance has already been disposed.
+		/// Transforms a span of data in fixed-size blocks using reversal and optional tweak logic.
 		/// </summary>
-		private void ThrowIfDisposed()
+		private int TransformBlocks(ReadOnlySpan<byte> input, Span<byte> output)
 		{
-			if (disposed)
-				throw new ObjectDisposedException(nameof(SimpleReversingCryptoTransform));
-		}
-
-		/// <summary>
-		/// Validates the buffer and range inputs for safety.
-		/// </summary>
-		private static void ValidateBuffer(byte[] buffer, int offset, int count)
-		{
-			ArgumentNullException.ThrowIfNull(buffer);
-			ArgumentOutOfRangeException.ThrowIfNegative(offset);
-			ArgumentOutOfRangeException.ThrowIfNegative(count);
-			if (offset + count > buffer.Length)
-				throw new ArgumentOutOfRangeException(nameof(offset), "Invalid buffer range.");
-		}
-
-		/// <inheritdoc />
-		public void Dispose()
-		{
-			if (!disposed)
+			int total = 0;
+			for (; total + blockSizeBytes <= input.Length; total += blockSizeBytes)
 			{
-				disposed = true;
-				Disposed?.Invoke(this, EventArgs.Empty);
+				TransformBlockInternal(input.Slice(total, blockSizeBytes), output.Slice(total, blockSizeBytes));
 			}
-		}
-
-		/// <inheritdoc />
-		public ValueTask DisposeAsync()
-		{
-			Dispose();
-			return ValueTask.CompletedTask;
+			return total;
 		}
 	}
 }

@@ -99,13 +99,13 @@ namespace Bodu.Security.Cryptography
 			this.ReflectOut = crcStandard.ReflectOut;
 			this.XOrOut = crcStandard.XOrOut;
 			this.table = Crc.GlobalCache?.GetLookupTable(crcStandard.Size, crcStandard.Polynomial, crcStandard.ReflectIn).ToArray()
-				?? CrcUtility.BuildLookupTable(crcStandard.Size, crcStandard.Polynomial, crcStandard.ReflectIn);
+				?? CrcLookupTableBuilder.BuildLookupTable(crcStandard.Size, crcStandard.Polynomial, crcStandard.ReflectIn);
 
 			this.HashSizeValue = crcStandard.Size;
 			this.hashSizeBytes = (this.HashSizeValue + 7) / 8;
 
 			this.workingHash = this.ReflectIn
-				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
+				? CryptoHelpers.ReflectBits(this.InitialValue, this.HashSizeValue)
 				: this.InitialValue;
 		}
 
@@ -303,7 +303,7 @@ namespace Bodu.Security.Cryptography
 			this.finalized = false;
 #endif
 			this.workingHash = this.ReflectIn
-				? CryptoUtilities.ReflectBits(this.InitialValue, this.HashSizeValue)
+				? CryptoHelpers.ReflectBits(this.InitialValue, this.HashSizeValue)
 				: this.InitialValue;
 		}
 
@@ -327,7 +327,7 @@ namespace Bodu.Security.Cryptography
 			// Undo finalization
 			this.workingHash ^= this.XOrOut;
 			if (this.ReflectIn ^ this.ReflectOut)
-				this.workingHash = CryptoUtilities.ReflectBits(this.workingHash, this.HashSizeValue);
+				this.workingHash = CryptoHelpers.ReflectBits(this.workingHash, this.HashSizeValue);
 
 			// Continue hashing and finalize again
 			this.ProcessBlocks(newData);
@@ -350,7 +350,7 @@ namespace Bodu.Security.Cryptography
 
 			// Reflect final value if needed
 			if (this.ReflectIn ^ this.ReflectOut)
-				this.workingHash = CryptoUtilities.ReflectBits(this.workingHash, this.HashSizeValue);
+				this.workingHash = CryptoHelpers.ReflectBits(this.workingHash, this.HashSizeValue);
 
 			// Apply XOR and mask to match the width
 			this.workingHash ^= this.XOrOut;
@@ -388,8 +388,8 @@ namespace Bodu.Security.Cryptography
 				this.workingHash = 0;
 				if (this.table is not null)
 				{
-					CryptoUtilities.ClearAndNullify(ref HashValue);
-					CryptoUtilities.Clear(table.AsSpan());
+					CryptoHelpers.ClearAndNullify(ref HashValue);
+					CryptoHelpers.Clear(table.AsSpan());
 					this.table = null!;
 				}
 			}

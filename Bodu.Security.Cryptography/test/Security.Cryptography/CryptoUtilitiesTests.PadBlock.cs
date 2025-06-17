@@ -80,7 +80,7 @@ namespace Bodu.Security.Cryptography
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
 			byte[] input = Convert.FromHexString(inputHex);
-			byte[] result = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
+			byte[] result = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
 
 			// If expectedHex is fully specified (not ISO10126 with '?'), match entire byte array Else validate last byte is pad count
 			if (!expectedHex.Contains('?'))
@@ -111,7 +111,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[expectedLength]
 				: new byte[expectedLength];
 
-			_ = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, destination);
+			_ = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, destination);
 
 			// If expectedHex is fully specified (not ISO10126 with '?'), match entire byte array Else validate last byte is pad count
 			if (!expectedHex.Contains('?'))
@@ -136,7 +136,7 @@ namespace Bodu.Security.Cryptography
 		{
 			byte[] input = Convert.FromHexString(inputHex);
 			int expectedLength = expectedHex.Length / 2;
-			byte[] result = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
+			byte[] result = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
 
 			Assert.AreEqual(expectedLength, result.Length);
 		}
@@ -156,7 +156,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[expectedLength]
 				: new byte[expectedLength];
 
-			var result = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, destination);
+			var result = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, destination);
 
 			Assert.AreEqual(expectedLength, result);
 		}
@@ -170,7 +170,7 @@ namespace Bodu.Security.Cryptography
 			PaddingMode padding, string inputHex, int blockSizeBytes, string expectedHex)
 		{
 			byte[] input = Convert.FromHexString(inputHex);
-			byte[] result = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
+			byte[] result = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
 
 			CollectionAssert.AreEqual(input, result.Take(input.Length).ToArray());
 		}
@@ -190,7 +190,7 @@ namespace Bodu.Security.Cryptography
 				? stackalloc byte[expectedLength]
 				: new byte[expectedLength];
 
-			_ = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, destination);
+			_ = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, destination);
 
 			Assert.IsTrue(destination.Slice(0, input.Length).SequenceEqual(input));
 		}
@@ -210,7 +210,7 @@ namespace Bodu.Security.Cryptography
 
 			try
 			{
-				_ = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
+				_ = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, 0, input.Length);
 				Assert.Fail($"Expected {exceptionType.Name} was not thrown.");
 			}
 			catch (Exception ex)
@@ -237,7 +237,7 @@ namespace Bodu.Security.Cryptography
 
 			try
 			{
-				_ = CryptoUtilities.PadBlock(padding, blockSizeBytes, input, destination);
+				_ = CryptoHelpers.PadBlock(padding, blockSizeBytes, input, destination);
 				Assert.Fail($"Expected {exceptionType.Name} was not thrown.");
 			}
 			catch (Exception ex)

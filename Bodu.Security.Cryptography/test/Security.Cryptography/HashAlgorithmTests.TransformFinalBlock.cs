@@ -94,7 +94,7 @@ namespace Bodu.Security.Cryptography
 			{
 				blockSize = initial.InputBlockSize;
 				input = new byte[Math.Max(blockSize * 2, 8)];
-				CryptoUtilities.FillWithRandomNonZeroBytes(input);
+				CryptoHelpers.FillWithRandomNonZeroBytes(input);
 			}
 
 			byte[] expected;
