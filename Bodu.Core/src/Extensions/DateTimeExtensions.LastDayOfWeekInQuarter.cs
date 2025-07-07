@@ -11,86 +11,215 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns the last occurrence of the specified <see cref="DayOfWeek" /> within the quarter that contains the specified
-		/// <see cref="DateTime" />, using the provided <see cref="CalendarQuarterDefinition" /> to determine the quarter boundaries.
+		/// Returns a new <see cref="DateTime" /> representing the last occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// specified quarter and year, using the standard calendar quarter definition.
 		/// </summary>
-		/// <param name="dateTime">
-		/// The input <see cref="DateTime" /> used to identify the calendar quarter. The returned result preserves its <see cref="DateTime.Kind" />.
-		/// </param>
-		/// <param name="dayOfWeek">
-		/// The <see cref="DayOfWeek" /> value to locate within the quarter. For example, <see cref="DayOfWeek.Monday" /> returns the last
-		/// Monday in the quarter.
-		/// </param>
-		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how quarters are segmented.</param>
+		/// <param name="year">The calendar year. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="quarter">The quarter number, from 1 to 4.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> value set to 00:00:00 on the last occurrence of <paramref name="dayOfWeek" /> in the quarter that
-		/// includes <paramref name="dateTime" />, preserving the input <see cref="DateTime.Kind" />.
+		/// An object whose value is set to midnight (00:00:00) on the last occurrence of <paramref name="dayOfWeek" /> in the quarter.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="definition" /> or <paramref name="dayOfWeek" /> is not a valid enumeration value.
-		/// </exception>
 		/// <remarks>
 		/// <para>
-		/// This method calculates the result by determining the last day of the quarter containing <paramref name="dateTime" /> as defined
-		/// by <paramref name="definition" />, then stepping backward to the most recent occurrence of <paramref name="dayOfWeek" />.
+		/// This method uses <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> to define quarter boundaries, and computes the last
+		/// date within the quarter that matches <paramref name="dayOfWeek" />.
 		/// </para>
-		/// <para>The returned value is normalized to midnight and guaranteed to fall within the same quarter as <paramref name="dateTime" />.</para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
 		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="year" /> is less than 1 or greater than 9999,
+		/// -or- <paramref name="quarter" /> is less than 1 or greater than 4,
+		/// -or- <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
+		/// </exception>
+		public static DateTime GetLastDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek)
+		{
+			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
+			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
+
+			return DateTimeExtensions.GetLastDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				CalendarQuarterDefinition.JanuaryToDecember,
+				DateTimeKind.Unspecified);
+		}
+
+		/// <summary>
+		/// Returns a new <see cref="DateTime" /> representing the last occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// specified quarter and year, using the specified quarter definition.
+		/// </summary>
+		/// <param name="year">The calendar year. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="quarter">The quarter number, from 1 to 4.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> used to define quarter boundaries.</param>
+		/// <returns>
+		/// An object whose value is set to midnight (00:00:00) on the last occurrence of <paramref name="dayOfWeek" /> in the quarter.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The start of the quarter is computed using <paramref name="definition" />, and the search proceeds backwards to the last date
+		/// that matches the specified <paramref name="dayOfWeek" />.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="year" /> is less than 1 or greater than 9999,
+		/// -or- <paramref name="quarter" /> is less than 1 or greater than 4,
+		/// -or- <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value,
+		/// -or- <paramref name="definition" /> is not a valid <see cref="CalendarQuarterDefinition" /> value.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the provider-based overload instead.
+		/// </exception>
+		public static DateTime GetLastDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
+		{
+			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
+			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
+
+			return DateTimeExtensions.GetLastDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				definition,
+				DateTimeKind.Unspecified);
+		}
+
+		/// <summary>
+		/// Returns a new <see cref="DateTime" /> representing the last occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// calendar quarter that contains the specified instance, using the standard calendar quarter definition.
+		/// </summary>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <returns>
+		/// An object whose value is set to midnight (00:00:00) on the last occurrence of <paramref name="dayOfWeek" /> in the quarter.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method uses <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> to determine quarter boundaries. The result is
+		/// calculated by starting at the last day of the quarter and searching backwards to the last occurrence of the specified <paramref name="dayOfWeek" />.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
+		/// </exception>
+		public static DateTime LastDayOfWeekInQuarter(this DateTime dateTime, DayOfWeek dayOfWeek)
+		{
+			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
+
+			var (year, quarter) = DateTimeExtensions.GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryToDecember, dateTime);
+			return DateTimeExtensions.GetLastDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				CalendarQuarterDefinition.JanuaryToDecember,
+				dateTime.Kind);
+		}
+
+		/// <summary>
+		/// Returns a new <see cref="DateTime" /> representing the last occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// quarter that contains the specified instance, using the given quarter definition.
+		/// </summary>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> used to define quarter boundaries.</param>
+		/// <returns>
+		/// An object whose value is set to midnight (00:00:00) on the last occurrence of <paramref name="dayOfWeek" /> in the quarter.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The result is calculated by identifying the last day of the quarter based on <paramref name="definition" /> and searching
+		/// backwards to the specified <paramref name="dayOfWeek" />.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value,
+		/// -or- <paramref name="definition" /> is not a valid <see cref="CalendarQuarterDefinition" /> value.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the provider-based overload instead.
+		/// </exception>
 		public static DateTime LastDayOfWeekInQuarter(this DateTime dateTime, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 
-			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
-			var ticks = ComputeQuarterEndTicks(year, quarter, GetQuarterDefinition(definition));
-			ticks += ((dayOfWeek - GetDayOfWeekFromTicks(ticks) + 7) % 7) * TicksPerDay;
-			return new(ticks, dateTime.Kind);
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
+
+			var (year, quarter) = DateTimeExtensions.GetQuarterAndYearFromDate(definition, dateTime);
+			return DateTimeExtensions.GetLastDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				definition,
+				dateTime.Kind);
 		}
 
 		/// <summary>
-		/// Returns the last occurrence of the specified <see cref="DayOfWeek" /> within the given calendar quarter and year, using the
-		/// provided <see cref="CalendarQuarterDefinition" /> to determine quarter boundaries.
+		/// Returns a new <see cref="DateTime" /> representing the last occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// quarter that contains the specified instance, using a custom quarter definition provider.
 		/// </summary>
-		/// <param name="year">
-		/// The calendar year to evaluate. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
-		/// <see cref="DateTime.MaxValue" />, inclusive.
-		/// </param>
-		/// <param name="quarter">
-		/// The quarter number to evaluate. Must be an integer between 1 and 4, inclusive, where 1 represents the first quarter and 4
-		/// represents the final quarter.
-		/// </param>
-		/// <param name="dayOfWeek">
-		/// The <see cref="DayOfWeek" /> value to locate. For example, specifying <see cref="DayOfWeek.Friday" /> will return the last
-		/// Friday within the specified quarter.
-		/// </param>
-		/// <param name="definition">
-		/// The <see cref="CalendarQuarterDefinition" /> value that defines how quarters are segmented within the year (e.g.,
-		/// calendar-aligned or fiscal-aligned quarters).
-		/// </param>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> implementation that defines quarter boundaries.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> value set to 00:00:00 on the last occurrence of <paramref name="dayOfWeek" /> in the specified
-		/// <paramref name="quarter" /> of <paramref name="year" />, with <see cref="DateTimeKind.Unspecified" />.
+		/// An object whose value is set to midnight (00:00:00) on the last occurrence of <paramref name="dayOfWeek" /> in the quarter.
 		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="year" /> is outside the supported <see cref="DateTime" /> year range, if <paramref name="quarter" />
-		/// is not between 1 and 4, or if <paramref name="dayOfWeek" /> or <paramref name="definition" /> is not a valid enumeration value.
-		/// </exception>
 		/// <remarks>
 		/// <para>
-		/// The result is computed by determining the last day of the specified quarter using <paramref name="definition" />, then iterating
-		/// backward to find the most recent occurrence of the specified <paramref name="dayOfWeek" />.
+		/// The result is determined by starting at the beginning of the quarter as defined by <paramref name="provider" /> and searching
+		/// backwards to the specified <paramref name="dayOfWeek" />.
 		/// </para>
-		/// <para>The returned value is normalized to midnight (00:00:00) and uses <see cref="DateTimeKind.Unspecified" />.</para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
 		/// </remarks>
-		public static DateTime LastDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
+		/// </exception>
+		public static DateTime LastDayOfWeekInQuarter(this DateTime dateTime, DayOfWeek dayOfWeek, IQuarterDefinitionProvider provider)
 		{
-			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
-			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
+			ThrowHelper.ThrowIfNull(provider);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
-			var ticks = ComputeQuarterEndTicks(year, quarter, GetQuarterDefinition(definition));
+			var dt = provider.GetQuarterEnd(dateTime);
+			return new DateTime(dt.Ticks - DateTimeExtensions.GetPreviousDayOfWeekAsTicks(dt, dayOfWeek), dateTime.Kind);
+		}
+
+		/// <summary>
+		/// Computes the last occurrence of the specified <see cref="DayOfWeek" /> within the given quarter and year, based on the provided
+		/// <see cref="CalendarQuarterDefinition" />, and returns a <see cref="DateTime" /> with the specified <see cref="DateTimeKind" />.
+		/// </summary>
+		/// <param name="year">The calendar year that contains the quarter. Must be within the valid range of <see cref="DateTime" />.</param>
+		/// <param name="quarter">The quarter number (1 to 4) within the specified year.</param>
+		/// <param name="dayOfWeek">
+		/// The <see cref="DayOfWeek" /> to locate. The method searches backward from the end of the quarter to find the last occurrence.
+		/// </param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how the year is divided into quarters.</param>
+		/// <param name="kind">The <see cref="DateTimeKind" /> to apply to the resulting <see cref="DateTime" />.</param>
+		/// <returns>
+		/// A <see cref="DateTime" /> representing midnight (00:00:00) on the last occurrence of <paramref name="dayOfWeek" /> within the
+		/// specified quarter, using the specified <paramref name="kind" />.
+		/// </returns>
+		/// <remarks>
+		/// This method is used internally to calculate the final matching weekday in a quarter with tick-level precision. It assumes that
+		/// all arguments have been validated by the caller and does not perform any range or enum checks.
+		/// </remarks>
+		private static DateTime GetLastDayOfWeekInQuarterInternal(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition, DateTimeKind kind)
+		{
+			var ticks = ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition));
 			ticks += ((dayOfWeek - GetDayOfWeekFromTicks(ticks) + 7) % 7) * TicksPerDay;
-			return new(ticks, DateTimeKind.Unspecified);
+			return new(ticks, kind);
 		}
 	}
 }

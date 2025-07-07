@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using Bodu.Collections.Extensions;
@@ -12,13 +12,16 @@ namespace Bodu.Collections.Generic.Extensions
 {
 	public static partial class IEnumerableExtensions
 	{
-		// Individual bit values
-		internal const int Yield = 1 << 0;
+		internal const int Break = 1 << 3;
+
+		internal const int Exit = 1 << 4;
 
 		internal const int Recurse = 1 << 1;
+
 		internal const int Skip = 1 << 2;
-		internal const int Break = 1 << 3;
-		internal const int Exit = 1 << 4;
+
+		// Individual bit values
+		internal const int Yield = 1 << 0;
 
 		/// <summary>
 		/// Recursively flattens a hierarchical sequence using the provided child selector.
@@ -28,7 +31,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <param name="childSelector">A function that returns child elements for a given element.</param>
 		/// <returns>A flattened sequence of all elements including their children.</returns>
 		/// <exception cref="System.ArgumentNullException">
-		/// Thrown if <paramref name="source" /> or <paramref name="childSelector" /> is null.
+		/// Thrown if <paramref name="source" /> or <paramref name="childSelector" /> is <see langword="null" />.
 		/// </exception>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
@@ -60,7 +63,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// </returns>
 		/// <exception cref="System.ArgumentNullException">
 		/// Thrown if <paramref name="source" />, <paramref name="childSelector" />, or
-		/// <paramref name="selector" /> is null.
+		/// <paramref name="selector" /> is <see langword="null" />.
 		/// </exception>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
@@ -96,7 +99,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// </returns>
 		/// <exception cref="System.ArgumentNullException">
 		/// Thrown if <paramref name="source" />, <paramref name="childSelector" />, or
-		/// <paramref name="selector" /> is null.
+		/// <paramref name="selector" /> is <see langword="null" />.
 		/// </exception>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
@@ -130,7 +133,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <returns>A flattened and projected sequence from all elements including children.</returns>
 		/// <exception cref="System.ArgumentNullException">
 		/// Thrown if <paramref name="source" />, <paramref name="childSelector" />, or
-		/// <paramref name="selector" /> is null.
+		/// <paramref name="selector" /> is <see langword="null" />.
 		/// </exception>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
@@ -172,7 +175,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// </returns>
 		/// <exception cref="System.ArgumentNullException">
 		/// Thrown if <paramref name="source" />, <paramref name="childSelector" />,
-		/// <paramref name="selector" />, or <paramref name="recursionControl" /> is null.
+		/// <paramref name="selector" />, or <paramref name="recursionControl" /> is <see langword="null" />.
 		/// </exception>
 		/// <example>
 		/// <code language="csharp"><![CDATA[
@@ -311,6 +314,11 @@ namespace Bodu.Collections.Generic.Extensions
 		internal sealed class RecursionState
 		{
 			/// <summary>
+			/// Gets or sets the depth level where exit occurred.
+			/// </summary>
+			public int? ExitDepth { get; set; }
+
+			/// <summary>
 			/// Gets or sets a value indicating whether full traversal has been terminated.
 			/// </summary>
 			public bool ExitRequested { get; set; }
@@ -319,11 +327,6 @@ namespace Bodu.Collections.Generic.Extensions
 			/// Gets or sets the index of the element that triggered exit, if applicable.
 			/// </summary>
 			public int? ExitTriggeredAtIndex { get; set; }
-
-			/// <summary>
-			/// Gets or sets the depth level where exit occurred.
-			/// </summary>
-			public int? ExitDepth { get; set; }
 
 			/// <summary>
 			/// Gets or sets the last element that triggered exit, if tracked.

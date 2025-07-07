@@ -8,7 +8,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Clear_WhenPolicyIsLFUAndCalled_ShouldResetFrequencyTracking()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			_ = dictionary["A"];
@@ -29,7 +29,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LFU")]
 		public void ItemEvicted_WhenPolicyIsLFUAndEvictionOccurs_ShouldEvictLeastFrequentlyUsed()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			var evicted = new List<string>();
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 
@@ -49,7 +49,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LRU")]
 		public void ItemEvicted_WhenPolicyIsLRUAndCandidateRemoved_ShouldSkipEviction()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			var evicted = new List<string>();
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 
@@ -68,7 +68,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsLFUAndKeyTouched_ShouldUpdateFrequency()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -89,7 +89,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsLFUAndKeyExists_ShouldReturnTrue()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("x", 42);
 
 			var actual = dictionary.Touch("x");
@@ -103,7 +103,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void TouchOrThrow_WhenPolicyIsLFUAndKeyExists_ShouldUpdateFrequency()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("x", 10);
 
 			dictionary.TouchOrThrow("x");
@@ -119,7 +119,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LFU")]
 		public void Add_WhenPolicyIsLFUAndCapacityExceeded_ShouldEvictLeastFrequentlyUsed()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("one", 1);
 			dictionary.Add("two", 2);
 			_ = dictionary["one"];
@@ -136,7 +136,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void PeekEvictionCandidate_WhenPolicyIsLFU_ShouldReturnLeastFrequentlyUsedKey()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("x", 1);
 			dictionary.Add("y", 2);
 			dictionary.Add("z", 3);
@@ -154,7 +154,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsLFUAndKeyExists_ShouldReturnTrueAndIncreaseFrequency()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("a", 1);
 
 			var actual = dictionary.Touch("a");
@@ -168,7 +168,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Clear_WhenPolicyIsLFU_ShouldAllowFreshInsertAfterReset()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			dictionary.Touch("A");
@@ -189,7 +189,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void EvictionEvents_WhenPolicyIsLFUAndNoCandidateFound_ShouldNotFireEvent()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			bool eventFired = false;
 			dictionary.ItemEvicted += (_, _) => eventFired = true;
 

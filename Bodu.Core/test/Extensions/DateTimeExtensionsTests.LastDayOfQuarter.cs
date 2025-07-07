@@ -56,7 +56,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(CalendarQuarterDefinitionDateTimeKindTestData), DynamicDataSourceType.Method)]
-		public void LastDayOfQuarter_WhengQuarterAndDefinitionAndKindIsSet_ShouldPreserveKind(CalendarQuarterDefinition definition, DateTimeKind kind)
+		public void LastDayOfQuarter_WhenQuarterAndDefinitionAndKindIsSet_ShouldPreserveKind(CalendarQuarterDefinition definition, DateTimeKind kind)
 		{
 			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
 			DateTime actual = input.LastDayOfQuarter(definition);
@@ -110,7 +110,7 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void LastDayOfQuarter_WhenInputIsMinValue_ShouldReturnExpectedDate()
 		{
-			var actual = DateTime.MinValue.LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember);
+			var actual = DateTime.MinValue.LastDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember);
 			Assert.AreEqual(new DateTime(1, 3, 31), actual);
 		}
 
@@ -127,7 +127,7 @@ namespace Bodu.Extensions
 		}
 
 		[TestMethod]
-		public void LastDayOfQuarter_WhenDefinitionIsInvalidAndQuarterIsValid_ShouldThrowExactly()
+		public void LastDayOfQuarter_WhenDefinitionIsInvalid_WithYearAndQuarter_ShouldThrowExactly()
 		{
 			var definition = (CalendarQuarterDefinition)999;
 
@@ -141,11 +141,11 @@ namespace Bodu.Extensions
 		[DataRow(-1)]
 		[DataRow(0)]
 		[DataRow(5)]
-		public void LastDayOfQuarter_WhenQuarterIsOutOfRangeAndDefinitionIsValid_ShouldThrowExactly(int quarter)
+		public void LastDayOfQuarter_WhenQuarterIsOutOfRange_WithDefinition_ShouldThrowExactly(int quarter)
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.GetLastDayOfQuarter(2025, quarter, CalendarQuarterDefinition.JanuaryDecember);
+				_ = DateTimeExtensions.GetLastDayOfQuarter(2025, quarter, CalendarQuarterDefinition.JanuaryToDecember);
 			});
 		}
 
@@ -161,6 +161,31 @@ namespace Bodu.Extensions
 			});
 		}
 
+
+
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(0)]
+		[DataRow(10_000)]
+		public void GetLastDayOfQuarter_WhenYearIsOutOfRange_WithDefinition_ShouldThrowExactly(int year)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				_ = DateTimeExtensions.GetLastDayOfQuarter(year, 1, CalendarQuarterDefinition.JanuaryToDecember);
+			});
+		}
+
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(0)]
+		[DataRow(10_000)]
+		public void GetLastDayOfQuarter_WhenYearIsOutOfRange_ShouldThrowExactly(int year)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				_ = DateTimeExtensions.GetLastDayOfQuarter(year, 1);
+			});
+		}
 
 	}
 }

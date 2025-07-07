@@ -15,8 +15,7 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The input <see cref="DateTime" /> whose month and year are used to determine the last day.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> set to midnight (00:00:00) on the last day of the month, with the original
-		/// <see cref="DateTime.Kind" /> preserved.
+		/// An object whose value is set to midnight (00:00:00) on the last day of the month, with the original <see cref="DateTime.Kind" /> preserved.
 		/// </returns>
 		/// <remarks>
 		/// <para>
@@ -31,7 +30,7 @@ namespace Bodu.Extensions
 			new(GetLastDayOfMonthTicks(dateTime), dateTime.Kind);
 
 		/// <summary>
-		/// Returns a <see cref="DateTime" /> representing midnight on the last day of the specified year and month.
+		/// Returns a new <see cref="DateTime" /> representing the last day of the specified month and year.
 		/// </summary>
 		/// <param name="year">
 		/// The calendar year component of the date. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
@@ -40,7 +39,7 @@ namespace Bodu.Extensions
 		/// <param name="month">
 		/// The month component of the date. Must be an integer between 1 and 12, inclusive, where 1 represents January and 12 represents December.
 		/// </param>
-		/// <returns>A <see cref="DateTime" /> set to 00:00:00 on the last day of the specified month and year, with <see cref="DateTimeKind.Unspecified" />.</returns>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the last day of the specified month and year, using <see cref="DateTimeKind.Unspecified" />.</returns>
 		/// <remarks>
 		/// <para>
 		/// This method uses Gregorian calendar logic to determine the number of days in the specified month, including leap year

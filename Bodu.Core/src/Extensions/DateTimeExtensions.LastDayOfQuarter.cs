@@ -11,50 +11,40 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns a <see cref="DateTime" /> representing the last day of the specified calendar quarter in the given <paramref name="year" />.
+		/// Returns a new <see cref="DateTime" /> representing the last day of the specified calendar quarter in the given year, using the
+		/// standard calendar quarter definition.
 		/// </summary>
-		/// <param name="year">
-		/// The calendar year to evaluate. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
-		/// <see cref="DateTime.MaxValue" />, inclusive.
-		/// </param>
-		/// <param name="quarter">
-		/// The quarter number within the year. Must be an integer between 1 and 4, inclusive, where 1 represents the first quarter (January
-		/// to March) and 4 represents the final quarter (October to December).
-		/// </param>
-		/// <returns>A <see cref="DateTime" /> set to 00:00:00 on the last day of the specified quarter, with <see cref="DateTimeKind.Unspecified" />.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is not between 1 and 4 (inclusive).</exception>
+		/// <param name="year">The calendar year to evaluate. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="quarter">The quarter number, from 1 (Jan–Mar) to 4 (Oct–Dec).</param>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the last day of the specified quarter and year.</returns>
 		/// <remarks>
-		/// <para>
-		/// This method uses the standard <see cref="CalendarQuarterDefinition.JanuaryDecember" /> structure for calendar quarters. For
-		/// alternate fiscal or custom quarter definitions, use an overload that accepts a <see cref="CalendarQuarterDefinition" /> or an <see cref="IQuarterDefinitionProvider" />.
-		/// </para>
+		/// <para>This method uses the standard calendar alignment defined by <see cref="CalendarQuarterDefinition.JanuaryToDecember" />.</para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
 		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="year" /> is outside the supported range,
+		/// -or- if <paramref name="quarter" /> is less than 1 or greater than 4.
+		/// </exception>
 		public static DateTime GetLastDayOfQuarter(int year, int quarter) =>
-			GetLastDayOfQuarter(year, quarter, CalendarQuarterDefinition.JanuaryDecember);
+			GetLastDayOfQuarter(year, quarter, CalendarQuarterDefinition.JanuaryToDecember);
 
 		/// <summary>
-		/// Returns the last day of the specified <paramref name="quarter" /> in the given <paramref name="year" />, using the provided
-		/// quarter definition.
+		/// Returns a new <see cref="DateTime" /> representing the last day of the specified quarter and year, using the provided quarter definition.
 		/// </summary>
-		/// <param name="year">
-		/// The calendar year used as the base year for the quarter. Must be between the <c>Year</c> property values of
-		/// <see cref="DateTime.MinValue" /> and <see cref="DateTime.MaxValue" />, inclusive.
-		/// </param>
-		/// <param name="quarter">
-		/// The quarter number within the year. Must be an integer between 1 and 4, inclusive, where 1 represents the first quarter and 4
-		/// represents the final quarter.
-		/// </param>
-		/// <param name="definition">
-		/// The <see cref="CalendarQuarterDefinition" /> that determines how quarters are aligned within the year (e.g., calendar or fiscal alignment).
-		/// </param>
-		/// <returns>A <see cref="DateTime" /> set to midnight (00:00:00) on the last day of the specified quarter, with <see cref="DateTimeKind.Unspecified" />.</returns>
+		/// <param name="year">The calendar year to evaluate. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="quarter">The quarter number, from 1 to 4.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how quarters are aligned.</param>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the last day of the specified quarter.</returns>
+		/// <remarks>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
+		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="year" /> is outside the supported range of <see cref="DateTime" />, if <paramref name="quarter" /> is
-		/// not between 1 and 4, or if <paramref name="definition" /> is not a valid enumeration value.
+		/// Thrown if <paramref name="year" /> is outside the supported range,
+		/// -or- if <paramref name="quarter" /> is less than 1 or greater than 4,
+		/// -or- if <paramref name="definition" /> is not a valid enumeration value.
 		/// </exception>
 		/// <exception cref="InvalidOperationException">
-		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use an overload that accepts an
-		/// <see cref="IQuarterDefinitionProvider" /> instead.
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use a provider-based overload instead.
 		/// </exception>
 		public static DateTime GetLastDayOfQuarter(int year, int quarter, CalendarQuarterDefinition definition)
 		{
@@ -69,43 +59,36 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns a <see cref="DateTime" /> representing the last day of the calendar quarter for the specified <paramref name="dateTime" />.
+		/// Returns a new <see cref="DateTime" /> representing the last day of the calendar quarter that contains the specified instance,
+		/// using the standard calendar quarter definition.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> whose quarter is evaluated.</param>
-		/// <returns>A <see cref="DateTime" /> set to 00:00:00 on the last day of the quarter, preserving the original <see cref="DateTime.Kind" />.</returns>
+		/// <param name="dateTime">The date and time value used to determine the calendar quarter.</param>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the last day of the quarter containing <paramref name="dateTime" />.</returns>
 		/// <remarks>
-		/// <para>This method uses the standard calendar quarter structure defined by <see cref="CalendarQuarterDefinition.JanuaryDecember" />:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <description>Q1: January 1 – March 31</description>
-		/// </item>
-		/// <item>
-		/// <description>Q2: April 1 – June 30</description>
-		/// </item>
-		/// <item>
-		/// <description>Q3: July 1 – September 30</description>
-		/// </item>
-		/// <item>
-		/// <description>Q4: October 1 – December 31</description>
-		/// </item>
-		/// </list>
+		/// <para>This method uses the standard calendar alignment defined by <see cref="CalendarQuarterDefinition.JanuaryToDecember" />.</para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
 		/// </remarks>
 		public static DateTime LastDayOfQuarter(this DateTime dateTime) =>
-			LastDayOfQuarterInternal(dateTime, CalendarQuarterDefinition.JanuaryDecember);
+			LastDayOfQuarterInternal(dateTime, CalendarQuarterDefinition.JanuaryToDecember);
 
 		/// <summary>
-		/// Returns the last day of the quarter that includes the specified <paramref name="dateTime" />, based on the given <paramref name="definition" />.
+		/// Returns a new <see cref="DateTime" /> representing the last day of the quarter that contains the specified instance, using the
+		/// specified calendar quarter definition.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
 		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> used to determine quarter boundaries.</param>
-		/// <returns>A <see cref="DateTime" /> set to midnight on the last day of the applicable quarter, preserving the original <see cref="DateTime.Kind" />.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="definition" /> is not a defined value.</exception>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the last day of the corresponding quarter.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <paramref name="definition" /> controls whether quarters are aligned by month (e.g., Jan–Mar) or anchored to custom
+		/// day-based boundaries.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="definition" /> is not a valid enumeration value.</exception>
 		/// <exception cref="InvalidOperationException">
 		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the provider-based overload instead.
 		/// </exception>
-		/// <remarks>
-		/// Supports both month- and day-aligned definitions. For fiscal quarters not aligned to calendar months, use the overload accepting <see cref="IQuarterDefinitionProvider" />.
-		/// </remarks>
 		public static DateTime LastDayOfQuarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -118,13 +101,19 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the last day of the quarter that includes the specified <paramref name="dateTime" />, using a custom provider.
+		/// Returns a new <see cref="DateTime" /> representing the last day of the quarter that contains the specified instance, using a
+		/// custom <see cref="IQuarterDefinitionProvider" />.
 		/// </summary>
-		/// <param name="dateTime">The date to evaluate.</param>
-		/// <param name="provider">An implementation of <see cref="IQuarterDefinitionProvider" /> that defines quarter boundaries.</param>
-		/// <returns>A <see cref="DateTime" /> set to midnight on the last day of the applicable custom quarter, preserving the <see cref="DateTime.Kind" />.</returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if the provider returns an invalid quarter end date.</exception>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="provider">An implementation of <see cref="IQuarterDefinitionProvider" /> defining custom quarter boundaries.</param>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the last day of the quarter containing <paramref name="dateTime" />.</returns>
+		/// <remarks>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if the provider returns a date outside the range of <see cref="DateTime.MinValue" /> and <see cref="DateTime.MaxValue" />.
+		/// </exception>
 		public static DateTime LastDayOfQuarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
 			ThrowHelper.ThrowIfNull(provider);
@@ -136,7 +125,7 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The date used to evaluate the quarter.</param>
 		/// <param name="definition">The quarter definition, assumed to be valid and non-custom.</param>
-		/// <returns>A <see cref="DateTime" /> set to midnight on the last day of the applicable quarter, preserving the <see cref="DateTime.Kind" />.</returns>
+		/// <returns>An object whose value is set to midnight on the last day of the applicable quarter, preserving the <see cref="DateTime.Kind" />.</returns>
 		/// <remarks>This method skips validation and is intended for internal use in trusted contexts.</remarks>
 		private static DateTime LastDayOfQuarterInternal(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{

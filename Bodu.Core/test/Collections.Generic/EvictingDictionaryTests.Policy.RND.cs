@@ -10,7 +10,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("Random")]
 		public void Add_WhenPolicyIsRandomAndCapacityExceeded_ShouldEvictRandomItem()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.RandomReplacement);
 			dictionary.Add("one", 1);
 			dictionary.Add("two", 2);
 			dictionary.Add("three", 3);
@@ -26,7 +26,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("Random")]
 		public void Clear_WhenPolicyIsRandom_ShouldRemoveAllItems()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.RandomReplacement);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			dictionary.Clear();
@@ -42,7 +42,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsRandom_ShouldBeTriggeredOnEviction()
 		{
 			var evicted = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.RandomReplacement);
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 
 			dictionary.Add("X", 1);
@@ -60,7 +60,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("Random")]
 		public void EvictionEvents_WhenPolicyIsRandomAndCandidateRemovedBeforeEviction_ShouldNotThrow()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.RandomReplacement);
 			dictionary.Add("X", 1);
 			dictionary.Add("Y", 2);
 			dictionary.Remove("X");
@@ -77,7 +77,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("Random")]
 		public void PeekEvictionCandidate_WhenPolicyIsRandom_ShouldReturnSomeKey()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.RandomReplacement);
 			dictionary.Add("alpha", 1);
 			dictionary.Add("beta", 2);
 
@@ -93,7 +93,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsRandom_ShouldFireAfterItemEvicting()
 		{
 			var sequence = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.RandomReplacement);
 
 			dictionary.ItemEvicting += (key, value) => sequence.Add($"Evicting:{key}:{value}");
 			dictionary.ItemEvicted += (key, value) => sequence.Add($"Evicted:{key}:{value}");
@@ -114,7 +114,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("Random")]
 		public void Keys_WhenPolicyIsRandom_ShouldReflectEvictions()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.RandomReplacement);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.RandomReplacement);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);

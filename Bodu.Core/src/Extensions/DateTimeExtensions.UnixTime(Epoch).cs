@@ -46,10 +46,11 @@ namespace Bodu.Extensions
 		internal const long UnixEpochTicks = TicksPerDay * DaysTo1970;
 
 		/// <summary>
-		/// Converts a Unix timestamp expressed in milliseconds since 1970-01-01T00:00:00Z to a <see cref="DateTime" />.
+		/// Returns a new <see cref="DateTime" /> representing the point in time corresponding to the specified Unix timestamp, expressed in
+		/// milliseconds since 1970-01-01T00:00:00Z.
 		/// </summary>
 		/// <param name="timestamp">The number of milliseconds that have elapsed since the Unix epoch (1970-01-01T00:00:00Z).</param>
-		/// <returns>A <see cref="DateTime" /> value representing the corresponding point in time in UTC.</returns>
+		/// <returns>An object whose value is set to the UTC date and time corresponding to <paramref name="timestamp" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="timestamp" /> is outside the valid range of supported Unix timestamps.
 		/// </exception>
@@ -58,14 +59,15 @@ namespace Bodu.Extensions
 		public static DateTime FromUnixTimeMilliseconds(long timestamp)
 		{
 			ThrowHelper.ThrowIfOutOfRange(timestamp, MinEpochMilliseconds, MaxEpochMilliseconds);
-			return new (UnixEpochTicks + (timestamp * TicksPerMillisecond), DateTimeKind.Utc);
+			return new(UnixEpochTicks + (timestamp * TicksPerMillisecond), DateTimeKind.Utc);
 		}
 
 		/// <summary>
-		/// Converts a Unix timestamp expressed in seconds since 1970-01-01T00:00:00Z to a <see cref="DateTime" />.
+		/// Returns a new <see cref="DateTime" /> representing the point in time corresponding to the specified Unix timestamp, expressed in
+		/// seconds since 1970-01-01T00:00:00Z.
 		/// </summary>
 		/// <param name="timestamp">The number of seconds that have elapsed since the Unix epoch (1970-01-01T00:00:00Z).</param>
-		/// <returns>A <see cref="DateTime" /> value representing the corresponding point in time in UTC.</returns>
+		/// <returns>An object whose value is set to the UTC date and time corresponding to <paramref name="timestamp" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="timestamp" /> is outside the valid range of supported Unix timestamps.
 		/// </exception>
@@ -74,11 +76,11 @@ namespace Bodu.Extensions
 		public static DateTime FromUnixTimeSeconds(long timestamp)
 		{
 			ThrowHelper.ThrowIfOutOfRange(timestamp, MinEpochSeconds, MaxEpochSeconds);
-			return new (UnixEpochTicks + (timestamp * TicksPerSecond), DateTimeKind.Utc);
+			return new(UnixEpochTicks + (timestamp * TicksPerSecond), DateTimeKind.Utc);
 		}
 
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to the number of milliseconds that have elapsed since the Unix epoch (1970-01-01T00:00:00Z).
+		/// Returns the number of milliseconds that have elapsed since the Unix epoch (1970-01-01T00:00:00Z), based on the specified <see cref="DateTime" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to convert. It is first converted to UTC using <see cref="DateTime.ToUniversalTime()" />.</param>
 		/// <returns>The total number of milliseconds since the Unix epoch.</returns>
@@ -91,7 +93,7 @@ namespace Bodu.Extensions
 			(dateTime.ToUniversalTime().Ticks / TicksPerMillisecond) - UnixEpochMilliseconds;
 
 		/// <summary>
-		/// Converts the specified <see cref="DateTime" /> to the number of seconds that have elapsed since the Unix epoch (1970-01-01T00:00:00Z).
+		/// Returns the number of seconds that have elapsed since the Unix epoch (1970-01-01T00:00:00Z), based on the specified <see cref="DateTime" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to convert. It is first converted to UTC using <see cref="DateTime.ToUniversalTime()" />.</param>
 		/// <returns>The total number of seconds since the Unix epoch.</returns>

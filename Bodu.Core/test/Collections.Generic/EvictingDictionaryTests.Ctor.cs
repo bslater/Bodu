@@ -20,7 +20,7 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(5);
 			Assert.AreEqual(5, dictionary.Capacity);
 			Assert.AreEqual(0, dictionary.Count);
-			Assert.AreEqual(EvictionPolicy.LeastRecentlyUsed, dictionary.Policy);
+			Assert.AreEqual(EvictingDictionaryPolicy.LeastRecentlyUsed, dictionary.Policy);
 		}
 
 		/// <summary>
@@ -29,10 +29,10 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Ctor_WhenGivenCapacityAndPolicy_ShouldUseSpecifiedPolicy()
 		{
-			var dictionary = new EvictingDictionary<string, int>(5, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(5, EvictingDictionaryPolicy.FirstInFirstOut);
 			Assert.AreEqual(5, dictionary.Capacity);
 			Assert.AreEqual(0, dictionary.Count);
-			Assert.AreEqual(EvictionPolicy.FirstInFirstOut, dictionary.Policy);
+			Assert.AreEqual(EvictingDictionaryPolicy.FirstInFirstOut, dictionary.Policy);
 		}
 
 		/// <summary>
@@ -55,7 +55,7 @@ namespace Bodu.Collections.Generic
 		{
 			var dictionary = new EvictingDictionary<string, int>();
 			Assert.AreEqual(16, dictionary.Capacity);
-			Assert.AreEqual(EvictionPolicy.LeastRecentlyUsed, dictionary.Policy);
+			Assert.AreEqual(EvictingDictionaryPolicy.LeastRecentlyUsed, dictionary.Policy);
 			Assert.AreEqual(0, dictionary.Count);
 		}
 
@@ -65,7 +65,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Ctor_WhenSourceExceedsCapacity_ShouldEvictOldest()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, source, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, source, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			var expected = source.Skip(2).ToDictionary(p => p.Key, p => p.Value);
 
 			Assert.AreEqual(3, dictionary.Capacity);
@@ -79,7 +79,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Ctor_WhenGivenDictionaryCapacityAndPolicy_ShouldRespectAllParameters()
 		{
-			var dictionary = new EvictingDictionary<string, int>(4, source, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(4, source, EvictingDictionaryPolicy.FirstInFirstOut);
 			var expected = source.Skip(1).ToDictionary(p => p.Key, p => p.Value);
 
 			Assert.AreEqual(4, dictionary.Capacity);
@@ -107,7 +107,7 @@ namespace Bodu.Collections.Generic
 		{
 			var buffer = new EvictingDictionary<string, int>(source);
 			CollectionAssert.AreEqual(source, buffer.ToArray());
-			Assert.AreEqual(EvictionPolicy.LeastRecentlyUsed, buffer.Policy);
+			Assert.AreEqual(EvictingDictionaryPolicy.LeastRecentlyUsed, buffer.Policy);
 			Assert.AreEqual(EvictingDictionaryTests.DefaultCapacity, buffer.Capacity);
 		}
 
@@ -165,9 +165,9 @@ namespace Bodu.Collections.Generic
 		{
 			var source = Enumerable.Range(1, 20).Select(i => new KeyValuePair<string, int>($"Key{i}", i));
 			var expected = source.Skip(source.Count() - EvictingDictionaryTests.DefaultCapacity).ToDictionary(p => p.Key, p => p.Value);
-			var dictionary = new EvictingDictionary<string, int>(source, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(source, EvictingDictionaryPolicy.FirstInFirstOut);
 
-			Assert.AreEqual(EvictionPolicy.FirstInFirstOut, dictionary.Policy);
+			Assert.AreEqual(EvictingDictionaryPolicy.FirstInFirstOut, dictionary.Policy);
 			Assert.AreEqual(EvictingDictionaryTests.DefaultCapacity, dictionary.Capacity);
 			CollectionAssert.AreEqual(expected, dictionary.ToArray());
 		}

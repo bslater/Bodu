@@ -11,12 +11,12 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Indicates whether the specified <see cref="DateTime" /> falls on the first day of its month.
+		/// Returns an indication whether the specified <see cref="DateTime" /> falls on the first day of its month.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
+		/// <param name="dateTime">The date and time value to evaluate.</param>
 		/// <returns><see langword="true" /> if <paramref name="dateTime" /> represents the first day of its month; otherwise, <see langword="false" />.</returns>
 		/// <remarks>
-		/// This method compares the <see cref="DateTime.Day" /> component to <c>1</c> to determine if the date is the first day of the month.
+		/// <para>This method evaluates whether the <see cref="DateTime.Day" /> component is equal to <c>1</c>.</para>
 		/// </remarks>
 		public static bool IsFirstDayOfMonth(this DateTime dateTime) =>
 			dateTime.Day == 1;

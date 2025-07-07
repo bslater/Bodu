@@ -52,7 +52,7 @@ namespace Bodu.Collections.Generic
 				["c"] = 3
 			};
 
-			var dictionary = new EvictingDictionary<string, int>(2, source, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, source, EvictingDictionaryPolicy.FirstInFirstOut);
 			Assert.AreEqual(2, dictionary.Capacity);
 		}
 
@@ -68,7 +68,7 @@ namespace Bodu.Collections.Generic
 				new("b", 2),
 			};
 
-			var dictionary = new EvictingDictionary<string, int>(source, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(source, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			Assert.AreEqual(EvictingDictionaryTests.DefaultCapacity, dictionary.Capacity);
 		}
 	}

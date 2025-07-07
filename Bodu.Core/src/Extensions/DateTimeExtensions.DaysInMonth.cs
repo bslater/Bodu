@@ -73,7 +73,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// <para>
 		/// The result is equivalent to <c>calendar.GetDaysInMonth(dateTime.Year, dateTime.Month)</c>, or uses the current culture's
-		/// calendar if <paramref name="calendar" /> is <c>null</c>.
+		/// calendar if <paramref name="calendar" /> is <see langword="null" />.
 		/// </para>
 		/// <note>This method does not account for leap months. For calendars that support leap months or multiple eras, consider using
 		/// <c>GetDaysInMonth(year, month, era)</c> instead.</note>

@@ -11,13 +11,11 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Determines whether the specified <see cref="DateTime" /> falls on a weekday using the default
+		/// Returns an indication whether the specified <see cref="DateTime" /> falls on a weekday using the default
 		/// <see cref="CalendarWeekendDefinition.SaturdaySunday" /> rule.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
-		/// <returns>
-		/// <see langword="true" /> if the specified <paramref name="dateTime" /> does not fall on a Saturday or Sunday; otherwise, <see langword="false" />.
-		/// </returns>
+		/// <returns><see langword="true" /> if the date is not a Saturday or Sunday; otherwise, <see langword="false" />.</returns>
 		/// <remarks>
 		/// <para>
 		/// A weekday is defined as any day not considered part of the weekend under the
@@ -32,7 +30,7 @@ namespace Bodu.Extensions
 			!IsWeekend(dateTime, CalendarWeekendDefinition.SaturdaySunday, null);
 
 		/// <summary>
-		/// Determines whether the specified <see cref="DateTime" /> falls on a weekday, based on the provided
+		/// Returns an indication whether the specified <see cref="DateTime" /> falls on a weekday, based on the provided
 		/// <see cref="CalendarWeekendDefinition" /> rule.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
@@ -40,12 +38,9 @@ namespace Bodu.Extensions
 		/// <param name="provider">
 		/// An optional <see cref="IWeekendDefinitionProvider" /> used to resolve weekend days when <paramref name="weekend" /> is set to <see cref="CalendarWeekendDefinition.Custom" />.
 		/// </param>
-		/// <returns>
-		/// <see langword="true" /> if the specified <paramref name="dateTime" /> is considered a weekday under the given weekend rule;
-		/// otherwise, <see langword="false" />.
-		/// </returns>
+		/// <returns><see langword="true" /> if the date is not considered part of the weekend; otherwise, <see langword="false" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> and <paramref name="provider" /> is <c>null</c>.
+		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> and <paramref name="provider" /> is <see langword="null" />.
 		/// </exception>
 		/// <remarks>
 		/// <para>
@@ -58,18 +53,17 @@ namespace Bodu.Extensions
 			!IsWeekend(dateTime, weekend, provider);
 
 		/// <summary>
-		/// Determines whether the specified <see cref="DayOfWeek" /> value is considered a weekday based on the given weekend rule or provider.
+		/// Returns an indication whether the specified <see cref="DayOfWeek" /> value is considered a weekday based on the given weekend
+		/// rule or provider.
 		/// </summary>
 		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to evaluate.</param>
 		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that defines which days are treated as part of the weekend.</param>
 		/// <param name="provider">
 		/// An optional <see cref="IWeekendDefinitionProvider" /> used when <paramref name="weekend" /> is set to <see cref="CalendarWeekendDefinition.Custom" />.
 		/// </param>
-		/// <returns>
-		/// <see langword="true" /> if the specified <paramref name="dayOfWeek" /> is not considered part of the weekend; otherwise, <see langword="false" />.
-		/// </returns>
+		/// <returns><see langword="true" /> if the day is not considered part of the weekend; otherwise, <see langword="false" />.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> and <paramref name="provider" /> is <c>null</c>.
+		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> and <paramref name="provider" /> is <see langword="null" />.
 		/// </exception>
 		/// <remarks>
 		/// <para>

@@ -94,7 +94,7 @@ namespace Bodu
 		/// </summary>
 		/// <param name="input">The input string representing selected days.</param>
 		/// <exception cref="FormatException">
-		/// Thrown if the <paramref name="input" /> is <c>null</c>, not exactly 7 characters long, or contains invalid characters.
+		/// Thrown if the <paramref name="input" /> is <see langword="null" />, not exactly 7 characters long, or contains invalid characters.
 		/// </exception>
 		/// <remarks>
 		/// This constructor behaves the same as <see cref="Parse(string)" />, automatically inferring the format from the input string.

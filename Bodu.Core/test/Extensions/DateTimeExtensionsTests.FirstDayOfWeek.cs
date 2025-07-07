@@ -190,7 +190,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(CalendarWeekendDefinitionDateTimeKindTestData), DynamicDataSourceType.Method)]
-		public void FirstDayOfWeek_WhengWeekendDefinitionAndKindIsSet_ShouldPreserveKind(CalendarWeekendDefinition definition, DateTimeKind kind)
+		public void FirstDayOfWeek_WhenWeekendDefinitionAndKindIsSet_ShouldPreserveKind(CalendarWeekendDefinition definition, DateTimeKind kind)
 		{
 			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
 			DateTime actual = input.FirstDayOfWeek(definition);

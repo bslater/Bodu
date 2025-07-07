@@ -57,7 +57,7 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(
 				5,
 				new Dictionary<string, int> { { "Alpha", 42 } },
-				EvictionPolicy.LeastRecentlyUsed,
+				EvictingDictionaryPolicy.LeastRecentlyUsed,
 				StringComparer.InvariantCultureIgnoreCase);
 
 			Assert.IsTrue(dictionary.Contains(new KeyValuePair<string, int>("alpha", 42)));
@@ -72,7 +72,7 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(
 				5,
 				new Dictionary<string, int> { { "Alpha", 42 } },
-				EvictionPolicy.LeastRecentlyUsed,
+				EvictingDictionaryPolicy.LeastRecentlyUsed,
 				StringComparer.InvariantCultureIgnoreCase);
 
 			Assert.IsFalse(dictionary.Contains(new KeyValuePair<string, int>("alpha", 100)));
@@ -87,7 +87,7 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(
 				5,
 				new Dictionary<string, int> { { "Beta", 99 } },
-				EvictionPolicy.LeastRecentlyUsed,
+				EvictingDictionaryPolicy.LeastRecentlyUsed,
 				StringComparer.OrdinalIgnoreCase);
 
 			Assert.IsFalse(dictionary.Contains(new KeyValuePair<string, int>("Gamma", 99)));

@@ -11,8 +11,8 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Determines whether the year component of the specified <see cref="DateTime" /> is a leap year, according to the proleptic
-		/// Gregorian calendar.
+		/// Returns an indication whether the year component of the specified <see cref="DateTime" /> is a leap year, according to the
+		/// proleptic Gregorian calendar.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> whose <c>Year</c> value is evaluated.</param>
 		/// <returns><see langword="true" /> if the year contains February 29; otherwise, <see langword="false" />.</returns>
@@ -30,8 +30,8 @@ namespace Bodu.Extensions
 		/// </item>
 		/// </list>
 		/// <para>For example, the years 2000 and 2024 are leap years, while 1900 and 2100 are not.</para>
-		/// <note type="note">This method does not consider culture-specific calendars. It always evaluates leap years based on the
-		/// Gregorian calendar.</note>
+		/// <note type="note"> This method does not consider culture-specific calendars. It always evaluates leap years based on the
+		/// Gregorian calendar. </note>
 		/// </remarks>
 		public static bool IsLeapYear(this DateTime dateTime) =>
 			DateTime.IsLeapYear(dateTime.Year);

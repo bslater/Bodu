@@ -21,9 +21,9 @@ namespace Bodu.Extensions
 		/// <returns>
 		/// The clamped value. If <paramref name="value" /> is less than <paramref name="min" />, <paramref name="min" /> is returned. If
 		/// <paramref name="value" /> is greater than <paramref name="max" />, <paramref name="max" /> is returned. Otherwise,
-		/// <paramref name="value" /> is returned. If <paramref name="value" /> is <c>null</c>, <c>null</c> is returned.
+		/// <paramref name="value" /> is returned. If <paramref name="value" /> is <see langword="null" />, <c>null</c> is returned.
 		/// </returns>
-		/// <remarks>If <paramref name="min" /> or <paramref name="max" /> is <c>null</c>, the bound is considered unbounded.</remarks>
+		/// <remarks>If <paramref name="min" /> or <paramref name="max" /> is <see langword="null" />, the bound is considered unbounded.</remarks>
 		public static T? Clamp<T>(this T? value, T? min, T? max) where T : IComparable<T> =>
 			value is null ? default
 			: (min is not null && value.CompareTo(min) < 0) ? min
@@ -41,12 +41,12 @@ namespace Bodu.Extensions
 		/// <returns>
 		/// The clamped value. If <paramref name="value" /> is less than <paramref name="min" />, <paramref name="min" /> is returned. If
 		/// <paramref name="value" /> is greater than <paramref name="max" />, <paramref name="max" /> is returned. Otherwise,
-		/// <paramref name="value" /> is returned. If <paramref name="value" /> is <c>null</c>, <c>null</c> is returned.
+		/// <paramref name="value" /> is returned. If <paramref name="value" /> is <see langword="null" />, <c>null</c> is returned.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="comparer" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="comparer" /> is <see langword="null" />.</exception>
 		/// <remarks>
-		/// If <paramref name="min" /> or <paramref name="max" /> is <c>null</c>, the corresponding bound is considered unbounded. Use this
-		/// overload to apply custom comparison logic when clamping values.
+		/// If <paramref name="min" /> or <paramref name="max" /> is <see langword="null" />, the corresponding bound is considered
+		/// unbounded. Use this overload to apply custom comparison logic when clamping values.
 		/// </remarks>
 		public static T? Clamp<T>(this T? value, T? min, T? max, IComparer<T> comparer) =>
 			comparer is null

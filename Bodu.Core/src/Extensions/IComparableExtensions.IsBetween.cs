@@ -44,7 +44,7 @@ namespace Bodu.Extensions
 		/// <c>true</c> if <paramref name="value" /> falls between <paramref name="value1" /> and <paramref name="value2" /> inclusively
 		/// based on the specified comparer; otherwise, <c>false</c>.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="comparer" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="comparer" /> is <see langword="null" />.</exception>
 		/// <remarks>
 		/// <para>If any of the parameters are <c>null</c>, the method returns <c>false</c>.</para>
 		/// <para>The order of <paramref name="value1" /> and <paramref name="value2" /> does not matter.</para>

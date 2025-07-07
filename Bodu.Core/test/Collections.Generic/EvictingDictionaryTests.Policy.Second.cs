@@ -10,7 +10,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("SecondChance")]
 		public void Add_WhenPolicyIsSCAndCapacityExceeded_ShouldEvictItemWithoutSecondChance()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			dictionary.Touch("A"); // Give A a second chance
@@ -28,7 +28,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("SecondChance")]
 		public void Touch_WhenPolicyIsSC_ShouldGrantSecondChance()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("X", 10);
 			dictionary.Add("Y", 20);
 
@@ -46,7 +46,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsSCAndKeyExists_ShouldReturnTrue()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("key", 42);
 
 			var actual = dictionary.Touch("key");
@@ -60,7 +60,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void TouchOrThrow_WhenPolicyIsSCAndKeyExists_ShouldSetSecondChance()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("key", 100);
 
 			dictionary.TouchOrThrow("key");
@@ -75,7 +75,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void PeekEvictionCandidate_WhenPolicyIsSC_ShouldSkipSecondChanceItems()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -92,7 +92,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Clear_WhenPolicyIsSC_ShouldResetSecondChanceFlags()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("A", 1);
 			dictionary.Touch("A");
 
@@ -110,7 +110,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Add_WhenPolicyIsSCAndAllHaveSecondChance_ShouldEvictAfterClearingFlags()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			dictionary.Touch("A");
@@ -128,7 +128,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void IEnumerable_GetEnumerator_WhenPolicyIsSC_ShouldRespectInsertionAndRotation()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.SecondChance);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.SecondChance);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Touch("a");

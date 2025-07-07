@@ -16,9 +16,18 @@ namespace Bodu.Extensions
 		/// <summary>
 		/// Returns the ISO 8601 year associated with the specified <see cref="DateTime" />.
 		/// </summary>
-		/// <param name="date">The <see cref="DateTime" /> to evaluate.</param>
-		/// <returns>The ISO 8601 calendar year that contains the date’s week.</returns>
-		/// <remarks>ISO weeks may belong to the previous or next calendar year depending on where the week falls.</remarks>
+		/// <param name="date">The <see cref="DateTime" /> value to evaluate.</param>
+		/// <returns>The ISO 8601 calendar year that contains the week of <paramref name="date" />.</returns>
+		/// <remarks>
+		/// <para>
+		/// The ISO 8601 year may differ from the calendar year of <paramref name="date" />. A date near the start or end of a calendar year
+		/// may belong to the ISO year of the adjacent calendar year, depending on where its week falls.
+		/// </para>
+		/// <para>
+		/// For example, January 1 may belong to the last week of the previous ISO year, and December 31 may belong to week 1 of the
+		/// following ISO year.
+		/// </para>
+		/// </remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetIsoYear(this DateTime date)
 		{

@@ -28,7 +28,7 @@ namespace Bodu
 		/// </item>
 		/// <item>
 		/// <description>
-		/// Greater than zero: This instance is greater than <paramref name="obj" />, or <paramref name="obj" /> is <c>null</c>.
+		/// Greater than zero: This instance is greater than <paramref name="obj" />, or <paramref name="obj" /> is <see langword="null" />.
 		/// </description>
 		/// </item>
 		/// </list>

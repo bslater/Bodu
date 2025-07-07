@@ -139,7 +139,7 @@ namespace Bodu.Extensions
 			int elementSize = Marshal.SizeOf<T>();
 #endif
 			if (index < 0 || index + elementSize > targetArray.Length)
-				throw new ArgumentOutOfRangeException(nameof(index), "Target array does not have sufficient space.");
+				throw new ArgumentOutOfRangeException(nameof(index), "Target _internalBuffer does not have sufficient space.");
 
 #if NETSTANDARD2_0
 

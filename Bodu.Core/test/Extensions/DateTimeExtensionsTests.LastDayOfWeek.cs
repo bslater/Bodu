@@ -171,7 +171,7 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(CalendarWeekendDefinitionDateTimeKindTestData), DynamicDataSourceType.Method)]
-		public void LastDayOfWeek_WhengWeekendDefinitionAndKindIsSet_ShouldPreserveKind(CalendarWeekendDefinition definition, DateTimeKind kind)
+		public void LastDayOfWeek_WhenWeekendDefinitionAndKindIsSet_ShouldPreserveKind(CalendarWeekendDefinition definition, DateTimeKind kind)
 		{
 			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
 			DateTime actual = input.LastDayOfWeek(definition);

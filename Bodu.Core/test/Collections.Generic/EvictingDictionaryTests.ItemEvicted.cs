@@ -100,7 +100,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void ItemEvicted_WhenOrderListIsEmpty_ShouldNotTriggerEvent()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			var evicted = new List<string>();
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 

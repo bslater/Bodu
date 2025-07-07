@@ -103,14 +103,14 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void FirstDayOfQuarter_WhenInputIsMinValue_ShouldReturnExpectedDate()
 		{
-			var actual = DateOnly.MinValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember);
+			var actual = DateOnly.MinValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember);
 			Assert.AreEqual(new DateOnly(1, 1, 1), actual);
 		}
 
 		[TestMethod]
 		public void FirstDayOfQuarter_WhenInputIsMaxValue_ShouldReturnExpectedDate()
 		{
-			var actual = DateOnly.MaxValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember);
+			var actual = DateOnly.MaxValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember);
 			Assert.AreEqual(new DateOnly(9999, 10, 1), actual); // Q4 of 9999
 		}
 
@@ -145,7 +145,7 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateOnlyExtensions.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, 2025);
+				_ = DateOnlyExtensions.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember, quarter, 2025);
 			});
 		}
 

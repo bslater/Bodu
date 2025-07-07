@@ -70,33 +70,33 @@ namespace Bodu
 		/// <para>Supported formats include:</para>
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'S'</c> or <c>'s'</c> — Sunday-to-Saturday using weekday symbols; unselected days = <c>'_'</c></description>
+		/// <description><c>'S'</c> or <c>'s'</c> - Sunday-to-Saturday using weekday symbols; unselected days = <c>'_'</c></description>
 		/// </item>
 		/// <item>
-		/// <description><c>'M'</c> or <c>'m'</c> — Monday-to-Sunday using weekday symbols; unselected days = <c>'_'</c></description>
+		/// <description><c>'M'</c> or <c>'m'</c> - Monday-to-Sunday using weekday symbols; unselected days = <c>'_'</c></description>
 		/// </item>
 		/// <item>
 		/// <description>
-		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c> — Sunday-to-Saturday using weekday symbols and a specific symbol for
+		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, or <c>'A'</c> - Sunday-to-Saturday using weekday symbols and a specific symbol for
 		/// unselected days:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'E'</c> — space ( <c>' '</c>)</description>
+		/// <description><c>'E'</c> - space ( <c>' '</c>)</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'U'</c> — underscore ( <c>'_'</c>)</description>
+		/// <description><c>'U'</c> - underscore ( <c>'_'</c>)</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'D'</c> — dash ( <c>'-'</c>)</description>
+		/// <description><c>'D'</c> - dash ( <c>'-'</c>)</description>
 		/// </item>
 		/// <item>
-		/// <description><c>'A'</c> — asterisk ( <c>'*'</c>)</description>
+		/// <description><c>'A'</c> - asterisk ( <c>'*'</c>)</description>
 		/// </item>
 		/// </list>
 		/// </description>
 		/// </item>
 		/// <item>
-		/// <description><c>'0'</c> or <c>'1'</c> — Binary format with <c>'1'</c> = selected, <c>'0'</c> = unselected</description>
+		/// <description><c>'0'</c> or <c>'1'</c> - Binary format with <c>'1'</c> = selected, <c>'0'</c> = unselected</description>
 		/// </item>
 		/// <item>
 		/// <description>Two-character format:

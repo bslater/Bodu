@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IEnumerableExtensions.RecursiveSelect.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -206,7 +206,7 @@ namespace Bodu.Collections.Extensions
 		/// Thrown if <paramref name="source" />, <paramref name="childSelector" />, <paramref name="selector" />, or
 		/// <paramref name="recursionControl" /> is <see langword="null" />.
 		/// </exception>
-		/// <remarks>Useful when pruning the recursion tree — e.g., limiting depth, skipping inactive branches, or filtering by condition.</remarks>
+		/// <remarks>Useful when pruning the recursion tree - e.g., limiting depth, skipping inactive branches, or filtering by condition.</remarks>
 		/// <example>
 		/// <code language="csharp">
 		///<![CDATA[

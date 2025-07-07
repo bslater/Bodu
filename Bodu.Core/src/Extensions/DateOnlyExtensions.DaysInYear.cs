@@ -36,7 +36,7 @@ namespace Bodu.Extensions
 		/// <returns>The number of days in the year of <paramref name="date" />, based on the provided or fallback calendar.</returns>
 		/// <remarks>
 		/// Use this method when you want to explicitly calculate based on a specific calendar system (e.g.,
-		/// <see cref="GregorianCalendar" />, <see cref="HebrewCalendar" />). If <paramref name="calendar" /> is <c>null</c>, the calendar
+		/// <see cref="GregorianCalendar" />, <see cref="HebrewCalendar" />). If <paramref name="calendar" /> is <see langword="null" />, the calendar
 		/// from <see cref="CultureInfo.CurrentCulture" /> is used.
 		/// </remarks>
 		public static int DaysInYear(this DateOnly date, Calendar calendar) =>

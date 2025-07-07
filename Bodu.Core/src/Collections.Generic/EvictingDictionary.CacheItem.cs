@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="EvictingDictionary.CacheItem.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="EvictingDictionary.CacheItem.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Bodu.Collections.Generic
 
 		private sealed class CacheItem
 #else
-		private record class CacheItem
+		private sealed record class CacheItem
 #endif
 		{
 			/// <summary>

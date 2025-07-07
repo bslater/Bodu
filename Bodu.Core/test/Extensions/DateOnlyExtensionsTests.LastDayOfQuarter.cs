@@ -104,7 +104,7 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void LastDayOfQuarter_WhenInputIsMinValue_ShouldReturnExpectedDate()
 		{
-			var actual = DateOnly.MinValue.LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember);
+			var actual = DateOnly.MinValue.LastDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember);
 			Assert.AreEqual(new DateOnly(1, 3, 31), actual);
 		}
 
@@ -139,7 +139,7 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateOnlyExtensions.LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, 2025);
+				_ = DateOnlyExtensions.LastDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember, quarter, 2025);
 			});
 		}
 

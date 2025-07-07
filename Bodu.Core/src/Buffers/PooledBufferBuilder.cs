@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="PooledBufferBuilder.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -19,9 +19,9 @@ namespace Bodu.Buffers
 	public sealed class PooledBufferBuilder<T>
 	   : System.IDisposable
 	{
-		private T[] buffer;
-		private int count;
-		private bool disposed;
+		private int _count;
+		private bool _disposed;
+		private T[] _internalBuffer;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="PooledBufferBuilder{T}" /> class.
@@ -29,8 +29,84 @@ namespace Bodu.Buffers
 		/// <param name="initialCapacity">Optional initial buffer size.</param>
 		public PooledBufferBuilder(int initialCapacity = 256)
 		{
-			buffer = ArrayPool<T>.Shared.Rent(initialCapacity);
-			count = 0;
+			_internalBuffer = ArrayPool<T>.Shared.Rent(initialCapacity);
+			_count = 0;
+		}
+
+		/// <summary>
+		/// The number of valid elements in the buffer.
+		/// </summary>
+		public int Count
+		{
+			get
+			{
+				ThrowIfDisposed();
+				return _count;
+			}
+		}
+
+		/// <summary>
+		/// Appends a single item to the buffer, expanding it if necessary.
+		/// </summary>
+		/// <param name="item">The item to append.</param>
+		public void Append(T item)
+		{
+			ThrowIfDisposed();
+
+			if (_count >= _internalBuffer.Length)
+				Grow();
+
+			_internalBuffer[_count++] = item;
+		}
+
+		/// <summary>
+		/// Appends items from an <see cref="IEnumerable{T}" />, expanding the pooled buffer if needed.
+		/// </summary>
+		/// <param name="source">The input sequence.</param>
+		public void AppendRange(IEnumerable<T> source)
+		{
+			ThrowIfDisposed();
+			ThrowHelper.ThrowIfNull(source);
+
+			foreach (T item in source)
+			{
+				if (_count >= _internalBuffer.Length)
+					Grow();
+
+				_internalBuffer[_count++] = item;
+			}
+		}
+
+		/// <summary>
+		/// Returns the buffered elements as a span of valid items.
+		/// </summary>
+		public T[] AsArray()
+		{
+			ThrowIfDisposed();
+			return _internalBuffer;
+		}
+
+		/// <summary>
+		/// Returns the buffered elements as a span of valid items.
+		/// </summary>
+		public Span<T> AsSpan()
+		{
+			ThrowIfDisposed();
+			return _internalBuffer.AsSpan(0, _count);
+		}
+
+		/// <summary>
+		/// Returns the underlying buffer to the pool and resets internal state.
+		/// </summary>
+		public void Dispose()
+		{
+			if (!_disposed)
+			{
+				ReturnBufferIfNeeded();
+				_internalBuffer = Array.Empty<T>();
+				_count = 0;
+				_disposed = true;
+			}
 		}
 
 		/// <summary>
@@ -46,115 +122,39 @@ namespace Bodu.Buffers
 			if (source is ICollection<T> col)
 			{
 				ReturnBufferIfNeeded();
-				count = col.Count;
-				buffer = ArrayPool<T>.Shared.Rent(count);
-				col.CopyTo(buffer, 0);
+				_count = col.Count;
+				_internalBuffer = ArrayPool<T>.Shared.Rent(_count);
+				col.CopyTo(_internalBuffer, 0);
 				return true;
 			}
 
 			return false;
 		}
 
-		/// <summary>
-		/// Appends a single item to the buffer, expanding it if necessary.
-		/// </summary>
-		/// <param name="item">The item to append.</param>
-		public void Append(T item)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void Grow()
 		{
-			ThrowIfDisposed();
-
-			if (count >= buffer.Length)
-				Grow();
-
-			buffer[count++] = item;
+			T[] newBuffer = ArrayPool<T>.Shared.Rent(_internalBuffer.Length * 2);
+			Array.Copy(_internalBuffer, 0, newBuffer, 0, _count);
+			ReturnBufferIfNeeded();
+			_internalBuffer = newBuffer;
 		}
 
-		/// <summary>
-		/// Appends items from an <see cref="IEnumerable{T}" />, expanding the pooled buffer if needed.
-		/// </summary>
-		/// <param name="source">The input sequence.</param>
-		public void AppendRange(IEnumerable<T> source)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void ReturnBufferIfNeeded()
 		{
-			ThrowIfDisposed();
-			ThrowHelper.ThrowIfNull(source);
-
-			foreach (T item in source)
+			if (_internalBuffer.Length > 0)
 			{
-				if (count >= buffer.Length)
-					Grow();
-
-				buffer[count++] = item;
-			}
-		}
-
-		/// <summary>
-		/// Returns the buffered elements as a span of valid items.
-		/// </summary>
-		public Span<T> AsSpan()
-		{
-			ThrowIfDisposed();
-			return buffer.AsSpan(0, count);
-		}
-
-		/// <summary>
-		/// Returns the buffered elements as a span of valid items.
-		/// </summary>
-		public T[] AsArray()
-		{
-			ThrowIfDisposed();
-			return buffer;
-		}
-
-		/// <summary>
-		/// The number of valid elements in the buffer.
-		/// </summary>
-		public int Count
-		{
-			get
-			{
-				ThrowIfDisposed();
-				return count;
-			}
-		}
-
-		/// <summary>
-		/// Returns the underlying buffer to the pool and resets internal state.
-		/// </summary>
-		public void Dispose()
-		{
-			if (!disposed)
-			{
-				ReturnBufferIfNeeded();
-				buffer = Array.Empty<T>();
-				count = 0;
-				disposed = true;
+				bool clear = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
+				ArrayPool<T>.Shared.Return(_internalBuffer, clear);
 			}
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void ThrowIfDisposed()
 		{
-			if (disposed)
-				throw new ObjectDisposedException(nameof(PooledBufferBuilder<T>), "Cannot access buffer after it has been disposed.");
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void Grow()
-		{
-			T[] newBuffer = ArrayPool<T>.Shared.Rent(buffer.Length * 2);
-			Array.Copy(buffer, 0, newBuffer, 0, count);
-			ReturnBufferIfNeeded();
-			buffer = newBuffer;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private void ReturnBufferIfNeeded()
-		{
-			if (buffer.Length > 0)
-			{
-				bool clear = RuntimeHelpers.IsReferenceOrContainsReferences<T>();
-				ArrayPool<T>.Shared.Return(buffer, clear);
-			}
+			if (_disposed)
+				throw new ObjectDisposedException(nameof(PooledBufferBuilder<T>), "Cannot access _internalBuffer after it has been _disposed.");
 		}
 	}
 }

@@ -11,20 +11,24 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns a new <see cref="DateTime" /> truncated to the specified <paramref name="resolution" />, with all smaller time
-		/// components reset to zero.
+		/// Returns a new <see cref="DateTime" /> representing the specified <paramref name="dateTime" /> truncated to the given
+		/// <paramref name="resolution" />, with all smaller time components set to zero.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> value to truncate.</param>
 		/// <param name="resolution">The <see cref="DateTimeResolution" /> level to truncate to.</param>
 		/// <returns>
-		/// A new <see cref="DateTime" /> with all components smaller than the specified <paramref name="resolution" /> cleared, while
+		/// An object whose value is set to the <paramref name="dateTime" /> truncated to the specified <paramref name="resolution" />,
 		/// preserving the original <see cref="DateTime.Kind" />.
 		/// </returns>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="resolution" /> is not a valid member of the <see cref="DateTimeResolution" /> enumeration.
 		/// </exception>
 		/// <remarks>
-		/// The following table illustrates truncation results for the value <c>2024-04-18T14:37:56.7891234</c>:
+		/// <para>
+		/// Truncation resets all components smaller than the specified resolution to their minimum values. For example, truncating to
+		/// <see cref="DateTimeResolution.Minute" /> clears seconds and fractional seconds.
+		/// </para>
+		/// <para>The following examples show the result of truncating <c>2024-04-18T14:37:56.7891234</c>:</para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Resolution</term>
@@ -69,13 +73,13 @@ namespace Bodu.Extensions
 			switch (resolution)
 			{
 				case DateTimeResolution.Year:
-					return new (GetTicksForDate(dateTime.Year, 1, 1), dateTime.Kind);
+					return new(GetTicksForDate(dateTime.Year, 1, 1), dateTime.Kind);
 
 				case DateTimeResolution.Month:
-					return new (GetTicksForDate(dateTime.Year, dateTime.Month, 1), dateTime.Kind);
+					return new(GetTicksForDate(dateTime.Year, dateTime.Month, 1), dateTime.Kind);
 
 				case DateTimeResolution.Day:
-					return new (GetDateTicks(dateTime), dateTime.Kind);
+					return new(GetDateTicks(dateTime), dateTime.Kind);
 
 				case DateTimeResolution.Hour:
 					return dateTime.AddTicks(-(dateTime.Ticks % TicksPerHour));

@@ -11,6 +11,18 @@ namespace Bodu.Extensions
 		private static readonly DateTime SampleDate = new(2024, 4, 15); // 15-Apr-2024
 
 		/// <summary>
+		/// Provides test cases for verifying <see cref="DateTimeExtensions.IsInRange(DateTime?, DateTime, DateTime)" />.
+		/// </summary>
+		public static IEnumerable<object[]> GetIsInRangeNullableTestCases()
+		{
+			foreach (var testCase in GetIsInRangeTestCases())
+				yield return new object[] { (DateTime?)testCase[0], testCase[1], testCase[2], testCase[3] };
+
+			// additional nullable-specific test case
+			yield return new object[] { null, SampleDate.AddDays(-10), SampleDate.AddDays(10), false }; // Null input
+		}
+
+		/// <summary>
 		/// Provides test cases for verifying <see cref="DateTimeExtensions.IsInRange(DateTime, DateTime, DateTime)" />.
 		/// </summary>
 		public static IEnumerable<object[]> GetIsInRangeTestCases()
@@ -20,7 +32,6 @@ namespace Bodu.Extensions
 			yield return new object[] { SampleDate, SampleDate.AddDays(-2), SampleDate, true };               // Equal to end
 			yield return new object[] { SampleDate, SampleDate.AddDays(1), SampleDate.AddDays(5), false };    // Before range
 			yield return new object[] { SampleDate, SampleDate.AddDays(-5), SampleDate.AddDays(-1), false };  // After range
-			yield return new object[] { SampleDate, SampleDate.AddDays(1), SampleDate.AddDays(-1), true };    // Reversed range
 		}
 
 		/// <summary>
@@ -37,20 +48,6 @@ namespace Bodu.Extensions
 			bool actual = value.IsInRange(start, end);
 
 			Assert.AreEqual(expected, actual, $"Failed for value={value:yyyy-MM-dd}, start={start:yyyy-MM-dd}, end={end:yyyy-MM-dd}");
-		}
-
-		/// <summary>
-		/// Provides test cases for verifying <see cref="DateTimeExtensions.IsInRange(DateTime?, DateTime, DateTime)" />.
-		/// </summary>
-		public static IEnumerable<object[]> GetIsInRangeNullableTestCases()
-		{
-			yield return new object[] { (DateTime?)SampleDate, SampleDate.AddDays(-1), SampleDate.AddDays(1), true };    // Inside range
-			yield return new object[] { (DateTime?)SampleDate, SampleDate, SampleDate.AddDays(2), true };                // Equal to start
-			yield return new object[] { (DateTime?)SampleDate, SampleDate.AddDays(-2), SampleDate, true };               // Equal to end
-			yield return new object[] { (DateTime?)SampleDate, SampleDate.AddDays(1), SampleDate.AddDays(5), false };    // Before range
-			yield return new object[] { (DateTime?)SampleDate, SampleDate.AddDays(-5), SampleDate.AddDays(-1), false };  // After range
-			yield return new object[] { (DateTime?)SampleDate, SampleDate.AddDays(1), SampleDate.AddDays(-1), true };    // Reversed range
-			yield return new object[] { null, SampleDate.AddDays(-10), SampleDate.AddDays(10), false };        // Null input
 		}
 
 		/// <summary>

@@ -15,8 +15,7 @@ namespace Bodu.Extensions
 		/// </summary>
 		/// <param name="dateTime">The input <see cref="DateTime" /> whose calendar date is preserved.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> value with the same year, month, and day as <paramref name="dateTime" />, and a time component of
-		/// 00:00:00 (midnight). The original <see cref="DateTime.Kind" /> is preserved.
+		/// An object whose value is set to 00:00:00 (midnight) on the same date as <paramref name="dateTime" />, preserving its <see cref="DateTime.Kind" />.
 		/// </returns>
 		/// <remarks>
 		/// <para>

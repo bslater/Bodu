@@ -17,7 +17,7 @@ namespace Bodu
 		/// </summary>
 		/// <param name="info">The <see cref="SerializationInfo" /> containing the serialized data.</param>
 		/// <param name="context">The destination for this serialization (not used).</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="info" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="info" /> is <see langword="null" />.</exception>
 		/// <exception cref="SerializationException">Thrown if the stored value is invalid.</exception>
 		private DaysOfWeekSet(SerializationInfo info, StreamingContext context)
 		{
@@ -35,7 +35,7 @@ namespace Bodu
 		/// </summary>
 		/// <param name="info">The <see cref="SerializationInfo" /> to populate with data.</param>
 		/// <param name="context">The destination for this serialization (not used).</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="info" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="info" /> is <see langword="null" />.</exception>
 		void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			ThrowHelper.ThrowIfNull(info);

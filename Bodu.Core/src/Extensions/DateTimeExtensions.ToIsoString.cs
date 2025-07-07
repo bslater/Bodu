@@ -98,7 +98,7 @@ namespace Bodu.Extensions
 		/// <see cref="CultureInfo.InvariantCulture" /> is used.
 		/// </param>
 		/// <returns>A formatted string representation of <paramref name="dateTime" /> using the specified format and culture.</returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is <c>null</c> or empty.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is <see langword="null" /> or empty.</exception>
 		public static string ToIsoString(this DateTime dateTime, string format, CultureInfo? culture = null)
 		{
 			if (string.IsNullOrWhiteSpace(format))

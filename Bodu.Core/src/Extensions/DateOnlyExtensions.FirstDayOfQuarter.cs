@@ -37,7 +37,7 @@ namespace Bodu.Extensions
 		/// </list>
 		/// </remarks>
 		public static DateOnly FirstDayOfQuarter(this DateOnly date) =>
-			FirstDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
+			FirstDayOfQuarter(date, CalendarQuarterDefinition.JanuaryToDecember);
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the first day of the specified <paramref name="quarter" /> in the given
@@ -53,7 +53,7 @@ namespace Bodu.Extensions
 		/// <returns>A <see cref="DateOnly" /> representing the first day of the specified calendar quarter in the given year.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is not between 1 and 4 (inclusive).</exception>
 		/// <remarks>
-		/// <para>This method uses the standard month-aligned calendar quarter system defined by <see cref="CalendarQuarterDefinition.JanuaryDecember" />:</para>
+		/// <para>This method uses the standard month-aligned calendar quarter system defined by <see cref="CalendarQuarterDefinition.JanuaryToDecember" />:</para>
 		/// <list type="bullet">
 		/// <item>
 		/// <term>Q1</term>
@@ -78,7 +78,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// </remarks>
 		public static DateOnly FirstDayOfQuarter(int quarter, int year) =>
-			FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
+			FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember, quarter, year);
 
 		/// <summary>
 		/// Returns the first day of the quarter that includes the specified <paramref name="date" />, based on the provided <see cref="CalendarQuarterDefinition" />.

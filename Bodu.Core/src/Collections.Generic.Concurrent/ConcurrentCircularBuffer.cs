@@ -403,7 +403,7 @@ namespace Bodu.Collections.Generic.Concurrent
 				var (buffer, head, tail, capacity) = TryGetSnapshot();
 				int count = (tail - head + capacity) % capacity;
 
-				// Defensive checks — ensure snapshot is valid
+				// Defensive checks - ensure snapshot is valid
 				if (buffer.Length != capacity || head < 0 || tail < 0 || head >= buffer.Length || tail > buffer.Length)
 					continue;
 
@@ -560,10 +560,10 @@ namespace Bodu.Collections.Generic.Concurrent
 		/// A tuple of two <see cref="ArraySegment{T}" /> objects representing the buffer contents:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>FirstSegment</c> — The first (and possibly only) segment of contiguous data.</description>
+		/// <description><c>FirstSegment</c> - The first (and possibly only) segment of contiguous data.</description>
 		/// </item>
 		/// <item>
-		/// <description><c>SecondSegment</c> — A second segment if the buffer has wrapped around; otherwise, an empty segment.</description>
+		/// <description><c>SecondSegment</c> - A second segment if the buffer has wrapped around; otherwise, an empty segment.</description>
 		/// </item>
 		/// </list>
 		/// </returns>
@@ -841,7 +841,7 @@ namespace Bodu.Collections.Generic.Concurrent
 				int currentCount = (currentTail - currentHead + currentCapacity) % currentCapacity;
 				int nextTail = (currentTail + 1) % currentCapacity;
 
-				// Attempt to claim the tail slot — this is now the shared gate
+				// Attempt to claim the tail slot - this is now the shared gate
 				if (Interlocked.CompareExchange(ref tail, nextTail, currentTail) != currentTail)
 					continue;
 
@@ -867,11 +867,11 @@ namespace Bodu.Collections.Generic.Concurrent
 					ItemEvicted?.Invoke(evictedItem);
 
 					Interlocked.Increment(ref version);
-					return true; // Do not increment count — buffer is still full
+					return true; // Do not increment count - buffer is still full
 				}
 				else
 				{
-					// Normal enqueue — count is below capacity
+					// Normal enqueue - count is below capacity
 					Volatile.Write(ref array[currentTail], item);
 					Interlocked.Increment(ref version);
 					return true;

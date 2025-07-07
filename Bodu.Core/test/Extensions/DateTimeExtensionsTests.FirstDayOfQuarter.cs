@@ -82,14 +82,14 @@ namespace Bodu.Extensions
 		[TestMethod]
 		public void FirstDayOfQuarter_WhenInputIsMinValue_ShouldReturnExpectedDate()
 		{
-			var actual = DateTime.MinValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember);
+			var actual = DateTime.MinValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember);
 			Assert.AreEqual(new DateTime(1, 1, 1), actual);
 		}
 
 		[TestMethod]
 		public void FirstDayOfQuarter_WhenInputIsMaxValue_ShouldReturnExpectedDate()
 		{
-			var actual = DateTime.MaxValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember);
+			var actual = DateTime.MaxValue.FirstDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember);
 			Assert.AreEqual(new DateTime(9999, 10, 1), actual); // Q4 of 9999
 		}
 
@@ -124,7 +124,7 @@ namespace Bodu.Extensions
 		{
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
-				_ = DateTimeExtensions.GetFirstDayOfQuarter(2025, quarter, CalendarQuarterDefinition.JanuaryDecember);
+				_ = DateTimeExtensions.GetFirstDayOfQuarter(2025, quarter, CalendarQuarterDefinition.JanuaryToDecember);
 			});
 		}
 
@@ -155,12 +155,37 @@ namespace Bodu.Extensions
 
 		[DataTestMethod]
 		[DynamicData(nameof(CalendarQuarterDefinitionDateTimeKindTestData), DynamicDataSourceType.Method)]
-		public void FirstDayOfQuarter_WhengQuarterAndDefinitionAndKindIsSet_ShouldPreserveKind(CalendarQuarterDefinition definition, DateTimeKind kind)
+		public void FirstDayOfQuarter_WhenQuarterAndDefinitionAndKindIsSet_ShouldPreserveKind(CalendarQuarterDefinition definition, DateTimeKind kind)
 		{
 			DateTime input = new DateTime(2024, 7, 5, 10, 0, 0, kind);
 			DateTime actual = input.FirstDayOfQuarter(definition);
 
 			Assert.AreEqual(kind, actual.Kind);
+		}
+
+
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(0)]
+		[DataRow(10_000)]
+		public void GetFirstDayOfQuarter_WhenYearIsOutOfRange_WithDefinition_ShouldThrowExactly(int year)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				_ = DateTimeExtensions.GetFirstDayOfQuarter(year, 1, CalendarQuarterDefinition.JanuaryToDecember);
+			});
+		}
+
+		[DataTestMethod]
+		[DataRow(-1)]
+		[DataRow(0)]
+		[DataRow(10_000)]
+		public void GetFirstDayOfQuarter_WhenYearIsOutOfRange_ShouldThrowExactly(int year)
+		{
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				_ = DateTimeExtensions.GetFirstDayOfQuarter(year, 1);
+			});
 		}
 
 	}

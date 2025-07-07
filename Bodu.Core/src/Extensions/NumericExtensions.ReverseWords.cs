@@ -67,7 +67,7 @@ namespace Bodu.Extensions
 		/// <param name="bytes">The byte array to reverse the byte order of each 16-bit word.</param>
 		/// <returns>A new byte array with the byte order of each 16-bit word reversed.</returns>
 		/// <remarks>This method processes the byte array in pairs of bytes (16-bit words), reversing the order of bytes in each pair.</remarks>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="bytes" /> is null.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="bytes" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if the length of <paramref name="bytes" /> is not a positive multiple of 2 (even length).
 		/// </exception>
@@ -97,7 +97,6 @@ namespace Bodu.Extensions
 		/// <exception cref="ArgumentException">
 		/// Thrown if the length of <paramref name="bytes" /> is not a positive multiple of 2 (even length).
 		/// </exception>
-		/// <returns>Nothing. The original <see cref="Span{T}" /> is modified in place.</returns>
 		public static void ReverseWords(this Span<byte> bytes)
 		{
 			ThrowHelper.ThrowIfArrayLengthNotPositiveMultipleOf(bytes, 2);

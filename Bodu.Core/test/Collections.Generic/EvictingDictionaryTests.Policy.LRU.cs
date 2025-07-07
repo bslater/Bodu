@@ -10,7 +10,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LRU")]
 		public void Add_WhenPolicyIsLRUAndCapacityExceeded_ShouldEvictLeastRecentlyUsed()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("one", 1);
 			dictionary.Add("two", 2);
 			dictionary["one"] = 11;
@@ -27,7 +27,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsLRUAndKeyTouched_ShouldUpdateRecency()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -51,7 +51,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsLRUAndKeyExists_ShouldReturnTrue()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 
 			var actual = dictionary.Touch("a");
@@ -65,7 +65,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void TouchOrThrow_WhenPolicyIsLRUAndKeyExists_ShouldUpdateRecency()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("item", 42);
 
 			dictionary.TouchOrThrow("item");
@@ -79,7 +79,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Clear_WhenPolicyIsLRUAndCalled_ShouldResetAccessOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			_ = dictionary["A"];
@@ -100,7 +100,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LRU")]
 		public void ItemEvicted_WhenPolicyIsLRUAndEvictionOccurs_ShouldEvictLeastRecentlyUsed()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			var evicted = new List<string>();
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 
@@ -118,7 +118,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LRU")]
 		public void ItemEvicted_WhenPolicyIsLRUAndCandidateRemovedBeforeEviction_ShouldSkipEviction()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			var evicted = new List<string>();
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 
@@ -137,7 +137,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void EvictionEvents_WhenPolicyIsLRUAndCandidateMissing_ShouldNotThrow()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			dictionary.Remove("A");
@@ -154,7 +154,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void PeekEvictionCandidate_WhenPolicyIsLRU_ShouldReturnLeastRecentlyUsedKey()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -172,7 +172,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsLRUAndItemEvicted_ShouldBeCalledWithCorrectKeyValue()
 		{
 			var evicted = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.ItemEvicted += (key, value) => evicted.Add($"{key}:{value}");
 
 			dictionary.Add("A", 1);
@@ -191,7 +191,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsLRUAndMultipleEvictions_ShouldTriggerMultipleEvents()
 		{
 			var evicted = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.ItemEvicted += (key, value) => evicted.Add($"{key}:{value}");
 
 			dictionary.Add("A", 1);
@@ -211,7 +211,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsLRUAndEvictionOccurs_ShouldFireAfterItemEvicting()
 		{
 			var sequence = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 
 			dictionary.ItemEvicting += (key, value) => sequence.Add($"Evicting:{key}:{value}");
 			dictionary.ItemEvicted += (key, value) => sequence.Add($"Evicted:{key}:{value}");
@@ -232,7 +232,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicting_WhenPolicyIsLRU_ShouldBeCalledWithCorrectKeyValue()
 		{
 			var evicted = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.ItemEvicting += (key, value) => evicted.Add($"{key}:{value}");
 
 			dictionary.Add("A", 1);
@@ -250,7 +250,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicting_WhenPolicyIsLRU_ShouldFireBeforeItemEvicted()
 		{
 			var sequence = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 
 			dictionary.ItemEvicting += (key, value) => sequence.Add($"Evicting:{key}:{value}");
 			dictionary.ItemEvicted += (key, value) => sequence.Add($"Evicted:{key}:{value}");
@@ -269,7 +269,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LRU")]
 		public void IEnumerable_GetEnumerator_WhenPolicyIsLRU_ShouldRespectRecencyOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -293,7 +293,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("LRU")]
 		public void Keys_WhenPolicyIsLRU_ShouldReturnKeysInRecencyOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);

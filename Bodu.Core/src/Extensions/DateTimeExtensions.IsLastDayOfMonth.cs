@@ -11,9 +11,9 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Determines whether the specified <see cref="DateTime" /> instance represents the last day of its month.
+		/// Returns an indication whether the specified <see cref="DateTime" /> instance represents the last day of its month.
 		/// </summary>
-		/// <param name="dateTime">The <see cref="DateTime" /> value to evaluate.</param>
+		/// <param name="dateTime">The date and time value to evaluate.</param>
 		/// <returns><see langword="true" /> if <paramref name="dateTime" /> is the last calendar day of its month; otherwise, <see langword="false" />.</returns>
 		/// <remarks>
 		/// <para>

@@ -701,7 +701,7 @@ namespace Bodu
 #if NETSTANDARD2_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <c>null</c> when the
+		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <see langword="null" /> when the
 		/// <paramref name="conditionalParam" /> matches the specified <paramref name="conditionalValue" />.
 		/// </summary>
 		/// <typeparam name="TValue">The type of the parameter being validated.</typeparam>
@@ -731,7 +731,7 @@ namespace Bodu
 #else
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <c>null</c> when the
+		/// Throws an <see cref="ArgumentException" /> if the specified <paramref name="value" /> is <see langword="null" /> when the
 		/// <paramref name="conditionalParam" /> matches the specified <paramref name="conditionalValue" />.
 		/// </summary>
 		/// <typeparam name="TValue">The type of the parameter being validated.</typeparam>
@@ -918,7 +918,7 @@ namespace Bodu
 		{
 			if (destination.Length < source.Length)
 				throw new ArgumentException(
-					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "array"),
+					string.Format(ResourceStrings.Arg_Invalid_DestinationTooSmall, "_internalBuffer"),
 					paramDestinationName);
 		}
 
@@ -1340,15 +1340,15 @@ namespace Bodu
 
 		/// <summary>
 		/// Throws an <see cref="ArgumentOutOfRangeException" /> if the value is less than the specified minimum. Optionally throws
-		/// <see cref="ArgumentNullException" /> if the value is null.
+		/// <see cref="ArgumentNullException" /> if the value is <see langword="null" />.
 		/// </summary>
 		/// <typeparam name="T">A comparable value type.</typeparam>
 		/// <param name="value">The value to validate (nullable).</param>
 		/// <param name="min">The minimum value allowed.</param>
-		/// <param name="throwIfNull">Whether to throw if <paramref name="value" /> is null. Default is false.</param>
+		/// <param name="throwIfNull">Whether to throw if <paramref name="value" /> is <see langword="null" />. Default is false.</param>
 		/// <param name="paramName">The name of the parameter being validated.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Thrown when <paramref name="value" /> is null and <paramref name="throwIfNull" /> is true.
+		/// Thrown when <paramref name="value" /> is <see langword="null" /> and <paramref name="throwIfNull" /> is true.
 		/// </exception>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="value" /> is non-null and less than <paramref name="min" />.
@@ -1620,8 +1620,8 @@ namespace Bodu
 		/// <param name="value">The value to check.</param>
 		/// <param name="paramName">The name of the value parameter.</param>
 		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is null and
-		/// <typeparamref name="T" /> is a non-nullable value type.
+		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is <see langword="null" />
+		/// and <typeparamref name="T" /> is a non-nullable value type.
 		/// Message: "Object must be of type {0}."
 		/// </exception>
 		/// <remarks>Null is only allowed if <typeparamref name="T" /> is a reference or nullable type.</remarks>
@@ -1676,7 +1676,7 @@ namespace Bodu
 		/// Thrown if <paramref name="value" /> is not zero.
 		/// Message: "The value must be zero."
 		/// </exception>
-		/// <remarks>Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.</remarks>
+		/// <remarks>Ensures a value is exactly zero - commonly used for flags, counters, or reset validation.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNotZero<T>(
 			T value,
@@ -1688,13 +1688,13 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <c>null</c>.
+		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <see langword="null" />.
 		/// </summary>
 		/// <typeparam name="T">The type of the object.</typeparam>
 		/// <param name="value">The value to check.</param>
 		/// <param name="paramName">The name of the parameter being validated.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Thrown if <paramref name="value" /> is <c>null</c>.
+		/// Thrown if <paramref name="value" /> is <see langword="null" />.
 		/// Message: "Value cannot be null."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1707,13 +1707,13 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, with a custom message.
+		/// Throws an <see cref="ArgumentNullException" /> if the value is <see langword="null" />, with a custom message.
 		/// </summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="value">The value to validate.</param>
 		/// <param name="message">A custom error message for the exception.</param>
 		/// <param name="paramName">The parameter name.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <see langword="null" />.</exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNull<T>(
 			T value, string message,
@@ -1724,11 +1724,12 @@ namespace Bodu
 		}
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the string is <c>null</c>, or an <see cref="ArgumentException" /> if it is empty.
+		/// Throws an <see cref="ArgumentNullException" /> if the string is <see langword="null" />, or an <see cref="ArgumentException" />
+		/// if it is empty.
 		/// </summary>
 		/// <param name="value">The string value to validate.</param>
 		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is an empty string.
 		/// Message: "The string was either null or empty."
@@ -1800,8 +1801,8 @@ namespace Bodu
 		/// <typeparam name="T">The target type to validate against.</typeparam>
 		/// <param name="value">The value to check.</param>
 		/// <exception cref="ArgumentException">
-		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is null and
-		/// <typeparamref name="T" /> is a non-nullable value type.
+		/// Thrown if <paramref name="value" /> is not null and not of type <typeparamref name="T" />, or if it is <see langword="null" />
+		/// and <typeparamref name="T" /> is a non-nullable value type.
 		/// Message: "Object must be of type {0}."
 		/// </exception>
 		/// <remarks>Null is only allowed if <typeparamref name="T" /> is a reference or nullable type.</remarks>
@@ -1863,7 +1864,7 @@ namespace Bodu
 		/// Thrown if <paramref name="value" /> is not zero.
 		/// Message: "The value must be zero."
 		/// </exception>
-		/// <remarks>Ensures a value is exactly zero — commonly used for flags, counters, or reset validation.</remarks>
+		/// <remarks>Ensures a value is exactly zero - commonly used for flags, counters, or reset validation.</remarks>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNotZero<T>(
 			T value)
@@ -1879,12 +1880,12 @@ namespace Bodu
 #if NETSTANDARD2_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <c>null</c>.
+		/// Throws an <see cref="ArgumentNullException" /> if the provided value is <see langword="null" />.
 		/// </summary>
 		/// <typeparam name="T">The type of the object.</typeparam>
 		/// <param name="value">The value to check.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Thrown if <paramref name="value" /> is <c>null</c>.
+		/// Thrown if <paramref name="value" /> is <see langword="null" />.
 		/// Message: "Value cannot be null."
 		/// </exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1900,12 +1901,12 @@ namespace Bodu
 #if NETSTANDARD2_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, with a custom message.
+		/// Throws an <see cref="ArgumentNullException" /> if the value is <see langword="null" />, with a custom message.
 		/// </summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="value">The value to validate.</param>
 		/// <param name="message">A custom error message for the exception.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <see langword="null" />.</exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ThrowIfNull<T>(
 			T value,
@@ -1921,10 +1922,11 @@ namespace Bodu
 #if NETSTANDARD2_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the string is <c>null</c>, or an <see cref="ArgumentException" /> if it is empty.
+		/// Throws an <see cref="ArgumentNullException" /> if the string is <see langword="null" />, or an <see cref="ArgumentException" />
+		/// if it is empty.
 		/// </summary>
 		/// <param name="value">The string value to validate.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is an empty string.
 		/// Message: "The string was either null or empty."
@@ -2337,11 +2339,11 @@ namespace Bodu
 #if NETSTANDARD2_0_OR_GREATER
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, or an <see cref="ArgumentException" /> if it is
-		/// empty or whitespace.
+		/// Throws an <see cref="ArgumentNullException" /> if the value is <see langword="null" />, or an <see cref="ArgumentException" />
+		/// if it is empty or whitespace.
 		/// </summary>
 		/// <param name="value">The string value to validate.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is empty or contains only whitespace.
 		/// Message: "The string was either empty or contained only whitespace."
@@ -2360,12 +2362,12 @@ namespace Bodu
 #else
 
 		/// <summary>
-		/// Throws an <see cref="ArgumentNullException" /> if the value is <c>null</c>, or an <see cref="ArgumentException" /> if it is
-		/// empty or whitespace.
+		/// Throws an <see cref="ArgumentNullException" /> if the value is <see langword="null" />, or an <see cref="ArgumentException" />
+		/// if it is empty or whitespace.
 		/// </summary>
 		/// <param name="value">The string value to validate.</param>
 		/// <param name="paramName">The name of the parameter.</param>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="value" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException">
 		/// Thrown if <paramref name="value" /> is empty or contains only whitespace.
 		/// Message: "The string was either empty or contained only whitespace."

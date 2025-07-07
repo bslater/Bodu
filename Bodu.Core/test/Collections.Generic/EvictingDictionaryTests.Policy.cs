@@ -9,7 +9,7 @@ namespace Bodu.Collections.Generic
 		public void Policy_WhenConstructedWithDefault_ShouldBeLRU()
 		{
 			var dictionary = new EvictingDictionary<string, int>(3);
-			Assert.AreEqual(EvictionPolicy.LeastRecentlyUsed, dictionary.Policy);
+			Assert.AreEqual(EvictingDictionaryPolicy.LeastRecentlyUsed, dictionary.Policy);
 		}
 
 		/// <summary>
@@ -30,8 +30,8 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Policy_WhenConstructedWithLFU_ShouldReflectLFU()
 		{
-			var dictionary = new EvictingDictionary<int, int>(3, EvictionPolicy.LeastFrequentlyUsed);
-			Assert.AreEqual(EvictionPolicy.LeastFrequentlyUsed, dictionary.Policy);
+			var dictionary = new EvictingDictionary<int, int>(3, EvictingDictionaryPolicy.LeastFrequentlyUsed);
+			Assert.AreEqual(EvictingDictionaryPolicy.LeastFrequentlyUsed, dictionary.Policy);
 		}
 
 		/// <summary>
@@ -40,8 +40,8 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Policy_WhenConstructedWithFIFO_ShouldReflectFIFO()
 		{
-			var dictionary = new EvictingDictionary<int, int>(3, EvictionPolicy.FirstInFirstOut);
-			Assert.AreEqual(EvictionPolicy.FirstInFirstOut, dictionary.Policy);
+			var dictionary = new EvictingDictionary<int, int>(3, EvictingDictionaryPolicy.FirstInFirstOut);
+			Assert.AreEqual(EvictingDictionaryPolicy.FirstInFirstOut, dictionary.Policy);
 		}
 	}
 }

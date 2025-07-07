@@ -9,7 +9,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void Add_WhenPolicyIsFIFOAndCapacityExceeded_ShouldEvictOldest()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("one", 1);
 			dictionary.Add("two", 2);
 			dictionary.Add("three", 3);
@@ -27,7 +27,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsFIFOAndItemEvicted_ShouldBeCalledWithCorrectKeyValue()
 		{
 			var evictedItems = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.ItemEvicted += (key, value) => evictedItems.Add($"{key}:{value}");
 
 			dictionary.Add("X", 10);
@@ -45,7 +45,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsFIFOAndMultipleEvictions_ShouldTriggerMultipleEvents()
 		{
 			var evicted = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.ItemEvicted += (key, value) => evicted.Add($"{key}:{value}");
 
 			dictionary.Add("A", 1);
@@ -64,7 +64,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsFIFOAndEvictionOccurs_ShouldFireAfterItemEvicting()
 		{
 			var sequence = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 
 			dictionary.ItemEvicting += (key, value) => sequence.Add($"Evicting:{key}:{value}");
 			dictionary.ItemEvicted += (key, value) => sequence.Add($"Evicted:{key}:{value}");
@@ -83,7 +83,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicting_WhenPolicyIsFIFOAndEvictionOccurs_ShouldBeCalledWithCorrectKeyValue()
 		{
 			var evictedItems = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.ItemEvicting += (key, value) => evictedItems.Add($"{key}:{value}");
 
 			dictionary.Add("A", 1);
@@ -100,7 +100,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicting_WhenPolicyIsFIFOAndEvictionOccurs_ShouldFireBeforeItemEvicted()
 		{
 			var sequence = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 
 			dictionary.ItemEvicting += (key, value) => sequence.Add($"Evicting:{key}:{value}");
 			dictionary.ItemEvicted += (key, value) => sequence.Add($"Evicted:{key}:{value}");
@@ -118,7 +118,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Enumerator_WhenPolicyIsFIFO_ShouldReturnItemsInInsertionOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(5, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(5, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -139,7 +139,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Keys_WhenPolicyIsFIFO_ShouldReturnKeysInInsertionOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.FirstInFirstOut)
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.FirstInFirstOut)
 			{
 				["one"] = 1,
 				["two"] = 2,
@@ -157,7 +157,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void ItemEvicted_WhenPolicyIsFIFO_ShouldEvictOldestItem()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			var evicted = new List<string>();
 			dictionary.ItemEvicted += (key, _) => evicted.Add(key);
 
@@ -175,7 +175,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Values_WhenPolicyIsFIFO_ShouldReturnValuesInInsertionOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.FirstInFirstOut)
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.FirstInFirstOut)
 			{
 				["a"] = 10,
 				["b"] = 20,
@@ -193,7 +193,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void Clear_WhenPolicyIsFIFOAndCalled_ShouldResetInsertionOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 
@@ -213,7 +213,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void PeekEvictionCandidate_WhenPolicyIsFIFO_ShouldReturnOldestKey()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("first", 1);
 			dictionary.Add("second", 2);
 			dictionary.Add("third", 3);
@@ -229,7 +229,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void EvictionEvents_WhenPolicyIsFIFOAndCandidateMissing_ShouldNotThrow()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("A", 1);
 			dictionary.Add("B", 2);
 			dictionary.Remove("A");
@@ -247,7 +247,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void Touch_WhenPolicyIsFIFOAndKeyTouched_ShouldHaveNoEffect()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -263,7 +263,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void Touch_WhenPolicyIsFIFO_ShouldIncrementTTotalTouches()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -280,7 +280,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("FIFO")]
 		public void TouchOrThrow_WhenPolicyIsFIFOAndKeyExists_ShouldHaveNoEffect()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.FirstInFirstOut);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.FirstInFirstOut);
 			dictionary.Add("item", 99);
 
 			dictionary.TouchOrThrow("item"); // no effect in FirstInFirstOut

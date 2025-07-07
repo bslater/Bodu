@@ -24,8 +24,8 @@ namespace Bodu.Extensions
 		/// </remarks>
 		public static bool IsLastDayOfQuarter(this DateOnly date)
 		{
-			var (year, quarter) = GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryDecember, referenceDate: date);
-			return date.DayNumber == ComputeQuarterEndDayNumber(year, quarter, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
+			var (year, quarter) = GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryToDecember, referenceDate: date);
+			return date.DayNumber == ComputeQuarterEndDayNumber(year, quarter, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryToDecember));
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace Bodu.Extensions
 		/// <see langword="true" /> if the <paramref name="date" /> is the last day of its quarter according to the rules of the specified
 		/// <paramref name="provider" />; otherwise, <see langword="false" />.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
 		/// <remarks>
 		/// This method evaluates whether the date component (ignoring the time of day) of the <paramref name="date" /> corresponds to the
 		/// last day of the quarter, using the logic defined by the specified <paramref name="provider" />. The comparison is performed

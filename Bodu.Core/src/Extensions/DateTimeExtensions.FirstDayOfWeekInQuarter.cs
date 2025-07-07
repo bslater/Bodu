@@ -11,87 +11,215 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns the first occurrence of the specified <see cref="DayOfWeek" /> within the quarter that includes the given
-		/// <see cref="DateTime" />, based on the specified <see cref="CalendarQuarterDefinition" />.
+		/// Returns a new <see cref="DateTime" /> representing the first occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// calendar quarter that contains the specified instance, using the standard calendar quarter definition.
 		/// </summary>
-		/// <param name="dateTime">
-		/// The reference <see cref="DateTime" /> used to identify the containing quarter. The <see cref="DateTime.Kind" /> is preserved in
-		/// the result.
-		/// </param>
-		/// <param name="dayOfWeek">
-		/// The <see cref="DayOfWeek" /> to locate within the quarter. For example, <see cref="DayOfWeek.Monday" /> returns the first Monday
-		/// in the quarter.
-		/// </param>
-		/// <param name="definition">
-		/// The <see cref="CalendarQuarterDefinition" /> used to determine the quarter boundaries (e.g., Calendar Year, Fiscal Year).
-		/// </param>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> within the
-		/// quarter containing <paramref name="dateTime" />, preserving the original <see cref="DateTime.Kind" />.
+		/// An object whose value is set to midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> in the quarter.
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The method calculates the start date of the quarter based on <paramref name="definition" /> and advances forward to the first
-		/// matching <paramref name="dayOfWeek" />. The result is guaranteed to fall within the same quarter as <paramref name="dateTime" />.
+		/// This method uses <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> to determine quarter boundaries. The result is
+		/// calculated by starting at the first day of the quarter and searching forward to the first occurrence of the specified <paramref name="dayOfWeek" />.
 		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="dayOfWeek" /> or <paramref name="definition" /> is not a valid enumeration value.
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
+		/// </exception>
+		public static DateTime FirstDayOfWeekInQuarter(this DateTime dateTime, DayOfWeek dayOfWeek)
+		{
+			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
+
+			var (year, quarter) = DateTimeExtensions.GetQuarterAndYearFromDate(CalendarQuarterDefinition.JanuaryToDecember, dateTime);
+			return DateTimeExtensions.GetFirstDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				CalendarQuarterDefinition.JanuaryToDecember,
+				dateTime.Kind);
+		}
+
+		/// <summary>
+		/// Returns a new <see cref="DateTime" /> representing the first occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// quarter that contains the specified instance, using the given quarter definition.
+		/// </summary>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> used to define quarter boundaries.</param>
+		/// <returns>
+		/// An object whose value is set to midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> in the quarter.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The result is calculated by identifying the first day of the quarter based on <paramref name="definition" /> and searching
+		/// forward to the specified <paramref name="dayOfWeek" />.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value,
+		/// -or- <paramref name="definition" /> is not a valid <see cref="CalendarQuarterDefinition" /> value.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the provider-based overload instead.
 		/// </exception>
 		public static DateTime FirstDayOfWeekInQuarter(this DateTime dateTime, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
 
-			var (year, quarter) = GetQuarterAndYearFromDate(definition, referenceDate: dateTime);
-			var ticks = ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition));
-			ticks += ((dayOfWeek - GetDayOfWeekFromTicks(ticks) + 7) % 7) * TicksPerDay;
-			return new(ticks, dateTime.Kind);
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
+
+			var (year, quarter) = DateTimeExtensions.GetQuarterAndYearFromDate(definition, dateTime);
+			return DateTimeExtensions.GetFirstDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				definition,
+				dateTime.Kind);
 		}
 
 		/// <summary>
-		/// Returns the first occurrence of the specified <see cref="DayOfWeek" /> within the given quarter and year, using the specified
-		/// <see cref="CalendarQuarterDefinition" /> to determine the quarter boundaries.
+		/// Returns a new <see cref="DateTime" /> representing the first occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// quarter that contains the specified instance, using a custom quarter definition provider.
 		/// </summary>
-		/// <param name="year">
-		/// The calendar year to evaluate. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
-		/// <see cref="DateTime.MaxValue" />, inclusive.
-		/// </param>
-		/// <param name="quarter">
-		/// The quarter number within the year. Must be an integer between 1 and 4, inclusive, where 1 represents the first quarter and 4
-		/// represents the final quarter.
-		/// </param>
-		/// <param name="dayOfWeek">
-		/// The <see cref="DayOfWeek" /> to locate within the quarter. For example, specifying <see cref="DayOfWeek.Friday" /> will return
-		/// the first Friday on or after the start of the quarter.
-		/// </param>
-		/// <param name="definition">
-		/// The <see cref="CalendarQuarterDefinition" /> that defines how the quarters are segmented within the year (e.g.,
-		/// <see cref="CalendarQuarterDefinition.JanuaryDecember" /> or <see cref="CalendarQuarterDefinition.AprilToMarch" />).
-		/// </param>
+		/// <param name="dateTime">The date and time value used to determine the quarter.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <param name="provider">The <see cref="IQuarterDefinitionProvider" /> implementation that defines quarter boundaries.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> representing midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> within the
-		/// specified quarter, with <see cref="DateTimeKind.Unspecified" />.
+		/// An object whose value is set to midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> in the quarter.
 		/// </returns>
 		/// <remarks>
 		/// <para>
-		/// The calculation begins from the first day of the quarter as defined by <paramref name="definition" /> and advances forward to
-		/// the first occurrence of the specified <paramref name="dayOfWeek" />.
+		/// The result is determined by starting at the beginning of the quarter as defined by <paramref name="provider" /> and searching
+		/// forward to the specified <paramref name="dayOfWeek" />.
 		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
+		/// </exception>
+		public static DateTime FirstDayOfWeekInQuarter(this DateTime dateTime, DayOfWeek dayOfWeek, IQuarterDefinitionProvider provider)
+		{
+			ThrowHelper.ThrowIfNull(provider);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
+
+			var dt = provider.GetQuarterStart(dateTime);
+			return new DateTime(dt.Ticks + DateTimeExtensions.GetNextDayOfWeekAsTicks(dt, dayOfWeek), dateTime.Kind);
+		}
+
+		/// <summary>
+		/// Returns a new <see cref="DateTime" /> representing the first occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// specified quarter and year, using the standard calendar quarter definition.
+		/// </summary>
+		/// <param name="year">The calendar year. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="quarter">The quarter number, from 1 to 4.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <returns>
+		/// An object whose value is set to midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> in the quarter.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This method uses <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> to define quarter boundaries, and computes the first
+		/// date within the quarter that matches <paramref name="dayOfWeek" />.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="year" /> is outside the supported <see cref="DateTime" /> year range, if <paramref name="quarter" />
-		/// is not between 1 and 4, or if <paramref name="dayOfWeek" /> or <paramref name="definition" /> is not a valid enumeration value.
+		/// Thrown if <paramref name="year" /> is less than 1 or greater than 9999,
+		/// -or- <paramref name="quarter" /> is less than 1 or greater than 4,
+		/// -or- <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value.
 		/// </exception>
-		public static DateTime FirstDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
+		public static DateTime GetFirstDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek)
 		{
-			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
 			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
 			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
 
+			return DateTimeExtensions.GetFirstDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				CalendarQuarterDefinition.JanuaryToDecember,
+				DateTimeKind.Unspecified);
+		}
+
+		/// <summary>
+		/// Returns a new <see cref="DateTime" /> representing the first occurrence of the specified <see cref="DayOfWeek" /> within the
+		/// specified quarter and year, using the specified quarter definition.
+		/// </summary>
+		/// <param name="year">The calendar year. Must be between 1 and 9999, inclusive.</param>
+		/// <param name="quarter">The quarter number, from 1 to 4.</param>
+		/// <param name="dayOfWeek">The <see cref="DayOfWeek" /> value to locate within the quarter.</param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> used to define quarter boundaries.</param>
+		/// <returns>
+		/// An object whose value is set to midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> in the quarter.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The start of the quarter is computed using <paramref name="definition" />, and the search proceeds forward to the first date
+		/// that matches the specified <paramref name="dayOfWeek" />.
+		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="year" /> is less than 1 or greater than 9999,
+		/// -or- <paramref name="quarter" /> is less than 1 or greater than 4,
+		/// -or- <paramref name="dayOfWeek" /> is not a valid <see cref="DayOfWeek" /> value,
+		/// -or- <paramref name="definition" /> is not a valid <see cref="CalendarQuarterDefinition" /> value.
+		/// </exception>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown if <paramref name="definition" /> is <see cref="CalendarQuarterDefinition.Custom" />. Use the provider-based overload instead.
+		/// </exception>
+		public static DateTime GetFirstDayOfWeekInQuarter(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition)
+		{
+			ThrowHelper.ThrowIfOutOfRange(year, DateTimeExtensions.MinYear, DateTimeExtensions.MaxYear);
+			ThrowHelper.ThrowIfOutOfRange(quarter, 1, 4);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(dayOfWeek);
+			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
+
+			if (definition == CalendarQuarterDefinition.Custom)
+				throw new InvalidOperationException(
+					string.Format(ResourceStrings.Arg_Required_ProviderInterface, nameof(IQuarterDefinitionProvider)));
+
+			return DateTimeExtensions.GetFirstDayOfWeekInQuarterInternal(
+				year,
+				quarter,
+				dayOfWeek,
+				definition,
+				DateTimeKind.Unspecified);
+		}
+
+		/// <summary>
+		/// Computes the first occurrence of the specified <see cref="DayOfWeek" /> within the given quarter and year, based on the provided
+		/// <see cref="CalendarQuarterDefinition" />, and returns a <see cref="DateTime" /> value with the specified <see cref="DateTimeKind" />.
+		/// </summary>
+		/// <param name="year">The calendar year that contains the quarter. Must be within the valid range of <see cref="DateTime" />.</param>
+		/// <param name="quarter">The quarter number (1 to 4) within the specified year.</param>
+		/// <param name="dayOfWeek">
+		/// The <see cref="DayOfWeek" /> to locate. The method searches forward from the start of the quarter to find the first occurrence.
+		/// </param>
+		/// <param name="definition">The <see cref="CalendarQuarterDefinition" /> that defines how the year is divided into quarters.</param>
+		/// <param name="kind">The <see cref="DateTimeKind" /> to apply to the resulting <see cref="DateTime" /> value.</param>
+		/// <returns>
+		/// A <see cref="DateTime" /> representing midnight (00:00:00) on the first occurrence of <paramref name="dayOfWeek" /> within the
+		/// specified quarter, using the specified <paramref name="kind" />.
+		/// </returns>
+		/// <remarks>
+		/// This method is used internally to calculate the first matching weekday in a quarter, with tick-level precision. It assumes that
+		/// all arguments have been validated by the caller.
+		/// </remarks>
+		private static DateTime GetFirstDayOfWeekInQuarterInternal(int year, int quarter, DayOfWeek dayOfWeek, CalendarQuarterDefinition definition, DateTimeKind kind)
+		{
 			var ticks = ComputeQuarterStartTicks(year, quarter, GetQuarterDefinition(definition));
 			ticks += ((dayOfWeek - GetDayOfWeekFromTicks(ticks) + 7) % 7) * TicksPerDay;
-			return new(ticks, DateTimeKind.Unspecified);
+			return new(ticks, kind);
 		}
 	}
 }

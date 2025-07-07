@@ -22,7 +22,7 @@ namespace Bodu.Collections.Generic
 		/// <param name="rng">The random number generator used to select shuffled items.</param>
 		/// <param name="count">The number of elements to yield from the shuffled source.</param>
 		/// <returns>A lazily-evaluated sequence of randomly selected items from the source.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="rng" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="rng" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown immediately if <paramref name="count" /> is negative.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// May be thrown upon first enumeration if <paramref name="count" /> exceeds the total number of elements in <paramref name="source" />.
@@ -64,7 +64,7 @@ namespace Bodu.Collections.Generic
 		/// <param name="rng">The random number generator used for shuffling.</param>
 		/// <param name="count">The number of elements to yield.</param>
 		/// <returns>A sequence of randomly selected elements from the array.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> or <paramref name="rng" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="array" /> or <paramref name="rng" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count" /> is negative or exceeds the array length.</exception>
 		/// <remarks>
 		/// The input array is copied before shuffling to ensure immutability of the original. Use this method when working with arrays and

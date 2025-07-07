@@ -37,7 +37,7 @@ namespace Bodu.Collections.Generic
 			internal Enumerator(CircularBuffer<T> circularBuffer)
 			{
 				this.circularBuffer = circularBuffer;
-				version = circularBuffer.version;
+				version = circularBuffer._version;
 				currentIndex = -1;
 				current = default!;
 				iteratedCount = 0;
@@ -55,18 +55,18 @@ namespace Bodu.Collections.Generic
 			/// <inheritdoc />
 			public bool MoveNext()
 			{
-				if (version != circularBuffer.version)
+				if (version != circularBuffer._version)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionModified);
 
-				if (iteratedCount >= circularBuffer.count)
+				if (iteratedCount >= circularBuffer._count)
 				{
 					current = default!;
 					currentIndex = -1; // Ended
 					return false;
 				}
 
-				currentIndex = (circularBuffer.head + iteratedCount) % circularBuffer.capacity;
-				current = circularBuffer.array[currentIndex];
+				currentIndex = (circularBuffer._head + iteratedCount) % circularBuffer._capacity;
+				current = circularBuffer._internalBuffer[currentIndex];
 				iteratedCount++;
 
 				return true;
@@ -75,7 +75,7 @@ namespace Bodu.Collections.Generic
 			/// <inheritdoc />
 			public void Reset()
 			{
-				if (version != circularBuffer.version)
+				if (version != circularBuffer._version)
 					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionModified);
 
 				currentIndex = -1;

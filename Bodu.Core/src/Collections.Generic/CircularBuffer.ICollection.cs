@@ -17,7 +17,7 @@ namespace Bodu.Collections.Generic
 		private object? syncRoot;
 
 		/// <inheritdoc />
-		public int Count => count;
+		public int Count => _count;
 
 		/// <summary>
 		/// Gets a value indicating whether access to the <see cref="CircularBuffer{T}" /> is synchronized (thread safe).
@@ -68,11 +68,11 @@ namespace Bodu.Collections.Generic
 			ThrowHelper.ThrowIfNull(array);
 			ThrowHelper.ThrowIfArrayIsNotSingleDimension(array);
 			ThrowHelper.ThrowIfArrayIsNotZeroBased(array);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, count);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, _count);
 
 			try
 			{
-				CopyToCore(array, index, isTypedArray: false);
+				CopyToInternal(array, index, isTypedArray: false);
 			}
 			catch (ArrayTypeMismatchException ex)
 			{

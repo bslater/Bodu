@@ -4,7 +4,7 @@
 	{
 		/// <summary>
 		/// Verifies that <see cref="DateOnlyExtensions.IsFirstDayOfQuarter(DateOnly)" /> returns <c>true</c> only when the date is the
-		/// first day of a quarter based on the <see cref="CalendarQuarterDefinition.JanuaryDecember" /> structure.
+		/// first day of a quarter based on the <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> structure.
 		/// </summary>
 		[DataTestMethod]
 		[DynamicData(nameof(DateTimeExtensionsTests.IsLastDayOfQuarterJanuaryDecemberTestData), typeof(DateTimeExtensionsTests), DynamicDataSourceType.Method)]

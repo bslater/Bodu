@@ -65,7 +65,7 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(
 				capacity: 5,
 				source: new Dictionary<string, int> { { "KEY", 1 } },
-				policy: EvictionPolicy.LeastRecentlyUsed,
+				policy: EvictingDictionaryPolicy.LeastRecentlyUsed,
 				comparer: StringComparer.OrdinalIgnoreCase);
 
 			Assert.IsTrue(dictionary.ContainsKey("key"));
@@ -80,7 +80,7 @@ namespace Bodu.Collections.Generic
 			var dictionary = new EvictingDictionary<string, int>(
 				capacity: 5,
 				source: new Dictionary<string, int> { { "KEY", 1 } },
-				policy: EvictionPolicy.LeastRecentlyUsed,
+				policy: EvictingDictionaryPolicy.LeastRecentlyUsed,
 				comparer: StringComparer.Ordinal);
 
 			Assert.IsFalse(dictionary.ContainsKey("key"));

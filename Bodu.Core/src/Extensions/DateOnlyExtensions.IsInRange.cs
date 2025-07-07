@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.IsInRange.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.IsInRange.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -14,27 +14,25 @@ namespace Bodu.Extensions
 		/// Determines whether the specified <see cref="DateOnly" /> value falls within the range defined by <paramref name="start" /> and
 		/// <paramref name="end" />, inclusive.
 		/// </summary>
-		/// <param name="value">The <see cref="DateOnly" /> value to evaluate.</param>
+		/// <param name="date">The <see cref="DateOnly" /> value to evaluate.</param>
 		/// <param name="start">The start of the range.</param>
 		/// <param name="end">The end of the range.</param>
 		/// <returns>
-		/// <c>true</c> if <paramref name="value" /> is greater than or equal to <paramref name="start" /> and less than or equal to
+		/// <c>true</c> if <paramref name="date" /> is greater than or equal to <paramref name="start" /> and less than or equal to
 		/// <paramref name="end" />; otherwise, <c>false</c>.
 		/// </returns>
 		/// <remarks>
-		/// <para>
-		/// This method automatically handles reversed ranges by swapping <paramref name="start" /> and <paramref name="end" /> if necessary.
-		/// </para>
-		/// <para>The range is inclusive; if <paramref name="value" /> equals either boundary, the result is <c>true</c>.</para>
+		/// The range check is inclusive, meaning the result is <see langword="true" /> if <paramref name="date" /> equals either
+		/// <paramref name="start" /> or <paramref name="end" />.
 		/// </remarks>
-		public static bool IsInRange(this DateOnly value, DateOnly start, DateOnly end) =>
-			ComparableHelper.IsBetween(value, start, end);
+		public static bool IsInRange(this DateOnly date, DateOnly start, DateOnly end) =>
+			date.CompareTo(start) >= 0 && date.CompareTo(end) <= 0;
 
 		/// <summary>
 		/// Determines whether the specified nullable <see cref="DateOnly" /> value falls within the range defined by
 		/// <paramref name="start" /> and <paramref name="end" />, inclusive.
 		/// </summary>
-		/// <param name="value">The nullable <see cref="DateOnly" /> value to evaluate.</param>
+		/// <param name="date">The nullable <see cref="DateOnly" /> value to evaluate.</param>
 		/// <param name="start">The start of the range.</param>
 		/// <param name="end">The end of the range.</param>
 		/// <returns>
@@ -42,13 +40,10 @@ namespace Bodu.Extensions
 		/// less than or equal to <paramref name="end" />; otherwise, <c>false</c>.
 		/// </returns>
 		/// <remarks>
-		/// <para>If <paramref name="value" /> is <c>null</c>, this method returns <c>false</c>.</para>
-		/// <para>
-		/// This method automatically handles reversed ranges by swapping <paramref name="start" /> and <paramref name="end" /> if necessary.
-		/// </para>
-		/// <para>The range is inclusive; if the underlying value equals either boundary, the result is <c>true</c>.</para>
+		/// <para>If <paramref name="date" /> is <see langword="null" />, the result is <see langword="false" />.</para>
+		/// <para>The range check is inclusive, meaning the result is <see langword="true" /> if the value equals either boundary.</para>
 		/// </remarks>
-		public static bool IsInRange(this DateOnly? value, DateOnly start, DateOnly end) =>
-			value.HasValue && ComparableHelper.IsBetween(value.Value, start, end);
+		public static bool IsInRange(this DateOnly? date, DateOnly start, DateOnly end) =>
+			date.HasValue && date.Value.IsInRange(start, end);
 	}
 }

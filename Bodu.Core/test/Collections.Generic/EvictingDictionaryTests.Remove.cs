@@ -88,7 +88,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Remove_WhenLRUPolicy_ShouldUpdateAccessOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 
@@ -105,7 +105,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Remove_WhenLFUPolicy_ShouldUpdateFrequencyTracking()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.LeastFrequentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.LeastFrequentlyUsed);
 			dictionary.Add("x", 100);
 			dictionary.Touch("x");
 

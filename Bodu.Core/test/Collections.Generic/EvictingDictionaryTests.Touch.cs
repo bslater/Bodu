@@ -22,7 +22,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenKeyExists_ShouldIncrementTotalTouches()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("key", 123);
 
 			var before = dictionary.TotalTouches;
@@ -37,7 +37,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenKeyDoesNotExist_ShouldNotAffectTotalTouches()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.LeastRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.LeastRecentlyUsed);
 			dictionary.Add("key", 123);
 
 			var before = dictionary.TotalTouches;

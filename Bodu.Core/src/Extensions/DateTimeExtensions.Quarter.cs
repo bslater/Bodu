@@ -12,38 +12,19 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns the quarter number (1–4) of the year for the specified <see cref="DateTime" />, using the standard calendar quarter
-		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryDecember" />).
+		/// Gets the quarter number (1–4) of the year for the specified <see cref="DateTime" />, using the standard calendar quarter
+		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryToDecember" />).
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
 		/// <returns>An integer between 1 and 4 representing the calendar quarter that contains <paramref name="dateTime" />.</returns>
 		/// <remarks>
-		/// This method uses the standard Gregorian calendar quarter alignment:
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Q1</term>
-		/// <description>January 1 – March 31</description>
-		/// </item>
-		/// <item>
-		/// <term>Q2</term>
-		/// <description>April 1 – June 30</description>
-		/// </item>
-		/// <item>
-		/// <term>Q3</term>
-		/// <description>July 1 – September 30</description>
-		/// </item>
-		/// <item>
-		/// <term>Q4</term>
-		/// <description>October 1 – December 31</description>
-		/// </item>
-		/// </list>
-		/// The quarter is determined based on the month of <paramref name="dateTime" /> only.
+		/// <para>This method uses the standard calendar alignment defined by <see cref="CalendarQuarterDefinition.JanuaryToDecember" />.</para>
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime) =>
-			GetQuarterForDate(dateTime, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
+			GetQuarterForDate(dateTime, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryToDecember));
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a predefined <see cref="CalendarQuarterDefinition" />.
+		/// Gets the quarter number (1–4) for the specified <see cref="DateTime" />, using a predefined <see cref="CalendarQuarterDefinition" />.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
 		/// <param name="definition">The quarter definition that determines how the year is segmented into quarters.</param>
@@ -51,7 +32,12 @@ namespace Bodu.Extensions
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Thrown if <paramref name="definition" /> is not a valid enum value or is <see cref="CalendarQuarterDefinition.Custom" />.
 		/// </exception>
-		/// <remarks>This method supports various standard calendar and financial quarter alignments. For custom models, use <see cref="Quarter(DateTime, IQuarterDefinitionProvider)" />.</remarks>
+		/// <remarks>
+		/// <para>
+		/// This method supports various standard calendar and financial quarter alignments by unpacking the encoded anchor month and day.
+		/// </para>
+		/// <para>For custom models, use <see cref="Quarter(DateTime, IQuarterDefinitionProvider)" /> instead.</para>
+		/// </remarks>
 		public static int Quarter(this DateTime dateTime, CalendarQuarterDefinition definition)
 		{
 			ThrowHelper.ThrowIfEnumValueIsUndefined(definition);
@@ -64,7 +50,7 @@ namespace Bodu.Extensions
 		}
 
 		/// <summary>
-		/// Returns the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom quarter definition provider.
+		/// Gets the quarter number (1–4) for the specified <see cref="DateTime" />, using a custom quarter definition provider.
 		/// </summary>
 		/// <param name="dateTime">The <see cref="DateTime" /> to evaluate.</param>
 		/// <param name="provider">An <see cref="IQuarterDefinitionProvider" /> that defines how quarters are structured.</param>
@@ -72,8 +58,8 @@ namespace Bodu.Extensions
 		/// <exception cref="ArgumentNullException">Thrown if <paramref name="provider" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown if the quarter returned by the provider is not in the range 1–4.</exception>
 		/// <remarks>
-		/// Use this overload to support complex fiscal models such as 4-4-5 retail calendars or non-month-aligned systems. This method
-		/// calls <see cref="IQuarterDefinitionProvider.GetQuarter(DateTime)" />.
+		/// <para>Use this overload to support complex fiscal models such as 4-4-5 retail calendars or non-month-aligned systems.</para>
+		/// <para>This method calls <see cref="IQuarterDefinitionProvider.GetQuarter(DateTime)" /> to resolve the quarter.</para>
 		/// </remarks>
 		public static int Quarter(this DateTime dateTime, IQuarterDefinitionProvider provider)
 		{
@@ -210,7 +196,7 @@ namespace Bodu.Extensions
 			// Compute quarter number using modular offset from anchor month
 			int quarter = ((dateTime.Month + 12 - (int)definition.defMonth) % 12) / 3 + 1;
 
-			// If anchor day is not the 1st, check if we are in the quarter's start month but still before the anchor day — in that case, we
+			// If anchor day is not the 1st, check if we are in the quarter's start month but still before the anchor day - in that case, we
 			// belong to the previous quarter
 			if (definition.defDay != 1)
 			{

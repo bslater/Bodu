@@ -157,7 +157,7 @@ namespace Bodu.Collections.Generic.Extensions
 				}
 
 				/// <inheritdoc />
-				object IEnumerator.Current => Current;
+				object IEnumerator.Current => Current!;
 
 				/// <summary>
 				/// Disposes the enumerator. No-op for this implementation.

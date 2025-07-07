@@ -12,23 +12,24 @@ namespace Bodu.Extensions
 	{
 		/// <summary>
 		/// Returns a new <see cref="DateTime" /> representing the previous calendar weekday before the specified
-		/// <paramref name="dateTime" />, based on the given <paramref name="weekend" /> definition.
+		/// <paramref name="dateTime" />, based on the provided <paramref name="weekend" /> definition.
 		/// </summary>
 		/// <param name="dateTime">The starting <see cref="DateTime" /> from which to search backward.</param>
-		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that defines which days are considered part of the weekend.</param>
+		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that defines which days are considered weekends.</param>
 		/// <returns>
-		/// A <see cref="DateTime" /> with the same time-of-day and <see cref="DateTime.Kind" /> as <paramref name="dateTime" /> that
-		/// represents the previous weekday according to the specified <paramref name="weekend" /> pattern.
+		/// An object whose value is set to the first calendar day before <paramref name="dateTime" /> that is not considered a weekend
+		/// according to the specified <paramref name="weekend" /> rule.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="weekend" /> is not a defined value of the <see cref="CalendarWeekendDefinition" /> enumeration.
+		/// Thrown if <paramref name="weekend" /> is not a valid member of the <see cref="CalendarWeekendDefinition" /> enumeration.
 		/// </exception>
 		/// <remarks>
 		/// <para>
-		/// The method iterates backward one day at a time from <paramref name="dateTime" /> until it finds a day not considered part of the
-		/// weekend under the specified <paramref name="weekend" /> rule.
+		/// If <paramref name="dateTime" /> already falls on a weekday, the result will be the most recent calendar day that is also a
+		/// weekday under the given <paramref name="weekend" /> pattern.
 		/// </para>
-		/// <para>The resulting <see cref="DateTime" /> preserves the original time-of-day and <see cref="DateTime.Kind" /> of the input.</para>
+		/// <para>This method evaluates each preceding day until it finds one that is not designated as a weekend by the specified rule.</para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
 		/// </remarks>
 		public static DateTime PreviousWeekday(this DateTime dateTime, CalendarWeekendDefinition weekend)
 		{
@@ -46,27 +47,28 @@ namespace Bodu.Extensions
 
 		/// <summary>
 		/// Returns a new <see cref="DateTime" /> representing the previous calendar weekday before the specified
-		/// <paramref name="dateTime" />, based on the given <paramref name="weekend" /> rule and optional <paramref name="provider" />.
+		/// <paramref name="dateTime" />, using the given <paramref name="weekend" /> definition and optional custom
+		/// <paramref name="provider" /> logic.
 		/// </summary>
 		/// <param name="dateTime">The starting <see cref="DateTime" /> from which to search backward.</param>
-		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that specifies the default weekend rule to apply.</param>
+		/// <param name="weekend">The <see cref="CalendarWeekendDefinition" /> that defines the weekend pattern.</param>
 		/// <param name="provider">
-		/// An optional <see cref="IWeekendDefinitionProvider" /> that can override the default rule when <paramref name="weekend" /> is set
+		/// An optional <see cref="IWeekendDefinitionProvider" /> that supplies custom weekend logic when <paramref name="weekend" /> is set
 		/// to <see cref="CalendarWeekendDefinition.Custom" />.
 		/// </param>
 		/// <returns>
-		/// A <see cref="DateTime" /> with the same time-of-day and <see cref="DateTime.Kind" /> as <paramref name="dateTime" /> that
-		/// represents the previous weekday according to the specified or custom weekend logic.
+		/// An object whose value is set to the first calendar day before <paramref name="dateTime" /> that is considered a weekday
+		/// according to the specified <paramref name="weekend" /> rule and the logic of <paramref name="provider" /> (if applicable).
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="weekend" /> is not a defined value of the <see cref="CalendarWeekendDefinition" /> enumeration.
+		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> and <paramref name="provider" /> is <see langword="null" />.
 		/// </exception>
 		/// <remarks>
 		/// <para>
-		/// This overload supports both predefined and custom weekend definitions. If a custom rule is used, <paramref name="provider" />
-		/// must be non-null.
+		/// This method evaluates each preceding day prior to <paramref name="dateTime" /> until it finds one that is not considered a
+		/// weekend under the specified <paramref name="weekend" /> pattern or the custom logic defined by <paramref name="provider" />.
 		/// </para>
-		/// <para>The resulting <see cref="DateTime" /> retains the original time-of-day and <see cref="DateTime.Kind" /> of the input.</para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance matches that of the original <paramref name="dateTime" />.</para>
 		/// </remarks>
 		public static DateTime PreviousWeekday(this DateTime dateTime, CalendarWeekendDefinition weekend, IWeekendDefinitionProvider? provider)
 		{

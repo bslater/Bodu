@@ -10,7 +10,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("MRU")]
 		public void Add_WhenPolicyIsMRUAndCapacityExceeded_ShouldEvictMostRecentlyUsed()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.Add("one", 1);
 			dictionary.Add("two", 2);
 			dictionary["two"] = 22;
@@ -27,7 +27,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Touch_WhenPolicyIsMRUAndKeyTouched_ShouldUpdateRecency()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.Add("a", 1);
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3);
@@ -52,7 +52,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void PeekEvictionCandidate_WhenPolicyIsMRU_ShouldReturnMostRecentlyUsedKey()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.Add("x", 1);
 			dictionary.Add("y", 2);
 			dictionary.Add("z", 3);
@@ -70,7 +70,7 @@ namespace Bodu.Collections.Generic
 		public void ItemEvicted_WhenPolicyIsMRUAndItemEvicted_ShouldBeCalledWithCorrectKeyValue()
 		{
 			var evicted = new List<string>();
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.ItemEvicted += (key, value) => evicted.Add($"{key}:{value}");
 
 			dictionary.Add("A", 1);
@@ -87,7 +87,7 @@ namespace Bodu.Collections.Generic
 		[TestMethod]
 		public void Clear_WhenPolicyIsMRUAndCalled_ShouldResetAccessOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(2, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(2, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.Add("X", 1);
 			dictionary.Add("Y", 2);
 			dictionary.Touch("X");
@@ -108,7 +108,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("MRU")]
 		public void IEnumerable_GetEnumerator_WhenPolicyIsMRU_ShouldRespectRecencyOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.Add("a", 1); // oldest
 			dictionary.Add("b", 2);
 			dictionary.Add("c", 3); // newest
@@ -132,7 +132,7 @@ namespace Bodu.Collections.Generic
 		[TestCategory("MRU")]
 		public void Keys_WhenPolicyIsMRU_ShouldReturnKeysInRecencyOrder()
 		{
-			var dictionary = new EvictingDictionary<string, int>(3, EvictionPolicy.MostRecentlyUsed);
+			var dictionary = new EvictingDictionary<string, int>(3, EvictingDictionaryPolicy.MostRecentlyUsed);
 			dictionary.Add("1", 1);
 			dictionary.Add("2", 2);
 			dictionary.Add("3", 3);

@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="EvictingDictionary.DictionaryEnumerator.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="EvictingDictionary.DictionaryEnumerator.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System.Collections;
@@ -21,7 +21,8 @@ namespace Bodu.Collections.Generic
 		/// invalidates the enumerator.
 		/// </para>
 		/// </remarks>
-		public struct DictionaryEnumerator : IDictionaryEnumerator
+		public struct DictionaryEnumerator
+			: System.Collections.IDictionaryEnumerator
 		{
 			private readonly EvictingDictionary<TKey, TValue> dictionary;
 			private IEnumerator<KeyValuePair<TKey, TValue>> inner;
@@ -37,6 +38,9 @@ namespace Bodu.Collections.Generic
 			}
 
 			/// <inheritdoc />
+			public object Current => Entry;
+
+			/// <inheritdoc />
 			public DictionaryEntry Entry => new(inner.Current.Key!, inner.Current.Value);
 
 			/// <inheritdoc />
@@ -44,9 +48,6 @@ namespace Bodu.Collections.Generic
 
 			/// <inheritdoc />
 			public object? Value => inner.Current.Value;
-
-			/// <inheritdoc />
-			public object Current => Entry;
 
 			/// <inheritdoc />
 			public bool MoveNext() => inner.MoveNext();

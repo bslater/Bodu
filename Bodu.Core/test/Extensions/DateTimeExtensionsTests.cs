@@ -8,52 +8,6 @@ namespace Bodu.Extensions
 	[TestClass]
 	public partial class DateTimeExtensionsTests
 	{
-		private static readonly DateTime UnixEpochUtc = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-		public struct FirstAndLastDayData
-		{
-			public DateTime Input { get; set; }
-
-			public CalendarWeekendDefinition? Weekend { get; set; }
-
-			public CultureInfo? CultureInfo { get; set; }
-
-			public DateTime ExpectedFirst { get; set; }
-
-			public DateTime ExpectedLast { get; set; }
-		}
-
-		public static readonly FirstAndLastDayData[] FirstAndLastDayOYearDataTestData =
-		{
-		};
-
-		public static readonly FirstAndLastDayData[] FirstAndLastDayOMonthDataTestData =
-		{
-			// Regular months in 2023
-			new() { Input = new DateTime(2023, 01, 15, 8, 0, 0), ExpectedFirst = new DateTime(2023, 01, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 01, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 02, 28, 23, 59, 59), ExpectedFirst = new DateTime(2023, 02, 01, 0, 0, 0), ExpectedLast = new DateTime(2023, 02, 28, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 03, 31, 12, 30, 0), ExpectedFirst = new DateTime(2023, 03, 01, 0, 0, 0), ExpectedLast =  new DateTime(2023, 03, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 04, 10, 0, 0, 1), ExpectedFirst = new DateTime(2023, 04, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 04, 30, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 05, 01, 18, 0, 0), ExpectedFirst = new DateTime(2023, 05, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 05, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 06, 15, 6, 30, 0), ExpectedFirst = new DateTime(2023, 06, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 06, 30, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 07, 25, 5, 0, 0), ExpectedFirst = new DateTime(2023, 07, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 07, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 08, 31, 23, 59, 59), ExpectedFirst = new DateTime(2023, 08, 01, 0, 0, 0), ExpectedLast = new DateTime(2023, 08, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 09, 05, 12, 0, 0), ExpectedFirst = new DateTime(2023, 09, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 09, 30, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 10, 10, 10, 10, 10), ExpectedFirst = new DateTime(2023, 10, 01, 0, 0, 0), ExpectedLast = new DateTime(2023, 10, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 11, 30, 8, 0, 0), ExpectedFirst = new DateTime(2023, 11, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 11, 30, 0, 0, 0) },
-			new() { Input = new DateTime(2023, 12, 31, 15, 0, 0), ExpectedFirst = new DateTime(2023, 12, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 12, 31, 0, 0, 0) },
-
-			// Leap year (2024)
-			new() { Input = new DateTime(2024, 01, 01, 0, 0, 0), ExpectedFirst = new DateTime(2024, 01, 01, 0, 0, 0), ExpectedLast =    new DateTime(2024, 01, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2024, 02, 29, 23, 59, 59), ExpectedFirst = new DateTime(2024, 02, 01, 0, 0, 0), ExpectedLast = new DateTime(2024, 02, 29, 0, 0, 0) },
-			new() { Input = new DateTime(2024, 03, 01, 0, 0, 0), ExpectedFirst = new DateTime(2024, 03, 01, 0, 0, 0), ExpectedLast =    new DateTime(2024, 03, 31, 0, 0, 0) },
-			new() { Input = new DateTime(2024, 04, 18, 13, 45, 0), ExpectedFirst = new DateTime(2024, 04, 01, 0, 0, 0), ExpectedLast =  new DateTime(2024, 04, 30, 0, 0, 0) },
-
-			// Boundary checks
-			new() { Input = DateTime.MinValue, ExpectedFirst = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, 1, 0, 0, 0), ExpectedLast = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, DateTime.DaysInMonth(DateTime.MinValue.Year, DateTime.MinValue.Month), 0, 0, 0) },
-			new() { Input = DateTime.MaxValue, ExpectedFirst = new DateTime(DateTime.MaxValue.Year, DateTime.MaxValue.Month, 1, 0, 0, 0), ExpectedLast = new DateTime(DateTime.MaxValue.Year, DateTime.MaxValue.Month, DateTime.DaysInMonth(DateTime.MaxValue.Year, DateTime.MaxValue.Month), 0, 0, 0) }
-		};
-
 		public static readonly FirstAndLastDayData[] FirstAndLastDayOfWeekTestData =
 		{
 			// === Saturday–Sunday weekend => week starts Monday (2024-01-01), ends Sunday (2024-01-07)
@@ -129,6 +83,39 @@ namespace Bodu.Extensions
 			new() { Input = new DateTime(2024, 04, 15), CultureInfo = CultureInfo.GetCultureInfo("fr-FR"), ExpectedFirst = new DateTime(2024, 04, 15), ExpectedLast = new DateTime(2024, 04, 21) }, // Monday (next week)
 		};
 
+		public static readonly FirstAndLastDayData[] FirstAndLastDayOMonthDataTestData =
+		{
+			// Regular months in 2023
+			new() { Input = new DateTime(2023, 01, 15, 8, 0, 0), ExpectedFirst = new DateTime(2023, 01, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 01, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 02, 28, 23, 59, 59), ExpectedFirst = new DateTime(2023, 02, 01, 0, 0, 0), ExpectedLast = new DateTime(2023, 02, 28, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 03, 31, 12, 30, 0), ExpectedFirst = new DateTime(2023, 03, 01, 0, 0, 0), ExpectedLast =  new DateTime(2023, 03, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 04, 10, 0, 0, 1), ExpectedFirst = new DateTime(2023, 04, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 04, 30, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 05, 01, 18, 0, 0), ExpectedFirst = new DateTime(2023, 05, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 05, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 06, 15, 6, 30, 0), ExpectedFirst = new DateTime(2023, 06, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 06, 30, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 07, 25, 5, 0, 0), ExpectedFirst = new DateTime(2023, 07, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 07, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 08, 31, 23, 59, 59), ExpectedFirst = new DateTime(2023, 08, 01, 0, 0, 0), ExpectedLast = new DateTime(2023, 08, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 09, 05, 12, 0, 0), ExpectedFirst = new DateTime(2023, 09, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 09, 30, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 10, 10, 10, 10, 10), ExpectedFirst = new DateTime(2023, 10, 01, 0, 0, 0), ExpectedLast = new DateTime(2023, 10, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 11, 30, 8, 0, 0), ExpectedFirst = new DateTime(2023, 11, 01, 0, 0, 0), ExpectedLast =    new DateTime(2023, 11, 30, 0, 0, 0) },
+			new() { Input = new DateTime(2023, 12, 31, 15, 0, 0), ExpectedFirst = new DateTime(2023, 12, 01, 0, 0, 0), ExpectedLast =   new DateTime(2023, 12, 31, 0, 0, 0) },
+
+			// Leap year (2024)
+			new() { Input = new DateTime(2024, 01, 01, 0, 0, 0), ExpectedFirst = new DateTime(2024, 01, 01, 0, 0, 0), ExpectedLast =    new DateTime(2024, 01, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2024, 02, 29, 23, 59, 59), ExpectedFirst = new DateTime(2024, 02, 01, 0, 0, 0), ExpectedLast = new DateTime(2024, 02, 29, 0, 0, 0) },
+			new() { Input = new DateTime(2024, 03, 01, 0, 0, 0), ExpectedFirst = new DateTime(2024, 03, 01, 0, 0, 0), ExpectedLast =    new DateTime(2024, 03, 31, 0, 0, 0) },
+			new() { Input = new DateTime(2024, 04, 18, 13, 45, 0), ExpectedFirst = new DateTime(2024, 04, 01, 0, 0, 0), ExpectedLast =  new DateTime(2024, 04, 30, 0, 0, 0) },
+
+			// Boundary checks
+			new() { Input = DateTime.MinValue, ExpectedFirst = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, 1, 0, 0, 0), ExpectedLast = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, DateTime.DaysInMonth(DateTime.MinValue.Year, DateTime.MinValue.Month), 0, 0, 0) },
+			new() { Input = DateTime.MaxValue, ExpectedFirst = new DateTime(DateTime.MaxValue.Year, DateTime.MaxValue.Month, 1, 0, 0, 0), ExpectedLast = new DateTime(DateTime.MaxValue.Year, DateTime.MaxValue.Month, DateTime.DaysInMonth(DateTime.MaxValue.Year, DateTime.MaxValue.Month), 0, 0, 0) }
+		};
+
+		public static readonly FirstAndLastDayData[] FirstAndLastDayOYearDataTestData =
+		{
+		};
+
+		private static readonly DateTime UnixEpochUtc = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
 		public static CultureInfo TestCulture
 		{
 			get
@@ -138,6 +125,19 @@ namespace Bodu.Extensions
 
 				return customCulture;
 			}
+		}
+
+		public struct FirstAndLastDayData
+		{
+			public CultureInfo? CultureInfo { get; set; }
+
+			public DateTime ExpectedFirst { get; set; }
+
+			public DateTime ExpectedLast { get; set; }
+
+			public DateTime Input { get; set; }
+
+			public CalendarWeekendDefinition? Weekend { get; set; }
 		}
 
 		public sealed class FridayOnlyWeekendProvider : IWeekendDefinitionProvider
@@ -164,13 +164,9 @@ namespace Bodu.Extensions
 				};
 			}
 
-			/// <summary>
-			/// Always throws <see cref="ArgumentOutOfRangeException" /> to simulate an invalid quarter mapping.
-			/// </summary>
-			/// <param name="dateTime">The input <see cref="DateTime" />.</param>
-			public DateTime GetQuarterStart(DateTime dateTime)
+			public int GetQuarter(DateOnly dateOnly)
 			{
-				throw new ArgumentOutOfRangeException(nameof(dateTime), "This provider intentionally returns invalid quarter mappings.");
+				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
 			}
 
 			/// <summary>
@@ -182,27 +178,7 @@ namespace Bodu.Extensions
 				throw new ArgumentOutOfRangeException(nameof(dateTime), "This provider intentionally returns invalid quarter mappings.");
 			}
 
-			public DateTime GetQuarterStart(int quarter)
-			{
-				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
-			}
-
 			public DateTime GetQuarterEnd(int quarter)
-			{
-				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
-			}
-
-			public int GetQuarter(DateOnly dateOnly)
-			{
-				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
-			}
-
-			public DateOnly GetQuarterStartDate(DateOnly dateOnly)
-			{
-				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
-			}
-
-			public DateOnly GetQuarterStartDate(int quarter)
 			{
 				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
 			}
@@ -216,25 +192,73 @@ namespace Bodu.Extensions
 			{
 				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
 			}
+
+			/// <summary>
+			/// Always throws <see cref="ArgumentOutOfRangeException" /> to simulate an invalid quarter mapping.
+			/// </summary>
+			/// <param name="dateTime">The input <see cref="DateTime" />.</param>
+			public DateTime GetQuarterStart(DateTime dateTime)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateTime), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateTime GetQuarterStart(int quarter)
+			{
+				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateOnly GetQuarterStartDate(DateOnly dateOnly)
+			{
+				throw new ArgumentOutOfRangeException(nameof(dateOnly), "This provider intentionally returns invalid quarter mappings.");
+			}
+
+			public DateOnly GetQuarterStartDate(int quarter)
+			{
+				throw new ArgumentOutOfRangeException(nameof(quarter), "This provider intentionally returns invalid quarter mappings.");
+			}
 		}
 
 		public sealed class ValidQuarterProvider : IQuarterDefinitionProvider
 		{
-			public static IEnumerable<object[]> QuarterTestData()
+			public static IEnumerable<object[]> FirstDayOfQuarterTestData()
 			{
-				yield return new object[] { new DateTime(2024, 01, 01), 1 };
-				yield return new object[] { new DateTime(2024, 02, 01), 1 };
-				yield return new object[] { new DateTime(2024, 03, 01), 2 };
-				yield return new object[] { new DateTime(2024, 04, 01), 2 };
-				yield return new object[] { new DateTime(2024, 05, 01), 2 };
-				yield return new object[] { new DateTime(2024, 06, 01), 3 };
-				yield return new object[] { new DateTime(2024, 07, 01), 3 };
-				yield return new object[] { new DateTime(2024, 08, 01), 3 };
-				yield return new object[] { new DateTime(2024, 09, 01), 4 };
-				yield return new object[] { new DateTime(2024, 10, 01), 4 };
-				yield return new object[] { new DateTime(2024, 11, 01), 4 };
-				yield return new object[] { new DateTime(2023, 12, 01), 1 };
+				yield return new object[] { new DateTime(2024, 01, 01), new DateTime(2023, 12, 01) };
+				yield return new object[] { new DateTime(2024, 02, 01), new DateTime(2023, 12, 01) };
+				yield return new object[] { new DateTime(2024, 03, 01), new DateTime(2024, 03, 01) };
+				yield return new object[] { new DateTime(2024, 04, 01), new DateTime(2024, 03, 01) };
+				yield return new object[] { new DateTime(2024, 05, 01), new DateTime(2024, 03, 01) };
+				yield return new object[] { new DateTime(2024, 06, 01), new DateTime(2024, 06, 01) };
+				yield return new object[] { new DateTime(2024, 07, 01), new DateTime(2024, 06, 01) };
+				yield return new object[] { new DateTime(2024, 08, 01), new DateTime(2024, 06, 01) };
+				yield return new object[] { new DateTime(2024, 09, 01), new DateTime(2024, 09, 01) };
+				yield return new object[] { new DateTime(2024, 10, 01), new DateTime(2024, 09, 01) };
+				yield return new object[] { new DateTime(2024, 11, 01), new DateTime(2024, 09, 01) };
+				yield return new object[] { new DateTime(2023, 12, 01), new DateTime(2023, 12, 01) };
 			}
+
+			public static IEnumerable<object[]> FirstDayOfWeekInQuarterTestData()
+			{
+				yield return new object[] { new DateTime(2024, 01, 01), DayOfWeek.Monday, new DateTime(2023, 12, 04) };
+				yield return new object[] { new DateTime(2024, 02, 01), DayOfWeek.Tuesday, new DateTime(2023, 12, 05) };
+				yield return new object[] { new DateTime(2024, 03, 01), DayOfWeek.Wednesday, new DateTime(2024, 03, 06) };
+				yield return new object[] { new DateTime(2024, 04, 01), DayOfWeek.Thursday, new DateTime(2024, 03, 07) };
+				yield return new object[] { new DateTime(2024, 05, 01), DayOfWeek.Friday, new DateTime(2024, 03, 01) };
+				yield return new object[] { new DateTime(2024, 06, 01), DayOfWeek.Saturday, new DateTime(2024, 06, 01) };
+				yield return new object[] { new DateTime(2024, 07, 01), DayOfWeek.Sunday, new DateTime(2024, 06, 02) };
+				yield return new object[] { new DateTime(2024, 08, 01), DayOfWeek.Monday, new DateTime(2024, 06, 03) };
+				yield return new object[] { new DateTime(2024, 09, 01), DayOfWeek.Tuesday, new DateTime(2024, 09, 03) };
+				yield return new object[] { new DateTime(2024, 10, 01), DayOfWeek.Wednesday, new DateTime(2024, 09, 04) };
+				yield return new object[] { new DateTime(2024, 11, 01), DayOfWeek.Thursday, new DateTime(2024, 09, 05) };
+				yield return new object[] { new DateTime(2023, 12, 01), DayOfWeek.Friday, new DateTime(2023, 12, 01) };
+			}
+
+			public static IEnumerable<object[]> IsFirstDayOfQuarterTestData() =>
+				FirstDayOfQuarterTestData()
+					.Select(o => new object[] { o[0], (DateTime)o[0] == (DateTime)o[1] });
+
+			public static IEnumerable<object[]> IsLastDayOfQuarterTestData() =>
+				LastDayOfQuarterTestData()
+					.Select(o => new object[] { o[0], (DateTime)o[0] == (DateTime)o[1] });
 
 			public static IEnumerable<object[]> LastDayOfQuarterTestData()
 			{
@@ -252,29 +276,21 @@ namespace Bodu.Extensions
 				yield return new object[] { new DateTime(2023, 12, 31), new DateTime(2024, 02, 29) };
 			}
 
-			public static IEnumerable<object[]> FirstDayOfQuarterTestData()
+			public static IEnumerable<object[]> QuarterTestData()
 			{
-				yield return new object[] { new DateTime(2024, 01, 01), new DateTime(2023, 12, 01) };
-				yield return new object[] { new DateTime(2024, 02, 01), new DateTime(2023, 12, 01) };
-				yield return new object[] { new DateTime(2024, 03, 01), new DateTime(2024, 03, 01) };
-				yield return new object[] { new DateTime(2024, 04, 01), new DateTime(2024, 03, 01) };
-				yield return new object[] { new DateTime(2024, 05, 01), new DateTime(2024, 03, 01) };
-				yield return new object[] { new DateTime(2024, 06, 01), new DateTime(2024, 06, 01) };
-				yield return new object[] { new DateTime(2024, 07, 01), new DateTime(2024, 06, 01) };
-				yield return new object[] { new DateTime(2024, 08, 01), new DateTime(2024, 06, 01) };
-				yield return new object[] { new DateTime(2024, 09, 01), new DateTime(2024, 09, 01) };
-				yield return new object[] { new DateTime(2024, 10, 01), new DateTime(2024, 09, 01) };
-				yield return new object[] { new DateTime(2024, 11, 01), new DateTime(2024, 09, 01) };
-				yield return new object[] { new DateTime(2023, 12, 01), new DateTime(2023, 12, 01) };
+				yield return new object[] { new DateTime(2024, 01, 01), 1 };
+				yield return new object[] { new DateTime(2024, 02, 01), 1 };
+				yield return new object[] { new DateTime(2024, 03, 01), 2 };
+				yield return new object[] { new DateTime(2024, 04, 01), 2 };
+				yield return new object[] { new DateTime(2024, 05, 01), 2 };
+				yield return new object[] { new DateTime(2024, 06, 01), 3 };
+				yield return new object[] { new DateTime(2024, 07, 01), 3 };
+				yield return new object[] { new DateTime(2024, 08, 01), 3 };
+				yield return new object[] { new DateTime(2024, 09, 01), 4 };
+				yield return new object[] { new DateTime(2024, 10, 01), 4 };
+				yield return new object[] { new DateTime(2024, 11, 01), 4 };
+				yield return new object[] { new DateTime(2023, 12, 01), 1 };
 			}
-
-			public static IEnumerable<object[]> IsFirstDayOfQuarterTestData() =>
-				FirstDayOfQuarterTestData()
-					.Select(o => new object[] { o[0], (DateTime)o[0] == (DateTime)o[1] });
-
-			public static IEnumerable<object[]> IsLastDayOfQuarterTestData() =>
-				LastDayOfQuarterTestData()
-					.Select(o => new object[] { o[0], (DateTime)o[0] == (DateTime)o[1] });
 
 			public int GetQuarter(DateTime dateTime)
 			{
@@ -289,17 +305,7 @@ namespace Bodu.Extensions
 				};
 			}
 
-			public DateTime GetQuarterStart(DateTime dateTime)
-			{
-				return GetQuarter(dateTime) switch
-				{
-					1 => new DateTime(dateTime.Month == 12 ? dateTime.Year : dateTime.Year - 1, 12, 1),
-					2 => new DateTime(dateTime.Year, 3, 1),
-					3 => new DateTime(dateTime.Year, 6, 1),
-					4 => new DateTime(dateTime.Year, 9, 1),
-					_ => throw new ArgumentOutOfRangeException(nameof(dateTime))
-				};
-			}
+			public int GetQuarter(DateOnly dateOnly) => GetQuarter(dateOnly.ToDateTime(TimeOnly.MinValue));
 
 			public DateTime GetQuarterEnd(DateTime dateTime)
 			{
@@ -316,18 +322,6 @@ namespace Bodu.Extensions
 				};
 			}
 
-			public DateTime GetQuarterStart(int quarter)
-			{
-				return quarter switch
-				{
-					1 => new DateTime(2023, 12, 1), // assumes test year context
-					2 => new DateTime(2024, 3, 1),
-					3 => new DateTime(2024, 6, 1),
-					4 => new DateTime(2024, 9, 1),
-					_ => throw new ArgumentOutOfRangeException(nameof(quarter))
-				};
-			}
-
 			public DateTime GetQuarterEnd(int quarter)
 			{
 				return quarter switch
@@ -340,15 +334,37 @@ namespace Bodu.Extensions
 				};
 			}
 
-			public int GetQuarter(DateOnly dateOnly) => GetQuarter(dateOnly.ToDateTime(TimeOnly.MinValue));
+			public DateOnly GetQuarterEndDate(DateOnly dateOnly) => GetQuarterEnd(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
+
+			public DateOnly GetQuarterEndDate(int quarter) => GetQuarterEndDate(GetQuarterEnd(quarter).ToDateOnly());
+
+			public DateTime GetQuarterStart(DateTime dateTime)
+			{
+				return GetQuarter(dateTime) switch
+				{
+					1 => new DateTime(dateTime.Month == 12 ? dateTime.Year : dateTime.Year - 1, 12, 1),
+					2 => new DateTime(dateTime.Year, 3, 1),
+					3 => new DateTime(dateTime.Year, 6, 1),
+					4 => new DateTime(dateTime.Year, 9, 1),
+					_ => throw new ArgumentOutOfRangeException(nameof(dateTime))
+				};
+			}
+
+			public DateTime GetQuarterStart(int quarter)
+			{
+				return quarter switch
+				{
+					1 => new DateTime(2023, 12, 1), // assumes test year context
+					2 => new DateTime(2024, 3, 1),
+					3 => new DateTime(2024, 6, 1),
+					4 => new DateTime(2024, 9, 1),
+					_ => throw new ArgumentOutOfRangeException(nameof(quarter))
+				};
+			}
 
 			public DateOnly GetQuarterStartDate(DateOnly dateOnly) => GetQuarterStart(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
 
 			public DateOnly GetQuarterStartDate(int quarter) => GetQuarterStartDate(GetQuarterStart(quarter).ToDateOnly());
-
-			public DateOnly GetQuarterEndDate(DateOnly dateOnly) => GetQuarterEnd(dateOnly.ToDateTime(TimeOnly.MinValue)).ToDateOnly();
-
-			public DateOnly GetQuarterEndDate(int quarter) => GetQuarterEndDate(GetQuarterEnd(quarter).ToDateOnly());
 		}
 	}
 }

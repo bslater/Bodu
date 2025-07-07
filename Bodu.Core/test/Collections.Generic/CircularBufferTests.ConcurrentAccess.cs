@@ -181,7 +181,7 @@ namespace Bodu.Collections.Generic
 			writer.Join();
 			reader.Join();
 
-			// Just validating no exception occurs — thread safety not guaranteed.
+			// Just validating no exception occurs - thread safety not guaranteed.
 			Assert.IsTrue(buffer.Count >= 0);
 		}
 	}

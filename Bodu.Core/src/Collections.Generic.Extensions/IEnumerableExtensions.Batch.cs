@@ -29,7 +29,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// An <see cref="IEnumerable{T}" /> where each inner <see cref="IEnumerable{T}" /> contains up to <paramref name="size" /> elements
 		/// from the source sequence. The final batch may contain fewer than <paramref name="size" /> elements.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="size" /> is less than or equal to 0.</exception>
 		/// <remarks>
 		/// This method uses deferred execution. Enumeration of the source sequence and batches occurs only when the result is enumerated.
@@ -49,7 +49,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// An <see cref="IEnumerable{T}" /> where each inner <see cref="IEnumerable{T}" /> contains up to <paramref name="size" />
 		/// transformed elements.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="size" /> is less than or equal to 0.</exception>
 		/// <remarks>This method uses deferred execution. The transformation and batching occur only during enumeration.</remarks>
 		public static IEnumerable<IEnumerable<TResult>> Batch<TSource, TResult>(this IEnumerable<TSource> source, int size, Func<TSource, TResult> selector)
@@ -71,7 +71,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// An <see cref="IEnumerable{T}" /> where each inner <see cref="IEnumerable{T}" /> contains up to <paramref name="size" />
 		/// transformed elements.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="size" /> is less than or equal to 0.</exception>
 		/// <remarks>This method uses deferred execution. The projection and batching occur only during enumeration.</remarks>
 		public static IEnumerable<IEnumerable<TResult>> Batch<TSource, TResult>(
@@ -159,7 +159,7 @@ namespace Bodu.Collections.Generic.Extensions
 		///]]>
 		/// </code>
 		/// </example>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source" /> or <paramref name="selector" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="size" /> is less than or equal to 0.</exception>
 		public static IEnumerable<ReadOnlyMemory<TResult>> BatchPooled<TSource, TResult>(
 				this IEnumerable<TSource> source,

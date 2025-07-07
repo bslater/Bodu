@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="IEnumerableExtensions.Randomize.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 #if !NETSTANDARD2_0
@@ -43,27 +43,6 @@ namespace Bodu.Collections.Generic.Extensions
 		LazyShuffle
 	}
 
-	/// <summary>
-	/// Wraps <see cref="System.Random" /> as an <see cref="IRandomGenerator" /> implementation.
-	/// </summary>
-	public sealed class SystemRandomAdapter : IRandomGenerator
-	{
-		private readonly Random random;
-
-		/// <summary>
-		/// Initializes a new adapter with a default <see cref="System.Random" />.
-		/// </summary>
-		public SystemRandomAdapter() : this(new Random()) { }
-
-		/// <summary>
-		/// Initializes a new adapter using the specified <paramref name="random" /> instance.
-		/// </summary>
-		public SystemRandomAdapter(Random random) => this.random = random ?? throw new ArgumentNullException(nameof(random));
-
-		/// <inheritdoc />
-		public int Next(int maxValue) => random.Next(maxValue);
-	}
-
 	public static partial class IEnumerableExtensions
 	{
 		/// <inheritdoc cref="Randomize{T}(IEnumerable{T}, RandomizationMode, IRandomGenerator, int?)" />
@@ -79,7 +58,7 @@ namespace Bodu.Collections.Generic.Extensions
 		/// <param name="rng">The random number generator.</param>
 		/// <param name="count">The number of items to return; all if null.</param>
 		/// <returns>A randomized sequence of <typeparamref name="T" />.</returns>
-		/// <exception cref="ArgumentNullException">If <paramref name="source" /> or <paramref name="rng" /> is null.</exception>
+		/// <exception cref="ArgumentNullException">If <paramref name="source" /> or <paramref name="rng" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">If <paramref name="count" /> is negative or too large.</exception>
 		/// <exception cref="ArgumentException">If <paramref name="count" /> is required but not provided.</exception>
 		public static IEnumerable<T> Randomize<T>(
@@ -106,6 +85,41 @@ namespace Bodu.Collections.Generic.Extensions
 					: LazyShuffle(source, rng, count.Value),
 				_ => throw new ArgumentOutOfRangeException(nameof(mode), string.Format(ResourceStrings.Arg_OutOfRangeException_EnumValue, nameof(RandomizationMode)))
 			};
+		}
+
+		/// <summary>
+		/// Lazily samples and shuffles a fixed-size subset of elements from the source sequence.
+		/// </summary>
+		/// <typeparam name="T">The element type.</typeparam>
+		/// <param name="source">The sequence to randomize.</param>
+		/// <param name="rng">The random number generator.</param>
+		/// <param name="count">The number of elements to return.</param>
+		/// <returns>A lazily shuffled sequence of <paramref name="count" /> elements.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count" /> exceeds available elements.</exception>
+		private static IEnumerable<T> LazyShuffle<T>(IEnumerable<T> source, IRandomGenerator rng, int count)
+		{
+			if (count <= 0)
+				yield break;
+
+			T[] reservoir = new T[count];
+			int index = 0;
+			using var enumerator = source.GetEnumerator();
+			while (index < count && enumerator.MoveNext())
+				reservoir[index++] = enumerator.Current;
+
+			if (index < count)
+				throw new ArgumentOutOfRangeException(nameof(count), ResourceStrings.Arg_OutOfRange_CountGreaterThanSource);
+
+			int seen = count;
+			while (enumerator.MoveNext())
+			{
+				int i = rng.Next(++seen);
+				if (i < count)
+					reservoir[i] = enumerator.Current;
+			}
+
+			foreach (var item in ShuffleHelpers.ShuffleAndYield(reservoir, rng, count))
+				yield return item;
 		}
 
 		/// <summary>
@@ -183,41 +197,6 @@ namespace Bodu.Collections.Generic.Extensions
 		}
 
 		/// <summary>
-		/// Lazily samples and shuffles a fixed-size subset of elements from the source sequence.
-		/// </summary>
-		/// <typeparam name="T">The element type.</typeparam>
-		/// <param name="source">The sequence to randomize.</param>
-		/// <param name="rng">The random number generator.</param>
-		/// <param name="count">The number of elements to return.</param>
-		/// <returns>A lazily shuffled sequence of <paramref name="count" /> elements.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="count" /> exceeds available elements.</exception>
-		private static IEnumerable<T> LazyShuffle<T>(IEnumerable<T> source, IRandomGenerator rng, int count)
-		{
-			if (count <= 0)
-				yield break;
-
-			T[] reservoir = new T[count];
-			int index = 0;
-			using var enumerator = source.GetEnumerator();
-			while (index < count && enumerator.MoveNext())
-				reservoir[index++] = enumerator.Current;
-
-			if (index < count)
-				throw new ArgumentOutOfRangeException(nameof(count), ResourceStrings.Arg_OutOfRange_CountGreaterThanSource);
-
-			int seen = count;
-			while (enumerator.MoveNext())
-			{
-				int i = rng.Next(++seen);
-				if (i < count)
-					reservoir[i] = enumerator.Current;
-			}
-
-			foreach (var item in ShuffleHelpers.ShuffleAndYield(reservoir, rng, count))
-				yield return item;
-		}
-
-		/// <summary>
 		/// Applies windowed random sampling from the source sequence while streaming.
 		/// </summary>
 		/// <typeparam name="T">The element type.</typeparam>
@@ -250,5 +229,26 @@ namespace Bodu.Collections.Generic.Extensions
 			foreach (var item in ShuffleHelpers.ShuffleAndYield(window.ToArray(), rng, window.Count))
 				yield return item;
 		}
+	}
+
+	/// <summary>
+	/// Wraps <see cref="System.Random" /> as an <see cref="IRandomGenerator" /> implementation.
+	/// </summary>
+	public sealed class SystemRandomAdapter : IRandomGenerator
+	{
+		private readonly Random random;
+
+		/// <summary>
+		/// Initializes a new adapter with a default <see cref="System.Random" />.
+		/// </summary>
+		public SystemRandomAdapter() : this(new Random()) { }
+
+		/// <summary>
+		/// Initializes a new adapter using the specified <paramref name="random" /> instance.
+		/// </summary>
+		public SystemRandomAdapter(Random random) => this.random = random ?? throw new ArgumentNullException(nameof(random));
+
+		/// <inheritdoc />
+		public int Next(int maxValue) => random.Next(maxValue);
 	}
 }

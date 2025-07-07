@@ -13,7 +13,7 @@ namespace Bodu.Extensions
 	{
 		/// <summary>
 		/// Returns the quarter number (1–4) of the year for the specified <see cref="DateOnly" />, using the standard calendar quarter
-		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryDecember" />).
+		/// definition ( <see cref="CalendarQuarterDefinition.JanuaryToDecember" />).
 		/// </summary>
 		/// <param name="date">The <see cref="DateOnly" /> value to evaluate.</param>
 		/// <returns>An integer between 1 and 4 representing the calendar quarter that includes <paramref name="date" />.</returns>
@@ -40,7 +40,7 @@ namespace Bodu.Extensions
 		/// The quarter number returned is based on the month of <paramref name="date" />, regardless of the day or time.
 		/// </remarks>
 		public static int Quarter(this DateOnly date) =>
-			GetQuarterForDate(date, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryDecember));
+			GetQuarterForDate(date, GetQuarterDefinition(CalendarQuarterDefinition.JanuaryToDecember));
 
 		/// <summary>
 		/// Returns the quarter number (1–4) for the specified <see cref="DateOnly" />, using the given
@@ -214,7 +214,7 @@ namespace Bodu.Extensions
 			// Compute quarter number using modular offset from anchor month
 			int quarter = ((date.Month + 12 - (int)definition.defMonth) % 12) / 3 + 1;
 
-			// If anchor day is not the 1st, check if we are in the quarter's start month but still before the anchor day — in that case, we
+			// If anchor day is not the 1st, check if we are in the quarter's start month but still before the anchor day - in that case, we
 			// belong to the previous quarter
 			if (definition.defDay != 1)
 			{

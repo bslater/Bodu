@@ -29,13 +29,13 @@ namespace Bodu.Collections.Generic
 	/// <para>Key operations include:</para>
 	/// <list type="bullet">
 	/// <item>
-	/// <description><see cref="Enqueue" /> and <see cref="TryEnqueue" /> — Add elements to the buffer.</description>
+	/// <description><see cref="Enqueue" /> and <see cref="TryEnqueue" /> - Add elements to the buffer.</description>
 	/// </item>
 	/// <item>
-	/// <description><see cref="Dequeue" /> and <see cref="TryDequeue" /> — Remove and return the oldest element.</description>
+	/// <description><see cref="Dequeue" /> and <see cref="TryDequeue" /> - Remove and return the oldest element.</description>
 	/// </item>
 	/// <item>
-	/// <description><see cref="Peek" /> and <see cref="TryPeek" /> — View the oldest element without removing it.</description>
+	/// <description><see cref="Peek" /> and <see cref="TryPeek" /> - View the oldest element without removing it.</description>
 	/// </item>
 	/// </list>
 	/// <para>
@@ -90,12 +90,12 @@ namespace Bodu.Collections.Generic
 		private const int MaxArrayLength = 0x7FFFFFC7; // 2,147,483,647 - 1
 #endif
 
-		private T[] array;
-		private int count;
-		private int capacity;
-		private int head;
-		private int tail;
-		private int version;
+		private int _capacity;
+		private int _count;
+		private int _head;
+		private T[] _internalBuffer;
+		private int _tail;
+		private int _version;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CircularBuffer{T}" /> class using the default capacity and allowing overwrites by default.
@@ -146,12 +146,12 @@ namespace Bodu.Collections.Generic
 #else
 			ThrowHelper.ThrowIfOutOfRange(capacity, 1, MaxArrayLength);
 #endif
-			array = new T[capacity];
-			this.capacity = capacity;
+			_internalBuffer = new T[capacity];
+			_capacity = capacity;
 			AllowOverwrite = allowOverwrite;
-			count = 0;
-			head = 0;
-			tail = 0;
+			_count = 0;
+			_head = 0;
+			_tail = 0;
 		}
 
 		/// <summary>
@@ -217,24 +217,24 @@ namespace Bodu.Collections.Generic
 			if (items.Length > capacity && !allowOverwrite)
 				throw new InvalidOperationException(ResourceStrings.Arg_Invalid_ArrayLengthExceedsCapacity);
 
-			array = new T[capacity];
-			this.capacity = capacity;
+			_internalBuffer = new T[capacity];
+			this._capacity = capacity;
 			AllowOverwrite = allowOverwrite;
 
 			if (items.Length > capacity)
 			{
 				// Retain the most recent elements that fit in the buffer.
-				Array.Copy(items, items.Length - capacity, array, 0, capacity);
-				count = capacity;
+				Array.Copy(items, items.Length - capacity, _internalBuffer, 0, capacity);
+				_count = capacity;
 			}
 			else
 			{
-				Array.Copy(items, array, items.Length);
-				count = items.Length;
+				Array.Copy(items, _internalBuffer, items.Length);
+				_count = items.Length;
 			}
 
-			head = 0;
-			tail = count % capacity;
+			_head = 0;
+			_tail = _count % capacity;
 		}
 
 		/// <summary>
@@ -326,7 +326,7 @@ namespace Bodu.Collections.Generic
 		/// </para>
 		/// <para>To reduce memory usage after elements are removed, use <see cref="TrimExcess" /> to shrink the buffer.</para>
 		/// </remarks>
-		public int Capacity => capacity;
+		public int Capacity => _capacity;
 
 		/// <summary>
 		/// Gets the element at the specified zero-based index from the oldest to the newest element.
@@ -351,10 +351,10 @@ namespace Bodu.Collections.Generic
 			get
 			{
 				ThrowHelper.ThrowIfLessThan(index, 0);
-				ThrowHelper.ThrowIfGreaterThanOrEqual(index, count);
+				ThrowHelper.ThrowIfGreaterThanOrEqual(index, _count);
 
-				int actualIndex = (head + index) % capacity;
-				return array[actualIndex];
+				int actualIndex = (_head + index) % _capacity;
+				return _internalBuffer[actualIndex];
 			}
 		}
 
@@ -373,21 +373,19 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public void Clear()
 		{
-			if (count > 0)
+			if (_count > 0)
 			{
-				if (head < tail)
+				if (_head < _tail)
 				{
-					Array.Clear(array, head, count);
+					Array.Clear(_internalBuffer, _head, _count);
 				}
 				else
 				{
-					Array.Clear(array, head, capacity - head);
-					Array.Clear(array, 0, tail);
+					Array.Clear(_internalBuffer, _head, _capacity - _head);
+					Array.Clear(_internalBuffer, 0, _tail);
 				}
 
-				head = 0;
-				tail = 0;
-				count = 0;
+				_head = _tail = _count = 0;
 			}
 		}
 
@@ -402,15 +400,15 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public bool Contains(T item)
 		{
-			int index = head;
+			int index = _head;
 			var comparer = EqualityComparer<T>.Default;
 
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < _count; i++)
 			{
-				if (comparer.Equals(array[index], item))
+				if (comparer.Equals(_internalBuffer[index], item))
 					return true;
 
-				index = (index + 1) % capacity;
+				index = (index + 1) % _capacity;
 			}
 
 			return false;
@@ -428,7 +426,7 @@ namespace Bodu.Collections.Generic
 		/// </exception>
 		/// <remarks>
 		/// <para>
-		/// Elements are copied in logical FIFO order—from the oldest to the newest. If the buffer is wrapped internally, this method
+		/// Elements are copied in logical FIFO order-from the oldest to the newest. If the buffer is wrapped internally, this method
 		/// handles segmenting the copy operation appropriately.
 		/// </para>
 		/// <para>The target array must be large enough to accommodate the number of elements in the buffer.</para>
@@ -436,8 +434,9 @@ namespace Bodu.Collections.Generic
 		public void CopyTo(T[] array, int index)
 		{
 			ThrowHelper.ThrowIfNull(array);
-			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, count);
-			CopyToCore(array, index, isTypedArray: true);
+			ThrowHelper.ThrowIfArrayLengthIsInsufficient(array, index, _count);
+
+			CopyToInternal(array, index, isTypedArray: true);
 		}
 
 		/// <summary>
@@ -482,10 +481,10 @@ namespace Bodu.Collections.Generic
 		/// A tuple containing two <see cref="ArraySegment{T}" /> values:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>FirstSegment</c> — The first segment of contiguous elements in the buffer.</description>
+		/// <description><c>FirstSegment</c> - The first segment of contiguous elements in the buffer.</description>
 		/// </item>
 		/// <item>
-		/// <description><c>SecondSegment</c> — The second segment if the buffer wraps around; otherwise, an empty segment.</description>
+		/// <description><c>SecondSegment</c> - The second segment if the buffer wraps around; otherwise, an empty segment.</description>
 		/// </item>
 		/// </list>
 		/// Iterate over both segments sequentially to access all elements in order from oldest to newest.
@@ -499,20 +498,20 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public (ArraySegment<T> FirstSegment, ArraySegment<T> SecondSegment) GetSegments()
 		{
-			if (count == 0)
+			if (_count == 0)
 				return (new ArraySegment<T>(Array.Empty<T>()), new ArraySegment<T>(Array.Empty<T>()));
 
-			if (head < tail)
+			if (_head < _tail)
 			{
 				// Single continuous segment
-				return (new ArraySegment<T>(array, head, count), new ArraySegment<T>(Array.Empty<T>()));
+				return (new ArraySegment<T>(_internalBuffer, _head, _count), new ArraySegment<T>(Array.Empty<T>()));
 			}
 			else
 			{
 				// Wrapped segments
-				int firstLength = capacity - head;
-				var firstSegment = new ArraySegment<T>(array, head, firstLength);
-				var secondSegment = new ArraySegment<T>(array, 0, tail);
+				int firstLength = _capacity - _head;
+				var firstSegment = new ArraySegment<T>(_internalBuffer, _head, firstLength);
+				var secondSegment = new ArraySegment<T>(_internalBuffer, 0, _tail);
 
 				return (firstSegment, secondSegment);
 			}
@@ -529,10 +528,10 @@ namespace Bodu.Collections.Generic
 		/// </remarks>
 		public T Peek()
 		{
-			if (count == 0)
+			if (_count == 0)
 				throw new InvalidOperationException(ResourceStrings.InvalidOperation_CollectionEmpty);
 
-			return array[head];
+			return _internalBuffer[_head];
 		}
 
 		/// <summary>
@@ -556,11 +555,10 @@ namespace Bodu.Collections.Generic
 		/// </example>
 		public T[] ToArray()
 		{
-			T[] result = new T[count];
-			if (count > 0)
-			{
-				CopyToCore(result, 0, isTypedArray: true);
-			}
+			T[] result = new T[_count];
+			if (_count > 0)
+				CopyToInternal(result, 0, isTypedArray: true);
+
 			return result;
 		}
 
@@ -592,17 +590,17 @@ namespace Bodu.Collections.Generic
 		/// </example>
 		public void TrimExcess()
 		{
-			if (count == capacity)
+			if (_count == _capacity)
 				return;
 
-			int newCapacity = Math.Max(count, 1); // prevent zero-sized array
+			int newCapacity = Math.Max(_count, 1); // prevent zero-sized array
 			T[] trimmed = new T[newCapacity];
 			CopyTo(trimmed, 0);
 
-			array = trimmed;
-			capacity = newCapacity;
-			head = tail = 0;
-			version++;
+			_internalBuffer = trimmed;
+			_capacity = newCapacity;
+			_head = _tail = 0;
+			_version++;
 		}
 
 		/// <summary>
@@ -687,118 +685,13 @@ namespace Bodu.Collections.Generic
 		/// </example>
 		public bool TryPeek(out T item)
 		{
-			if (count == 0)
+			if (_count == 0)
 			{
 				item = default!;
 				return false;
 			}
 
-			item = array[head];
-			return true;
-		}
-
-		/// <summary>
-		/// Attempts to remove and return the oldest element from the <see cref="CircularBuffer{T}" />.
-		/// </summary>
-		/// <param name="item">When this method returns, contains the dequeued item if successful; otherwise, the default value of <typeparamref name="T" />.</param>
-		/// <param name="throwIfEmpty">
-		/// If <see langword="true" />, throws an <see cref="InvalidOperationException" /> when the buffer is empty; if
-		/// <see langword="false" />, returns <see langword="false" /> without throwing.
-		/// </param>
-		/// <returns>
-		/// <see langword="true" /> if an element was successfully dequeued; otherwise, <see langword="false" /> if the buffer was empty and
-		/// <paramref name="throwIfEmpty" /> was <see langword="false" />.
-		/// </returns>
-		/// <exception cref="InvalidOperationException">
-		/// Thrown when <paramref name="throwIfEmpty" /> is <see langword="true" /> and the buffer is empty.
-		/// </exception>
-		/// <remarks>
-		/// <para>
-		/// This internal method underpins both <see cref="Dequeue" /> and <see cref="TryDequeue" />, and provides a shared path for
-		/// controlled exception handling.
-		/// </para>
-		/// </remarks>
-		private bool TryDequeueInternal(out T item, bool throwIfEmpty)
-		{
-			if (count == 0)
-			{
-				if (throwIfEmpty)
-					throw new InvalidOperationException(ResourceStrings.InvalidOperation_EmptySequence);
-
-				item = default!;
-				return false;
-			}
-
-			item = array[head];
-			array[head] = default!;
-			head = (head + 1) % capacity;
-			count--;
-
-			return true;
-		}
-
-		/// <summary>
-		/// Attempts to enqueue an item into the internal <see cref="CircularBuffer{T}" />.
-		/// </summary>
-		/// <param name="item">The element to add. Can be <see langword="null" /> for reference types.</param>
-		/// <param name="throwIfFull">
-		/// If <see langword="true" />, throws an <see cref="InvalidOperationException" /> when the buffer is full and overwriting is
-		/// disallowed; otherwise, returns <see langword="false" /> without throwing.
-		/// </param>
-		/// <returns>
-		/// <see langword="true" /> if the item was enqueued successfully; <see langword="false" /> if the buffer was full and overwriting
-		/// was disallowed and <paramref name="throwIfFull" /> was <see langword="false" />.
-		/// </returns>
-		/// <exception cref="InvalidOperationException">
-		/// Thrown when <paramref name="throwIfFull" /> is <see langword="true" /> and the buffer is full while
-		/// <see cref="AllowOverwrite" /> is <see langword="false" />, or the buffer’s capacity is zero.
-		/// </exception>
-		/// <remarks>
-		/// <para>
-		/// This method is used by both <see cref="Enqueue" /> and <see cref="TryEnqueue" /> to centralize the enqueue logic and exception control.
-		/// </para>
-		/// <para>
-		/// If <see cref="AllowOverwrite" /> is enabled, the oldest element is evicted to make room for the new item, and the
-		/// <see cref="ItemEvicting" /> and <see cref="ItemEvicted" /> events are raised.
-		/// </para>
-		/// </remarks>
-		private bool TryEnqueueInternal(T item, bool throwIfFull)
-		{
-			if (capacity == 0)
-			{
-				if (throwIfFull)
-					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CapacityExhausted);
-
-				return false;
-			}
-
-			if (count == array.Length)
-			{
-				if (!AllowOverwrite)
-				{
-					if (throwIfFull)
-						throw new InvalidOperationException(ResourceStrings.InvalidOperation_CapacityExhausted);
-
-					return false;
-				}
-
-				T overwritten = array[tail];
-				ItemEvicting?.Invoke(overwritten);
-
-				array[tail] = item;
-				head = tail = (tail + 1) % capacity;
-
-				ItemEvicted?.Invoke(overwritten);
-			}
-			else
-			{
-				array[tail] = item;
-				tail = (tail + 1) % capacity;
-				count++;
-			}
-
-			version++;
-
+			item = _internalBuffer[_head];
 			return true;
 		}
 
@@ -833,20 +726,20 @@ namespace Bodu.Collections.Generic
 		/// Thrown when <paramref name="isTypedArray" /> is <see langword="false" /> and the buffer's element type <typeparamref name="T" />
 		/// is not compatible with the destination array's element type.
 		/// </exception>
-		private void CopyToCore(Array destination, int destinationIndex, bool isTypedArray)
+		private void CopyToInternal(Array destination, int destinationIndex, bool isTypedArray)
 		{
-			if (count == 0)
+			if (_count == 0)
 				return;
 
-			if (head < tail)
+			if (_head < _tail)
 			{
-				Array.Copy(array, head, destination, destinationIndex, count);
+				Array.Copy(_internalBuffer, _head, destination, destinationIndex, _count);
 			}
 			else
 			{
-				int firstSegmentLength = array.Length - head;
-				Array.Copy(array, head, destination, destinationIndex, firstSegmentLength);
-				Array.Copy(array, 0, destination, destinationIndex + firstSegmentLength, tail);
+				int firstSegmentLength = _internalBuffer.Length - _head;
+				Array.Copy(_internalBuffer, _head, destination, destinationIndex, firstSegmentLength);
+				Array.Copy(_internalBuffer, 0, destination, destinationIndex + firstSegmentLength, _tail);
 			}
 
 			// Type check for non-generic CopyTo to ensure type safety
@@ -855,6 +748,111 @@ namespace Bodu.Collections.Generic
 				// Will throw if there's a type mismatch (ArrayTypeMismatchException is handled by caller)
 				_ = (T)destination.GetValue(destinationIndex)!;
 			}
+		}
+
+		/// <summary>
+		/// Attempts to remove and return the oldest element from the <see cref="CircularBuffer{T}" />.
+		/// </summary>
+		/// <param name="item">When this method returns, contains the dequeued item if successful; otherwise, the default value of <typeparamref name="T" />.</param>
+		/// <param name="throwIfEmpty">
+		/// If <see langword="true" />, throws an <see cref="InvalidOperationException" /> when the buffer is empty; if
+		/// <see langword="false" />, returns <see langword="false" /> without throwing.
+		/// </param>
+		/// <returns>
+		/// <see langword="true" /> if an element was successfully dequeued; otherwise, <see langword="false" /> if the buffer was empty and
+		/// <paramref name="throwIfEmpty" /> was <see langword="false" />.
+		/// </returns>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown when <paramref name="throwIfEmpty" /> is <see langword="true" /> and the buffer is empty.
+		/// </exception>
+		/// <remarks>
+		/// <para>
+		/// This internal method underpins both <see cref="Dequeue" /> and <see cref="TryDequeue" />, and provides a shared path for
+		/// controlled exception handling.
+		/// </para>
+		/// </remarks>
+		private bool TryDequeueInternal(out T item, bool throwIfEmpty)
+		{
+			if (_count == 0)
+			{
+				if (throwIfEmpty)
+					throw new InvalidOperationException(ResourceStrings.InvalidOperation_EmptySequence);
+
+				item = default!;
+				return false;
+			}
+
+			item = _internalBuffer[_head];
+			_internalBuffer[_head] = default!;
+			_head = (_head + 1) % _capacity;
+			_count--;
+
+			return true;
+		}
+
+		/// <summary>
+		/// Attempts to enqueue an item into the internal <see cref="CircularBuffer{T}" />.
+		/// </summary>
+		/// <param name="item">The element to add. Can be <see langword="null" /> for reference types.</param>
+		/// <param name="throwIfFull">
+		/// If <see langword="true" />, throws an <see cref="InvalidOperationException" /> when the buffer is full and overwriting is
+		/// disallowed; otherwise, returns <see langword="false" /> without throwing.
+		/// </param>
+		/// <returns>
+		/// <see langword="true" /> if the item was enqueued successfully; <see langword="false" /> if the buffer was full and overwriting
+		/// was disallowed and <paramref name="throwIfFull" /> was <see langword="false" />.
+		/// </returns>
+		/// <exception cref="InvalidOperationException">
+		/// Thrown when <paramref name="throwIfFull" /> is <see langword="true" /> and the buffer is full while
+		/// <see cref="AllowOverwrite" /> is <see langword="false" />, or the buffer’s capacity is zero.
+		/// </exception>
+		/// <remarks>
+		/// <para>
+		/// This method is used by both <see cref="Enqueue" /> and <see cref="TryEnqueue" /> to centralize the enqueue logic and exception control.
+		/// </para>
+		/// <para>
+		/// If <see cref="AllowOverwrite" /> is enabled, the oldest element is evicted to make room for the new item, and the
+		/// <see cref="ItemEvicting" /> and <see cref="ItemEvicted" /> events are raised.
+		/// </para>
+		/// </remarks>
+		private bool TryEnqueueInternal(T item, bool throwIfFull)
+		{
+			if (_capacity == 0)
+			{
+				if (throwIfFull)
+					throw new InvalidOperationException(ResourceStrings.InvalidOperation_CapacityExhausted);
+
+				return false;
+			}
+
+			if (_count == _internalBuffer.Length)
+			{
+				if (!AllowOverwrite)
+				{
+					if (throwIfFull)
+						throw new InvalidOperationException(ResourceStrings.InvalidOperation_CapacityExhausted);
+
+					return false;
+				}
+
+				T overwritten = _internalBuffer[_tail];
+				ItemEvicting?.Invoke(overwritten);
+
+				_internalBuffer[_tail] = item;
+				_head = _tail = (_tail + 1) % _capacity;
+
+				ItemEvicted?.Invoke(overwritten);
+			}
+			else
+			{
+				_internalBuffer[_tail] = item;
+				_tail = (_tail + 1) % _capacity;
+				_count++;
+			}
+
+			_version++;
+
+			return true;
 		}
 	}
 }

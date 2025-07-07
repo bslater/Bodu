@@ -37,7 +37,7 @@ namespace Bodu.Extensions
 		/// </list>
 		/// </remarks>
 		public static DateOnly LastDayOfQuarter(this DateOnly date) =>
-			LastDayOfQuarter(date, CalendarQuarterDefinition.JanuaryDecember);
+			LastDayOfQuarter(date, CalendarQuarterDefinition.JanuaryToDecember);
 
 		/// <summary>
 		/// Returns a <see cref="DateOnly" /> representing the last day of the specified <paramref name="quarter" /> in the given
@@ -53,7 +53,7 @@ namespace Bodu.Extensions
 		/// <returns>A <see cref="DateOnly" /> representing the final day of the specified calendar quarter in the given year.</returns>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="quarter" /> is not between 1 and 4 (inclusive).</exception>
 		/// <remarks>
-		/// <para>This method uses the <see cref="CalendarQuarterDefinition.JanuaryDecember" /> structure as the default quarter system:</para>
+		/// <para>This method uses the <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> structure as the default quarter system:</para>
 		/// <list type="bullet">
 		/// <item>
 		/// <term>Q1</term>
@@ -78,7 +78,7 @@ namespace Bodu.Extensions
 		/// </para>
 		/// </remarks>
 		public static DateOnly LastDayOfQuarter(int quarter, int year) =>
-			LastDayOfQuarter(CalendarQuarterDefinition.JanuaryDecember, quarter, year);
+			LastDayOfQuarter(CalendarQuarterDefinition.JanuaryToDecember, quarter, year);
 
 		/// <summary>
 		/// Returns the last day of the quarter that includes the specified <paramref name="date" />, based on the provided <see cref="CalendarQuarterDefinition" />.

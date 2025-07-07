@@ -13,40 +13,35 @@ namespace Bodu.Extensions
 	public static partial class DateTimeExtensions
 	{
 		/// <summary>
-		/// Returns the <see cref="DateTime" /> corresponding to the first day of the specified week number in the given calendar year,
-		/// based on the week rule and first day of the week defined by the specified or current <see cref="CultureInfo" />.
+		/// Returns a new <see cref="DateTime" /> representing the first day of the specified week number in the given calendar year, based
+		/// on the week rule and first day of the week defined by the specified or current <see cref="CultureInfo" />.
 		/// </summary>
-		/// <param name="year">
-		/// The calendar year to evaluate. Must be between the <c>Year</c> property values of <see cref="DateTime.MinValue" /> and
-		/// <see cref="DateTime.MaxValue" />, inclusive.
-		/// </param>
+		/// <param name="year">The calendar year to evaluate. Must be between 1 and 9999, inclusive.</param>
 		/// <param name="week">
-		/// The 1-based week number to evaluate. Valid values range from 1 to 53, depending on the culture-specific
-		/// <see cref="CalendarWeekRule" /> and starting <see cref="DayOfWeek" />.
+		/// The culture-defined week number to evaluate, starting at 1. The maximum valid value depends on the
+		/// <see cref="CalendarWeekRule" /> and <see cref="DayOfWeek" /> used by the specified <paramref name="culture" />.
 		/// </param>
 		/// <param name="culture">
-		/// An optional <see cref="CultureInfo" /> used to determine the <see cref="DateTimeFormatInfo.CalendarWeekRule" /> and
-		/// <see cref="DateTimeFormatInfo.FirstDayOfWeek" /> for calculating week boundaries. If <c>null</c>,
-		/// <see cref="CultureInfo.CurrentCulture" /> is used.
+		/// An optional <see cref="CultureInfo" /> used to determine the <see cref="CalendarWeekRule" /> and starting
+		/// <see cref="DayOfWeek" />. If <c>null</c>, <see cref="CultureInfo.CurrentCulture" /> is used.
 		/// </param>
-		/// <returns>
-		/// A <see cref="DateTime" /> set to midnight (00:00:00.000) on the first day of the specified week in the given year, with <see cref="DateTimeKind.Unspecified" />.
-		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="week" /> does not correspond to a valid week number for the specified <paramref name="year" />, based
-		/// on the <paramref name="culture" />'s <see cref="CalendarWeekRule" /> and <see cref="DayOfWeek" />.
-		/// </exception>
+		/// <returns>An object whose value is set to midnight (00:00:00) on the first date of the specified week in the specified year.</returns>
 		/// <remarks>
 		/// <para>
-		/// This method aligns with the culture-defined week numbering system. It calculates the anchor point by identifying the first
-		/// occurrence of the culture's defined <see cref="DateTimeFormatInfo.FirstDayOfWeek" /> on or before January 1 of the given year,
-		/// then advances in 7-day intervals to reach the start of the specified week.
+		/// This method uses the culture-defined week numbering system. It begins by identifying the first occurrence of the culture’s
+		/// defined <see cref="DateTimeFormatInfo.FirstDayOfWeek" /> on or before January 1 of the specified year, then advances in 7-day
+		/// intervals to calculate the start of the specified week.
 		/// </para>
 		/// <para>
-		/// The result is validated by recalculating the week number using
+		/// The result is validated by recalculating the week number for the computed date using
 		/// <see cref="Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)" /> and comparing it to <paramref name="week" />.
 		/// </para>
+		/// <para>The <see cref="DateTime.Kind" /> property of the returned instance is <see cref="DateTimeKind.Unspecified" />.</para>
 		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Thrown if <paramref name="week" /> does not correspond to a valid week number for <paramref name="year" /> under the rules of
+		/// the specified or current <paramref name="culture" />.
+		/// </exception>
 		public static DateTime GetStartDateOfWeek(int year, int week, CultureInfo? culture = null)
 		{
 			DateTimeFormatInfo dfi = (culture ?? CultureInfo.CurrentCulture).DateTimeFormat;

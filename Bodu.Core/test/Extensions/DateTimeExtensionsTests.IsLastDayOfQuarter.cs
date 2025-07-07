@@ -3,8 +3,20 @@
 	public partial class DateTimeExtensionsTests
 	{
 		/// <summary>
+		/// Verifies that <see cref="DateTimeExtensions.IsLastDayOfQuarter(DateTime, CalendarQuarterDefinition)" /> returns <c>false</c>
+		/// when the input date is not the first day of the quarter.
+		/// </summary>
+		[DataTestMethod]
+		[DynamicData(nameof(IsNotLastDayOfQuarterTestData), DynamicDataSourceType.Method)]
+		public void IsLastDayOfQuarter_WhenDateIsNotStartOfQuarterDefinition_ShouldReturnFalse(DateTime input, CalendarQuarterDefinition definition)
+		{
+			bool actual = input.IsLastDayOfQuarter(definition);
+			Assert.IsFalse(actual);
+		}
+
+		/// <summary>
 		/// Verifies that <see cref="DateTimeExtensions.IsFirstDayOfQuarter(DateTime)" /> returns <c>true</c> only when the date is the
-		/// first day of a quarter based on the <see cref="CalendarQuarterDefinition.JanuaryDecember" /> structure.
+		/// first day of a quarter based on the <see cref="CalendarQuarterDefinition.JanuaryToDecember" /> structure.
 		/// </summary>
 		[DataTestMethod]
 		[DynamicData(nameof(IsLastDayOfQuarterJanuaryDecemberTestData), DynamicDataSourceType.Method)]
@@ -28,16 +40,15 @@
 			Assert.IsTrue(actual);
 		}
 
-		/// <summary>
-		/// Verifies that <see cref="DateTimeExtensions.IsLastDayOfQuarter(DateTime, CalendarQuarterDefinition)" /> returns <c>false</c>
-		/// when the input date is not the first day of the quarter.
-		/// </summary>
-		[DataTestMethod]
-		[DynamicData(nameof(IsNotLastDayOfQuarterTestData), DynamicDataSourceType.Method)]
-		public void IsLastDayOfQuarter_WhenDateIsNotStartOfQuarterDefinition_ShouldReturnFalse(DateTime input, CalendarQuarterDefinition definition)
+		[TestMethod]
+		public void IsLastDayOfQuarter_WhenDefinitionIsCustom_ShouldThrowExactly()
 		{
-			bool actual = input.IsLastDayOfQuarter(definition);
-			Assert.IsFalse(actual);
+			var input = new DateTime(2024, 4, 20);
+
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
+			{
+				_ = input.IsLastDayOfQuarter(CalendarQuarterDefinition.Custom);
+			});
 		}
 
 		[TestMethod]
@@ -49,17 +60,6 @@
 			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
 			{
 				_ = input.IsLastDayOfQuarter(definition);
-			});
-		}
-
-		[TestMethod]
-		public void IsLastDayOfQuarter_WhenDefinitionIsCustom_ShouldThrowExactly()
-		{
-			var input = new DateTime(2024, 4, 20);
-
-			Assert.ThrowsExactly<InvalidOperationException>(() =>
-			{
-				_ = input.IsLastDayOfQuarter(CalendarQuarterDefinition.Custom);
 			});
 		}
 

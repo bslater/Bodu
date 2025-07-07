@@ -15,23 +15,26 @@ namespace Bodu.Extensions
 		/// Returns the number of ISO 8601 weeks in the specified year (either 52 or 53).
 		/// </summary>
 		/// <param name="year">The ISO 8601 year to evaluate.</param>
-		/// <returns>The number of weeks (52 or 53) in the specified year.</returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="year" /> is outside the valid range of the <c>Year</c> property, as defined by
-		/// <see cref="DateTime.MinValue" /> and <see cref="DateTime.MaxValue" />.
-		/// </exception>
+		/// <returns>The number of ISO 8601 weeks in the specified year: either 52 or 53.</returns>
 		/// <remarks>
-		/// <para>According to ISO 8601:
+		/// <para>According to ISO 8601:</para>
 		/// <list type="bullet">
 		/// <item>
-		/// <description>A year has 53 weeks if January 1st falls on a Thursday, or if December 31st falls on a Thursday.</description>
+		/// <description>A year has 53 weeks if January 1 falls on a Thursday,</description>
 		/// </item>
 		/// <item>
-		/// <description>All other years have 52 weeks.</description>
+		/// <description>–or– if December 31 falls on a Thursday.</description>
+		/// </item>
+		/// <item>
+		/// <description>All other years contain 52 weeks.</description>
 		/// </item>
 		/// </list>
+		/// <para>
+		/// The calculation is based on the weekday of January 1 and the preceding December 31 to determine whether the year contains an
+		/// extra ISO week.
 		/// </para>
 		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="year" /> is less than 1 or greater than 9999.</exception>
 		public static int GetIsoWeeksInYear(int year)
 		{
 			ThrowHelper.ThrowIfOutOfRange(year, DateTime.MinValue.Year, DateTime.MaxValue.Year);

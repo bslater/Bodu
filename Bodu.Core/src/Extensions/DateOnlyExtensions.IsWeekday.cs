@@ -1,7 +1,7 @@
-// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="DateOnlyExtensions.IsWeekday.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="DateOnlyExtensions.IsWeekday.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -31,7 +31,7 @@ namespace Bodu.Extensions
 		/// <see langword="true" /> if the <paramref name="date" /> is considered a weekday under the specified weekend rule; otherwise, <see langword="false" />.
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> but <paramref name="provider" /> is null.
+		/// Thrown if <paramref name="weekend" /> is <see cref="CalendarWeekendDefinition.Custom" /> but <paramref name="provider" /> is <see langword="null" />.
 		/// </exception>
 		public static bool IsWeekday(this DateOnly date, CalendarWeekendDefinition weekend, IWeekendDefinitionProvider? provider = null) =>
 			!IsWeekend(date, weekend, provider);

@@ -17,7 +17,7 @@ namespace Bodu
 		/// <param name="input">The input string that represents selected days.</param>
 		/// <returns>A new <see cref="DaysOfWeekSet" /> instance corresponding to the selected days.</returns>
 		/// <exception cref="FormatException">
-		/// Thrown if the <paramref name="input" /> is <c>null</c>, incorrectly formatted, or cannot be parsed.
+		/// Thrown if the <paramref name="input" /> is <see langword="null" />, incorrectly formatted, or cannot be parsed.
 		/// </exception>
 		/// <remarks>
 		/// <para>
@@ -39,15 +39,15 @@ namespace Bodu
 		/// A format string that defines the day ordering and symbol used for unselected days. Supported values:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'S'</c> or <c>'M'</c> — Sunday- or Monday-first, using underscore ( <c>'_'</c>) for unselected days.</description>
+		/// <description><c>'S'</c> or <c>'M'</c> - Sunday- or Monday-first, using underscore ( <c>'_'</c>) for unselected days.</description>
 		/// </item>
 		/// <item>
 		/// <description>
-		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, <c>'A'</c> — Sunday-first with space, underscore, dash, or asterisk for unselected days, respectively.
+		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, <c>'A'</c> - Sunday-first with space, underscore, dash, or asterisk for unselected days, respectively.
 		/// </description>
 		/// </item>
 		/// <item>
-		/// <description><c>'0'</c> or <c>'1'</c> — Binary format with <c>'1'</c> for selected and <c>'0'</c> for unselected days.</description>
+		/// <description><c>'0'</c> or <c>'1'</c> - Binary format with <c>'1'</c> for selected and <c>'0'</c> for unselected days.</description>
 		/// </item>
 		/// <item>
 		/// <description>Two-character formats:
@@ -64,7 +64,7 @@ namespace Bodu
 		/// </list>
 		/// </param>
 		/// <returns>A <see cref="DaysOfWeekSet" /> parsed according to the specified format.</returns>
-		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="format" /> is <see langword="null" />.</exception>
 		/// <exception cref="FormatException">
 		/// Thrown if the <paramref name="input" /> or <paramref name="format" /> are invalid or unrecognized.
 		/// </exception>
@@ -106,15 +106,15 @@ namespace Bodu
 		/// A format string that defines the day ordering and symbol used for unselected days. Supported values:
 		/// <list type="bullet">
 		/// <item>
-		/// <description><c>'S'</c> or <c>'M'</c> — Sunday- or Monday-first, using underscore ( <c>'_'</c>) for unselected days.</description>
+		/// <description><c>'S'</c> or <c>'M'</c> - Sunday- or Monday-first, using underscore ( <c>'_'</c>) for unselected days.</description>
 		/// </item>
 		/// <item>
 		/// <description>
-		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, <c>'A'</c> — Sunday-first with space, underscore, dash, or asterisk for unselected days, respectively.
+		/// <c>'E'</c>, <c>'U'</c>, <c>'D'</c>, <c>'A'</c> - Sunday-first with space, underscore, dash, or asterisk for unselected days, respectively.
 		/// </description>
 		/// </item>
 		/// <item>
-		/// <description><c>'0'</c> or <c>'1'</c> — Binary format with <c>'1'</c> for selected and <c>'0'</c> for unselected days.</description>
+		/// <description><c>'0'</c> or <c>'1'</c> - Binary format with <c>'1'</c> for selected and <c>'0'</c> for unselected days.</description>
 		/// </item>
 		/// <item>
 		/// <description>Two-character formats:

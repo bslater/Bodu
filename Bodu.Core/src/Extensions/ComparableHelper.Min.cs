@@ -1,7 +1,7 @@
-﻿// // ---------------------------------------------------------------------------------------------------------------
-// // <copyright file="ComparableHelper.Min.cs" company="PlaceholderCompany">
-// //     Copyright (c) PlaceholderCompany. All rights reserved.
-// // </copyright>
+﻿// // --------------------------------------------------------------------------------------------------------------- //
+// <copyright file="ComparableHelper.Min.cs" company="PlaceholderCompany">
+//     // Copyright (c) PlaceholderCompany. All rights reserved. //
+// </copyright>
 // // ---------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -18,8 +18,8 @@ namespace Bodu.Extensions
 		/// <param name="first">The first value to compare.</param>
 		/// <param name="second">The second value to compare.</param>
 		/// <returns>
-		/// The smaller of the two values. If one value is <c>null</c>, the non-null value is returned. If both values are <c>null</c>,
-		/// <c>null</c> is returned.
+		/// The smaller of the two values. If one value is <see langword="null" />, the non-null value is returned. If both values are
+		/// <c>null</c>, <c>null</c> is returned.
 		/// </returns>
 		/// <remarks>This method compares the two values using the <see cref="IComparable{T}.CompareTo(T)" /> method.</remarks>
 		public static T? Min<T>(T? first, T? second) where T : IComparable<T> =>
@@ -33,10 +33,10 @@ namespace Bodu.Extensions
 		/// <param name="second">The second value to compare.</param>
 		/// <param name="comparer">The comparer to use for comparing the values.</param>
 		/// <returns>
-		/// The smaller of the two values based on the specified comparer. If one value is <c>null</c>, the non-null value is returned. If
-		/// both values are <c>null</c>, <c>null</c> is returned.
+		/// The smaller of the two values based on the specified comparer. If one value is <see langword="null" />, the non-null value is
+		/// returned. If both values are <c>null</c>, <c>null</c> is returned.
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="comparer" /> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="comparer" /> is <see langword="null" />.</exception>
 		/// <remarks>Use this overload to apply custom comparison logic, such as culture-specific string comparisons.</remarks>
 		public static T? Min<T>(T? first, T? second, IComparer<T> comparer) =>
 			comparer is null

@@ -17,7 +17,7 @@ namespace Bodu.Globalization.Extensions
 		/// </summary>
 		/// <param name="info">The <see cref="DateTimeFormatInfo" /> containing week configuration.</param>
 		/// <returns>The last <see cref="DayOfWeek" /> of the week according to the provided culture.</returns>
-		/// <exception cref="System.ArgumentNullException">Thrown if <paramref name="info" /> is <c>null</c>.</exception>
+		/// <exception cref="System.ArgumentNullException">Thrown if <paramref name="info" /> is <see langword="null" />.</exception>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DayOfWeek LastDayOfWeek(this DateTimeFormatInfo info)
 		{
